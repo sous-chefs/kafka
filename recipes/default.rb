@@ -14,18 +14,15 @@ user             = node[:kafka][:user]
 group            = node[:kafka][:group]
 
 broker_id        = node[:kafka][:broker_id]
-broker_host_name = node[:kafka][:broker_host_name]
+host_name = node[:kafka][:host_name]
 
 if broker_id.nil? || broker_id.empty?
-  node[:kafka][:broker_id] = node[:ipaddress].gsub(".", "")
+  node[:kafka][:broker_id] = node[:ipaddress].gsub('.', "")
 end
 
-if broker_host_name.nil? || broker_id.empty?
-  node[:kafka][:broker_host_name] = node[:fqdn]
+if host_name.nil? || host_name.empty?
+  node[:kafka][:host_name] = node[:fqdn]
 end
-
-log "broker_id = #{node[:kafka][:broker_id]}"
-log "broker_host_name = #{node[:kafka][:broker_host_name]}"
 
 group(group) {}
 
