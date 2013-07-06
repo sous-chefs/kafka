@@ -1,0 +1,108 @@
+#!/bin/sh
+# Kafka daemon
+# chkconfig: 345 20 80
+# description: Kafka daemon
+# processname: kafka
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration
+. /etc/sysconfig/network
+
+# Check that networking is up
+[ "$NETWORKING" = "no" ] && exit 0
+
+# Setup basic information
+# $USER is not currently used because it's a fucking pain to write
+# proper init.d scripts
+USER=<%= node[:kafka][:user] %>
+DAEMON_NAME=<%= @daemon_name %>
+DESC="<%= @daemon_name.capitalize %> daemon"
+
+DAEMON_PATH=<%= node[:kafka][:install_dir] %>
+SERVER_CONFIG=$DAEMON_PATH/config/<%= (defined?(@config) && @config) || @daemon_name %>.properties
+LOG_DIR=/var/log/<%= @daemon_name %>
+LOG_OUT=$LOG_DIR/process.out
+LOG_ERR=$LOG_DIR/process.err
+SCRIPT_NAME=/etc/init.d/$DAEMON_NAME
+
+PID_FILE=/var/run/$DAEMON_NAME.pid
+
+MAIN="<%= @main_class %>"
+JAVA_HOME="<%= node[:java][:home] %>"
+
+# Setup classpath, start with Kafka jar.
+CLAZZPATH=$DAEMON_PATH/kafka_<%= node[:kafka][:scala_version] %>-<%= node[:kafka][:version] %>.jar
+
+# Add all .jar files to the classpath
+for jar in `ls $DAEMON_PATH/libs/*`; do
+  CLAZZPATH=$CLAZZPATH:$jar
+done
+
+# Add the (default) JMX options
+if [ -z "$JMX_OPTS"]; then
+  JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "
+fi
+
+# Add the JMX port
+if [ -z "$JMX_PORT" ]; then
+  JMX_PORT="<%= @jmx_port %>"
+fi
+
+# Combine JMX options and port
+JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT"
+
+# Add (default) Kafka (JVM) options
+if [ -z "$KAFKA_OPTS" ]; then
+  KAFKA_OPTS="-Xmx512M -server -Djava.net.preferIPv4Stack=true -Dlog4j.configuration=file:$DAEMON_PATH/config/<%= @log4j_config %>"
+fi
+
+# Set JAVA_HOME
+if [ -z "$JAVA_HOME" ]; then
+  JAVA="java"
+else
+  JAVA="$JAVA_HOME/bin/java"
+fi
+
+# Create the JSVC command line
+CMD="$JAVA $KAFKA_OPTS $JMX_OPTS -cp $CLAZZPATH"
+
+# Find current PID if any
+FOUND_PID=`ps -ef | grep $MAIN | grep -v grep | awk '{print $2}'`
+
+case "$1" in
+  start)
+    if [ "" = "$FOUND_PID" ]; then
+      cd   $HOME_DIR
+      # echo $CMD $MAIN $SERVER_CONFIG
+      # ^ Useful for debugging
+      # For compatibility with runit we cannot backgroud
+      # ourselves with a '&' at the end, though we do
+      # need to exec.
+      # ^ Fuck that shit. I'm backgrounding all day long.
+      # With my bro `daemon`.
+      daemon $CMD $MAIN $SERVER_CONFIG >$LOG_OUT 2>$LOG_ERR &
+    else
+      echo "Service already running"
+      exit 1
+    fi
+    ;;
+  stop)
+    if [ "" = "$FOUND_PID" ]; then
+      echo "Service not running, nothing to stop"
+      exit 1
+    else
+      # This is just a mess
+      kill $FOUND_PID
+      sleep 4
+      # Find PID again to see if we need to use kill -9 termination
+      FOUND_PID=`ps -ef | grep $MAIN | grep -v grep | awk '{print $2}'`
+      if [ "" != "$FOUND_PID" ]; then
+        echo "Using kill did not work, sending kill -9 to process"
+        kill -9 $FOUND_PID
+      fi
+      exit 0
+    fi
+    ;;
+esac

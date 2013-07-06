@@ -9,11 +9,11 @@
 
 include_recipe 'java'
 
-java_home        = node[:java][:home]
-user             = node[:kafka][:user]
-group            = node[:kafka][:group]
+java_home = node[:java][:home]
+user      = node[:kafka][:user]
+group     = node[:kafka][:group]
 
-broker_id        = node[:kafka][:broker_id]
+broker_id = node[:kafka][:broker_id]
 host_name = node[:kafka][:host_name]
 
 if broker_id.nil? || broker_id.empty?
@@ -37,8 +37,8 @@ end
 install_dir = node[:kafka][:install_dir]
 
 directory "#{install_dir}" do
-  owner 'root'
-  group 'root'
+  owner user
+  group group
   mode 00755
   recursive true
   action :create
@@ -46,8 +46,8 @@ directory "#{install_dir}" do
 end
 
 directory "#{install_dir}/bin" do
-  owner 'root'
-  group 'root'
+  owner user
+  group group
   mode 00755
   recursive true
   action :create
@@ -55,8 +55,8 @@ directory "#{install_dir}/bin" do
 end
 
 directory "#{install_dir}/config" do
-  owner 'root'
-  group 'root'
+  owner user
+  group group
   mode 00755
   recursive true
   action :create
@@ -79,6 +79,20 @@ directory node[:kafka][:data_dir] do
   recursive true
   action :create
   not_if { File.directory?(node[:kafka][:data_dir]) }
+end
+
+template '/etc/init.d/kafka' do
+  source 'initd.script.erb'
+  owner 'root'
+  group 'root'
+  mode 00755
+  variables({
+    :daemon_name => 'kafka',
+    :main_class => 'kafka.Kafka',
+    :jmx_port => node[:kafka][:jmx_port],
+    :log4j_config => 'log4j.properties',
+    :config => 'server'
+  })
 end
 
 include_recipe 'kafka::config'
