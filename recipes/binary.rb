@@ -9,9 +9,8 @@
 
 include_recipe 'kafka::default'
 
-# TODO: remove this constraint
-node[:kafka][:scala_version] = '2.8.0'
-node[:kafka][:checksum] = '750046ab729d2dbc1d5756794ebf8fcb640879b23a64749164c43063286316b8'
+node[:kafka][:scala_version] ||= '2.8.0'
+node[:kafka][:checksum]      ||= '750046ab729d2dbc1d5756794ebf8fcb640879b23a64749164c43063286316b8'
 
 kafka_base = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_tar_gz = "#{kafka_base}.tgz"
