@@ -63,6 +63,15 @@ directory "#{install_dir}/config" do
   not_if { File.directory?("#{install_dir}/config") }
 end
 
+directory("#{node[:kafka][:install_dir]}/libs") do
+  owner user
+  group group
+  mode 00755
+  action :create
+  recursive true
+  not_if { File.exists?("#{node[:kafka][:install_dir]}/libs") }
+end
+
 directory node[:kafka][:log_dir] do
   owner   user
   group   group

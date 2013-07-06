@@ -17,21 +17,12 @@ download_file = "#{node[:kafka][:base_url]}/#{kafka_tar_gz}"
 local_file_path = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
 
 directory("#{node[:kafka][:install_dir]}/build") do
-  owner 'root'
-  group 'root'
-  mode 00644
+  owner user
+  group group
+  mode 00755
   action :create
   recursive true
   not_if { File.exists?("#{node[:kafka][:install_dir]}/build") }
-end
-
-directory("#{node[:kafka][:install_dir]}/libs") do
-  owner 'root'
-  group 'root'
-  mode 00644
-  action :create
-  recursive true
-  not_if { File.exists?("#{node[:kafka][:install_dir]}/libs") }
 end
 
 remote_file(local_file_path) do
