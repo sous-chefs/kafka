@@ -12,7 +12,7 @@ notable differences:
 * only tested with a CentOS Vagrant box.
 
 # Requirements
-* Java cookbook >= 1.5
+* Java cookbook ~> 1.11.6
 
 # Attributes
 This section describes all the attributes that are currently available for
@@ -132,9 +132,7 @@ run on the same machine) and is just useful for testing (i.e. in Vagrant or
 other testing environment).
 
 # License and author:
-Author :: Mathias Söderberg
-
-Copyright :: 2013, Burt
+Copyright :: 2013 Mathias Söderberg
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
