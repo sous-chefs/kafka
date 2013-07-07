@@ -1,18 +1,19 @@
 # Description
-Installs Kafka 0.8.0-beta1, and probably any higher version, whenever they are
+Installs Kafka ``0.8.0-beta1``, and probably any higher version, whenever they are
 released. Given that they don't change URLs and the like.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases of Kafka 0.8.0-beta1.
+* supports both source and binary releases (of Kafka ``0.8.0-beta1``).
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
 * only tested with a CentOS Vagrant box.
+* intended to be used by wrapper cookbooks.
 
 # Requirements
-* Java cookbook ~> 1.11.6
+* Java cookbook ``~> 1.11.6``
 
 # Attributes
 This section describes all the attributes that are currently available for
@@ -22,81 +23,81 @@ consecutive headers without any text between them make me cringe).
 ## default
 The following attributes are used for setting up the 'environment' for Kafka.
 
-* kafka.version - The Kafka version install and use.
-* kafka.base\_url - URL for Kafka releases.
-* kafka.checksum - MD5 checksum for release to use.
-* kafka.scala\_version - Scala version for Kafka.
-* kafka.install\_dir - Location for Kafka to be installed.
-* kafka.log\_dir - Location for Kafka log4j logs.
-* kafka.user - User to use for directories and to run Kafka.
-* kafka.group - Group for user defined in bullet point above.
-* kafka.log\_level - Log level for Kafka logs (and ZooKeeper, for further
+* ``node[:kafka][:version]`` - The Kafka version install and use.
+* ``node[:kafka][:base_url]`` - URL for Kafka releases.
+* ``node[:kafka][:checksum]`` - MD5 checksum for release to use.
+* ``node[:kafka][:scala_version]`` - Scala version for Kafka.
+* ``node[:kafka][:install_dir]`` - Location for Kafka to be installed.
+* ``node[:kafka][:log_dir]`` - Location for Kafka log4j logs.
+* ``node[:kafka][:user]`` - User to use for directories and to run Kafka.
+* ``node[:kafka][:group]`` - Group for user defined in bullet point above.
+* ``node[:kafka][:log_level]`` - Log level for Kafka logs (and ZooKeeper, for further
   information see below).
-* kafka.jmx\_port - JMX port for Kafka.
+* ``node[:kafka][:jmx_port]`` - JMX port for Kafka.
 
 ## kafka
 The following attributes are used for the Kafka broker configuration and are
 divided into logical sections according to the official Kafka configuration.
 
 ### General broker configuration attributes
-* kafka.broker\_id - The id of the broker. This must be set to a unique integer
-  for each broker. If not set, it will default to the machine's ip address
+* ``node[:kafka][:broker_id]`` - The id of the broker. This must be set to a unique integer
+  for each broker. If not set, it will default to using the machine's ip address
   (without the dots).
-* kafka.host\_name - Host name the broker will advertise. If not set, Kafka will
-  use the host name returned from java.net.InetAddress.getCanonicalHostName(),
-  which might not be what you want.
-* kafka.port - The port Kafka will listen on for incoming requests.
-* kafka.network\_threads - The number of threads handling network requests.
-* kafka.io\_threads - The number of threads doing disk I/O.
-* kafka.num\_partitions - The number of logical partitions per topic per server.
+* ``node[:kafka][:host_name]`` - Host name the broker will advertise. If not set, Kafka will
+  use the host name returned from
+``java.net.InetAddress.getCanonicalHostName()``, which might not be what you want.
+* ``node[:kafka][:port]`` - The port Kafka will listen on for incoming requests.
+* ``node[:kafka][network_threads]`` - The number of threads handling network requests.
+* ``node[:kafka][:io_threads]`` - The number of threads doing disk I/O.
+* ``node[:kafka][num_partitions]`` - The number of logical partitions per topic per server.
   More partitions allow greater parallelism for consumption, but also mean more
   files.
 
 ### Socket server attributes
-* kafka.socket.send\_buffer\_bytes - The send buffer (SO\_SNDBUF) used by the
+* ``node[:kafka][:socket][:send_buffer_bytes]`` - The send buffer (``SO_SNDBUF``) used by the
   socket server.
-* kafka.socket.receive\_buffer\_bytes - The receive buffer (SO\_RCVBUF) used by
+* ``node[:kafka][:socket][:receive_buffer_bytes]`` - The receive buffer (``SO_RCVBUF``) used by
   the socket server.
-* kafka.socket.request\_max\_bytes - The maximum size of a request that the
-  socket server will accept (protection against OOM).
+* ``node[:kafka][:socket][:request_max_bytes]`` - The maximum size of a request that the
+  socket server will accept (protection against out of memory).
 
 ### Log and flush policy attributes
-* kafka.log.dirs - The directory under which Kafka will store log files.
-* kafka.log.flush\_interval\_messages - The number of messages to accept before
+* ``node[:kafka][:log][:dirs]`` - The directory under which Kafka will store log files.
+* ``node[:kafka][:log][:flush_interval_messages]`` - The number of messages to accept before
   forcing a flush of data to disk.
-* kafka.log.flush\_interval\_ms - The maximum amount of time a message can sit
+* ``node[:kafka][:log][:flush_interval_ms]`` - The maximum amount of time a message can sit
   in a log before Kafka forces a flush to disk.
-* kafka.log.retention\_hours - The minimum age of a log file to be eligible for
+* ``node[:kafka][:log][:retention_hours]`` - The minimum age of a log file to be eligible for
   deletetion.
-* kafka.log.retention\_bytes - A size-based retention policy for logs. Segments
+* ``node[:kafka][:log][:retention_bytes]`` - A size-based retention policy for logs. Segments
   are pruned from the log as long as the remaining segments don't drop below
-  log\_retention\_bytes.
-* kafka.log.segment\_bytes - The maximum size of a log segment file. When this
+  ``log_retention_bytes``.
+* ``node[:kafka][:log][:segment_bytes]`` - The maximum size of a log segment file. When this
   size is reached a new log segment will be created.
-* kafka.log.cleanup\_interval\_mins - The interval at which log segments are
+* ``node[:kafka][:log][:cleanup_interval_mins]`` - The interval at which log segments are
   checked to see if they can be deleted according to the retention policies.
 
 ### ZooKeeper attributes
-* kafka.zookeeper.connect - A list of zookeeper nodes to connect to.
-* kafka.zookeeper.timeout - Timeout in milliseconds for connection to ZooKeeper.
+* ``node[:kafka][:zookeeper][:connect]`` - A list of zookeeper nodes to connect to.
+* ``node[:kafka][:zookeeper][:timeout]`` - Timeout in milliseconds for connecting to ZooKeeper.
 
 ### Metric attributes
-* kafka.metrics.polling\_interval - Polling interval for metrics.
-* kafka.metrics.reporters - Metric reporters to be used.
+* ``node[:kafka][:metrics][:polling_interval]`` - Polling interval for metrics.
+* ``node[:kafka][:metrics][:reporters]`` - Metric reporters to be used.
 
 #### CSV metric attributes
-* kafka.csv\_metrics.dir - Directory path for saving metrics.
-* kafka.csv\_metrics.reporter\_enabled - Enable/disable CSV metrics reporter.
+* ``node[:kafka][:csv_metrics][:dir]`` - Directory path for saving metrics.
+* ``node[:kafka][:csv_metrics][:reporter_enabled]`` - Enable/disable CSV metrics reporter.
 
 ## zookeeper
 The following attributes are used to configure ZooKeeper when using the
 ``kafka::standalone`` recipe, see below for further information.
 
-* zookeeper.data\_dir - Path where to store ZooKeeper data.
-* zookeeper.log\_dir - Where to store ZooKeeper logs.
-* zookeeper.port - Port for ZooKeeper to listen for incoming connections.
-* zookeeper.max\_client\_connections - Maximum number of connections per client.
-* zookeeper.jmx\_port - JMX port for ZooKeeper.
+* ``node[:zookeeper][:data_dir]`` - Path where to store ZooKeeper data.
+* ``node[:zookeeper][:log_dir]`` - Where to store ZooKeeper logs.
+* ``node[:zookeeper][:port]`` - Port for ZooKeeper to listen for incoming connections.
+* ``node[:zookeeper][:max_client_connections]`` - Maximum number of connections per client.
+* ``node[:zookeeper][:jmx_port]`` - JMX port for ZooKeeper.
 
 # Recipes
 This section describes the different recipes that exists, and how to use them.
@@ -136,7 +137,7 @@ other testing environment).
 * ``init.d`` scripts are hell and needs to be properly fixed.
 * No support for Ubuntu/Debian.
 * Not tested with other RHEL distributions (Fedora/Amazon/etc).
-* No support for per-topic overrides for kafka.log.flush\_interval\_ms.
+* No support for per-topic overrides for ``node[:kafka][:log][:flush_interval_ms]``.
 * Not sure if all configuration parameters for Kafka are supported at this time.
 
 # License and author:
