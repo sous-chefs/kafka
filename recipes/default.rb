@@ -36,7 +36,7 @@ end
 
 install_dir = node[:kafka][:install_dir]
 
-directory "#{install_dir}" do
+directory install_dir do
   owner user
   group group
   mode 00755

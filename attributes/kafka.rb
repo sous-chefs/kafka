@@ -6,7 +6,6 @@
 default[:kafka][:broker_id] = nil
 default[:kafka][:host_name] = nil
 default[:kafka][:port] = 9092
-
 default[:kafka][:network_threads] = 2
 default[:kafka][:io_threads] = 2
 default[:kafka][:num_partitions] = 1
