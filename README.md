@@ -17,8 +17,7 @@ notable differences:
 # Attributes
 The attributes are logically divided into different sections according to the
 configuration of a Kafka broker. Not really sure if this is common for Chef
-cookbooks, but in my opinion it makes things a lot clearer and it's easier to
-see which attributes belong where.
+cookbooks, but in my opinion it makes things a lot clearer.
 
 ## General attributes
 * kafka.version - The Kafka version install and use.
@@ -26,7 +25,6 @@ see which attributes belong where.
 * kafka.checksum - MD5 checksum for release to use.
 * kafka.scala\_version - Scala version for Kafka.
 * kafka.install\_dir - Location for Kafka to be installed.
-* kafka.data\_dir - Location for Kafka logs.
 * kafka.log\_dir - Location for Kafka log4j logs.
 * kafka.user - User to use for directories and to run Kafka.
 * kafka.group - Group for user defined in bullet point above.
@@ -43,7 +41,7 @@ see which attributes belong where.
   which might not be what you want.
 * kafka.port - The port Kafka will listen on for incoming requests.
 * kafka.network\_threads - The number of threads handling network requests.
-* kafka.io\_threads - The number of threads doing disk I/O
+* kafka.io\_threads - The number of threads doing disk I/O.
 * kafka.num\_partitions - The number of logical partitions per topic per server.
   More partitions allow greater parallelism for consumption, but also mean more
   files.
