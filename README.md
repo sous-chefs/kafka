@@ -15,6 +15,11 @@ notable differences:
 * Java cookbook >= 1.5
 
 # Attributes
+The attributes are logically divided into different sections according to the
+configuration of a Kafka broker. Not really sure if this is common for Chef
+cookbooks, but in my opinion it makes things a lot clearer and it's easier to
+see which attributes belong where.
+
 ## General attributes
 * kafka.version - The Kafka version install and use
 * kafka.base\_url - URL for Kafka releases
