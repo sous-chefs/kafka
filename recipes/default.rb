@@ -17,7 +17,7 @@ broker_id = node[:kafka][:broker_id]
 host_name = node[:kafka][:host_name]
 
 if broker_id.nil? || broker_id.empty?
-  node[:kafka][:broker_id] = node[:ipaddress].gsub('.', "")
+  node[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
 end
 
 if host_name.nil? || host_name.empty?

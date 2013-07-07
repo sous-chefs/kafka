@@ -98,11 +98,38 @@ The following attributes are used to configure ZooKeeper when using the
 * zookeeper.max\_client\_connections - Maximum number of connections per client.
 * zookeeper.jmx\_port - JMX port for ZooKeeper.
 
-# Usage
-* kafka::default - TODO: usage
-* kafka::source - TODO: usage
-* kafka::binary - TODO: usage
-* kafka::standalone - TODO: usage
+# Recipes
+This section describes the different recipes that exists, and how to use them.
+
+## default
+Sets up ``broker_id`` and ``host_name``, and creates necessary directories for
+installing Kafka, as well as a quite crude ``init.d`` script.
+This recipe is included by both ``kafka::source`` and ``kafka::binary`` recipes.
+
+## source
+Downloads, compiles and installs Kafka from the official source releases.
+Defaults to using ``0.8.0-beta1`` as Kafka version.
+
+This recipe will not automatically start/restart Kafka as that is left up to the
+user to decide.
+
+## binary
+Downloads and installs Kafka from the official binary releases.
+Defaults to using ``0.8.0-beta1`` as Kafka version.
+
+This recipe will not automatically start/restart Kafka as that is left up to the
+user to decide.
+
+## standalone
+Sets up a standalone ZooKeeper server, using the ZooKeeper version that is
+bundled with Kafka.
+This recipe does not include ``kafka::source`` nor ``kafka::binary`` recipes and
+must be specified separately after either ``kafka::source`` or
+``kafka::binary``.
+
+This should not be used in production (Kafka and ZooKeeper should generally not
+run on the same machine) and is just useful for testing (i.e. in Vagrant or
+other testing environment).
 
 # License and author:
 Author :: Mathias Söderberg
