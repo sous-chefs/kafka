@@ -15,11 +15,13 @@ notable differences:
 * Java cookbook >= 1.5
 
 # Attributes
-The attributes are logically divided into different sections according to the
-configuration of a Kafka broker. Not really sure if this is common for Chef
-cookbooks, but in my opinion it makes things a lot clearer.
+This section describes all the attributes that are currently available for
+configuration of where to install Kafka and Kafka's configuration. (Having two
+consecutive headers without any text between them make me cringe).
 
-## General attributes
+## default
+The following attributes are used for setting up the 'environment' for Kafka.
+
 * kafka.version - The Kafka version install and use.
 * kafka.base\_url - URL for Kafka releases.
 * kafka.checksum - MD5 checksum for release to use.
@@ -32,7 +34,11 @@ cookbooks, but in my opinion it makes things a lot clearer.
   information see below).
 * kafka.jmx\_port - JMX port for Kafka.
 
-## Kafka broker configuration attributes
+## kafka
+The following attributes are used for the Kafka broker configuration and are
+divided into logical sections according to the official Kafka configuration.
+
+### General broker configuration attributes
 * kafka.broker\_id - The id of the broker. This must be set to a unique integer
   for each broker. If not set, it will default to the machine's ip address
   (without the dots).
@@ -46,7 +52,7 @@ cookbooks, but in my opinion it makes things a lot clearer.
   More partitions allow greater parallelism for consumption, but also mean more
   files.
 
-## Socket server attributes
+### Socket server attributes
 * kafka.socket.send\_buffer\_bytes - The send buffer (SO\_SNDBUF) used by the
   socket server.
 * kafka.socket.receive\_buffer\_bytes - The receive buffer (SO\_RCVBUF) used by
@@ -54,7 +60,7 @@ cookbooks, but in my opinion it makes things a lot clearer.
 * kafka.socket.request\_max\_bytes - The maximum size of a request that the
   socket server will accept (protection against OOM).
 
-## Log and flush policy attributes
+### Log and flush policy attributes
 * kafka.log.dirs - The directory under which Kafka will store log files.
 * kafka.log.flush\_interval\_messages - The number of messages to accept before
   forcing a flush of data to disk.
@@ -70,17 +76,27 @@ cookbooks, but in my opinion it makes things a lot clearer.
 * kafka.log.cleanup\_interval\_mins - The interval at which log segments are
   checked to see if they can be deleted according to the retention policies.
 
-## ZooKeeper attributes
+### ZooKeeper attributes
 * kafka.zookeeper.connect - A list of zookeeper nodes to connect to.
 * kafka.zookeeper.timeout - Timeout in milliseconds for connection to ZooKeeper.
 
-## Metric attributes
+### Metric attributes
 * kafka.metrics.polling\_interval - Polling interval for metrics.
 * kafka.metrics.reporters - Metric reporters to be used.
 
-### CSV metric attributes
+#### CSV metric attributes
 * kafka.csv\_metrics.dir - Directory path for saving metrics.
 * kafka.csv\_metrics.reporter\_enabled - Enable/disable CSV metrics reporter.
+
+## zookeeper
+The following attributes are used to configure ZooKeeper when using the
+``kafka::standalone`` recipe, see below for further information.
+
+* zookeeper.data\_dir - Path where to store ZooKeeper data.
+* zookeeper.log\_dir - Where to store ZooKeeper logs.
+* zookeeper.port - Port for ZooKeeper to listen for incoming connections.
+* zookeeper.max\_client\_connections - Maximum number of connections per client.
+* zookeeper.jmx\_port - JMX port for ZooKeeper.
 
 # Usage
 * kafka::default - TODO: usage
