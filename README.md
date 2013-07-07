@@ -131,6 +131,14 @@ This should not be used in production (Kafka and ZooKeeper should generally not
 run on the same machine) and is just useful for testing (i.e. in Vagrant or
 other testing environment).
 
+# Known bugs & limitations
+* ``init.d`` scripts run Kafka and ZooKeeper processes as root.
+* ``init.d`` scripts are hell and needs to be properly fixed.
+* No support for Ubuntu/Debian.
+* Not tested with other RHEL distributions (Fedora/Amazon/etc).
+* No support for per-topic overrides for kafka.log.flush\_interval\_ms.
+* Not sure if all configuration parameters for Kafka are supported at this time.
+
 # License and author:
 Copyright :: 2013 Mathias Söderberg
 
