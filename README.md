@@ -1,5 +1,5 @@
 # Description
-Install Kafka 0.8.0-beta1, and probably any higher version, whenever they are
+Installs Kafka 0.8.0-beta1, and probably any higher version, whenever they are
 released. Given that they don't change URLs and the like.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
