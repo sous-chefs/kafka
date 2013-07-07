@@ -1,38 +1,30 @@
-Description
-===========
-
+# Description
 Install Kafka 0.8.0-beta1, and probably any higher version, whenever they are
 released. Given that they don't change URLs and the like.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases of Kafka 0.8.0-beta1
-* does not depend on runit cookbook
+* supports both source and binary releases of Kafka 0.8.0-beta1.
+* does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
-  a specific role or such, that is left up to you to decide
-* only tested with a CentOS Vagrant box
+  a specific role or such, that is left up to you to decide.
+* only tested with a CentOS Vagrant box.
 
-Requirements
-============
+# Requirements
 * Java cookbook >= 1.5
 
-Attributes
-==========
-
+# Attributes
 ## General attributes
 * kafka.version - The Kafka version install and use
 * kafka.base\_url - URL for Kafka releases
 * kafka.checksum - MD5 checksum for release to use
 * kafka.scala\_version - Scala version for Kafka
-
 * kafka.install\_dir - Location for Kafka to be installed
 * kafka.data\_dir - Location for Kafka logs
 * kafka.log\_dir - Location for Kafka log4j logs
-
 * kafka.user - User to use for directories and to run Kafka
 * kafka.group - Group for user defined in bullet point above
-
 * kafka.log\_level - Log level for Kafka logs (and ZooKeeper, for further
   information see below)
 * kafka.jmx\_port - JMX port for Kafka
@@ -51,7 +43,7 @@ Attributes
   More partitions allow greater parallelism for consumption, but also mean more
   files.
 
-### Socket server attributes
+## Socket server attributes
 * kafka.socket.send\_buffer\_bytes - The send buffer (SO\_SNDBUF) used by the
   socket server.
 * kafka.socket.receive\_buffer\_bytes - The receive buffer (SO\_RCVBUF) used by
@@ -59,7 +51,7 @@ Attributes
 * kafka.socket.request\_max\_bytes - The maximum size of a request that the
   socket server will accept (protection against OOM).
 
-### Log and flush policy attributes
+## Log and flush policy attributes
 * kafka.log.dirs - The directory under which Kafka will store log files.
 * kafka.log.flush\_interval\_messages - The number of messages to accept before
   forcing a flush of data to disk.
@@ -75,32 +67,28 @@ Attributes
 * kafka.log.cleanup\_interval\_mins - The interval at which log segments are
   checked to see if they can be deleted according to the retention policies.
 
-### ZooKeeper attributes
+## ZooKeeper attributes
 * kafka.zookeeper.connect - A list of zookeeper nodes to connect to.
 * kafka.zookeeper.timeout - Timeout in milliseconds for connection to ZooKeeper.
 
-### Metric attributes
+## Metric attributes
 * kafka.metrics.polling\_interval - Polling interval for metrics.
 * kafka.metrics.reporters - Metric reporters to be used.
 
-#### CSV metric attributes
+### CSV metric attributes
 * kafka.csv\_metrics.dir - Directory path for saving metrics.
 * kafka.csv\_metrics.reporter\_enabled - Enable/disable CSV metrics reporter.
 
-Usage
-=====
-
+# Usage
 * kafka::default - TODO: usage
 * kafka::source - TODO: usage
 * kafka::binary - TODO: usage
 * kafka::standalone - TODO: usage
 
-License and author:
-===================
+# License and author:
+Author :: Mathias Söderberg
 
-Author:: Mathias Söderberg
-
-Copyright:: 2013, Burt
+Copyright :: 2013, Burt
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
