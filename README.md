@@ -21,18 +21,18 @@ cookbooks, but in my opinion it makes things a lot clearer and it's easier to
 see which attributes belong where.
 
 ## General attributes
-* kafka.version - The Kafka version install and use
-* kafka.base\_url - URL for Kafka releases
-* kafka.checksum - MD5 checksum for release to use
-* kafka.scala\_version - Scala version for Kafka
-* kafka.install\_dir - Location for Kafka to be installed
-* kafka.data\_dir - Location for Kafka logs
-* kafka.log\_dir - Location for Kafka log4j logs
-* kafka.user - User to use for directories and to run Kafka
-* kafka.group - Group for user defined in bullet point above
+* kafka.version - The Kafka version install and use.
+* kafka.base\_url - URL for Kafka releases.
+* kafka.checksum - MD5 checksum for release to use.
+* kafka.scala\_version - Scala version for Kafka.
+* kafka.install\_dir - Location for Kafka to be installed.
+* kafka.data\_dir - Location for Kafka logs.
+* kafka.log\_dir - Location for Kafka log4j logs.
+* kafka.user - User to use for directories and to run Kafka.
+* kafka.group - Group for user defined in bullet point above.
 * kafka.log\_level - Log level for Kafka logs (and ZooKeeper, for further
-  information see below)
-* kafka.jmx\_port - JMX port for Kafka
+  information see below).
+* kafka.jmx\_port - JMX port for Kafka.
 
 ## Kafka broker configuration attributes
 * kafka.broker\_id - The id of the broker. This must be set to a unique integer
