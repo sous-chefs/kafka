@@ -9,7 +9,6 @@
 
 include_recipe 'java'
 
-java_home = node[:java][:home]
 user      = node[:kafka][:user]
 group     = node[:kafka][:group]
 
