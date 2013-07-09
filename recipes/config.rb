@@ -9,7 +9,7 @@
 
 config_dir = "#{node[:kafka][:install_dir]}/config"
 
-template "#{config_dir}/log4j.properties" do
+template "#{config_dir}/#{node[:kafka][:log4j_config]}" do
   source  "log4j.properties.erb"
   owner user
   group group
@@ -20,7 +20,7 @@ template "#{config_dir}/log4j.properties" do
   })
 end
 
-template "#{config_dir}/server.properties" do
+template "#{config_dir}/#{node[:kafka][:config]}" do
   source  "server.properties.erb"
   owner user
   group group

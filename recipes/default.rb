@@ -98,8 +98,8 @@ template '/etc/init.d/kafka' do
     :daemon_name => 'kafka',
     :main_class => 'kafka.Kafka',
     :jmx_port => node[:kafka][:jmx_port],
-    :log4j_config => 'log4j.properties',
-    :config => 'server'
+    :log4j_config => node[:kafka][:log4j_config],
+    :config => node[:kafka][:config]
   })
 end
 

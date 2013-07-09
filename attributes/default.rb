@@ -11,6 +11,8 @@ default[:kafka][:scala_version] = nil
 default[:kafka][:install_dir] = '/opt/kafka'
 default[:kafka][:data_dir] = '/var/kafka'
 default[:kafka][:log_dir] = '/var/log/kafka'
+default[:kafka][:log4j_config] = 'log4j.properties'
+default[:kafka][:config] = 'server.properties'
 
 default[:kafka][:user] = 'kafka'
 default[:kafka][:group] = 'kafka'
