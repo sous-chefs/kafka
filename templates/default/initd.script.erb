@@ -21,7 +21,7 @@ DAEMON_NAME=<%= @daemon_name %>
 DESC="<%= @daemon_name.capitalize %> daemon"
 
 DAEMON_PATH=<%= node[:kafka][:install_dir] %>
-SERVER_CONFIG=$DAEMON_PATH/config/<%= @config ? @config || "#{@daemon_name}.properties" %>
+SERVER_CONFIG=$DAEMON_PATH/config/<%= @config ? @config : "#{@daemon_name}.properties" %>
 LOG_DIR=/var/log/<%= @daemon_name %>
 LOG_OUT=$LOG_DIR/<%= @daemon_name %>.out
 LOG_ERR=$LOG_DIR/<%= @daemon_name %>.err
