@@ -6,7 +6,7 @@ description      'Installs and configures a Kafka broker'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.0.1'
 
-recipe 'kafka', 'Setups up install environment'
+recipe 'kafka', 'Setups up Kafka environment with directories and configuration files'
 recipe 'kafka::source', 'Downloads, compiles and installs Kafka from source releases'
 recipe 'kafka::binary', 'Downloads, extracts and installs Kafka from binary releases'
 recipe 'kafka::standalone', 'Setups standalone ZooKeeper instance using the ZooKeeper version that is bundled with Kafka'
