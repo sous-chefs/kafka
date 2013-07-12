@@ -48,3 +48,8 @@ template '/etc/init.d/zookeeper' do
     :log4j_config => 'zookeeper.log4j.properties'
   })
 end
+
+service 'zookeeper' do
+  supports :start => true, :stop => true, :restart => true
+  action [:enable]
+end
