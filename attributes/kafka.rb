@@ -2,9 +2,8 @@
 # Cookbook Name:: kafka
 # Attributes:: kafka
 #
-
-default[:kafka][:broker_id] = nil
-default[:kafka][:host_name] = nil
+default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
+default[:kafka][:host_name] = node[:fqdn]
 default[:kafka][:port] = 9092
 default[:kafka][:network_threads] = 2
 default[:kafka][:io_threads] = 2
