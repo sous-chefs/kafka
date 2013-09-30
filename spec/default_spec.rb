@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'chefspec'
+require 'spec_helper'
 
 describe 'kafka::default' do
   let :chef_run do

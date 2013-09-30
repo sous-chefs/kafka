@@ -1,6 +1,4 @@
 language: ruby
-before_script:
-  - bundle exec berks install --path vendor/cookbooks
 script: bundle exec rspec
 rvm:
   - 1.9.3
