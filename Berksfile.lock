@@ -1,5 +1,8 @@
 {
   "sources": {
+    "kafka": {
+      "path": "."
+    },
     "java": {
       "locked_version": "1.13.0"
     },
