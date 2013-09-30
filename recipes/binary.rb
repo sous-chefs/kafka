@@ -16,7 +16,7 @@ local_file_path = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
 directory("#{node[:kafka][:install_dir]}/dist") do
   owner user
   group group
-  mode 00755
+  mode '755'
   action :create
   recursive true
   not_if { File.exists?("#{node[:kafka][:install_dir]}/dist") }
@@ -24,7 +24,7 @@ end
 
 remote_file(local_file_path) do
   source download_file
-  mode 00644
+  mode '644'
   checksum node[:kafka][:checksum]
 end
 

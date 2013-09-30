@@ -9,13 +9,13 @@ template "#{config_dir}/zookeeper.properties" do
   source "zookeeper.properties.erb"
   owner user
   group group
-  mode  00644
+  mode  '644'
 end
 
 directory node[:zookeeper][:log_dir] do
   owner   user
   group   group
-  mode    00755
+  mode    '755'
   recursive true
   action :create
   not_if { File.directory?(node[:zookeeper][:log_dir]) }
@@ -25,7 +25,7 @@ template "#{config_dir}/zookeeper.log4j.properties" do
   source  "log4j.properties.erb"
   owner user
   group group
-  mode  00644
+  mode  '644'
   variables({
     :process => 'zookeeper',
     :log_dir => node[:zookeeper][:log_dir]
@@ -36,7 +36,7 @@ template '/etc/init.d/zookeeper' do
   source 'initd.script.erb'
   owner 'root'
   group 'root'
-  mode 00755
+  mode '755'
   variables({
     :daemon_name => 'zookeeper',
     :main_class => 'org.apache.zookeeper.server.quorum.QuorumPeerMain',

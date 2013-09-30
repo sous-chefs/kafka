@@ -9,7 +9,7 @@ template "#{config_dir}/#{node[:kafka][:log4j_config]}" do
   source  "log4j.properties.erb"
   owner user
   group group
-  mode  00644
+  mode  '644'
   variables({
     :process => 'kafka',
     :log_dir => node[:kafka][:log_dir]
@@ -20,5 +20,5 @@ template "#{config_dir}/#{node[:kafka][:config]}" do
   source  "server.properties.erb"
   owner user
   group group
-  mode  00644
+  mode  '644'
 end
