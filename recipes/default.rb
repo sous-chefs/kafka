@@ -2,10 +2,6 @@
 # Cookbook Name:: kafka
 # Recipe:: default
 #
-# Copyright 2013, Burt
-#
-# All rights reserved - Do Not Redistribute
-#
 
 include_recipe 'java'
 

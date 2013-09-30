@@ -2,10 +2,6 @@
 # Cookbook Name:: kafka
 # Recipe:: standalone
 #
-# Copyright 2013, Burt
-#
-# All rights reserved - Do Not Redistribute
-#
 
 config_dir = "#{node[:kafka][:install_dir]}/config"
 

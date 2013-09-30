@@ -2,10 +2,6 @@
 # Cookbook Name:: kafka
 # Recipe:: binary
 #
-# Copyright 2013, Burt
-#
-# All rights reserved - Do Not Redistribute
-#
 
 include_recipe 'kafka::default'
 
