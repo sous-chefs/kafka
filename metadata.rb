@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 name             'kafka'
 maintainer       'Mathias Söderberg'
 maintainer_email 'mths@sdrbrg.se'
