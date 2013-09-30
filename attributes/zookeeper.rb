@@ -3,7 +3,6 @@
 # Attributes:: zookeeper
 #
 
-# zookeeper
 default[:zookeeper][:data_dir] = '/tmp/zookeeper'
 default[:zookeeper][:log_dir] = '/var/log/zookeeper'
 default[:zookeeper][:port] = 2181
