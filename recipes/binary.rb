@@ -14,8 +14,8 @@ download_file = "#{node[:kafka][:base_url]}/#{kafka_tar_gz}"
 local_file_path = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
 
 directory("#{node[:kafka][:install_dir]}/dist") do
-  owner user
-  group group
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
   mode '755'
   action :create
   recursive true

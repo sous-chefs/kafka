@@ -7,14 +7,14 @@ config_dir = "#{node[:kafka][:install_dir]}/config"
 
 template "#{config_dir}/zookeeper.properties" do
   source "zookeeper.properties.erb"
-  owner user
-  group group
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
   mode  '644'
 end
 
 directory node[:zookeeper][:log_dir] do
-  owner   user
-  group   group
+  owner   node[:kafka][:user]
+  group   node[:kafka][:group]
   mode    '755'
   recursive true
   action :create
@@ -23,8 +23,8 @@ end
 
 template "#{config_dir}/zookeeper.log4j.properties" do
   source  "log4j.properties.erb"
-  owner user
-  group group
+  owner   node[:kafka][:user]
+  group   node[:kafka][:group]
   mode  '644'
   variables({
     :process => 'zookeeper',
