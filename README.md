@@ -163,7 +163,7 @@ Contributing
 ------------
 
 1. Fork the repository on Github
-2. Create a named feature branch (like `add\_component\_x`)
+2. Create a named feature branch (like `add_component_x`)
 3. Write your change
 4. Check that your change works, for example with Vagrant
 5. Submit a Pull Request using Github
