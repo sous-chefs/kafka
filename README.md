@@ -1,4 +1,7 @@
 # Description
+
+[![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
+
 Installs Kafka ``0.8.0-beta1``, and probably any higher version, whenever they are
 released. Given that they don't change URLs and the like.
 
