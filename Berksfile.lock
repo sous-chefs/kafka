@@ -4,7 +4,7 @@
       "path": "."
     },
     "java": {
-      "locked_version": "1.13.0"
+      "locked_version": "1.11.6"
     },
     "windows": {
       "locked_version": "1.10.0"
