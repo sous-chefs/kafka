@@ -3,29 +3,28 @@
 # Recipe:: standalone
 #
 
-config_dir = "#{node[:kafka][:install_dir]}/config"
+config_dir = File.join(node[:kafka][:install_dir], 'config')
 
-template "#{config_dir}/zookeeper.properties" do
+template("#{config_dir}/zookeeper.properties") do
   source "zookeeper.properties.erb"
-  owner node[:kafka][:user]
-  group node[:kafka][:group]
-  mode  '644'
+  owner  node[:kafka][:user]
+  group  node[:kafka][:group]
+  mode   '644'
 end
 
-directory node[:zookeeper][:log_dir] do
+directory(node[:zookeeper][:log_dir]) do
   owner   node[:kafka][:user]
   group   node[:kafka][:group]
   mode    '755'
   recursive true
   action :create
-  not_if { File.directory?(node[:zookeeper][:log_dir]) }
 end
 
-template "#{config_dir}/zookeeper.log4j.properties" do
+template("#{config_dir}/zookeeper.log4j.properties") do
   source  "log4j.properties.erb"
   owner   node[:kafka][:user]
   group   node[:kafka][:group]
-  mode  '644'
+  mode    '644'
   variables({
     :process => 'zookeeper',
     :log_dir => node[:zookeeper][:log_dir]
