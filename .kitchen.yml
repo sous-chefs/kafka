@@ -16,3 +16,6 @@ suites:
 - name: binary
   run_list: ["recipe[kafka::binary]"]
   attributes: {}
+- name: source
+  run_list: ["recipe[kafka::source]"]
+  attributes: {}
