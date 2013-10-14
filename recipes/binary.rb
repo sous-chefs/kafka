@@ -29,17 +29,24 @@ remote_file(local_file_path) do
   source   download_file
   mode     '644'
   checksum node[:kafka][:checksum]
+  notifies :run, 'bash[extract-kafka]', :immediately
 end
 
 bash 'extract-kafka' do
   cwd  dist_directory
-  code "tar zxvf #{File.join(Chef::Config[:file_cache_path], kafka_tar_gz)}"
+  code "tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
+  action :nothing
+  notifies :run, 'bash[install-kafka]', :immediately
 end
 
 bash 'install-kafka' do
-  cwd node[:kafka][:install_dir]
+  user  node[:kafka][:user]
+  group node[:kafka][:group]
+  cwd   node[:kafka][:install_dir]
   code <<-EOH
     cp #{kafka_jar_path} .
     cp -r #{kafka_libs_path} .
   EOH
+
+  action :nothing
 end

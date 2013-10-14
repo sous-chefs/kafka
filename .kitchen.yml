@@ -13,3 +13,6 @@ suites:
 - name: default
   run_list: ["recipe[kafka::default]"]
   attributes: {}
+- name: binary
+  run_list: ["recipe[kafka::binary]"]
+  attributes: {}
