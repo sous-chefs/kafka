@@ -5,76 +5,36 @@
 
 include_recipe 'java'
 
-user      = node[:kafka][:user]
-group     = node[:kafka][:group]
-
+kafka_user   = node[:kafka][:user]
+kafka_group  = node[:kafka][:group]
+install_dir  = node[:kafka][:install_dir]
 broker_id = node[:kafka][:broker_id]
 host_name = node[:kafka][:host_name]
 
-group(group) {}
+group kafka_group
 
-user(user) do
-  comment 'User for Kafka'
-  gid group
-  home "/home/#{user}"
+user kafka_user  do
+  gid   kafka_group
+  home  "/home/#{kafka_user}"
   shell '/bin/false'
-  supports(:manage_home => false)
+  supports(manage_home: false)
 end
 
-install_dir = node[:kafka][:install_dir]
-
-directory install_dir do
-  owner user
-  group group
-  mode '755'
-  recursive true
-  action :create
-  not_if { File.directory?("#{install_dir}") }
-end
-
-directory "#{install_dir}/bin" do
-  owner user
-  group group
-  mode '755'
-  recursive true
-  action :create
-  not_if { File.directory?("#{install_dir}/bin") }
-end
-
-directory "#{install_dir}/config" do
-  owner user
-  group group
-  mode '755'
-  recursive true
-  action :create
-  not_if { File.directory?("#{install_dir}/config") }
-end
-
-directory("#{node[:kafka][:install_dir]}/libs") do
-  owner user
-  group group
-  mode '755'
-  action :create
-  recursive true
-  not_if { File.exists?("#{node[:kafka][:install_dir]}/libs") }
-end
-
-directory node[:kafka][:log_dir] do
-  owner   user
-  group   group
-  mode    '755'
-  recursive true
-  action :create
-  not_if { File.directory?(node[:kafka][:log_dir]) }
-end
-
-directory node[:kafka][:data_dir] do
-  owner   user
-  group   group
-  mode    '755'
-  recursive true
-  action :create
-  not_if { File.directory?(node[:kafka][:data_dir]) }
+[
+  install_dir,
+  "#{install_dir}/bin",
+  "#{install_dir}/config",
+  "#{install_dir}/libs",
+  node[:kafka][:log_dir],
+  node[:kafka][:data_dir]
+].each do |dir|
+  directory dir do
+    owner     kafka_user
+    group     kafka_group
+    mode      '755'
+    recursive true
+    not_if { File.directory?(dir) }
+  end
 end
 
 template '/etc/init.d/kafka' do
