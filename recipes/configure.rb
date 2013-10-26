@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Recipe:: config
+# Recipe:: configure
 #
 
 config_dir = "#{node[:kafka][:install_dir]}/config"

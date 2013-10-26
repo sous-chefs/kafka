@@ -106,8 +106,8 @@ describe 'kafka::default' do
     expect(file.mode).to eq('755')
   end
 
-  it 'includes kafka::config recipe' do
-    expect(chef_run).to include_recipe('kafka::config')
+  it 'includes kafka::configure recipe' do
+    expect(chef_run).to include_recipe('kafka::configure')
   end
 
   it 'creates a kafka service' do

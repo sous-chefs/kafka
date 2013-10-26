@@ -51,7 +51,7 @@ template '/etc/init.d/kafka' do
   })
 end
 
-include_recipe 'kafka::config'
+include_recipe 'kafka::configure'
 
 service 'kafka' do
   supports :start => true, :stop => true, :restart => true
