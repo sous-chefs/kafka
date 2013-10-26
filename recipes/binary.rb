@@ -11,11 +11,11 @@ node.default[:kafka][:checksum]      ||= '750046ab729d2dbc1d5756794ebf8fcb640879
 kafka_base      = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_tar_gz    = "#{kafka_base}.tgz"
 download_file   = "#{node[:kafka][:base_url]}/#{kafka_tar_gz}"
-local_file_path = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
-dist_directory  = File.join(node[:kafka][:install_dir], 'dist')
+local_file_path = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
+dist_directory  = "#{node[:kafka][:install_dir]}/dist"
 kafka_jar       = "#{kafka_base}.jar"
-kafka_jar_path  = File.join(node[:kafka][:install_dir], 'dist', kafka_base, kafka_jar)
-kafka_libs_path = File.join(node[:kafka][:install_dir], 'dist', kafka_base, 'libs')
+kafka_jar_path  = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/#{kafka_jar}"
+kafka_libs_path = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/libs"
 
 directory(dist_directory) do
   owner     node[:kafka][:user]
@@ -34,7 +34,7 @@ end
 
 execute 'extract-kafka' do
   cwd  dist_directory
-  command "tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
+  command "tar zxvf #{local_file_path}"
   action :nothing
   notifies :run, 'execute[install-kafka]', :immediately
 end

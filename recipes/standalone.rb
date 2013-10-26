@@ -5,7 +5,7 @@
 
 include_recipe 'kafka::binary'
 
-config_dir = File.join(node[:kafka][:install_dir], 'config')
+config_dir = "#{node[:kafka][:install_dir]}/config"
 
 template("#{config_dir}/zookeeper.properties") do
   source "zookeeper.properties.erb"

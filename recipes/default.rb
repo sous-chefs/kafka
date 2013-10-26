@@ -8,8 +8,8 @@ include_recipe 'java'
 kafka_user   = node[:kafka][:user]
 kafka_group  = node[:kafka][:group]
 install_dir  = node[:kafka][:install_dir]
-broker_id = node[:kafka][:broker_id]
-host_name = node[:kafka][:host_name]
+broker_id    = node[:kafka][:broker_id]
+host_name    = node[:kafka][:host_name]
 
 group kafka_group
 
