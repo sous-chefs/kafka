@@ -17,7 +17,7 @@ kafka_jar       = "#{kafka_base}.jar"
 kafka_jar_path  = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/#{kafka_jar}"
 kafka_libs_path = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/libs"
 
-directory(dist_directory) do
+directory dist_directory do
   owner     node[:kafka][:user]
   group     node[:kafka][:group]
   mode      '755'
@@ -25,7 +25,7 @@ directory(dist_directory) do
   recursive true
 end
 
-remote_file(local_file_path) do
+remote_file local_file_path do
   source   download_file
   mode     '644'
   checksum node[:kafka][:checksum]
@@ -33,9 +33,9 @@ remote_file(local_file_path) do
 end
 
 execute 'extract-kafka' do
-  cwd  dist_directory
-  command "tar zxvf #{local_file_path}"
-  action :nothing
+  cwd      dist_directory
+  command  "tar zxvf #{local_file_path}"
+  action   :nothing
   notifies :run, 'execute[install-kafka]', :immediately
 end
 

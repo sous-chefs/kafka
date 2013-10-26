@@ -19,7 +19,7 @@ kafka_release_path = "#{build_directory}/#{kafka_src}/target/RELEASE"
 kafka_jar_path     = "#{kafka_release_path}/#{kafka_path}/#{kafka_jar}"
 kafka_libs_path    = "#{kafka_release_path}/#{kafka_path}/libs"
 
-directory(build_directory) do
+directory build_directory do
   owner     node[:kafka][:user]
   group     node[:kafka][:group]
   mode      '755'
@@ -27,7 +27,7 @@ directory(build_directory) do
   recursive true
 end
 
-remote_file(local_file_path) do
+remote_file local_file_path do
   source   download_file
   mode     '644'
   checksum node[:kafka][:checksum]

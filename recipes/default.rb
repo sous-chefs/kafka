@@ -42,13 +42,13 @@ template '/etc/init.d/kafka' do
   owner 'root'
   group 'root'
   mode '755'
-  variables({
+  variables(
     :daemon_name => 'kafka',
     :main_class => 'kafka.Kafka',
     :jmx_port => node[:kafka][:jmx_port],
     :log4j_config => node[:kafka][:log4j_config],
     :config => node[:kafka][:config]
-  })
+  )
 end
 
 include_recipe 'kafka::configure'

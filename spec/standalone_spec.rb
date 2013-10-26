@@ -8,7 +8,7 @@ describe 'kafka::standalone' do
   end
 
   it 'includes kafka::binary' do
-    expect(chef_run).to include_recipe 'kafka::binary'
+    expect(chef_run).to include_recipe('kafka::binary')
   end
 
   it 'creates a configuration file for Zookeeper' do
