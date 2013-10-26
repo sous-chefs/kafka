@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'kafka::source' do
+describe 'kafka::binary' do
   describe file('/opt/kafka/build') do
     it { should be_a_directory }
     it { should be_mode 755 }
