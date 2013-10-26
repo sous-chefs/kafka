@@ -33,6 +33,8 @@ remote_file(local_file_path) do
 end
 
 bash 'extract-kafka' do
+  user node[:kafka][:user]
+  group node[:kafka][:group]
   cwd  dist_directory
   code "tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
   action :nothing
