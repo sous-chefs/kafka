@@ -147,7 +147,7 @@ other testing environment).
 * No support for per-topic overrides for ``node[:kafka][:log][:flush_interval_ms]``.
 * Not sure if all configuration parameters for Kafka are supported at this time.
 
-# License and author:
+# License and author
 Copyright :: 2013 Mathias Söderberg
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -162,8 +162,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Contributing
-------------
+# Contributing
 
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
