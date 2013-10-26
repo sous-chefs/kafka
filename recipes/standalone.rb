@@ -27,8 +27,8 @@ template "#{config_dir}/zookeeper.log4j.properties" do
   group   node[:kafka][:group]
   mode    '644'
   variables(
-    :process => 'zookeeper',
-    :log_dir => node[:zookeeper][:log_dir]
+    process: 'zookeeper',
+    log_dir: node[:zookeeper][:log_dir]
   )
 end
 
@@ -38,14 +38,14 @@ template '/etc/init.d/zookeeper' do
   group 'root'
   mode '755'
   variables(
-    :daemon_name => 'zookeeper',
-    :main_class => 'org.apache.zookeeper.server.quorum.QuorumPeerMain',
-    :jmx_port => node[:zookeeper][:jmx_port],
-    :log4j_config => 'zookeeper.log4j.properties'
+    daemon_name:  'zookeeper',
+    main_class:   'org.apache.zookeeper.server.quorum.QuorumPeerMain',
+    jmx_port:     node[:zookeeper][:jmx_port],
+    log4j_config: 'zookeeper.log4j.properties'
   )
 end
 
 service 'zookeeper' do
-  supports :start => true, :stop => true, :restart => true
+  supports start: true, stop: true, restart: true
   action [:enable]
 end
