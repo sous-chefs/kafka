@@ -19,3 +19,6 @@ suites:
 - name: source
   run_list: ['recipe[kafka::source]']
   attributes: {}
+- name: standalone
+  run_list: ['recipe[kafka::standalone]']
+  attributes: {}
