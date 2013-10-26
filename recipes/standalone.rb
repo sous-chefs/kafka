@@ -3,6 +3,8 @@
 # Recipe:: standalone
 #
 
+include_recipe 'kafka::binary'
+
 config_dir = File.join(node[:kafka][:install_dir], 'config')
 
 template("#{config_dir}/zookeeper.properties") do
@@ -17,7 +19,6 @@ directory(node[:zookeeper][:log_dir]) do
   group   node[:kafka][:group]
   mode    '755'
   recursive true
-  action :create
 end
 
 template("#{config_dir}/zookeeper.log4j.properties") do
