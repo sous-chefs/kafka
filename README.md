@@ -108,9 +108,9 @@ The following attributes are used to configure ZooKeeper when using the
 # Recipes
 This section describes the different recipes that exists, and how to use them.
 
-## default
-Sets up ``broker_id`` and ``host_name``, and creates necessary directories for
-installing Kafka, as well as a quite crude ``init.d`` script.
+## configure
+Creates necessary directories for installing Kafka, as well as configuration
+files and a quite crude ``init.d`` script.
 This recipe is included by both ``kafka::source`` and ``kafka::binary`` recipes.
 
 ## source
