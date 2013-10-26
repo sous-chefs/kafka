@@ -4,7 +4,11 @@ require 'spec_helper'
 
 describe 'kafka::source' do
   let :chef_run do
-    ChefSpec::ChefRunner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+  end
+
+  let :remote_file do
+    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-beta1-src.tgz")
   end
 
   it 'includes kafka::default recipe' do
@@ -15,7 +19,8 @@ describe 'kafka::source' do
     expect(chef_run).to create_directory('/opt/kafka/build')
 
     directory = chef_run.directory('/opt/kafka/build')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -28,14 +33,20 @@ describe 'kafka::source' do
   end
 
   it 'compiles Kafka source' do
-    expect(chef_run).to execute_bash_script('compile-kafka').with(
-      cwd: '/opt/kafka/build'
-    )
+    expect(remote_file).to notify('execute[compile-kafka]').to(:run).immediately
+
+    compile_kafka = chef_run.execute('compile-kafka')
+    expect(compile_kafka.cwd).to eq('/opt/kafka/build')
+    expect(compile_kafka.user).to be_nil
+    expect(compile_kafka.group).to be_nil
   end
 
   it 'installs compiled Kafka source' do
-    expect(chef_run).to execute_bash_script('install-kafka').with(
-      cwd: '/opt/kafka'
-    )
+    expect(chef_run.execute('compile-kafka')).to notify('execute[install-kafka]').to(:run).immediately
+
+    install_kafka = chef_run.execute('install-kafka')
+    expect(install_kafka.cwd).to eq('/opt/kafka')
+    expect(install_kafka.user).to eq('kafka')
+    expect(install_kafka.group).to eq('kafka')
   end
 end

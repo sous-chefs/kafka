@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::default' do
   let :chef_run do
-    ChefSpec::ChefRunner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
   end
 
   it 'includes java::default recipe' do
@@ -29,7 +29,7 @@ describe 'kafka::default' do
 
     context 'when overridden' do
       let :chef_run do
-        ChefSpec::ChefRunner.new(platform: 'centos', version: '6.4') do |node|
+        ChefSpec::Runner.new(platform: 'centos', version: '6.4') do |node|
           node.set[:kafka][:user] = 'spec'
           node.set[:kafka][:group] = 'spec'
         end.converge(described_recipe)
@@ -54,7 +54,8 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/opt/kafka')
 
     directory = chef_run.directory('/opt/kafka')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -62,7 +63,8 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/opt/kafka/bin')
 
     directory = chef_run.directory('/opt/kafka/bin')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -70,7 +72,8 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/opt/kafka/config')
 
     directory = chef_run.directory('/opt/kafka/config')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -78,7 +81,8 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/opt/kafka/libs')
 
     directory = chef_run.directory('/opt/kafka/libs')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -86,7 +90,8 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/var/log/kafka')
 
     directory = chef_run.directory('/var/log/kafka')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -94,15 +99,17 @@ describe 'kafka::default' do
     expect(chef_run).to create_directory('/var/kafka')
 
     directory = chef_run.directory('/var/kafka')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
   it 'creates an init.d script' do
-    expect(chef_run).to create_file('/etc/init.d/kafka')
+    expect(chef_run).to create_template('/etc/init.d/kafka')
 
     file = chef_run.template('/etc/init.d/kafka')
-    expect(file).to be_owned_by('root', 'root')
+    expect(file.owner).to eq('root')
+    expect(file.group).to eq('root')
     expect(file.mode).to eq('755')
   end
 

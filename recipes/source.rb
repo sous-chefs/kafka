@@ -31,13 +31,13 @@ remote_file(local_file_path) do
   source   download_file
   mode     '644'
   checksum node[:kafka][:checksum]
-  notifies :run, 'bash[compile-kafka]', :immediately
+  notifies :run, 'execute[compile-kafka]', :immediately
 end
 
-bash 'compile-kafka' do
+execute 'compile-kafka' do
   cwd   build_directory
   # EOH = End-Of-Hell
-  code <<-EOH
+  command <<-EOH
     tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}
     cd #{kafka_src}
     ./sbt update
@@ -45,14 +45,14 @@ bash 'compile-kafka' do
   EOH
 
   action :nothing
-  notifies :run, 'bash[install-kafka]', :immediately
+  notifies :run, 'execute[install-kafka]', :immediately
 end
 
-bash 'install-kafka' do
+execute 'install-kafka' do
   user  node[:kafka][:user]
   group node[:kafka][:group]
   cwd   node[:kafka][:install_dir]
-  code <<-EOH
+  command <<-EOH
     cp #{kafka_jar_path} .
     cp -r #{kafka_libs_path} .
   EOH

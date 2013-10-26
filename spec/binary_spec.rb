@@ -4,18 +4,23 @@ require 'spec_helper'
 
 describe 'kafka::binary' do
   let :chef_run do
-    ChefSpec::ChefRunner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+  end
+
+  let :remote_file do
+    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0-beta1.tgz")
   end
 
   it 'includes kafka::default recipe' do
     expect(chef_run).to include_recipe('kafka::default')
   end
 
-  it 'creates dist directory' do
+  it 'creates \'dist\' directory' do
     expect(chef_run).to create_directory('/opt/kafka/dist')
 
     directory = chef_run.directory('/opt/kafka/dist')
-    expect(directory).to be_owned_by('kafka', 'kafka')
+    expect(directory.owner).to eq('kafka')
+    expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
 
@@ -28,14 +33,20 @@ describe 'kafka::binary' do
   end
 
   it 'extracts downloaded Kafka archive' do
-    expect(chef_run).to execute_bash_script('extract-kafka').with(
-      cwd: '/opt/kafka/dist'
-    )
+    expect(remote_file).to notify('execute[extract-kafka]').to(:run).immediately
+
+    extract_kafka = chef_run.execute('extract-kafka')
+    expect(extract_kafka.cwd).to eq('/opt/kafka/dist')
+    expect(extract_kafka.user).to be_nil
+    expect(extract_kafka.group).to be_nil
   end
 
   it 'installs extracted Kafka archive' do
-    expect(chef_run).to execute_bash_script('install-kafka').with(
-      cwd: '/opt/kafka'
-    )
+    expect(chef_run.execute('extract-kafka')).to notify('execute[install-kafka]').to(:run).immediately
+
+    install_kafka = chef_run.execute('install-kafka')
+    expect(install_kafka.cwd).to eq('/opt/kafka')
+    expect(install_kafka.user).to eq('kafka')
+    expect(install_kafka.group).to eq('kafka')
   end
 end
