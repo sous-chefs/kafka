@@ -50,7 +50,7 @@ end
 
 bash 'install-kafka' do
   user  node[:kafka][:user]
-  group node[:kafka][:user]
+  group node[:kafka][:group]
   cwd   node[:kafka][:install_dir]
   code <<-EOH
     cp #{kafka_jar_path} .
