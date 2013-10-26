@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'kafka::default' do
+describe 'kafka::configure' do
   describe group('kafka') do
     it { should exist }
   end

@@ -10,12 +10,12 @@ platforms:
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
 
 suites:
-- name: default
-  run_list: ["recipe[kafka::default]"]
+- name: configure
+  run_list: ['recipe[kafka::configure]']
   attributes: {}
 - name: binary
-  run_list: ["recipe[kafka::binary]"]
+  run_list: ['recipe[kafka::binary]']
   attributes: {}
 - name: source
-  run_list: ["recipe[kafka::source]"]
+  run_list: ['recipe[kafka::source]']
   attributes: {}
