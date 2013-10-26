@@ -12,7 +12,7 @@ notable differences:
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* only tested with a CentOS Vagrant box.
+* only tested on CentOS.
 * intended to be used by wrapper cookbooks.
 
 # Requirements
@@ -20,20 +20,19 @@ notable differences:
 
 # Attributes
 This section describes all the attributes that are currently available for
-configuration of where to install Kafka and Kafka's configuration. (Having two
-consecutive headers without any text between them make me cringe).
+configuration of where to install Kafka and Kafka's configuration.
 
 ## default
-The following attributes are used for setting up the 'environment' for Kafka.
+The following attributes are used for setting up the environment for Kafka.
 
-* ``node[:kafka][:version]`` - The Kafka version install and use.
-* ``node[:kafka][:base_url]`` - URL for Kafka releases.
-* ``node[:kafka][:checksum]`` - MD5 checksum for release to use.
+* ``node[:kafka][:version]`` - The Kafka version to install and use.
+* ``node[:kafka][:base_url]`` - Base URL for Kafka releases.
+* ``node[:kafka][:checksum]`` - SHA-256 checksum for release to use.
 * ``node[:kafka][:scala_version]`` - Scala version for Kafka.
 * ``node[:kafka][:install_dir]`` - Location for Kafka to be installed.
 * ``node[:kafka][:log_dir]`` - Location for Kafka log4j logs.
 * ``node[:kafka][:user]`` - User to use for directories and to run Kafka.
-* ``node[:kafka][:group]`` - Group for user defined in bullet point above.
+* ``node[:kafka][:group]`` - Group for user defined above.
 * ``node[:kafka][:log_level]`` - Log level for Kafka logs (and ZooKeeper, for further
   information see below).
 * ``node[:kafka][:log4j_config]`` - Name of log4j configuration file (should
@@ -98,7 +97,7 @@ divided into logical sections according to the official Kafka configuration.
 
 ## zookeeper
 The following attributes are used to configure ZooKeeper when using the
-``kafka::standalone`` recipe, see below for further information.
+``kafka::standalone`` recipe, see below for further explanation.
 
 * ``node[:zookeeper][:data_dir]`` - Path where to store ZooKeeper data.
 * ``node[:zookeeper][:log_dir]`` - Where to store ZooKeeper logs.
@@ -165,7 +164,7 @@ limitations under the License.
 # Contributing
 
 1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
+2. Create a named feature branch (like `add-component-x`)
 3. Write your change
 4. Check that your change works, for example with Vagrant
 5. Submit a Pull Request using Github
