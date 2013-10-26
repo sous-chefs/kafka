@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'kafka::default' do
+describe 'kafka::configure' do
   let :chef_run do
     ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
   end
@@ -111,10 +111,6 @@ describe 'kafka::default' do
     expect(file.owner).to eq('root')
     expect(file.group).to eq('root')
     expect(file.mode).to eq('755')
-  end
-
-  it 'includes kafka::configure recipe' do
-    expect(chef_run).to include_recipe('kafka::configure')
   end
 
   it 'creates a kafka service' do

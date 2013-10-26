@@ -3,7 +3,7 @@
 # Recipe:: source
 #
 
-include_recipe 'kafka::default'
+include_recipe 'kafka::configure'
 
 node.default[:kafka][:scala_version] ||= '2.9.2'
 node.default[:kafka][:checksum]      ||= 'e069a1d5e47d18944376b6ca30b625dc013045e7e1f948054ef3789a4b5f54b3'

@@ -11,8 +11,8 @@ describe 'kafka::binary' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0-beta1.tgz")
   end
 
-  it 'includes kafka::default recipe' do
-    expect(chef_run).to include_recipe('kafka::default')
+  it 'includes kafka::configure recipe' do
+    expect(chef_run).to include_recipe('kafka::configure')
   end
 
   it 'creates \'dist\' directory' do

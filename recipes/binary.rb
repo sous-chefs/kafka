@@ -3,7 +3,7 @@
 # Recipe:: binary
 #
 
-include_recipe 'kafka::default'
+include_recipe 'kafka::configure'
 
 node.default[:kafka][:scala_version] ||= '2.8.0'
 node.default[:kafka][:checksum]      ||= '750046ab729d2dbc1d5756794ebf8fcb640879b23a64749164c43063286316b8'
