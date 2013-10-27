@@ -31,7 +31,7 @@ The following attributes are used for setting up the environment for Kafka.
 * ``node[:kafka][:scala_version]`` - Scala version for Kafka.
 * ``node[:kafka][:install_dir]`` - Location for Kafka to be installed.
 * ``node[:kafka][:log_dir]`` - Location for Kafka log4j logs.
-* ``node[:kafka][:user]`` - User to use for directories and to run Kafka.
+* ``node[:kafka][:user]`` - User to use for directories and configuration files.
 * ``node[:kafka][:group]`` - Group for user defined above.
 * ``node[:kafka][:log_level]`` - Log level for Kafka logs (and ZooKeeper, for further
   information see below).
@@ -139,8 +139,6 @@ run on the same machine) and is just useful for testing (i.e. in Vagrant or
 other testing environment).
 
 # Known bugs & limitations
-* ``init.d`` scripts run Kafka and ZooKeeper processes as root.
-* ``init.d`` scripts are hell and needs to be properly fixed.
 * No support for Ubuntu/Debian.
 * Not tested with other RHEL distributions (Fedora/Amazon/etc).
 * No support for per-topic overrides for ``node[:kafka][:log][:flush_interval_ms]``.
