@@ -1,6 +1,12 @@
-#!/bin/sh
-# <%= @daemon_name.capitalize %>
+#!/bin/bash
+#
+# Init file for <%= @daemon_name.capitalize %>
+#
 # chkconfig: 345 20 80
+# description: <%= @daemon_name %> daemon
+#
+# processname: <%= @daemon_name %>
+# pidfile: /var/run/<%= @daemon_name %>.pid
 
 # Source function library
 . /etc/rc.d/init.d/functions
