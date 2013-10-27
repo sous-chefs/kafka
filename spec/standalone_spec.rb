@@ -49,6 +49,12 @@ describe 'kafka::standalone' do
   it 'creates a \'zookeeper\' service' do
     service = chef_run.service('zookeeper')
 
-    expect(service.action).to eq([:enable])
+    expect(service.action).to eq([:enable, :start])
+  end
+
+  it 'starts kafka' do
+    service = chef_run.service('kafka')
+
+    expect(service.action).to eq([:enable, :start])
   end
 end

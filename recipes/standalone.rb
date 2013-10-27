@@ -50,6 +50,6 @@ service 'zookeeper' do
   action [:enable, :start]
 end
 
-service 'kafka' do
-  action [:start]
-end
+# Work around: https://tickets.opscode.com/browse/CHEF-3694
+kafka_service = resources(service: 'kafka')
+kafka_service.action << :start
