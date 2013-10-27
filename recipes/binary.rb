@@ -16,37 +16,40 @@ dist_directory  = "#{node[:kafka][:install_dir]}/dist"
 kafka_jar       = "#{kafka_base}.jar"
 kafka_jar_path  = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/#{kafka_jar}"
 kafka_libs_path = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}/libs"
+installed_path  = "#{node[:kafka][:install_dir]}/#{kafka_jar}"
 
-directory dist_directory do
-  owner     node[:kafka][:user]
-  group     node[:kafka][:group]
-  mode      '755'
-  action    :create
-  recursive true
-end
+unless (already_installed = (File.directory?(dist_directory) && File.exists?(installed_path)))
+  directory dist_directory do
+    owner     node[:kafka][:user]
+    group     node[:kafka][:group]
+    mode      '755'
+    action    :create
+    recursive true
+  end
 
-remote_file local_file_path do
-  source   download_file
-  mode     '644'
-  checksum node[:kafka][:checksum]
-  notifies :run, 'execute[extract-kafka]', :immediately
-end
+  remote_file local_file_path do
+    source   download_file
+    mode     '644'
+    checksum node[:kafka][:checksum]
+    notifies :run, 'execute[extract-kafka]', :immediately
+  end
 
-execute 'extract-kafka' do
-  cwd      dist_directory
-  command  "tar zxvf #{local_file_path}"
-  action   :nothing
-  notifies :run, 'execute[install-kafka]', :immediately
-end
+  execute 'extract-kafka' do
+    cwd      dist_directory
+    command  "tar zxvf #{local_file_path}"
+    action   :nothing
+    notifies :run, 'execute[install-kafka]', :immediately
+  end
 
-execute 'install-kafka' do
-  user  node[:kafka][:user]
-  group node[:kafka][:group]
-  cwd   node[:kafka][:install_dir]
-  command <<-EOH
-    cp #{kafka_jar_path} .
-    cp -r #{kafka_libs_path} .
-  EOH
+  execute 'install-kafka' do
+    user  node[:kafka][:user]
+    group node[:kafka][:group]
+    cwd   node[:kafka][:install_dir]
+    command <<-EOH
+      cp -r #{kafka_libs_path} .
+      cp #{kafka_jar_path} .
+    EOH
 
-  action :nothing
+    action :nothing
+  end
 end

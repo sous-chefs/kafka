@@ -18,44 +18,46 @@ kafka_jar          = "#{kafka_path}.jar"
 kafka_release_path = "#{build_directory}/#{kafka_src}/target/RELEASE"
 kafka_jar_path     = "#{kafka_release_path}/#{kafka_path}/#{kafka_jar}"
 kafka_libs_path    = "#{kafka_release_path}/#{kafka_path}/libs"
+installed_path     = "#{node[:kafka][:install_dir]}/#{kafka_jar}"
 
-directory build_directory do
-  owner     node[:kafka][:user]
-  group     node[:kafka][:group]
-  mode      '755'
-  action    :create
-  recursive true
-end
+unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
+  directory build_directory do
+    owner     node[:kafka][:user]
+    group     node[:kafka][:group]
+    mode      '755'
+    action    :create
+    recursive true
+  end
 
-remote_file local_file_path do
-  source   download_file
-  mode     '644'
-  checksum node[:kafka][:checksum]
-  notifies :run, 'execute[compile-kafka]', :immediately
-end
+  remote_file local_file_path do
+    source   download_file
+    mode     '644'
+    checksum node[:kafka][:checksum]
+    notifies :run, 'execute[compile-kafka]', :immediately
+  end
 
-execute 'compile-kafka' do
-  cwd   build_directory
-  # EOH = End-Of-Hell
-  command <<-EOH
-    tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}
-    cd #{kafka_src}
-    ./sbt update
-    ./sbt "++#{node[:kafka][:scala_version]} release-zip"
-  EOH
+  execute 'compile-kafka' do
+    cwd   build_directory
+    command <<-EOH
+      tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}
+      cd #{kafka_src}
+      ./sbt update
+      ./sbt "++#{node[:kafka][:scala_version]} release-zip"
+    EOH
 
-  action :nothing
-  notifies :run, 'execute[install-kafka]', :immediately
-end
+    action :nothing
+    notifies :run, 'execute[install-kafka]', :immediately
+  end
 
-execute 'install-kafka' do
-  user  node[:kafka][:user]
-  group node[:kafka][:group]
-  cwd   node[:kafka][:install_dir]
-  command <<-EOH
-    cp #{kafka_jar_path} .
-    cp -r #{kafka_libs_path} .
-  EOH
+  execute 'install-kafka' do
+    user  node[:kafka][:user]
+    group node[:kafka][:group]
+    cwd   node[:kafka][:install_dir]
+    command <<-EOH
+      cp -r #{kafka_libs_path} .
+      cp #{kafka_jar_path} .
+    EOH
 
-  action :nothing
+    action :nothing
+  end
 end
