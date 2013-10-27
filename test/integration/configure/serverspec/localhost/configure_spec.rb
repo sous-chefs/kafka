@@ -78,6 +78,7 @@ describe 'kafka::configure' do
   end
 
   describe service('kafka') do
+    let(:path) { '/sbin:/usr/sbin' }
     it { should be_enabled }
   end
 end

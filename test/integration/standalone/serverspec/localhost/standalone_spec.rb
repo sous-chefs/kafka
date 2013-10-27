@@ -32,11 +32,13 @@ describe 'kafka::standalone' do
   end
 
   describe service('zookeeper') do
+    let(:path) { '/sbin:/usr/sbin' }
     it { should be_enabled }
     it { should be_running }
   end
 
   describe service('kafka') do
+    let(:path) { '/sbin:/usr/sbin' }
     it { should be_enabled }
     it { should be_running }
   end
