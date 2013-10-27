@@ -1,3 +1,4 @@
 vendor
 .kitchen/
 .kitchen.local.yml
+.vagrant
