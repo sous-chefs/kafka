@@ -12,7 +12,7 @@ notable differences:
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* only tested on CentOS.
+* only tested on CentOS and Fedora Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
 # Requirements
@@ -141,7 +141,7 @@ other testing environment).
 
 # Known bugs & limitations
 * No support for Ubuntu/Debian.
-* Not tested with other RHEL distributions (Fedora/Amazon/etc).
+* Not tested with all other RHEL distributions.
 * No support for per-topic overrides for ``node[:kafka][:log][:flush_interval_ms]``.
 * Not sure if all configuration parameters for Kafka are supported at this time.
 
