@@ -12,6 +12,11 @@ platforms:
   driver_config:
     box: opscode-centos-6.4
     box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
+- name: fedora-18
+  driver_config:
+    box: fedora-18
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode-fedora-18_provisionerless.box
+  attributes: { java: { jdk_version: '7' } }
 - name: fedora-19
   driver_config:
     box: fedora-19
