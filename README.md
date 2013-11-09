@@ -44,6 +44,8 @@ The following attributes are used for setting up the environment for Kafka.
 * ``node[:kafka][:config]`` - Name of configuration file for Kafka (should
   include extension as well). Will use 'server.properties' by default.
 * ``node[:kafka][:jmx_port]`` - JMX port for Kafka.
+* `node[:kafka][:install_method]` - Decides how to install Kafka, by binary or
+  from source. Defaults to `:source`.
 
 ## kafka
 The following attributes are used for the Kafka broker configuration and are
@@ -111,6 +113,10 @@ The following attributes are used to configure ZooKeeper when using the
 
 # Recipes
 This section describes the different recipes that exists, and how to use them.
+
+## default
+Includes either `source` or `binary` recipe depending on what
+`node[:kafka][:install_method]` is set to (`:source, :binary`).
 
 ## configure
 Creates necessary directories for installing Kafka, as well as configuration
