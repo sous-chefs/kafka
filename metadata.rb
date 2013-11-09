@@ -13,7 +13,7 @@ recipe 'kafka::source', 'Downloads, compiles and installs Kafka from source rele
 recipe 'kafka::binary', 'Downloads, extracts and installs Kafka from binary releases'
 recipe 'kafka::standalone', 'Setups standalone ZooKeeper instance using the ZooKeeper version that is bundled with Kafka'
 
-depends 'java', '~> 1.11.6'
+depends 'java', '~> 1.15.4'
 
 %w[centos].each do |os|
   supports os
