@@ -20,7 +20,8 @@ notable differences:
 
 # Attributes
 This section describes all the attributes that are currently available for
-configuration of where to install Kafka and Kafka's configuration.
+configuration of where and how to install Kafka, as well as broker
+configuration.
 
 ## default
 The following attributes are used for setting up the environment for Kafka.
