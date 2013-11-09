@@ -16,7 +16,7 @@ notable differences:
 * intended to be used by wrapper cookbooks.
 
 # Requirements
-* Java cookbook ``~> 1.11.6``
+* Java cookbook ``~> 1.15.4``
 
 # Attributes
 This section describes all the attributes that are currently available for
