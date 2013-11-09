@@ -28,7 +28,10 @@ The following attributes are used for setting up the environment for Kafka.
 
 * ``node[:kafka][:version]`` - The Kafka version to install and use.
 * ``node[:kafka][:base_url]`` - Base URL for Kafka releases.
-* ``node[:kafka][:checksum]`` - SHA-256 checksum for release to use.
+* ``node[:kafka][:checksum]`` - SHA-256 checksum to use when downloading
+  release.
+* ``node[:kafka][:md5_checksum]`` - MD5 checksum to use when validating
+  downloaded release.
 * ``node[:kafka][:scala_version]`` - Scala version for Kafka.
 * ``node[:kafka][:install_dir]`` - Location for Kafka to be installed.
 * ``node[:kafka][:log_dir]`` - Location for Kafka log4j logs.
