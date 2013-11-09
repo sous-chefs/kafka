@@ -65,11 +65,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
     user  node[:kafka][:user]
     group node[:kafka][:group]
     cwd   node[:kafka][:install_dir]
-    command <<-EOH
-      cp -r #{kafka_libs_path} .
-      cp #{kafka_jar_path} .
-    EOH
-
+    command %{cp -r #{kafka_libs_path} . && cp #{kafka_jar_path} .}
     action :nothing
   end
 end
