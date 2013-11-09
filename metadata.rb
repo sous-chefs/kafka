@@ -15,6 +15,6 @@ recipe 'kafka::standalone', 'Setups standalone ZooKeeper instance using the ZooK
 
 depends 'java', '~> 1.15.4'
 
-%w[centos].each do |os|
+%w(centos fedora).each do |os|
   supports os
 end
