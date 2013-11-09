@@ -11,6 +11,10 @@ describe 'kafka::source' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-beta1-src.tgz")
   end
 
+  let :validate_block do
+    chef_run.ruby_block('validate-tarball')
+  end
+
   it 'includes kafka::configure recipe' do
     expect(chef_run).to include_recipe('kafka::configure')
   end
@@ -32,8 +36,12 @@ describe 'kafka::source' do
     )
   end
 
+  it 'validates downloaded Kafka archive' do
+    expect(remote_file).to notify('ruby_block[validate-tarball]').to(:create).immediately
+  end
+
   it 'compiles Kafka source' do
-    expect(remote_file).to notify('execute[compile-kafka]').to(:run).immediately
+    expect(validate_block).to notify('execute[compile-kafka]').to(:run).immediately
 
     compile_kafka = chef_run.execute('compile-kafka')
     expect(compile_kafka.cwd).to eq('/opt/kafka/build')

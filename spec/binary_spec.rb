@@ -11,6 +11,10 @@ describe 'kafka::binary' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0-beta1.tgz")
   end
 
+  let :validate_block do
+    chef_run.ruby_block('validate-tarball')
+  end
+
   it 'includes kafka::configure recipe' do
     expect(chef_run).to include_recipe('kafka::configure')
   end
@@ -32,8 +36,12 @@ describe 'kafka::binary' do
     )
   end
 
+  it 'validates downloaded Kafka archive' do
+    expect(remote_file).to notify('ruby_block[validate-tarball]').to(:create).immediately
+  end
+
   it 'extracts downloaded Kafka archive' do
-    expect(remote_file).to notify('execute[extract-kafka]').to(:run).immediately
+    expect(validate_block).to notify('execute[extract-kafka]').to(:run).immediately
 
     extract_kafka = chef_run.execute('extract-kafka')
     expect(extract_kafka.cwd).to eq('/opt/kafka/dist')
