@@ -8,8 +8,6 @@ provisioner:
 platforms:
   - name: centos-6.4
   - name: centos-5.9
-  - name: fedora-18
-  - name: fedora-19
 
 suites:
   - name: configure

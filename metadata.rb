@@ -15,6 +15,4 @@ recipe 'kafka::standalone', 'Setups standalone ZooKeeper instance using the ZooK
 
 recommends 'java', '~> 1.15.4'
 
-%w(centos fedora).each do |os|
-  supports os
-end
+supports 'centos'
