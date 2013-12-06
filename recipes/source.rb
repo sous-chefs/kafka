@@ -6,13 +6,13 @@
 include_recipe 'kafka::configure'
 
 node.default[:kafka][:scala_version] ||= '2.9.2'
-node.default[:kafka][:checksum]      ||= 'e069a1d5e47d18944376b6ca30b625dc013045e7e1f948054ef3789a4b5f54b3'
-node.default[:kafka][:md5_checksum]  ||= 'b90e355ea2bc1e5f62db1836fdd77502'
+node.default[:kafka][:checksum]      ||= 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a'
+node.default[:kafka][:md5_checksum]  ||= '46b3e65e38f1bde4b6251ea131d905f4'
 
 build_directory    = "#{node[:kafka][:install_dir]}/build"
 kafka_src          = "kafka-#{node[:kafka][:version]}-src"
 kafka_tar_gz       = "#{kafka_src}.tgz"
-download_file      = "#{node[:kafka][:base_url]}/#{kafka_tar_gz}"
+download_file      = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
 local_file_path    = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
 kafka_path         = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_jar          = "#{kafka_path}.jar"

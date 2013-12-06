@@ -8,7 +8,7 @@ describe 'kafka::binary' do
   end
 
   let :remote_file do
-    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0-beta1.tgz")
+    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz")
   end
 
   let :validate_block do
@@ -29,9 +29,9 @@ describe 'kafka::binary' do
   end
 
   it 'downloads remote binary release of Kafka' do
-    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0-beta1.tgz").with(
-      source:   'https://dist.apache.org/repos/dist/release/kafka/kafka_2.8.0-0.8.0-beta1.tgz',
-      checksum: '750046ab729d2dbc1d5756794ebf8fcb640879b23a64749164c43063286316b8',
+    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz").with(
+      source:   'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
+      checksum: 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e',
       mode: '644'
     )
   end

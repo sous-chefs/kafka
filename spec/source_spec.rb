@@ -8,7 +8,7 @@ describe 'kafka::source' do
   end
 
   let :remote_file do
-    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-beta1-src.tgz")
+    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
   end
 
   let :validate_block do
@@ -29,9 +29,9 @@ describe 'kafka::source' do
   end
 
   it 'downloads remote source of Kafka' do
-    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-beta1-src.tgz").with(
-      source:   'https://dist.apache.org/repos/dist/release/kafka/kafka-0.8.0-beta1-src.tgz',
-      checksum: 'e069a1d5e47d18944376b6ca30b625dc013045e7e1f948054ef3789a4b5f54b3',
+    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz").with(
+      source:   'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka-0.8.0-src.tgz',
+      checksum: 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a',
       mode: '644'
     )
   end
