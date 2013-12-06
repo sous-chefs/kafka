@@ -3,8 +3,6 @@
 # Recipe:: configure
 #
 
-include_recipe 'java::default'
-
 kafka_user   = node[:kafka][:user]
 kafka_group  = node[:kafka][:group]
 broker_id    = node[:kafka][:broker_id]

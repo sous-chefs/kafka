@@ -7,10 +7,6 @@ describe 'kafka::configure' do
     ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
   end
 
-  it 'includes java::default recipe' do
-    expect(chef_run).to include_recipe('java::default')
-  end
-
   context 'group and user' do
     context 'by default' do
       it 'creates a kafka group' do

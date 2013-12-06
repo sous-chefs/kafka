@@ -20,18 +20,21 @@ suites:
         jdk_version: 7
   - name: binary
     run_list:
+      - recipe[java]
       - recipe[kafka::binary]
     attributes:
       java:
         jdk_version: 7
   - name: source
     run_list:
+      - recipe[java]
       - recipe[kafka::source]
     attributes:
       java:
         jdk_version: 7
   - name: standalone
     run_list:
+      - recipe[java]
       - recipe[kafka::standalone]
     attributes:
       java:
