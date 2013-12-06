@@ -1,38 +1,38 @@
 ---
-driver_plugin: vagrant
-driver_config:
-  require_chef_omnibus: true
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
 
 platforms:
-- name: centos-5.9
-  driver_config:
-    box: opscode-centos-5.9
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
-- name: centos-6.4
-  driver_config:
-    box: opscode-centos-6.4
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
-- name: fedora-18
-  driver_config:
-    box: fedora-18
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode-fedora-18_provisionerless.box
-  attributes: { java: { jdk_version: '7' } }
-- name: fedora-19
-  driver_config:
-    box: fedora-19
-    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode-fedora-19_provisionerless.box
-  attributes: { java: { jdk_version: '7' } }
+  - name: centos-6.4
+  - name: centos-5.9
+  - name: fedora-18
+  - name: fedora-19
 
 suites:
-- name: configure
-  run_list: ['recipe[kafka::configure]']
-  attributes: {}
-- name: binary
-  run_list: ['recipe[kafka::binary]']
-  attributes: {}
-- name: source
-  run_list: ['recipe[kafka::source]']
-  attributes: {}
-- name: standalone
-  run_list: ['recipe[kafka::standalone]']
-  attributes: {}
+  - name: configure
+    run_list:
+      - recipe[kafka::configure]
+    attributes:
+      java:
+        jdk_version: 7
+  - name: binary
+    run_list:
+      - recipe[kafka::binary]
+    attributes:
+      java:
+        jdk_version: 7
+  - name: source
+    run_list:
+      - recipe[kafka::source]
+    attributes:
+      java:
+        jdk_version: 7
+  - name: standalone
+    run_list:
+      - recipe[kafka::standalone]
+    attributes:
+      java:
+        jdk_version: 7
