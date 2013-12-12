@@ -2,13 +2,13 @@
 
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
-Installs Kafka `0.8.0-beta1`, and probably any higher version, whenever they are
+Installs Kafka `0.8.0`, and probably any higher version, whenever they are
 released. Given that they don't change URLs and the like.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases (of Kafka `0.8.0-beta1`).
+* supports both source and binary releases (of Kafka `0.8.0`).
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
@@ -125,14 +125,14 @@ This recipe is included by both `kafka::source` and `kafka::binary` recipes.
 
 ### source
 Downloads, compiles and installs Kafka from the official source releases.
-Defaults to using `0.8.0-beta1` as Kafka version.
+Defaults to using `0.8.0` as Kafka version.
 
 This recipe will not automatically start/restart Kafka as that is left up to the
 user to decide.
 
 ### binary
 Downloads and installs Kafka from the official binary releases.
-Defaults to using `0.8.0-beta1` as Kafka version.
+Defaults to using `0.8.0` as Kafka version.
 
 This recipe will not automatically start/restart Kafka as that is left up to the
 user to decide.
