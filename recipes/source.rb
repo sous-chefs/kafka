@@ -16,9 +16,7 @@ download_file      = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kaf
 local_file_path    = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
 kafka_path         = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_jar          = "#{kafka_path}.jar"
-kafka_release_path = "#{build_directory}/#{kafka_src}/target/RELEASE"
-kafka_jar_path     = "#{kafka_release_path}/#{kafka_path}/#{kafka_jar}"
-kafka_libs_path    = "#{kafka_release_path}/#{kafka_path}/libs"
+kafka_target_path  = "#{build_directory}/#{kafka_src}/target/RELEASE/#{kafka_path}"
 installed_path     = "#{node[:kafka][:install_dir]}/#{kafka_jar}"
 
 unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
@@ -65,7 +63,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
     user  node[:kafka][:user]
     group node[:kafka][:group]
     cwd   node[:kafka][:install_dir]
-    command %{cp -r #{kafka_libs_path} . && cp #{kafka_jar_path} .}
+    command %{cp -r #{kafka_target_path}/* .}
     action :nothing
   end
 end
