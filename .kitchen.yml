@@ -1,6 +1,9 @@
 ---
 driver:
   name: vagrant
+  customize:
+    memory: 1024
+    ioapic: 'on'
 
 provisioner:
   name: chef_solo
