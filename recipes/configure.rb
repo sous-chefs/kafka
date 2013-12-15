@@ -3,9 +3,7 @@
 # Recipe:: configure
 #
 
-config_dir = "#{node[:kafka][:install_dir]}/config"
-
-template "#{config_dir}/#{node[:kafka][:log4j_config]}" do
+template File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
   source  'log4j.properties.erb'
   owner node[:kafka][:user]
   group node[:kafka][:group]
@@ -16,7 +14,7 @@ template "#{config_dir}/#{node[:kafka][:log4j_config]}" do
   )
 end
 
-template "#{config_dir}/#{node[:kafka][:config]}" do
+template File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   source  'server.properties.erb'
   owner node[:kafka][:user]
   group node[:kafka][:group]

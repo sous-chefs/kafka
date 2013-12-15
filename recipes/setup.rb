@@ -17,7 +17,7 @@ end
 
 [
   node[:kafka][:install_dir],
-  File.join(node[:kafka][:install_dir], 'config'),
+  node[:kafka][:config_dir],
   node[:kafka][:log_dir],
   node[:kafka][:data_dir]
 ].each do |dir|
