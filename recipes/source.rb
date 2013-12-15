@@ -38,7 +38,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
   ruby_block 'validate-tarball' do
     block do
       unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == node[:kafka][:md5_checksum]
-        Chef::Log.fatal!("Downloaded tarball checksum (#{checksum}) does not match known checksum (#{node[:kafka][:md5_checksum]})")
+        Chef::Application.fatal!("Downloaded tarball checksum (#{checksum}) does not match known checksum (#{node[:kafka][:md5_checksum]})")
       end
     end
     action :nothing
