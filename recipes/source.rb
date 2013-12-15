@@ -3,7 +3,7 @@
 # Recipe:: source
 #
 
-include_recipe 'kafka::configure'
+include_recipe 'kafka::setup'
 
 node.default[:kafka][:scala_version] ||= '2.9.2'
 node.default[:kafka][:checksum]      ||= 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a'
@@ -65,3 +65,5 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
     action :nothing
   end
 end
+
+include_recipe 'kafka::configure'
