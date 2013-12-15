@@ -5,12 +5,8 @@ Vagrant.configure("2") do |config|
   config.omnibus.chef_version = :latest
   config.berkshelf.enbaled = true
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = ["vendor/cookbooks"]
-    # chef.roles_path = "../chef-repo/roles"
-    # chef.data_bags_path = "../chef-repo/data_bags"
-    # chef.add_role "my_role"
-    chef.add_recipe 'java::default'
-    chef.add_recipe 'kafka::source'
+    chef.add_recipe 'java'
+    chef.add_recipe 'kafka'
     chef.log_level = :debug
     chef.json = {}
   end
