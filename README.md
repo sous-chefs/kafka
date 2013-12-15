@@ -34,6 +34,7 @@ The following attributes are used for setting up the environment for Kafka.
   downloaded release.
 * `node[:kafka][:scala_version]` - Scala version for Kafka.
 * `node[:kafka][:install_dir]` - Location for Kafka to be installed.
+* `node[:kafka][:config_dir]` - Location for Kafka configuration files.
 * `node[:kafka][:log_dir]` - Location for Kafka log4j logs.
 * `node[:kafka][:user]` - User to use for directories and configuration files.
 * `node[:kafka][:group]` - Group for user defined above.
