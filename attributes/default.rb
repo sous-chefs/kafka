@@ -21,4 +21,4 @@ default[:kafka][:group] = 'kafka'
 default[:kafka][:log_level] = 'INFO'
 default[:kafka][:jmx_port] = 9999
 
-default[:kafka][:install_method] = :source
+default[:kafka][:install_method] = :binary
