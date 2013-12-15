@@ -9,15 +9,14 @@ node.default[:kafka][:scala_version] ||= '2.9.2'
 node.default[:kafka][:checksum]      ||= 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a'
 node.default[:kafka][:md5_checksum]  ||= '46b3e65e38f1bde4b6251ea131d905f4'
 
-build_directory    = "#{node[:kafka][:install_dir]}/build"
 kafka_src          = "kafka-#{node[:kafka][:version]}-src"
+kafka_base         = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_tar_gz       = "#{kafka_src}.tgz"
 download_file      = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
-local_file_path    = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
-kafka_path         = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
-kafka_jar          = "#{kafka_path}.jar"
-kafka_target_path  = "#{build_directory}/#{kafka_src}/target/RELEASE/#{kafka_path}"
-installed_path     = "#{node[:kafka][:install_dir]}/#{kafka_jar}"
+build_directory    = File.join(node[:kafka][:install_dir], 'build')
+local_file_path    = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
+kafka_target_path  = File.join(build_directory, kafka_src, 'target', 'RELEASE', kafka_base)
+installed_path     = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
 unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
   directory build_directory do
@@ -48,7 +47,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
   execute 'compile-kafka' do
     cwd   build_directory
     command <<-EOH.gsub(/^\s+/, '')
-      tar zxvf #{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}
+      tar zxvf #{local_file_path}
       cd #{kafka_src}
       ./sbt update
       ./sbt "++#{node[:kafka][:scala_version]} release-zip"
@@ -62,7 +61,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
     user  node[:kafka][:user]
     group node[:kafka][:group]
     cwd   node[:kafka][:install_dir]
-    command %{cp -r #{kafka_target_path}/* .}
+    command %{cp -r #{File.join(kafka_target_path, '*')} .}
     action :nothing
   end
 end

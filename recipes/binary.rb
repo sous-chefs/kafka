@@ -9,14 +9,13 @@ node.default[:kafka][:scala_version] ||= '2.8.0'
 node.default[:kafka][:checksum]      ||= 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e'
 node.default[:kafka][:md5_checksum]  ||= '593e0cf966e6b8cd1bbff5bff713c4b3'
 
-kafka_base      = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
-kafka_tar_gz    = "#{kafka_base}.tar.gz"
-download_file   = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
-local_file_path = "#{Chef::Config[:file_cache_path]}/#{kafka_tar_gz}"
-dist_directory  = "#{node[:kafka][:install_dir]}/dist"
-kafka_jar       = "#{kafka_base}.jar"
-kafka_target_path = "#{node[:kafka][:install_dir]}/dist/#{kafka_base}"
-installed_path  = "#{node[:kafka][:install_dir]}/#{kafka_jar}"
+kafka_base        = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
+kafka_tar_gz      = "#{kafka_base}.tar.gz"
+download_file     = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
+local_file_path   = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
+dist_directory    = File.join(node[:kafka][:install_dir], 'dist')
+kafka_target_path = File.join(dist_directory, kafka_base)
+installed_path    = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
 unless (already_installed = (File.directory?(dist_directory) && File.exists?(installed_path)))
   directory dist_directory do
@@ -55,7 +54,7 @@ unless (already_installed = (File.directory?(dist_directory) && File.exists?(ins
     user  node[:kafka][:user]
     group node[:kafka][:group]
     cwd   node[:kafka][:install_dir]
-    command %{cp -r #{kafka_target_path}/* .}
+    command %{cp -r #{File.join(kafka_target_path, '*')} .}
     action :nothing
   end
 end
