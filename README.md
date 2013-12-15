@@ -22,7 +22,9 @@ while transitioning from `0.8.0-beta1` to the quite newly released final `0.8.0`
 version, use with caution (and certainly not in a production environment).
 
 ## Requirements
-* Java cookbook `~> 1.15.4`
+
+This cookbook does not depend on any specific cookbooks, but it requires that
+java is installed on the system, thus the `java` cookbook is recommended.
 
 ## Attributes
 This section describes all the attributes that are currently available for
