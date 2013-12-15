@@ -33,7 +33,7 @@ describe 'kafka::default' do
     end
 
     it 'terminates the chef run' do
-      expect(Chef::Log).to receive(:fatal!).with(/Unknown install_method: bork/).once
+      expect(Chef::Application).to receive(:fatal!).with(/Unknown install_method: bork/).once
 
       chef_run.converge(described_recipe)
     end
