@@ -45,8 +45,8 @@ describe 'kafka::binary' do
 
     extract_kafka = chef_run.execute('extract-kafka')
     expect(extract_kafka.cwd).to eq('/opt/kafka/dist')
-    expect(extract_kafka.user).to be_nil
-    expect(extract_kafka.group).to be_nil
+    expect(extract_kafka.user).to eq('kafka')
+    expect(extract_kafka.group).to eq('kafka')
   end
 
   it 'installs extracted Kafka archive' do

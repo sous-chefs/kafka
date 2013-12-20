@@ -44,6 +44,8 @@ unless (already_installed = (File.directory?(dist_directory) && File.exists?(ins
   end
 
   execute 'extract-kafka' do
+    user     node[:kafka][:user]
+    group    node[:kafka][:group]
     cwd      dist_directory
     command  %{tar zxvf #{local_file_path}}
     action   :nothing
