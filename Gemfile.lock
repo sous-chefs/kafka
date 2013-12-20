@@ -122,7 +122,7 @@ GEM
       net-ssh (>= 2.1.4)
       net-ssh-gateway (>= 0.99.0)
     nio4r (0.5.0)
-    nokogiri (1.6.0)
+    nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     nori (1.1.5)
     ohai (6.20.0)
@@ -213,7 +213,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  berkshelf (~> 2.0.10)
+  berkshelf
   busser-serverspec
   chefspec (~> 3.0.2)
   kitchen-vagrant
