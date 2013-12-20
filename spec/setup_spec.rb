@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::setup' do
   let :chef_run do
-    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new.converge(described_recipe)
   end
 
   context 'group and user' do
@@ -25,7 +25,7 @@ describe 'kafka::setup' do
 
     context 'when overridden' do
       let :chef_run do
-        ChefSpec::Runner.new(platform: 'centos', version: '6.4') do |node|
+        ChefSpec::Runner.new do |node|
           node.set[:kafka][:user] = 'spec'
           node.set[:kafka][:group] = 'spec'
         end.converge(described_recipe)

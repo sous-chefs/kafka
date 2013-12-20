@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'kafka::default' do
   context 'when node[:kafka][:install_method] equals :source' do
     let :chef_run do
-      ChefSpec::Runner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::Runner.new do |node|
         node.set[:kafka][:install_method] = :source
       end.converge(described_recipe)
     end
@@ -17,7 +17,7 @@ describe 'kafka::default' do
 
   context 'when node[:kafka][:install_method] equals :binary' do
     let :chef_run do
-      ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+      ChefSpec::Runner.new.converge(described_recipe)
     end
 
     it 'includes kafka::binary recipe' do
@@ -27,7 +27,7 @@ describe 'kafka::default' do
 
   context 'when node[:kafka][:install_method] is something else' do
     let :chef_run do
-      ChefSpec::Runner.new(platform: 'centos', version: '6.4') do |node|
+      ChefSpec::Runner.new do |node|
         node.set[:kafka][:install_method] = :bork
       end
     end

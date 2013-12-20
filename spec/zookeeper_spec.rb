@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::zookeeper' do
   let :chef_run do
-    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new.converge(described_recipe)
   end
 
   it 'includes kafka::default' do

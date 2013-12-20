@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::configure' do
   let :chef_run do
-    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new.converge(described_recipe)
   end
 
   it 'creates an init.d script' do

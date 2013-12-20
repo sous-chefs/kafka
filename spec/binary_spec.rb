@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::binary' do
   let :chef_run do
-    ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
+    ChefSpec::Runner.new.converge(described_recipe)
   end
 
   let :remote_file do
