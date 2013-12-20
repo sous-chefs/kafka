@@ -3,6 +3,7 @@ driver:
   name: vagrant
   customize:
     memory: 1024
+    cpus: 2
     ioapic: 'on'
 
 provisioner:
@@ -33,10 +34,10 @@ suites:
     attributes:
       java:
         jdk_version: 7
-  - name: standalone
+  - name: zookeeper
     run_list:
       - recipe[java]
-      - recipe[kafka::standalone]
+      - recipe[kafka::zookeeper]
     attributes:
       java:
         jdk_version: 7

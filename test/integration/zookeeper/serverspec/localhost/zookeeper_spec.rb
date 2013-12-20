@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'kafka::standalone' do
+describe 'kafka::zookeeper' do
   describe file('/opt/kafka/config/zookeeper.properties') do
     it { should be_a_file }
     it { should be_owned_by('kafka') }
@@ -10,7 +10,7 @@ describe 'kafka::standalone' do
     it { should be_mode 644 }
   end
 
-  describe file('/opt/kafka/config/zookeeper.log4j.properties') do
+  describe file('/opt/kafka/config/log4j.properties') do
     it { should be_a_file }
     it { should be_owned_by('kafka') }
     it { should be_grouped_into('kafka') }
