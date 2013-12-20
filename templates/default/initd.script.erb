@@ -21,47 +21,19 @@ DAEMON=<%= @daemon_name %>
 PIDFILE=/var/run/$DAEMON.pid
 RETVAL=0
 
+export SCALA_VERSION="<%= node[:kafka][:scala_version] %>"
+export JMX_PORT="<%= @jmx_port %>"
+
 start() {
   if [ -f $PIDFILE ] && checkpid $(head -1 $PIDFILE); then
     echo "$DAEMON (pid  $(head -1 $PIDFILE)) is already running..."
     exit 0
   fi
 
-  MAIN_CLASS="<%= @main_class %>"
-  JAVA_HOME=<%= node[:java][:java_home] %>
-  DAEMON_PATH=<%= node[:kafka][:install_dir] %>
-  SERVER_CONFIG=$DAEMON_PATH/config/<%= @config ? @config : "#{@daemon_name}.properties" %>
-
-  CLASSPATH=$DAEMON_PATH/kafka_<%= node[:kafka][:scala_version] %>-<%= node[:kafka][:version] %>.jar
-
-  for jar in $(ls $DAEMON_PATH/libs/*.jar); do
-    CLASSPATH=$CLASSPATH:$jar
-  done
-
-  if [ -z "$JMX_OPTS"]; then
-    JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false "
-  fi
-
-  if [ -z "$JMX_PORT" ]; then
-    JMX_PORT="<%= @jmx_port %>"
-  fi
-
-  JMX_OPTS="$JMX_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT"
-
-  if [ -z "$KAFKA_OPTS" ]; then
-    KAFKA_OPTS="-Xmx512M -server -Djava.net.preferIPv4Stack=true -Dlog4j.configuration=file:$DAEMON_PATH/config/<%= @log4j_config %>"
-  fi
-
-  if [ -z "$JAVA_HOME" ]; then
-    JAVA="java"
-  else
-    JAVA="$JAVA_HOME/bin/java"
-  fi
-
-  CMD="$JAVA $KAFKA_OPTS $JMX_OPTS -cp $CLASSPATH"
+  START_CMD="<%= node[:kafka][:install_dir] %>/bin/<%= @start_command %> <%= node[:kafka][:config_dir] %>/<%= @config %>"
 
   echo -n $"Starting $DAEMON"
-  nohup $CMD $MAIN_CLASS $SERVER_CONFIG > /dev/null 2>&1 &
+  nohup $START_CMD > /dev/null 2>&1 &
   RETVAL=$?
   PID=$!
   sleep 2
@@ -70,19 +42,29 @@ start() {
   echo $PID > $PIDFILE
 }
 
+stop() {
+  action "Stopping $DAEMON" killproc -p $PIDFILE -d 5
+  RETVAL=$?
+}
+
+check_status() {
+  status -p $PIDFILE $DAEMON
+  RETVAL=$?
+}
+
 case "$1" in
   start)
     start
     ;;
   stop)
-    action "Stopping $DAEMON" killproc -p $PIDFILE -d 5
+    stop
     ;;
   restart)
     stop
     start
     ;;
   status)
-    status -p $PIDFILE $DAEMON
+    check_status
     ;;
   *)
     echo "Usage: $DAEMON {start|stop|restart|status}" >&2

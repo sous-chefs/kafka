@@ -2,13 +2,13 @@
 
 require 'spec_helper'
 
-describe 'kafka::standalone' do
+describe 'kafka::zookeeper' do
   let :chef_run do
     ChefSpec::Runner.new(platform: 'centos', version: '6.4').converge(described_recipe)
   end
 
-  it 'includes kafka::binary' do
-    expect(chef_run).to include_recipe('kafka::binary')
+  it 'includes kafka::default' do
+    expect(chef_run).to include_recipe('kafka::default')
   end
 
   it 'creates a configuration file for Zookeeper' do
@@ -29,7 +29,7 @@ describe 'kafka::standalone' do
   end
 
   it 'creates a configuration file for Zookeeper log4j' do
-    expect(chef_run).to create_template('/opt/kafka/config/zookeeper.log4j.properties').with(
+    expect(chef_run).to create_template('/opt/kafka/config/log4j.properties').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '644',
@@ -48,12 +48,6 @@ describe 'kafka::standalone' do
 
   it 'creates a \'zookeeper\' service' do
     service = chef_run.service('zookeeper')
-
-    expect(service.action).to eq([:enable, :start])
-  end
-
-  it 'starts kafka' do
-    service = chef_run.service('kafka')
 
     expect(service.action).to eq([:enable, :start])
   end
