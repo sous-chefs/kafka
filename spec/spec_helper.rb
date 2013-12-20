@@ -1,9 +1,9 @@
 # encoding: utf-8
 
-require 'chef/application'
-
 require 'chefspec'
 require 'chefspec/berkshelf'
+
+require 'chef/application'
 
 RSpec.configure do |config|
   # Set to :fatal to avoid warnings about resource cloning
