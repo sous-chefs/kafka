@@ -2,8 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
-Installs Kafka `0.8.0`, and probably any higher version, whenever they are
-released. Given that they don't change URLs and the like.
+Installs Kafka `0.8.0`, and probably any newer versions.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
@@ -19,7 +18,8 @@ notable differences:
 
 The `master` branch is currently highly unstable as there are quite some changes
 while transitioning from `0.8.0-beta1` to the quite newly released final `0.8.0`
-version, use with caution (and certainly not in a production environment).
+version.
+Use with caution (and certainly not in a production environment).
 
 ## Requirements
 
