@@ -139,10 +139,14 @@ This section describes the different recipes that exists, and how to use them.
 Includes either `source` or `binary` recipe depending on what
 `node[:kafka][:install_method]` is set to (`:source, :binary`).
 
+### setup
+
+Creates necessary directories as well as configured user and group.
+This recipe is included by both `kafka::source` and `kafka::binary` recipes.
+
 ### configure
 
-Creates necessary directories for installing Kafka, as well as configuration
-files and a quite crude `init.d` script.
+Creates necessary configuration files and a quite crude `init.d` script.
 This recipe is included by both `kafka::source` and `kafka::binary` recipes.
 
 ### source
