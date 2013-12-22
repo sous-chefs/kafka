@@ -167,9 +167,9 @@ other testing environment).
 ## Known bugs & limitations
 
 * No support for Ubuntu/Debian.
-* Not tested with all other RHEL distributions.
+* Not tested with other RHEL distributions.
 * No support for per-topic overrides for `node[:kafka][:log][:flush_interval_ms]`.
-* Not sure if all configuration parameters for Kafka are supported at this time.
+* Not certain if all configuration parameters for Kafka are supported at this time.
 
 ## License and author
 
