@@ -14,8 +14,9 @@ platforms:
   - name: centos-5.9
 
 suites:
-  - name: configure
+  - name: configuration
     run_list:
+      - recipe[kafka::setup]
       - recipe[kafka::configure]
     attributes:
       java:
