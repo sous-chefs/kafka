@@ -13,7 +13,7 @@ Vagrant.configure('2') do |config|
       vb.customize ['modifyvm', :id, '--memory', '512']
     end
 
-    config.vm.provision :chef_solo do |chef|
+    zookeeper.vm.provision :chef_solo do |chef|
       chef.add_recipe 'java'
       chef.add_recipe 'kafka::zookeeper'
       chef.log_level = :debug
@@ -26,7 +26,7 @@ Vagrant.configure('2') do |config|
       vb.customize ['modifyvm', :id, '--memory', '512']
     end
 
-    config.vm.provision :chef_solo do |chef|
+    broker.vm.provision :chef_solo do |chef|
       chef.add_recipe 'java'
       chef.add_recipe 'kafka'
       chef.log_level = :debug
