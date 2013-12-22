@@ -155,14 +155,10 @@ Defaults to using `0.8.0` as Kafka version.
 Downloads and installs Kafka from the official binary releases.
 Defaults to using `0.8.0` as Kafka version.
 
-
-### standalone
+### zookeeper
 
 Sets up a standalone ZooKeeper server, using the ZooKeeper version that is
 bundled with Kafka.
-This recipe does not include `kafka::source` nor `kafka::binary` recipes and
-must be specified separately after either `kafka::source` or
-`kafka::binary`.
 
 This should not be used in production (Kafka and ZooKeeper should generally not
 run on the same machine) and is just useful for testing (i.e. in Vagrant or
