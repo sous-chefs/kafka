@@ -51,9 +51,9 @@ The following attributes are used for setting up the environment for Kafka.
 * `node[:kafka][:log_level]` - Log level for Kafka logs (and ZooKeeper, for further
   information see below).
 * `node[:kafka][:log4j_config]` - Name of log4j configuration file (should
-  include extension as well). Will use 'log4j.properties' by default.
+  include extension as well). Will use `log4j.properties` by default.
 * `node[:kafka][:config]` - Name of configuration file for Kafka (should
-  include extension as well). Will use 'server.properties' by default.
+  include extension as well). Will use `server.properties` by default.
 * `node[:kafka][:jmx_port]` - JMX port for Kafka.
 * `node[:kafka][:install_method]` - Decides how to install Kafka, by binary or
   from source. Defaults to `:source`.
@@ -150,16 +150,11 @@ This recipe is included by both `kafka::source` and `kafka::binary` recipes.
 Downloads, compiles and installs Kafka from the official source releases.
 Defaults to using `0.8.0` as Kafka version.
 
-This recipe will not automatically start/restart Kafka as that is left up to the
-user to decide.
-
 ### binary
 
 Downloads and installs Kafka from the official binary releases.
 Defaults to using `0.8.0` as Kafka version.
 
-This recipe will not automatically start/restart Kafka as that is left up to the
-user to decide.
 
 ### standalone
 
