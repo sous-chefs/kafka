@@ -16,7 +16,7 @@ describe 'kafka::configure' do
     expect(file.mode).to eq('755')
   end
 
-  it 'creates a kafka service' do
+  it 'creates a \'kafka\' service' do
     service = chef_run.service('kafka')
 
     expect(service.action).to eq([:enable])
