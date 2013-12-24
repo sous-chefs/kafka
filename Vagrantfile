@@ -16,7 +16,6 @@ Vagrant.configure('2') do |config|
     zookeeper.vm.provision :chef_solo do |chef|
       chef.add_recipe 'java'
       chef.add_recipe 'kafka::zookeeper'
-      chef.log_level = :debug
     end
   end
 
@@ -29,7 +28,6 @@ Vagrant.configure('2') do |config|
     broker.vm.provision :chef_solo do |chef|
       chef.add_recipe 'java'
       chef.add_recipe 'kafka'
-      chef.log_level = :debug
       chef.json = {
         'kafka' => {
           'zookeeper' => {
