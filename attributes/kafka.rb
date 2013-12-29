@@ -2,6 +2,9 @@
 # Cookbook Name:: kafka
 # Attributes:: kafka
 #
+
+default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
+
 default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
 default[:kafka][:host_name] = node[:hostname]
 default[:kafka][:port] = 9092

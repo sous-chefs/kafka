@@ -7,6 +7,7 @@
 #
 # processname: <%= @daemon_name %>
 # pidfile: /var/run/<%= @daemon_name %>.pid
+#
 
 # Source function library
 . /etc/rc.d/init.d/functions
@@ -25,7 +26,7 @@ export SCALA_VERSION="<%= node[:kafka][:scala_version] %>"
 export JMX_PORT="<%= @jmx_port %>"
 
 export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:<%= node[:kafka][:config_dir] %>/<%= @log4j_config %>"
-export KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
+export KAFKA_HEAP_OPTS="<%= node[:kafka][:heap_opts] %>"
 
 start() {
   if [ -f $PIDFILE ] && checkpid $(head -1 $PIDFILE); then

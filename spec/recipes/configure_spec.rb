@@ -130,13 +130,19 @@ describe 'kafka::_configure' do
     end
   end
 
-  it 'creates an init.d script' do
-    expect(chef_run).to create_template('/etc/init.d/kafka')
+  context 'init.d script' do
+    it 'creates one' do
+      expect(chef_run).to create_template('/etc/init.d/kafka')
 
-    file = chef_run.template('/etc/init.d/kafka')
-    expect(file.owner).to eq('root')
-    expect(file.group).to eq('root')
-    expect(file.mode).to eq('755')
+      file = chef_run.template('/etc/init.d/kafka')
+      expect(file.owner).to eq('root')
+      expect(file.group).to eq('root')
+      expect(file.mode).to eq('755')
+    end
+
+    it 'sets KAFKA_HEAP_OPTS from attribute' do
+      expect(chef_run).to have_configured('/etc/init.d/kafka').with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
+    end
   end
 
   it 'creates a \'kafka\' service' do
