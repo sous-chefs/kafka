@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Recipe:: setup
+# Recipe:: _setup
 #
 
 kafka_user   = node[:kafka][:user]

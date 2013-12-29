@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'kafka::configure' do
+describe 'kafka::_configure' do
   let :chef_run do
     ChefSpec::Runner.new.converge(described_recipe)
   end

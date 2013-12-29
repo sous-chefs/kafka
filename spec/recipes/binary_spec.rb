@@ -15,8 +15,8 @@ describe 'kafka::binary' do
     chef_run.ruby_block('validate-tarball')
   end
 
-  it 'includes kafka::configure recipe' do
-    expect(chef_run).to include_recipe('kafka::configure')
+  it 'includes kafka::_configure recipe' do
+    expect(chef_run).to include_recipe('kafka::_configure')
   end
 
   it 'creates \'dist\' directory' do

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Recipe:: configure
+# Recipe:: _configure
 #
 
 template File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
