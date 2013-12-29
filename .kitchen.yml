@@ -10,8 +10,7 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: centos-6.4
-  - name: centos-5.9
+  - name: centos-6.5
 
 suites:
   - name: configuration
