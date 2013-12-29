@@ -4,6 +4,7 @@
 #
 
 default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
+default[:kafka][:generic_opts] = nil
 
 default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
 default[:kafka][:host_name] = node[:hostname]

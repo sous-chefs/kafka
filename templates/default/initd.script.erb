@@ -27,6 +27,7 @@ export JMX_PORT="<%= @jmx_port %>"
 
 export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:<%= node[:kafka][:config_dir] %>/<%= @log4j_config %>"
 export KAFKA_HEAP_OPTS="<%= node[:kafka][:heap_opts] %>"
+export KAFKA_OPTS="<%= node[:kafka][:generic_opts] %>"
 
 start() {
   if [ -f $PIDFILE ] && checkpid $(head -1 $PIDFILE); then
