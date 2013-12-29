@@ -15,6 +15,10 @@ describe 'kafka::binary' do
     chef_run.ruby_block('validate-tarball')
   end
 
+  it 'includes kafka::_setup recipe' do
+    expect(chef_run).to include_recipe('kafka::_setup')
+  end
+
   it 'includes kafka::_configure recipe' do
     expect(chef_run).to include_recipe('kafka::_configure')
   end
@@ -30,7 +34,7 @@ describe 'kafka::binary' do
 
   it 'downloads remote binary release of Kafka' do
     expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz").with(
-      source:   'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
+      source: 'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
       checksum: 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e',
       mode: '644'
     )

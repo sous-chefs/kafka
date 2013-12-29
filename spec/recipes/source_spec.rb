@@ -15,6 +15,10 @@ describe 'kafka::source' do
     chef_run.ruby_block('validate-tarball')
   end
 
+  it 'includes kafka::_setup recipe' do
+    expect(chef_run).to include_recipe('kafka::_setup')
+  end
+
   it 'includes kafka::_configure recipe' do
     expect(chef_run).to include_recipe('kafka::_configure')
   end
