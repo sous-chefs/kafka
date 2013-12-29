@@ -6,7 +6,7 @@
 include_recipe 'kafka::default'
 
 template File.join(node[:kafka][:config_dir], 'zookeeper.properties') do
-  source "zookeeper.properties.erb"
+  source 'zookeeper.properties.erb'
   owner  node[:kafka][:user]
   group  node[:kafka][:group]
   mode   '644'
@@ -19,7 +19,7 @@ directory node[:zookeeper][:log_dir] do
   recursive true
 end
 
-template File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
+template File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
   source  'log4j.properties.erb'
   owner node[:kafka][:user]
   group node[:kafka][:group]
@@ -37,9 +37,10 @@ template '/etc/init.d/zookeeper' do
   mode '755'
   variables(
     daemon_name:   'zookeeper',
-    start_command: 'zookeeper-server-start.sh',
+    main_class:    'org.apache.zookeeper.server.quorum.QuorumPeerMain zookeeper',
     jmx_port:       node[:zookeeper][:jmx_port],
-    config:        'zookeeper.properties'
+    config:        'zookeeper.properties',
+    log4j_config:  'zookeeper.log4j.properties'
   )
 end
 

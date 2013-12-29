@@ -24,13 +24,16 @@ RETVAL=0
 export SCALA_VERSION="<%= node[:kafka][:scala_version] %>"
 export JMX_PORT="<%= @jmx_port %>"
 
+export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:<%= node[:kafka][:config_dir] %>/<%= @log4j_config %>"
+export KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
+
 start() {
   if [ -f $PIDFILE ] && checkpid $(head -1 $PIDFILE); then
     echo "$DAEMON (pid  $(head -1 $PIDFILE)) is already running..."
     exit 0
   fi
 
-  START_CMD="<%= node[:kafka][:install_dir] %>/bin/<%= @start_command %> <%= node[:kafka][:config_dir] %>/<%= @config %>"
+  START_CMD="<%= node[:kafka][:install_dir] %>/bin/kafka-run-class.sh daemon <%= @main_class %> <%= node[:kafka][:config_dir] %>/<%= @config %>"
 
   echo -n $"Starting $DAEMON"
   nohup $START_CMD > /dev/null 2>&1 &

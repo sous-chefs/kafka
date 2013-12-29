@@ -29,7 +29,7 @@ describe 'kafka::zookeeper' do
   end
 
   it 'creates a configuration file for Zookeeper log4j' do
-    expect(chef_run).to create_template('/opt/kafka/config/log4j.properties').with(
+    expect(chef_run).to create_template('/opt/kafka/config/zookeeper.log4j.properties').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '644',

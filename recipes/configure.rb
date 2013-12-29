@@ -28,9 +28,10 @@ template '/etc/init.d/kafka' do
   mode '755'
   variables(
     daemon_name:   'kafka',
-    start_command: 'kafka-server-start.sh',
+    main_class:    'kafkaServer kafka.Kafka',
     jmx_port:      node[:kafka][:jmx_port],
-    config:        node[:kafka][:config]
+    config:        node[:kafka][:config],
+    log4j_config:  'log4j.properties'
   )
 end
 
