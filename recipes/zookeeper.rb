@@ -37,7 +37,7 @@ template '/etc/init.d/zookeeper' do
   mode '755'
   variables(
     daemon_name:   'zookeeper',
-    main_class:    'org.apache.zookeeper.server.quorum.QuorumPeerMain zookeeper',
+    main_class:    'zookeeper org.apache.zookeeper.server.quorum.QuorumPeerMain',
     jmx_port:       node[:zookeeper][:jmx_port],
     config:        'zookeeper.properties',
     log4j_config:  'zookeeper.log4j.properties'
