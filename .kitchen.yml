@@ -15,8 +15,8 @@ platforms:
 suites:
   - name: configuration
     run_list:
-      - recipe[kafka::setup]
-      - recipe[kafka::configure]
+      - recipe[kafka::_setup]
+      - recipe[kafka::_configure]
     attributes:
       java:
         jdk_version: 7
