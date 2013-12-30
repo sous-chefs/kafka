@@ -21,7 +21,14 @@ template File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   mode   '644'
 end
 
-template '/etc/sysconfig/kafka' do
+sysconfig_path = case node[:platform]
+  when 'debian'
+    '/etc/default/kafka'
+  else
+    '/etc/sysconfig/kafka'
+end
+
+template sysconfig_path do
   source 'kafka.env.erb'
   owner  'root'
   group  'root'

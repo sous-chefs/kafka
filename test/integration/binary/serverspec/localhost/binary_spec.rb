@@ -38,7 +38,7 @@ describe 'kafka::binary' do
   shared_examples_for 'kafka stop command' do
     describe command('service kafka stop') do
       it { should return_exit_status 0 }
-      it { should return_stdout /Stopping kafka/ }
+      it { should return_stdout /stopping.+kafka/i }
     end
 
     describe file('/var/log/kafka/kafka.log') do
@@ -58,7 +58,12 @@ describe 'kafka::binary' do
       end
 
       describe command('service kafka start') do
-        it { should return_stdout /kafka .+ already running/ }
+        case RSpec.configuration.os[:family]
+        when 'Debian'
+          it { should return_stdout /starting.+kafka/i }
+        else
+          it { should return_stdout /kafka .+ already running/ }
+        end
       end
 
       include_examples 'kafka start command'
@@ -70,7 +75,7 @@ describe 'kafka::binary' do
       end
 
       describe command('service kafka start') do
-        it { should return_stdout /Starting kafka/ }
+        it { should return_stdout /starting.+kafka/i }
       end
 
       describe service('kafka') do
@@ -117,7 +122,7 @@ describe 'kafka::binary' do
 
       describe command('service kafka status') do
         it { should return_exit_status 0 }
-        it { should return_stdout /kafka .+ is running\.\.\./ }
+        it { should return_stdout /kafka.+running/i }
       end
     end
 
@@ -126,7 +131,13 @@ describe 'kafka::binary' do
 
       describe command('service kafka status') do
         it { should return_exit_status 3 }
-        it { should return_stdout /kafka is stopped/ }
+
+        case RSpec.configuration.os[:family]
+        when 'Debian'
+          it { should return_stdout /kafka is not running/ }
+        else
+          it { should return_stdout /kafka is stopped/ }
+        end
       end
     end
   end
