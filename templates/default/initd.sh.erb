@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Init file for <%= @daemon_name.capitalize %>
+#
+# chkconfig: 345 20 80
+# description: <%= @daemon_name %> daemon
+# pidfile: /var/run/<%= @daemon_name %>.pid
+
+NAME=<%= @daemon_name %>
+PIDFILE=/var/run/$NAME.pid
+RETVAL=0
+
+# Source function library
+[ -f /etc/init.d/functions ] && . /etc/init.d/functions
+
+# Source networking configuration
+[ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
+
+# Load additional configuration
+[ -f /etc/sysconfig/$NAME ] && . /etc/sysconfig/$NAME
+
+# Check that networking is up
+[ "$NETWORKING" = "no" ] && exit $RETVAL
+
+start() {
+  if [ -f $PIDFILE ] && checkpid `head -1 $PIDFILE`; then
+    echo "$NAME (pid `head -1 $PIDFILE`) is already running..."
+    exit 0
+  fi
+
+  echo -n "Starting $NAME"
+  /usr/bin/nohup $DAEMON > /dev/null 2>&1 &
+  RETVAL=$?
+  PID=$!
+  sleep 2
+  [ $RETVAL -eq 0 ] && echo_success || echo_failure
+  echo
+  echo $PID > $PIDFILE
+}
+
+stop() {
+  # First, try stopping with an INT
+  action "Stopping $NAME" killproc -p $PIDFILE -d 5 -2
+  RETVAL=$?
+  if [ ! $RETVAL -eq 0 ]; then
+    # Alright then, try again (TERM -> KILL)
+    killproc -p $PIDFILE -d 5
+  fi
+  RETVAL=$?
+}
+
+check_status() {
+  status -p $PIDFILE $NAME
+  RETVAL=$?
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart)
+    stop && sleep 2 && start
+    ;;
+  status)
+    check_status
+    ;;
+  *)
+    echo "Usage: $NAME {start|stop|restart|status}" >&2
+    RETVAL=1
+    ;;
+esac
+
+exit $RETVAL
