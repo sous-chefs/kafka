@@ -317,12 +317,26 @@ describe 'kafka::_configure' do
       })
     end
 
-    it 'sets KAFKA_HEAP_OPTS from attribute' do
-      expect(chef_run).to have_configured(path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
-    end
+    context 'environment variables' do
+      let :path do
+        '/etc/sysconfig/kafka'
+      end
 
-    it 'sets KAFKA_HEAP_OPTS from attribute' do
-      expect(chef_run).to have_configured(path).with('export KAFKA_OPTS').as('""')
+      it 'creates a sysconfig file' do
+        expect(chef_run).to create_template(path).with({
+          owner: 'root',
+          group: 'root',
+          mode: '644'
+        })
+      end
+
+      it 'sets KAFKA_HEAP_OPTS from attribute' do
+        expect(chef_run).to have_configured(path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
+      end
+
+      it 'sets KAFKA_HEAP_OPTS from attribute' do
+        expect(chef_run).to have_configured(path).with('export KAFKA_OPTS').as('""')
+      end
     end
   end
 
