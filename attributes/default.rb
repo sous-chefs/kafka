@@ -55,9 +55,9 @@ default[:kafka][:log][:cleanup_interval_mins] = 10
 default[:kafka][:log][:index_size_max_bytes] = 10 * 1024 * 1024
 default[:kafka][:log][:index_interval_bytes] = 4096
 default[:kafka][:log][:flush_interval_messages] = 10_000
+default[:kafka][:log][:flush_interval_ms] = 3000
 default[:kafka][:log][:flush_interval_ms_per_topic] = {}
-default[:kafka][:log][:flush_scheduler_interval_ms] = 3000
-default[:kafka][:log][:flush_interval_ms] = node[:kafka][:log][:flush_scheduler_interval_ms]
+default[:kafka][:log][:flush_scheduler_interval_ms] = node[:kafka][:log][:flush_interval_ms]
 default[:kafka][:auto_create_topics] = true
 
 # Replication configuration

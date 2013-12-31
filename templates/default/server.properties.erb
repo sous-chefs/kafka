@@ -112,7 +112,7 @@ log.index.size.max.bytes=<%= node[:kafka][:log][:index_size_max_bytes] %>
 log.index.interval.bytes=<%= node[:kafka][:log][:index_interval_bytes] %>
 
 # the number of messages accumulated on a log partition before messages are flushed to disk
-log.flush.interval.message=<%= node[:kafka][:log][:flush_interval_messages] %>
+log.flush.interval.messages=<%= node[:kafka][:log][:flush_interval_messages] %>
 
 # the maximum time in ms that a message in selected topics is kept in memory before flushed to disk, e.g., topic1:3000,topic2:6000
 <% if node[:kafka][:log][:flush_interval_ms_per_topic].any? %>
@@ -164,7 +164,7 @@ replica.fetch.min.bytes=<%= node[:kafka][:replica][:fetch_min_bytes] %>
 
 # number of fetcher threads used to replicate messages from a source broker.
 # Increasing this value can increase the degree of I/O parallelism in the follower broker.
-num.replica.fetches=<%= node[:kafka][:num_replica_fetchers] %>
+num.replica.fetchers=<%= node[:kafka][:num_replica_fetchers] %>
 
 # the frequency with which the high watermark is saved out to disk
 replica.high.watermark.checkpoint.interval.ms=<%= node[:kafka][:replica][:high_watermark_checkpoint_interval_ms] %>
