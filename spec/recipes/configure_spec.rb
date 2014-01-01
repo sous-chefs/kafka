@@ -39,29 +39,29 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(path).with('port').as(6667)
       end
 
-      it 'sets default host.name' do
+      it 'sets host name from node hostname attribute' do
         expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
       end
 
-      it 'uses send buffer bytes from attribute' do
+      it 'sets default send buffer bytes' do
         expect(chef_run).to have_configured(path).with('socket.send.buffer.bytes').as(100 * 1024)
       end
 
-      it 'uses receive buffer bytes from attribute' do
+      it 'sets default receive buffer bytes' do
         expect(chef_run).to have_configured(path).with('socket.receive.buffer.bytes').as(100 * 1024)
       end
 
-      it 'uses receive request max size from attribute' do
+      it 'sets default receive request max size' do
         expect(chef_run).to have_configured(path).with('socket.request.max.bytes').as(100 * 1024 * 1024)
       end
     end
 
     context 'log configuration' do
-      it 'uses default number of partitions from attribute' do
+      it 'sets default number of partitions' do
         expect(chef_run).to have_configured(path).with('num.partitions').as(1)
       end
 
-      it 'sets default log dirs' do
+      it 'sets default log dir(s)' do
         expect(chef_run).to have_configured(path).with('log.dirs').as('/tmp/kafka-logs')
       end
 
