@@ -9,14 +9,18 @@ describe 'kafka::default' do
     end
   end
 
+  before do
+    Chef::Application.stub(:fatal!)
+
+    chef_run.converge(described_recipe)
+  end
+
   context 'when node[:kafka][:install_method] equals :source' do
     let :install_method do
       :source
     end
 
     it 'includes kafka::source recipe' do
-      chef_run.converge(described_recipe)
-
       expect(chef_run).to include_recipe('kafka::source')
     end
   end
@@ -27,8 +31,6 @@ describe 'kafka::default' do
     end
 
     it 'includes kafka::binary recipe' do
-      chef_run.converge(described_recipe)
-
       expect(chef_run).to include_recipe('kafka::binary')
     end
   end
@@ -39,9 +41,7 @@ describe 'kafka::default' do
     end
 
     it 'terminates the chef run' do
-      expect(Chef::Application).to receive(:fatal!).with(/Unknown install_method: bork/).once
-
-      chef_run.converge(described_recipe)
+      expect(Chef::Application).to have_received(:fatal!).with(/Unknown install_method: bork/).once
     end
   end
 end
