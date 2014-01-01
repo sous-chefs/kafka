@@ -34,11 +34,4 @@ describe 'kafka::setup' do
     it { should be_grouped_into('kafka') }
     it { should be_mode 755 }
   end
-
-  describe file('/var/kafka') do
-    it { should be_a_directory }
-    it { should be_owned_by('kafka') }
-    it { should be_grouped_into('kafka') }
-    it { should be_mode 755 }
-  end
 end
