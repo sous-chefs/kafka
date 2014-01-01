@@ -37,6 +37,14 @@ describe 'kafka::zookeeper' do
     })
   end
 
+  it 'creates a sysconfig file' do
+    expect(chef_run).to create_template('/etc/sysconfig/zookeeper').with({
+      owner: 'root',
+      group: 'root',
+      mode: '644'
+    })
+  end
+
   it 'creates an init.d script for Zookeeper' do
     expect(chef_run).to create_template('/etc/init.d/zookeeper').with({
       owner: 'root',

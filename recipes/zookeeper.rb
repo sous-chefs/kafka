@@ -24,24 +24,38 @@ template File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
   owner node[:kafka][:user]
   group node[:kafka][:group]
   mode  '644'
-  variables(
+  variables({
     process: 'zookeeper',
     log_dir: node[:zookeeper][:log_dir]
-  )
+  })
+end
+
+sysconfig_path = case node[:platform]
+  when 'debian'
+    '/etc/default/zookeeper'
+  else
+    '/etc/sysconfig/zookeeper'
+end
+
+template sysconfig_path do
+  source 'kafka.env.erb'
+  owner  'root'
+  group  'root'
+  mode   '644'
+  variables({
+    main_class:   'zookeeper org.apache.zookeeper.server.quorum.QuorumPeerMain',
+    jmx_port:     node[:zookeeper][:jmx_port],
+    config:        'zookeeper.properties',
+    log4j_config:  'zookeeper.log4j.properties'
+  })
 end
 
 template '/etc/init.d/zookeeper' do
-  source 'initd.script.erb'
+  source 'initd.sh.erb'
   owner 'root'
   group 'root'
   mode '755'
-  variables(
-    daemon_name:   'zookeeper',
-    main_class:    'zookeeper org.apache.zookeeper.server.quorum.QuorumPeerMain',
-    jmx_port:       node[:zookeeper][:jmx_port],
-    config:        'zookeeper.properties',
-    log4j_config:  'zookeeper.log4j.properties'
-  )
+  variables({daemon_name: 'zookeeper'})
 end
 
 service 'zookeeper' do
