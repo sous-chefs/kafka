@@ -11,34 +11,28 @@ provisioner:
 
 platforms:
   - name: centos-6.5
+    attributes:
+      java:
+        jdk_version: 7
   - name: debian-7.2.0
+    attributes:
+      java:
+        jdk_version: 6
 
 suites:
   - name: configuration
     run_list:
       - recipe[kafka::_setup]
       - recipe[kafka::_configure]
-    attributes:
-      java:
-        jdk_version: 7
   - name: binary
     run_list:
       - recipe[java]
       - recipe[kafka::binary]
-    attributes:
-      java:
-        jdk_version: 7
   - name: source
     run_list:
       - recipe[java]
       - recipe[kafka::source]
-    attributes:
-      java:
-        jdk_version: 7
   - name: zookeeper
     run_list:
       - recipe[java]
       - recipe[kafka::zookeeper]
-    attributes:
-      java:
-        jdk_version: 7
