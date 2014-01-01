@@ -55,7 +55,6 @@ socket.request.max.bytes=<%= node[:kafka][:socket][:request_max_bytes] %>
 
 ############################# Log Configuration #############################
 
-
 # The default number of log partitions per topic
 num.partitions=<%= node[:kafka][:num_partitions] %>
 
@@ -114,6 +113,9 @@ log.index.interval.bytes=<%= node[:kafka][:log][:index_interval_bytes] %>
 # the number of messages accumulated on a log partition before messages are flushed to disk
 log.flush.interval.messages=<%= node[:kafka][:log][:flush_interval_messages] %>
 
+# the maximum time in ms that a message in any topic is kept in memory before flushed to disk
+log.flush.interval.ms=<%= node[:kafka][:log][:flush_interval_ms] %>
+
 # the maximum time in ms that a message in selected topics is kept in memory before flushed to disk, e.g., topic1:3000,topic2:6000
 <% if node[:kafka][:log][:flush_interval_ms_per_topic].any? %>
 log.flush.interval.ms.per.topic=<%= node[:kafka][:log][:flush_interval_ms_per_topic].map {|k,v| [k, v].join(':')}.join(',') %>
@@ -124,10 +126,7 @@ log.flush.interval.ms.per.topic=<%= node[:kafka][:log][:flush_interval_ms_per_to
 # the frequency in ms that the log flusher checks whether any log needs to be flushed to disk
 log.flush.scheduler.interval.ms=<%= node[:kafka][:log][:flush_scheduler_interval_ms] %>
 
-# the maximum time in ms that a message in any topic is kept in memory before flushed to disk
-log.flush.interval.ms=<%= node[:kafka][:log][:flush_interval_ms] %>
-
-# enable auto creation of topic on the server
+# enable auto creation of topic on the broker
 auto.create.topics.enable=<%= node[:kafka][:auto_create_topics] %>
 
 ############################# Replication Configuration #############################
@@ -138,10 +137,10 @@ controller.socket.timeout.ms=<%= node[:kafka][:controller][:socket_timeout_ms] %
 # the buffer size for controller-to-broker-channels
 controller.message.queue.size=<%= node[:kafka][:controller][:message_queue_size] %>
 
-# default replication factors for automatically created topics
+# default replication factor for automatically created topics
 default.replication.factor=<%= node[:kafka][:default_replication_factor] %>
 
-# If a follower hasn't sent any fetch requests during this time, the leader will remove the follower from isr
+# if a follower hasn't sent any fetch requests during this time, the leader will remove the follower from isr
 replica.lag.time.max.ms=<%= node[:kafka][:replica][:lag_time_max_ms] %>
 
 # If the lag in messages between a leader and a follower exceeds this number, the leader will remove the follower from isr
@@ -153,14 +152,14 @@ replica.socket.timeout.ms=<%= node[:kafka][:replica][:socket_timeout_ms] %>
 # the socket receive buffer for network requests
 replica.socket.receive.buffer.bytes=<%= node[:kafka][:replica][:socket_receive_buffer_bytes] %>
 
-# the number of byes of messages to attempt to fetch
+# the number of bytes of messages to attempt to fetch
 replica.fetch.max.bytes=<%= node[:kafka][:replica][:fetch_max_bytes] %>
-
-# max wait time for each fetcher request issued by follower replicas
-replica.fetch.wait.max.ms=<%= node[:kafka][:replica][:fetch_wait_max_ms] %>
 
 # minimum bytes expected for each fetch response. If not enough bytes, wait up to replicaMaxWaitTimeMs
 replica.fetch.min.bytes=<%= node[:kafka][:replica][:fetch_min_bytes] %>
+
+# max wait time for each fetcher request issued by follower replicas
+replica.fetch.wait.max.ms=<%= node[:kafka][:replica][:fetch_wait_max_ms] %>
 
 # number of fetcher threads used to replicate messages from a source broker.
 # Increasing this value can increase the degree of I/O parallelism in the follower broker.
