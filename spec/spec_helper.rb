@@ -14,3 +14,5 @@ RSpec.configure do |config|
 end
 
 require 'support/matchers'
+
+at_exit { ChefSpec::Coverage.report! }
