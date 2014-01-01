@@ -3,3 +3,5 @@ vendor
 .kitchen.local.yml
 .vagrant
 TODO.md
+.coverage
+.bundle
