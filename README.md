@@ -34,7 +34,8 @@ configuration.
 
 ### default
 
-The following attributes are used for setting up the environment for Kafka.
+The following attributes are used for setting up the environment for Kafka, as
+well as configuring Kafka.
 
 * `node[:kafka][:version]` - The Kafka version to install and use.
 * `node[:kafka][:base_url]` - Base URL for Kafka releases.
@@ -43,43 +44,39 @@ The following attributes are used for setting up the environment for Kafka.
 * `node[:kafka][:md5_checksum]` - MD5 checksum to use when validating
   downloaded release.
 * `node[:kafka][:scala_version]` - Scala version for Kafka.
+* `node[:kafka][:install_method]` - Decides how to install Kafka, by binary or
+  from source. Defaults to `:binary`.
 * `node[:kafka][:install_dir]` - Location for Kafka to be installed.
 * `node[:kafka][:config_dir]` - Location for Kafka configuration files.
 * `node[:kafka][:log_dir]` - Location for Kafka log4j logs.
-* `node[:kafka][:user]` - User to use for directories and configuration files.
-* `node[:kafka][:group]` - Group for user defined above.
-* `node[:kafka][:log_level]` - Log level for Kafka logs (and ZooKeeper, for further
-  information see below).
 * `node[:kafka][:log4j_config]` - Name of log4j configuration file (should
   include extension as well). Will use `log4j.properties` by default.
+* `node[:kafka][:log_level]` - Log level for Kafka logs (and ZooKeeper, for further
+  information see below).
 * `node[:kafka][:config]` - Name of configuration file for Kafka (should
   include extension as well). Will use `server.properties` by default.
 * `node[:kafka][:jmx_port]` - JMX port for Kafka.
-* `node[:kafka][:install_method]` - Decides how to install Kafka, by binary or
-  from source. Defaults to `:source`.
+* `node[:kafka][:user]` - User to use for directories and configuration files.
+* `node[:kafka][:group]` - Group for user defined above.
+* `node[:kafka][:heap_opts]` - JVM heap options for the Kafka broker.
+* `node[:kafka][:generic_opts]` - Generic JVM options for the Kafka broker.
 
-### kafka
-
-The following attributes are used for the Kafka broker configuration and are
-divided into logical sections according to the official Kafka configuration.
-
-#### General broker configuration attributes
+#### General broker configuration
 
 * `node[:kafka][:broker_id]` - The id of the broker. This must be set to a unique integer
   for each broker. If not set, it will default to using the machine's ip address
   (without the dots).
-* `node[:kafka][:host_name]` - Host name the broker will advertise. If not set, Kafka will
-  use the host name returned from
-`java.net.InetAddress.getCanonicalHostName()`, which might not be what you want.
+* `node[:kafka][:message_max_bytes]` - The maximum size of message that the server can receive.
+* `node[:kafka][:num_network_threads]` - The number of network threads that the server uses for handling network requests.
+* `node[:kafka][:num_io_threads]` - The number of io threads that the server uses for carrying out network requests.
+* `node[:kafka][:queued_max_requests]` - The number of queued requests allowed before blocking the network threads.
+
+#### Socket server configuration
+
 * `node[:kafka][:port]` - The port Kafka will listen on for incoming requests.
-* `node[:kafka][network_threads]` - The number of threads handling network requests.
-* `node[:kafka][:io_threads]` - The number of threads doing disk I/O.
-* `node[:kafka][num_partitions]` - The number of logical partitions per topic per server.
-  More partitions allow greater parallelism for consumption, but also mean more
-  files.
-
-#### Socket server attributes
-
+  Defaults to 6667.
+* `node[:kafka][:host_name]` - Hostname of broker. If this is set, it will only bind to this address.
+  If this is not set, it will bind to all interfaces, and publish one to ZK.
 * `node[:kafka][:socket][:send_buffer_bytes]` - The send buffer (`SO_SNDBUF`) used by the
   socket server.
 * `node[:kafka][:socket][:receive_buffer_bytes]` - The receive buffer (`SO_RCVBUF`) used by
@@ -87,42 +84,84 @@ divided into logical sections according to the official Kafka configuration.
 * `node[:kafka][:socket][:request_max_bytes]` - The maximum size of a request that the
   socket server will accept (protection against out of memory).
 
-#### Log and flush policy attributes
+#### Log configuration
 
-* `node[:kafka][:log][:dirs]` - The directory under which Kafka will store log files.
-* `node[:kafka][:log][:flush_interval_messages]` - The number of messages to accept before
-  forcing a flush of data to disk.
-* `node[:kafka][:log][:flush_interval_ms]` - The maximum amount of time a message can sit
-  in a log before Kafka forces a flush to disk.
-* `node[:kafka][:log][:retention_hours]` - The minimum age of a log file to be eligible for
-  deletetion.
+* `node[:kafka][num_partitions]` - The default number of log partitions per topic.
+* `node[:kafka][:log][:dirs]` - The directories in which the log data is kept.
+* `node[:kafka][:log][:segment_bytes]` - The maximum size of a log segment file. When this
+  size is reached a new log segment will be created.
+* `node[:kafka][:log][:segment_bytes_per_topic]` - The maximum size of a single
+  log segment file for some specific topic. Should be a hash of topic -> max
+  size mappings.
+* `node[:kafka][:log][:roll_hours]` - The maximum time before a new log segment is rolled out.
+* `node[:kafka][:log][:roll_hours_per_topic]` - The maximum time before a new
+  log segment is rolled out for specific topics. Should be a hash of topic ->
+  hours mappings.
+* `node[:kafka][:log][:retention_hours]` - The number of hours to keep a log file before deleting it.
+* `node[:kafka][:log][:retention_hours_per_topic]` - The number of hours to keep
+  a log file for specific topics. Should be a hash of topic -> hours mappings.
 * `node[:kafka][:log][:retention_bytes]` - A size-based retention policy for logs. Segments
   are pruned from the log as long as the remaining segments don't drop below
   `log_retention_bytes`.
-* `node[:kafka][:log][:segment_bytes]` - The maximum size of a log segment file. When this
-  size is reached a new log segment will be created.
-* `node[:kafka][:log][:cleanup_interval_mins]` - The interval at which log segments are
-  checked to see if they can be deleted according to the retention policies.
+* `node[:kafka][:log][:retention_bytes_per_topic]` - The maximum size of the log
+  for specific topics. Should be a hash of topic -> max size mappings.
+* `node[:kafka][:log][:cleanup_interval_mins]` - The frequency in minutes that
+  the log cleaner checks whether any log is eligible for deletion.
+* `node[:kafka][:log][:index_size_max_bytes]` - The maximum size in bytes of the offset index.
+* `node[:kafka][:log][:index_interval_bytes]` - The interval with which we add an entry to the offset index.
+* `node[:kafka][:log][:flush_interval_messages]` - The number of messages accumulated on a log partition
+  before messages are flushed to disk.
+* `node[:kafka][:log][:flush_interval_ms]` - The maximum time in ms that a message in any topic is
+  kept in memory before flushed to disk.
+* `node[:kafka][:log][:flush_interval_ms_per_topic]` - The maximum time in ms
+  that a message in specific topics is kept in memory before flushed to disk.
+  Should be a hash of topic -> interval mappings.
+* `node[:kafka][:log][:flush_scheduler_interval_ms]` - The frequency in ms that
+  the log flusher checks whether any log needs to be flushed to disk.
+* `node[:kafka][:auto_create_topics]` - Enable auto creation of topics on the
+  broker.
 
-#### ZooKeeper attributes
+#### Replication configuration
 
-* `node[:kafka][:zookeeper][:connect]` - A list of zookeeper nodes to connect to.
-* `node[:kafka][:zookeeper][:timeout]` - Timeout in milliseconds for connecting to ZooKeeper.
+* `node[:kafka][:controller][:socket_timeout_ms]` - The socket timeout for controller-to-broker channels.
+* `node[:kafka][:controller][:message_queue_size]` - The buffer size for controller-to-broker-channels.
+* `node[:kafka][:default_replication_factor]` - Default replication factor for automatically created topics.
+* `node[:kafka][:replica][:lag_time_max_ms]` - If a follower hasn't sent any fetch requests during this time,
+  the leader will remove the follower from ISR.
+* `node[:kafka][:replica][:lag_max_messages]` - If the lag in messages between a leader and a follower exceeds this number,
+  the leader will remove the follower from ISR.
+* `node[:kafka][:replica][:socket_timeout_ms]` - The socket timeout for network requests.
+* `node[:kafka][:replica][:socket_receive_buffer_bytes]` - The socket receive buffer for network requests.
+* `node[:kafka][:replica][:fetch_max_bytes]` - The number of bytes of messages to attempt to fetch.
+* `node[:kafka][:replica][:fetch_min_bytes]` - Minimum bytes expected for each fetch response.
+  If not enough bytes, wait up to `fetch_wait_max_ms`.
+* `node[:kafka][:replica][:fetch_wait_max_ms]` - Max wait time for each fetcher request issued by follower replicas.
+* `node[:kafka][:num_replica_fetchers]` - Number of fetcher threads used to replicate messages from a source broker.
+  Increasing this value can increase the degree of I/O parallelism in the follower broker.
+* `node[:kafka][:replica][:high_watermark_checkpoint_interval_ms]` - The frequency with which the high watermark is saved out to disk.
+* `node[:kafka][:fetch][:purgatory_purge_interval_requests]` - the purge interval (in number of requests) of the fetch request purgatory.
+* `node[:kafka][:producer][:purgatory_purge_interval_requests]` - the purge interval (in number of requests) of the producer request purgatory.
 
-#### Metric attributes
+#### Controlled shutdown configuration
 
-* `node[:kafka][:metrics][:polling_interval]` - Polling interval for metrics.
-* `node[:kafka][:metrics][:reporters]` - Metric reporters to be used.
+* `node[:kafka][:controlled_shutdown][:max_retries]` - Controlled shutdown can fail for multiple reasons.
+  This determines the number of retries when such failure happens.
+* `node[:kafka][:controlled_shutdown][:retry_backoff_ms]` - Before each retry, the system needs time to
+  recover from the state that caused the previous failure (Controller fail over, replica lag etc).
+  This config determines the amount of time to wait before retrying.
+* `node[:kafka][:controlled_shutdown][:enabled]` - Enable controlled shutdown of the server.
 
-##### CSV metric attributes
+#### ZooKeeper configuration
 
-* `node[:kafka][:csv_metrics][:dir]` - Directory path for saving metrics.
-* `node[:kafka][:csv_metrics][:reporter_enabled]` - Enable/disable CSV metrics reporter.
+* `node[:kafka][:zookeeper][:connect]` - A list of ZooKeeper nodes to connect to.
+* `node[:kafka][:zookeeper][:connection_timeout_ms]` - The max time that the client waits to establish a connection to ZooKeeper.
+* `node[:kafka][:zookeeper][:session_timeout_ms]` - ZooKeeper session timeout.
+* `node[:kafka][:zookeeper][:sync_time_ms]` - How far a ZK follower can be behind a ZK leader.
 
 ### zookeeper
 
 The following attributes are used to configure ZooKeeper when using the
-`kafka::standalone` recipe, see below for further explanation.
+`kafka::zookeeper` recipe, see below for further explanation.
 
 * `node[:zookeeper][:data_dir]` - Path where to store ZooKeeper data.
 * `node[:zookeeper][:log_dir]` - Where to store ZooKeeper logs.
@@ -162,8 +201,6 @@ other testing environment).
 
 * No support for Ubuntu/Debian.
 * Not tested with other RHEL distributions.
-* No support for per-topic overrides for `node[:kafka][:log][:flush_interval_ms]`.
-* Not certain if all configuration parameters for Kafka are supported at this time.
 
 ## License and author
 

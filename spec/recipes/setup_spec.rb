@@ -63,13 +63,4 @@ describe 'kafka::_setup' do
     expect(directory.group).to eq('kafka')
     expect(directory.mode).to eq('755')
   end
-
-  it 'creates data directory' do
-    expect(chef_run).to create_directory('/var/kafka')
-
-    directory = chef_run.directory('/var/kafka')
-    expect(directory.owner).to eq('kafka')
-    expect(directory.group).to eq('kafka')
-    expect(directory.mode).to eq('755')
-  end
 end

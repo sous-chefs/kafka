@@ -6,6 +6,10 @@ RSpec::Matchers.define :have_configured do |configuration_file|
     render_file(configuration_file).with_content(regexp).matches?(chef_run)
   end
 
+  failure_message_for_should do |actual|
+    "expected that #{configuration_file} would be configured with #{@attribute} as #{@value}"
+  end
+
   chain :as do |value|
     @value = value
   end

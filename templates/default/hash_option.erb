@@ -1,0 +1,5 @@
+<% if @value && @value.any? %>
+<%= @key %>=<%= @value.map {|k,v| [k, v].join(':')}.join(',') %>
+<% else %>
+#<%= @key %>=
+<% end %>
