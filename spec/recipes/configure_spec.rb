@@ -57,6 +57,34 @@ describe 'kafka::_configure' do
     end
 
     context 'log configuration' do
+      shared_examples_for 'a hash based option' do
+        let :attribute do
+          option.to_s.gsub('_', '.')
+        end
+
+        context 'by default' do
+          it 'configures a commented attribute' do
+            expect(chef_run).to have_configured(path).with("#log.#{attribute}").as('')
+          end
+        end
+
+        context 'with a hash of mappings' do
+          let :mappings do
+            {'topic1' => 12345, 'topic2' => 3000}
+          end
+
+          let :chef_run do
+            ChefSpec::Runner.new do |node|
+              node.set[:kafka][:log][option] = mappings
+            end.converge(described_recipe)
+          end
+
+          it 'transforms it to a CSV string' do
+            expect(chef_run).to have_configured(path).with("log.#{attribute}").as('topic1:12345,topic2:3000')
+          end
+        end
+      end
+
       it 'sets default number of partitions' do
         expect(chef_run).to have_configured(path).with('num.partitions').as(1)
       end
@@ -70,7 +98,11 @@ describe 'kafka::_configure' do
       end
 
       context 'segment bytes per topic' do
-        pending
+        it_behaves_like 'a hash based option' do
+          let :option do
+            :segment_bytes_per_topic
+          end
+        end
       end
 
       it 'sets default roll hours' do
@@ -78,7 +110,11 @@ describe 'kafka::_configure' do
       end
 
       context 'roll hours per topic' do
-        pending
+        it_behaves_like 'a hash based option' do
+          let :option do
+            :roll_hours_per_topic
+          end
+        end
       end
 
       it 'sets default log retention hours' do
@@ -86,7 +122,11 @@ describe 'kafka::_configure' do
       end
 
       context 'log retention hours per topic' do
-        pending
+        it_behaves_like 'a hash based option' do
+          let :option do
+            :retention_hours_per_topic
+          end
+        end
       end
 
       it 'sets default log retention bytes' do
@@ -94,7 +134,11 @@ describe 'kafka::_configure' do
       end
 
       context 'log retention bytes per topic' do
-        pending
+        it_behaves_like 'a hash based option' do
+          let :option do
+            :retention_bytes_per_topic
+          end
+        end
       end
 
       it 'sets default log cleanup interval (minutes)' do
@@ -118,7 +162,11 @@ describe 'kafka::_configure' do
       end
 
       context 'log flush interval (ms) per topic' do
-        pending
+        it_behaves_like 'a hash based option' do
+          let :option do
+            :flush_interval_ms_per_topic
+          end
+        end
       end
 
       it 'sets default log flush scheduler interval (ms)' do
