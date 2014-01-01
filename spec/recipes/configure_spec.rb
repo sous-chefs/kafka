@@ -12,6 +12,14 @@ describe 'kafka::_configure' do
       '/opt/kafka/config/server.properties'
     end
 
+    it 'creates the configuration file' do
+      expect(chef_run).to create_template(path).with({
+        owner: 'kafka',
+        group: 'kafka',
+        mode: '644'
+      })
+    end
+
     context 'general configuration' do
       it 'sets broker id from node\'s ip address' do
         expect(chef_run).to have_configured(path).with('broker.id').as('10002')
@@ -274,6 +282,14 @@ describe 'kafka::_configure' do
       '/opt/kafka/config/log4j.properties'
     end
 
+    it 'creates the configuration file' do
+      expect(chef_run).to create_template(path).with({
+        owner: 'kafka',
+        group: 'kafka',
+        mode: '644'
+      })
+    end
+
     it 'configures log level' do
       expect(chef_run).to have_configured(path).with('log4j.rootLogger').as('INFO,R')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka').as('INFO')
@@ -294,12 +310,11 @@ describe 'kafka::_configure' do
     end
 
     it 'creates one' do
-      expect(chef_run).to create_template(path)
-
-      file = chef_run.template(path)
-      expect(file.owner).to eq('root')
-      expect(file.group).to eq('root')
-      expect(file.mode).to eq('755')
+      expect(chef_run).to create_template(path).with({
+        owner: 'root',
+        group: 'root',
+        mode: '755'
+      })
     end
 
     it 'sets KAFKA_HEAP_OPTS from attribute' do
@@ -311,9 +326,7 @@ describe 'kafka::_configure' do
     end
   end
 
-  it 'creates a \'kafka\' service' do
-    service = chef_run.service('kafka')
-
-    expect(service.action).to eq([:enable])
+  it 'enables a \'kafka\' service' do
+    expect(chef_run).to enable_service('kafka')
   end
 end

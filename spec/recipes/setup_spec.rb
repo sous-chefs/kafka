@@ -14,12 +14,11 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a kafka user' do
-        expect(chef_run).to create_user('kafka')
-
-        user = chef_run.user('kafka')
-        expect(user.shell).to eq('/bin/false')
-        expect(user.home).to eq('/home/kafka')
-        expect(user.gid).to eq('kafka')
+        expect(chef_run).to create_user('kafka').with({
+          shell: '/bin/false',
+          home: '/home/kafka',
+          gid: 'kafka'
+        })
       end
     end
 
@@ -32,35 +31,40 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a group with set name' do
-        expect(chef_run).to create_user('spec')
+        expect(chef_run).to create_group('spec')
       end
 
       it 'creates a user with set name' do
-        expect(chef_run).to create_user('spec')
-
-        user = chef_run.user('spec')
-        expect(user.shell).to eq('/bin/false')
-        expect(user.home).to eq('/home/spec')
-        expect(user.gid).to eq('spec')
+        expect(chef_run).to create_user('spec').with({
+          shell: '/bin/false',
+          home: '/home/spec',
+          gid: 'spec'
+        })
       end
     end
   end
 
   it 'creates installation directory' do
-    expect(chef_run).to create_directory('/opt/kafka')
-
-    directory = chef_run.directory('/opt/kafka')
-    expect(directory.owner).to eq('kafka')
-    expect(directory.group).to eq('kafka')
-    expect(directory.mode).to eq('755')
+    expect(chef_run).to create_directory('/opt/kafka').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
   end
 
   it 'creates log directory' do
-    expect(chef_run).to create_directory('/var/log/kafka')
+    expect(chef_run).to create_directory('/var/log/kafka').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
+  end
 
-    directory = chef_run.directory('/var/log/kafka')
-    expect(directory.owner).to eq('kafka')
-    expect(directory.group).to eq('kafka')
-    expect(directory.mode).to eq('755')
+  it 'creates config directory' do
+    expect(chef_run).to create_directory('/opt/kafka/config').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
   end
 end

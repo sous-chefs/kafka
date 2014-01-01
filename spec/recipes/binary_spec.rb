@@ -11,10 +11,6 @@ describe 'kafka::binary' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz")
   end
 
-  let :validate_block do
-    chef_run.ruby_block('validate-tarball')
-  end
-
   it 'includes kafka::_setup recipe' do
     expect(chef_run).to include_recipe('kafka::_setup')
   end
@@ -23,13 +19,12 @@ describe 'kafka::binary' do
     expect(chef_run).to include_recipe('kafka::_configure')
   end
 
-  it 'creates \'dist\' directory' do
-    expect(chef_run).to create_directory('/opt/kafka/dist')
-
-    directory = chef_run.directory('/opt/kafka/dist')
-    expect(directory.owner).to eq('kafka')
-    expect(directory.group).to eq('kafka')
-    expect(directory.mode).to eq('755')
+  it 'creates dist directory' do
+    expect(chef_run).to create_directory('/opt/kafka/dist').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
   end
 
   it 'downloads remote binary release of Kafka' do
@@ -45,7 +40,7 @@ describe 'kafka::binary' do
   end
 
   it 'extracts downloaded Kafka archive' do
-    expect(validate_block).to notify('execute[extract-kafka]').to(:run).immediately
+    expect(chef_run.ruby_block('validate-tarball')).to notify('execute[extract-kafka]').to(:run).immediately
 
     extract_kafka = chef_run.execute('extract-kafka')
     expect(extract_kafka.cwd).to eq('/opt/kafka/dist')
