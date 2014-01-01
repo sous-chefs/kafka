@@ -1,0 +1,5 @@
+<% unless @value.nil? %>
+<%= [@key, @value].join('=') %>
+<% else %>
+#<%= @key %>=
+<% end %>
