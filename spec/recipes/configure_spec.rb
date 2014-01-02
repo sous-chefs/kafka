@@ -321,7 +321,7 @@ describe 'kafka::_configure' do
     end
 
     context 'environment variables' do
-      it 'creates a sysconfig file' do
+      it 'creates a file for setting necessary environment variables' do
         expect(chef_run).to create_template(env_path).with({
           owner: 'root',
           group: 'root',
