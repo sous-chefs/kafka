@@ -21,11 +21,20 @@ template File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   mode   '644'
 end
 
-sysconfig_path = case node[:platform]
-  when 'debian'
-    '/etc/default/kafka'
-  else
-    '/etc/sysconfig/kafka'
+case node[:kafka][:init_style]
+when :sysv
+  sysconfig_path = value_for_platform({
+    'debian' => {'default' => '/etc/default/kafka'},
+    'default' => '/etc/sysconfig/kafka'
+  })
+  init_script_path = '/etc/init.d/kafka'
+  source_script_path = 'initd.sh.erb'
+  service_provider = nil
+when :upstart
+  sysconfig_path = '/etc/default/kafka'
+  init_script_path = '/etc/init/kafka.conf'
+  source_script_path = 'kafka.upstart.erb'
+  service_provider = Chef::Provider::Service::Upstart
 end
 
 template sysconfig_path do
@@ -41,8 +50,8 @@ template sysconfig_path do
   })
 end
 
-template '/etc/init.d/kafka' do
-  source 'initd.sh.erb'
+template init_script_path do
+  source source_script_path
   owner  'root'
   group  'root'
   mode   '755'
@@ -50,6 +59,7 @@ template '/etc/init.d/kafka' do
 end
 
 service 'kafka' do
+  provider service_provider
   supports start: true, stop: true, restart: true
   action [:enable]
 end

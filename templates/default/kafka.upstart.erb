@@ -1,0 +1,9 @@
+description "<%= @daemon_name %> daemon"
+
+kill signal INT
+kill timeout 10
+
+script
+  [ -f /etc/default/<%= @daemon_name %> ] && . /etc/default/<%= @daemon_name %>
+  exec $DAEMON
+end script

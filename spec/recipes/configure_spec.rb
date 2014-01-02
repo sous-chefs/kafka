@@ -304,13 +304,15 @@ describe 'kafka::_configure' do
     end
   end
 
-  context 'init.d script' do
-    let :path do
-      '/etc/init.d/kafka'
+  shared_examples_for 'an init style' do
+    let :chef_run do
+      ChefSpec::Runner.new do |node|
+        node.set[:kafka][:init_style] = init_style
+      end.converge(described_recipe)
     end
 
-    it 'creates one' do
-      expect(chef_run).to create_template(path).with({
+    it 'creates a script at the appropriate location' do
+      expect(chef_run).to create_template(init_path).with({
         owner: 'root',
         group: 'root',
         mode: '755'
@@ -318,12 +320,8 @@ describe 'kafka::_configure' do
     end
 
     context 'environment variables' do
-      let :path do
-        '/etc/sysconfig/kafka'
-      end
-
       it 'creates a sysconfig file' do
-        expect(chef_run).to create_template(path).with({
+        expect(chef_run).to create_template(env_path).with({
           owner: 'root',
           group: 'root',
           mode: '644'
@@ -331,11 +329,45 @@ describe 'kafka::_configure' do
       end
 
       it 'sets KAFKA_HEAP_OPTS from attribute' do
-        expect(chef_run).to have_configured(path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
       end
 
       it 'sets KAFKA_HEAP_OPTS from attribute' do
-        expect(chef_run).to have_configured(path).with('export KAFKA_OPTS').as('""')
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
+      end
+    end
+  end
+
+  context 'init script(s)' do
+    context 'when init_style is :sysv' do
+      it_behaves_like 'an init style' do
+        let :init_style do
+          :sysv
+        end
+
+        let :init_path do
+          '/etc/init.d/kafka'
+        end
+
+        let :env_path do
+          '/etc/sysconfig/kafka'
+        end
+      end
+    end
+
+    context 'when init_style is :upstart' do
+      it_behaves_like 'an init style' do
+        let :init_style do
+          :upstart
+        end
+
+        let :init_path do
+          '/etc/init/kafka.conf'
+        end
+
+        let :env_path do
+          '/etc/default/kafka'
+        end
       end
     end
   end
