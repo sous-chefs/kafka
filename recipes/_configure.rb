@@ -23,7 +23,7 @@ end
 
 case node[:kafka][:init_style]
 when :sysv
-  sysconfig_path = value_for_platform({
+  env_path = value_for_platform({
     'debian' => {'default' => '/etc/default/kafka'},
     'default' => '/etc/sysconfig/kafka'
   })
@@ -31,13 +31,13 @@ when :sysv
   source_script_path = 'initd.sh.erb'
   service_provider = nil
 when :upstart
-  sysconfig_path = '/etc/default/kafka'
+  env_path = '/etc/default/kafka'
   init_script_path = '/etc/init/kafka.conf'
   source_script_path = 'kafka.upstart.erb'
   service_provider = Chef::Provider::Service::Upstart
 end
 
-template sysconfig_path do
+template env_path do
   source 'kafka.env.erb'
   owner  'root'
   group  'root'
