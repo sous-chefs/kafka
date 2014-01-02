@@ -307,6 +307,7 @@ describe 'kafka::_configure' do
   shared_examples_for 'an init style' do
     let :chef_run do
       ChefSpec::Runner.new do |node|
+        node.set[:kafka][:scala_version] = '2.8.0'
         node.set[:kafka][:init_style] = init_style
       end.converge(described_recipe)
     end
@@ -328,12 +329,32 @@ describe 'kafka::_configure' do
         })
       end
 
+      it 'sets SCALA_VERSION from attribute' do
+        expect(chef_run).to have_configured(env_path).with('export SCALA_VERSION').as('"2.8.0"')
+      end
+
+      it 'sets JMX_PORT from attribute' do
+        expect(chef_run).to have_configured(env_path).with('export JMX_PORT').as('"9999"')
+      end
+
+      it 'sets KAFKA_LOG4J_OPTS' do
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_LOG4J_OPTS').as('"-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties"')
+      end
+
       it 'sets KAFKA_HEAP_OPTS from attribute' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
       end
 
       it 'sets KAFKA_HEAP_OPTS from attribute' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
+      end
+
+      it 'sets KAFKA_CMD' do
+        expect(chef_run).to have_configured(env_path).with('KAFKA_CMD').as('"/opt/kafka/bin/kafka-run-class.sh daemon kafkaServer kafka.Kafka"')
+      end
+
+      it 'sets KAFKA_CONFIG' do
+        expect(chef_run).to have_configured(env_path).with('KAFKA_CONFIG').as('"/opt/kafka/config/server.properties"')
       end
     end
   end
