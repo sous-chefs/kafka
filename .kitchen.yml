@@ -26,6 +26,10 @@ platforms:
         jdk_version: 7
       kafka:
         init_style: 'upstart'
+  - name: fedora-18
+    attributes:
+      java:
+        jdk_version: 7
 
 suites:
   - name: configuration
@@ -39,6 +43,7 @@ suites:
     excludes:
       - centos-6.5
       - debian-7.2.0
+      - fedora-18
     attributes:
       kafka:
         install_method: 'binary'

@@ -15,6 +15,10 @@ module PlatformHelpers
     family == 'redhat' && %w(5.9 6.4 6.5).include?(release)
   end
 
+  def fedora?
+    family == 'redhat' && %w(18 19 20).include?(release)
+  end
+
   private
 
   def family
