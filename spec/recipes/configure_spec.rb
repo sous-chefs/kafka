@@ -333,11 +333,11 @@ describe 'kafka::_configure' do
         })
       end
 
-      it 'sets SCALA_VERSION from attribute' do
+      it 'sets SCALA_VERSION' do
         expect(chef_run).to have_configured(env_path).with('export SCALA_VERSION').as('"2.8.0"')
       end
 
-      it 'sets JMX_PORT from attribute' do
+      it 'sets JMX_PORT' do
         expect(chef_run).to have_configured(env_path).with('export JMX_PORT').as('"9999"')
       end
 
@@ -345,11 +345,11 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_LOG4J_OPTS').as('"-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties"')
       end
 
-      it 'sets KAFKA_HEAP_OPTS from attribute' do
+      it 'sets KAFKA_HEAP_OPTS' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
       end
 
-      it 'sets KAFKA_HEAP_OPTS from attribute' do
+      it 'sets KAFKA_OPTS' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
       end
 
