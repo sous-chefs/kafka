@@ -25,9 +25,29 @@ describe 'kafka::default' do
     end
   end
 
+  context 'when node[:kafka][:install_method] equals \'source\'' do
+    let :install_method do
+      'source'
+    end
+
+    it 'includes kafka::source recipe' do
+      expect(chef_run).to include_recipe('kafka::source')
+    end
+  end
+
   context 'when node[:kafka][:install_method] equals :binary' do
     let :install_method do
       :binary
+    end
+
+    it 'includes kafka::binary recipe' do
+      expect(chef_run).to include_recipe('kafka::binary')
+    end
+  end
+
+  context 'when node[:kafka][:install_method] equals \'binary\'' do
+    let :install_method do
+      'binary'
     end
 
     it 'includes kafka::binary recipe' do
