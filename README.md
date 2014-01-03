@@ -14,13 +14,6 @@ notable differences:
 * only tested on Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
-## Status
-
-The `master` branch is currently highly unstable as there are quite some changes
-while transitioning from `0.8.0-beta1` to the quite newly released final `0.8.0`
-version.
-Use with caution (and certainly not in a production environment).
-
 ## Requirements
 
 This cookbook does not depend on any specific cookbooks, but it requires that
