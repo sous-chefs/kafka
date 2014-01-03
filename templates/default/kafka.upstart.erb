@@ -9,9 +9,9 @@ script
 end script
 
 post-start script
-  while ! netstat --listen | grep -qE '<%= node[:kafka][:port] %>|ircd' ; do sleep 1 ; done
-end script
-
-post-stop script
-  while netstat --listen | grep -qE '<%= node[:kafka][:port]|ircd %>' ; do sleep 1 ; done
+  tries=0
+  while [ ! `netstat --listen | grep -qE '<%= node[:kafka][:port] %>|ircd'` ] && [ $tries -lt 3 ]; do
+    sleep 1
+    tries=$((tries + 1))
+  done
 end script
