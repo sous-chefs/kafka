@@ -56,11 +56,17 @@ suites:
   - name: binary
     run_list:
       - recipe[java]
-      - recipe[kafka::binary]
+      - recipe[kafka]
+    attributes:
+      kafka:
+        install_method: 'binary'
   - name: source
     run_list:
       - recipe[java]
-      - recipe[kafka::source]
+      - recipe[kafka]
+    attributes:
+      kafka:
+        install_method: 'source'
   - name: zookeeper
     run_list:
       - recipe[java]
