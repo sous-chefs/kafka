@@ -11,7 +11,7 @@ notable differences:
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* only tested on CentOS, Debian and Ubuntu Vagrant boxes.
+* only tested on Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
 ## Status
@@ -30,8 +30,14 @@ Ruby 1.9.3+ and Chef 11.8.2+.
 
 ### Platform
 
-* Debian, Ubuntu
-* CentOS
+* Debian 7.2.0, Ubuntu 13.10
+* CentOS 6.5
+* Fedora 18
+
+Might work on other platforms / releases, but these are the ones that are
+included in `.kitchen.yml`.
+For some reason the `java` cookbook does not set the correct java path on Fedora
+19 and 20.
 
 ## Attributes
 
@@ -203,10 +209,6 @@ bundled with Kafka.
 This should not be used in production (Kafka and ZooKeeper should generally not
 run on the same machine) and is just useful for testing (i.e. in Vagrant or
 other testing environment).
-
-## Known bugs & limitations
-
-* Not tested with other RHEL distributions.
 
 ## License and author
 
