@@ -41,6 +41,16 @@ describe 'service for upstart init style' do
         expect(log_file.content).to match /Socket Server on Broker .+ Started/
       end
     end
+
+    describe '/var/log/kafka/kafka-gc.log' do
+      let :log_file do
+        file '/var/log/kafka/kafka-gc.log'
+      end
+
+      it 'exists' do
+        expect(log_file).to be_a_file
+      end
+    end
   end
 
   shared_examples_for 'a kafka stop command' do
