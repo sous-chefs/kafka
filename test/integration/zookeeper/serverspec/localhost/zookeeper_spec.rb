@@ -24,16 +24,7 @@ describe 'kafka::zookeeper' do
     it { should be_mode 755 }
   end
 
-  describe file('/etc/init.d/zookeeper') do
-    it { should be_a_file }
-    it { should be_owned_by('root') }
-    it { should be_grouped_into('root') }
-    it { should be_mode 755 }
-  end
-
   describe service('zookeeper') do
-    let(:path) { '/sbin:/usr/sbin' }
-    it { should be_enabled }
     it { should be_running }
   end
 end
