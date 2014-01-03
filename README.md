@@ -210,7 +210,7 @@ This should not be used in production (Kafka and ZooKeeper should generally not
 run on the same machine) and is just useful for testing (i.e. in Vagrant or
 other testing environment).
 
-## License and author
+## Copyright
 
 Copyright :: 2013 Mathias Söderberg
 
