@@ -10,4 +10,5 @@ end script
 
 post-start script
   while ! netstat --listen | grep -qE 'ircd|<%= node[:kafka][:port] %>' ; do sleep 1 ; done
+  while ! netstat --listen | grep -qE '<%= node[:kafka][:port] %>|ircd' ; do sleep 1 ; done
 end script
