@@ -5,5 +5,9 @@ kill timeout 10
 
 script
   [ -f /etc/default/<%= @daemon_name %> ] && . /etc/default/<%= @daemon_name %>
-  exec $DAEMON
+  $DAEMON
+end script
+
+post-start script
+  while ! netstat --listen | grep -qE 'ircd|<%= node[:kafka][:port] %>' ; do sleep 1 ; done
 end script
