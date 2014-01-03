@@ -57,7 +57,7 @@ template init_script_path do
   owner  'root'
   group  'root'
   mode   init_script_permissions
-  variables({daemon_name: 'kafka'})
+  variables({daemon_name: 'kafka', port: node[:kafka][:port]})
 end
 
 service 'kafka' do
