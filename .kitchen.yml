@@ -35,23 +35,25 @@ suites:
   - name: init-style-upstart
     run_list:
       - recipe[java]
-      - recipe[kafka::binary]
+      - recipe[kafka]
     excludes:
       - centos-6.5
       - debian-7.2.0
     attributes:
       kafka:
+        install_method: 'binary'
         init_style: 'upstart'
         zookeeper:
           connection_timeout_ms: 10_000
   - name: init-style-sysv
     run_list:
       - recipe[java]
-      - recipe[kafka::binary]
+      - recipe[kafka]
     excludes:
       - ubuntu-13.10
     attributes:
       kafka:
+        install_method: 'binary'
         init_style: 'sysv'
         zookeeper:
           connection_timeout_ms: 10_000
