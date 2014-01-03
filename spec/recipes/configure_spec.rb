@@ -312,11 +312,15 @@ describe 'kafka::_configure' do
       end.converge(described_recipe)
     end
 
+    let :script_permissions do
+      '755'
+    end
+
     it 'creates a script at the appropriate location' do
       expect(chef_run).to create_template(init_path).with({
         owner: 'root',
         group: 'root',
-        mode: '755'
+        mode: script_permissions
       })
     end
 
@@ -388,6 +392,10 @@ describe 'kafka::_configure' do
 
         let :env_path do
           '/etc/default/kafka'
+        end
+
+        let :script_permissions do
+          '644'
         end
       end
     end

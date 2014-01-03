@@ -30,11 +30,13 @@ when :sysv
   init_script_path = '/etc/init.d/kafka'
   source_script_path = 'initd.sh.erb'
   service_provider = nil
+  init_script_permissions = '755'
 when :upstart
   env_path = '/etc/default/kafka'
   init_script_path = '/etc/init/kafka.conf'
   source_script_path = 'kafka.upstart.erb'
   service_provider = Chef::Provider::Service::Upstart
+  init_script_permissions = '644'
 end
 
 template env_path do
@@ -54,7 +56,7 @@ template init_script_path do
   source source_script_path
   owner  'root'
   group  'root'
-  mode   '755'
+  mode   init_script_permissions
   variables({daemon_name: 'kafka'})
 end
 
