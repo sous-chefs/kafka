@@ -3,6 +3,9 @@
     "kafka": {
       "path": "."
     },
+    "apt": {
+      "locked_version": "2.3.4"
+    },
     "java": {
       "locked_version": "1.17.2"
     },

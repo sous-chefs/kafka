@@ -19,6 +19,8 @@ platforms:
       java:
         jdk_version: 6
   - name: ubuntu-13.10
+    run_list:
+      - recipe[apt]
     attributes:
       java:
         jdk_version: 7
