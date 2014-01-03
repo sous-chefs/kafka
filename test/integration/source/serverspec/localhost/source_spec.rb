@@ -3,141 +3,122 @@
 require 'spec_helper'
 
 describe 'kafka::source' do
-  describe file('/opt/kafka/build') do
-    it { should be_a_directory }
-    it { should be_mode 755 }
-    it { should be_owned_by('kafka') }
-    it { should be_grouped_into('kafka') }
-  end
-
-  describe file('/tmp/kitchen/cache/kafka-0.8.0-src.tgz') do
-    it { should be_a_file }
-    it { should be_mode 644 }
-    it { should match_md5checksum '46b3e65e38f1bde4b6251ea131d905f4' }
-  end
-
-  describe file('/opt/kafka/kafka_2.9.2-0.8.0.jar') do
-    it { should be_a_file }
-    it { should be_owned_by('kafka') }
-    it { should be_grouped_into('kafka') }
-  end
-
-  shared_examples_for 'kafka start command' do
-    describe command('service kafka start') do
-      it { should return_exit_status 0 }
+  describe 'downloaded source' do
+    let :downloaded_source do
+      file('/tmp/kitchen/cache/kafka-0.8.0-src.tgz')
     end
 
-    describe file('/var/log/kafka/kafka.log') do
-      it { should be_a_file }
-      its(:content) { should match /Kafka Server .+ Starting/ }
-      its(:content) { should match /Awaiting socket connections/ }
-      its(:content) { should match /Socket Server on Broker .+ Started/ }
+    it 'exists' do
+      expect(downloaded_source).to be_a_file
+    end
+
+    it 'has 644 permissions' do
+      expect(downloaded_source).to be_mode 644
+    end
+
+    it 'matches md5 checksum' do
+      expect(downloaded_source).to match_md5checksum '46b3e65e38f1bde4b6251ea131d905f4'
     end
   end
 
-  shared_examples_for 'kafka stop command' do
-    describe command('service kafka stop') do
-      it { should return_exit_status 0 }
-      it { should return_stdout /stopping.+kafka/i }
+  describe 'extracted jar' do
+    let :extracted_jar do
+      file('/opt/kafka/kafka_2.9.2-0.8.0.jar')
     end
 
-    describe file('/var/log/kafka/kafka.log') do
-      it { should be_a_file }
-      its(:content) { should match /Kafka Server .+ Shut down completed/ }
-    end
-  end
-
-  describe 'service kafka start' do
-    context 'when kafka is already running' do
-      let :pre_command do
-        'service kafka start'
-      end
-
-      describe service('kafka') do
-        it { should be_running }
-      end
-
-      describe command('service kafka start') do
-        case RSpec.configuration.os[:family]
-        when 'Debian'
-          it { should return_stdout /starting.+kafka/i }
-        else
-          it { should return_stdout /kafka .+ already running/ }
-        end
-      end
-
-      include_examples 'kafka start command'
+    it 'exists' do
+      expect(extracted_jar).to be_a_file
     end
 
-    context 'when kafka is not already running' do
-      let :pre_command do
-        'service kafka stop'
-      end
+    it 'is owned by kafka' do
+      expect(extracted_jar).to be_owned_by 'kafka'
+    end
 
-      describe command('service kafka start') do
-        it { should return_stdout /starting.+kafka/i }
-      end
-
-      describe service('kafka') do
-        let :pre_command do
-          'service kafka start'
-        end
-
-        it { should be_running }
-      end
-
-      include_examples 'kafka start command'
+    it 'belongs to kafka group' do
+      expect(extracted_jar).to be_grouped_into 'kafka'
     end
   end
 
-  describe 'service kafka stop' do
-    context 'when kafka is running' do
-      let(:pre_command) { 'service kafka start' }
-
-      describe service('kafka') do
-        let(:pre_command) { 'service kafka stop' }
-
-        it { should_not be_running }
-      end
-
-      include_examples 'kafka stop command'
+  shared_examples_for 'a directory in /opt/kafka' do
+    let :kafka_directory do
+      file path
     end
 
-    context 'when kafka is not running' do
-      let :pre_command do
-        'service kafka stop'
-      end
+    it 'exists' do
+      expect(kafka_directory).to be_a_directory
+    end
 
-      describe service('kafka') do
-        it { should_not be_running }
-      end
+    it 'has 755 permissions' do
+      expect(kafka_directory).to be_mode 755
+    end
 
-      include_examples 'kafka stop command'
+    it 'is owned by kafka' do
+      expect(kafka_directory).to be_owned_by 'kafka'
+    end
+
+    it 'belongs to kafka group' do
+      expect(kafka_directory).to be_grouped_into 'kafka'
+    end
+
+    it 'is not empty' do
+      expect(Dir[File.join(path, '*')]).not_to be_empty
     end
   end
 
-  describe 'service kafka status' do
-    context 'when kafka is running' do
-      let(:pre_command) { 'service kafka restart' }
-
-      describe command('service kafka status') do
-        it { should return_exit_status 0 }
-        it { should return_stdout /kafka.+running/i }
-      end
+  describe '/opt/kafka/build' do
+    let :path do
+      '/opt/kafka/build'
     end
 
-    context 'when kafka is not running' do
-      let(:pre_command) { 'service kafka stop' }
+    it_behaves_like 'a directory in /opt/kafka'
+  end
 
-      describe command('service kafka status') do
-        it { should return_exit_status 3 }
+  describe '/opt/kafka/libs' do
+    let :path do
+      '/opt/kafka/libs'
+    end
 
-        case RSpec.configuration.os[:family]
-        when 'Debian'
-          it { should return_stdout /kafka is not running/ }
-        else
-          it { should return_stdout /kafka is stopped/ }
-        end
+    it_behaves_like 'a directory in /opt/kafka'
+  end
+
+  describe '/opt/kafka/bin' do
+    let :path do
+      '/opt/kafka/bin'
+    end
+
+    let :files do
+      Dir[File.join(path, '*')]
+    end
+
+    it_behaves_like 'a directory in /opt/kafka'
+
+    it 'contains kafka-run-class.sh' do
+      expect(files.grep(/kafka-run-class\.sh$/)).to be_true
+    end
+
+    describe 'kafka-run-class.sh' do
+      let :run_class do
+        file '/opt/kafka/bin/kafka-run-class.sh'
+      end
+
+      it 'is a file' do
+        expect(run_class).to be_a_file
+      end
+
+      it 'is owned by kafka' do
+        expect(run_class).to be_owned_by 'kafka'
+      end
+
+      it 'belongs to kafka group' do
+        expect(run_class).to be_grouped_into 'kafka'
+      end
+
+      it 'is executable by kafka' do
+        expect(run_class).to be_executable.by_user('kafka')
+      end
+
+      it 'is executable by root' do
+        expect(run_class).to be_executable.by_user('root')
       end
     end
   end

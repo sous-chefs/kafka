@@ -20,6 +20,7 @@ default[:kafka][:user] = 'kafka'
 default[:kafka][:group] = 'kafka'
 default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
 default[:kafka][:generic_opts] = nil
+default[:kafka][:init_style] = :sysv
 
 # General configuration
 default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')

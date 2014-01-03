@@ -18,12 +18,41 @@ platforms:
     attributes:
       java:
         jdk_version: 6
+  - name: ubuntu-13.10
+    attributes:
+      java:
+        jdk_version: 7
+      kafka:
+        init_style: 'upstart'
 
 suites:
   - name: configuration
     run_list:
       - recipe[kafka::_setup]
       - recipe[kafka::_configure]
+  - name: init-style-upstart
+    run_list:
+      - recipe[java]
+      - recipe[kafka::binary]
+    excludes:
+      - centos-6.5
+      - debian-7.2.0
+    attributes:
+      kafka:
+        init_style: 'upstart'
+        zookeeper:
+          connection_timeout_ms: 10_000
+  - name: init-style-sysv
+    run_list:
+      - recipe[java]
+      - recipe[kafka::binary]
+    excludes:
+      - ubuntu-13.10
+    attributes:
+      init_style: 'sysv'
+      kafka:
+        zookeeper:
+          connection_timeout_ms: 10_000
   - name: binary
     run_list:
       - recipe[java]
