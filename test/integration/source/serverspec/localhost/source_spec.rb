@@ -113,8 +113,12 @@ describe 'kafka::source' do
         expect(run_class).to be_grouped_into 'kafka'
       end
 
-      it 'has 755 permissions' do
-        expect(run_class).to be_mode 755
+      it 'is executable by kafka' do
+        expect(run_class).to be_executable.by_user('kafka')
+      end
+
+      it 'is executable by root' do
+        expect(run_class).to be_executable.by_user('root')
       end
     end
   end
