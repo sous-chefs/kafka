@@ -49,6 +49,7 @@ suites:
     excludes:
       - ubuntu-13.10
     attributes:
+      init_style: 'sysv'
       kafka:
         zookeeper:
           connection_timeout_ms: 10_000
