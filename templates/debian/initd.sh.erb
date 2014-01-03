@@ -23,10 +23,10 @@ PIDFILE=/var/run/$NAME.pid
 
 do_start()
 {
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --test --startas $DAEMON > /dev/null \
+  start-stop-daemon --start --quiet --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
     || return 1
 
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --background --exec $DAEMON \
+  start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --background --exec $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG \
     || return 2
 
   RETVAL="$?"
@@ -65,7 +65,7 @@ case "$1" in
     $0 stop && sleep 2 && $0 start
     ;;
   status)
-    status_of_proc -p $PIDFILE "$DAEMON" "$NAME" && exit 0 || exit $?
+    status_of_proc -p $PIDFILE "$KAFKA_RUN" "$NAME" && exit 0 || exit $?
     ;;
   *)
     echo "Usage: $NAME {start|stop|restart|status}" >&2

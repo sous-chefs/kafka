@@ -29,7 +29,7 @@ start() {
   fi
 
   echo -n "Starting $NAME"
-  /usr/bin/nohup $DAEMON > /dev/null 2>&1 &
+  /usr/bin/nohup $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 &
   RETVAL=$?
   PID=$!
   sleep 2

@@ -5,7 +5,7 @@ kill timeout 10
 
 script
   [ -f /etc/default/<%= @daemon_name %> ] && . /etc/default/<%= @daemon_name %>
-  $DAEMON
+  exec $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
 end script
 
 post-start script
