@@ -91,7 +91,7 @@ describe 'service for upstart init style' do
         backend.run_command 'service kafka start 2> /dev/null || true'
       end
 
-      it 'is already running' do
+      it 'is actually already running' do
         expect(kafka_service).to be_running
       end
 
@@ -113,7 +113,7 @@ describe 'service for upstart init style' do
         backend.run_command 'service kafka start 2> /dev/null || true'
       end
 
-      it 'is already running' do
+      it 'is actaully already running' do
         expect(kafka_service).to be_running
       end
 
@@ -123,6 +123,12 @@ describe 'service for upstart init style' do
 
       it 'exits with status 0' do
         expect(stop_command).to return_exit_status 0
+      end
+
+      it 'actually stops kafka' do
+        backend.run_command 'service kafka stop'
+
+        expect(kafka_service).not_to be_running
       end
 
       it_behaves_like 'a kafka stop command'
