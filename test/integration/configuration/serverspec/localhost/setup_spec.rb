@@ -10,8 +10,7 @@ describe 'kafka::setup' do
   describe user('kafka') do
     it { should exist }
     it { should belong_to_group('kafka') }
-    it { should have_home_directory('/home/kafka') }
-    it { should have_login_shell('/bin/false') }
+    it { should have_login_shell('/sbin/nologin') }
   end
 
   describe file('/opt/kafka') do

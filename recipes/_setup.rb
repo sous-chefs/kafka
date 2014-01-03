@@ -10,8 +10,7 @@ group kafka_group
 
 user kafka_user  do
   gid   kafka_group
-  home  "/home/#{kafka_user}"
-  shell '/bin/false'
+  shell '/sbin/nologin'
   supports(manage_home: false)
 end
 

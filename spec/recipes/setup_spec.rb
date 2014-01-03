@@ -15,8 +15,7 @@ describe 'kafka::_setup' do
 
       it 'creates a kafka user' do
         expect(chef_run).to create_user('kafka').with({
-          shell: '/bin/false',
-          home: '/home/kafka',
+          shell: '/sbin/nologin',
           gid: 'kafka'
         })
       end
@@ -36,8 +35,7 @@ describe 'kafka::_setup' do
 
       it 'creates a user with set name' do
         expect(chef_run).to create_user('spec').with({
-          shell: '/bin/false',
-          home: '/home/spec',
+          shell: '/sbin/nologin',
           gid: 'spec'
         })
       end
