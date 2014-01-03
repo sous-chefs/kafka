@@ -112,6 +112,10 @@ describe 'kafka::binary' do
       it 'belongs to kafka group' do
         expect(run_class).to be_grouped_into 'kafka'
       end
+
+      it 'has 755 permissions' do
+        expect(run_class).to be_mode 755
+      end
     end
   end
 end
