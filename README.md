@@ -11,7 +11,7 @@ notable differences:
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* only tested on CentOS and Debian Vagrant boxes.
+* only tested on CentOS, Debian and Ubuntu Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
 ## Status
@@ -25,6 +25,13 @@ Use with caution (and certainly not in a production environment).
 
 This cookbook does not depend on any specific cookbooks, but it requires that
 java is installed on the system, thus the `java` cookbook is recommended.
+
+Ruby 1.9.3+ and Chef 11.8.2+.
+
+### Platform
+
+* Debian, Ubuntu
+* CentOS
 
 ## Attributes
 
@@ -199,7 +206,6 @@ other testing environment).
 
 ## Known bugs & limitations
 
-* No support for Ubuntu.
 * Not tested with other RHEL distributions.
 
 ## License and author
