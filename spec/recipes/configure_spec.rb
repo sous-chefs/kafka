@@ -353,8 +353,12 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
       end
 
+      it 'sets KAFKA_GC_LOG_OPTS' do
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_GC_LOG_OPTS').as('"-Xloggc:/var/log/kafka/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"')
+      end
+
       it 'sets KAFKA_CMD' do
-        expect(chef_run).to have_configured(env_path).with('KAFKA_CMD').as('"/opt/kafka/bin/kafka-run-class.sh daemon kafkaServer kafka.Kafka"')
+        expect(chef_run).to have_configured(env_path).with('KAFKA_CMD').as('"/opt/kafka/bin/kafka-run-class.sh kafka.Kafka"')
       end
 
       it 'sets KAFKA_CONFIG' do

@@ -45,7 +45,7 @@ template env_path do
   group  'root'
   mode   '644'
   variables({
-    main_class:   'kafkaServer kafka.Kafka',
+    main_class:   'kafka.Kafka',
     jmx_port:     node[:kafka][:jmx_port],
     config:       node[:kafka][:config],
     log4j_config: 'log4j.properties'
