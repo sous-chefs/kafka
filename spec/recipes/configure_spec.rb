@@ -363,7 +363,7 @@ describe 'kafka::_configure' do
     context 'when init_style is :sysv' do
       it_behaves_like 'an init style' do
         let :init_style do
-          :sysv
+          'sysv'
         end
 
         let :init_path do
@@ -379,7 +379,7 @@ describe 'kafka::_configure' do
     context 'when init_style is :upstart' do
       it_behaves_like 'an init style' do
         let :init_style do
-          :upstart
+          'upstart'
         end
 
         let :init_path do

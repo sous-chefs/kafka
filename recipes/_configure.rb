@@ -21,7 +21,7 @@ template File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   mode   '644'
 end
 
-case node[:kafka][:init_style]
+case node[:kafka][:init_style].to_sym
 when :sysv
   env_path = value_for_platform({
     'debian' => {'default' => '/etc/default/kafka'},
