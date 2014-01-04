@@ -44,6 +44,10 @@ describe 'kafka::binary' do
       file path
     end
 
+    let :files_in_directory do
+      Dir[File.join(path, '*')]
+    end
+
     it 'exists' do
       expect(kafka_directory).to be_a_directory
     end
@@ -61,7 +65,21 @@ describe 'kafka::binary' do
     end
 
     it 'is not empty' do
-      expect(Dir[File.join(path, '*')]).not_to be_empty
+      expect(files_in_directory).not_to be_empty
+    end
+
+    context 'each file in directory' do
+      it 'is owned by kafka' do
+        files_in_directory.each do |file_in_directory|
+          expect(file(file_in_directory)).to be_owned_by 'kafka'
+        end
+      end
+
+      it 'belongs to kafka group' do
+        files_in_directory.each do |file_in_directory|
+          expect(file(file_in_directory)).to be_grouped_into 'kafka'
+        end
+      end
     end
   end
 

@@ -39,9 +39,13 @@ describe 'kafka::source' do
     end
   end
 
-  shared_examples_for 'a directory in /opt/kafka' do
+  shared_examples_for 'a directory in /opt/kafka' do |opts={}|
     let :kafka_directory do
       file path
+    end
+
+    let :files_in_directory do
+      Dir[File.join(path, '*')]
     end
 
     it 'exists' do
@@ -61,7 +65,23 @@ describe 'kafka::source' do
     end
 
     it 'is not empty' do
-      expect(Dir[File.join(path, '*')]).not_to be_empty
+      expect(files_in_directory).not_to be_empty
+    end
+
+    unless opts[:skip_files]
+      context 'each file in directory' do
+        it 'is owned by kafka' do
+          files_in_directory.each do |file_in_directory|
+            expect(file(file_in_directory)).to be_owned_by 'kafka'
+          end
+        end
+
+        it 'belongs to kafka group' do
+          files_in_directory.each do |file_in_directory|
+            expect(file(file_in_directory)).to be_grouped_into 'kafka'
+          end
+        end
+      end
     end
   end
 
@@ -70,7 +90,7 @@ describe 'kafka::source' do
       '/opt/kafka/build'
     end
 
-    it_behaves_like 'a directory in /opt/kafka'
+    it_behaves_like 'a directory in /opt/kafka', skip_files: true
   end
 
   describe '/opt/kafka/libs' do
