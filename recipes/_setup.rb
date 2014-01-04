@@ -3,13 +3,10 @@
 # Recipe:: _setup
 #
 
-kafka_user   = node[:kafka][:user]
-kafka_group  = node[:kafka][:group]
+group node[:kafka][:group]
 
-group kafka_group
-
-user kafka_user  do
-  gid   kafka_group
+user node[:kafka][:user] do
+  gid   node[:kafka][:group]
   shell '/sbin/nologin'
   supports(manage_home: false)
 end
@@ -20,8 +17,8 @@ end
   node[:kafka][:log_dir]
 ].each do |dir|
   directory dir do
-    owner     kafka_user
-    group     kafka_group
+    owner     node[:kafka][:user]
+    group     node[:kafka][:group]
     mode      '755'
     recursive true
     not_if { File.directory?(dir) }
