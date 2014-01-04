@@ -54,7 +54,7 @@ template env_path do
   group  'root'
   mode   '644'
   variables({
-    main_class:   'zookeeper org.apache.zookeeper.server.quorum.QuorumPeerMain',
+    main_class:   'org.apache.zookeeper.server.quorum.QuorumPeerMain',
     jmx_port:     node[:zookeeper][:jmx_port],
     config:        'zookeeper.properties',
     log4j_config:  'zookeeper.log4j.properties'
