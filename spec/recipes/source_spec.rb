@@ -44,8 +44,6 @@ describe 'kafka::source' do
 
     compile_kafka = chef_run.execute('compile-kafka')
     expect(compile_kafka.cwd).to eq('/opt/kafka/build')
-    expect(compile_kafka.user).to eq('kafka')
-    expect(compile_kafka.group).to eq('kafka')
   end
 
   it 'installs compiled Kafka source' do

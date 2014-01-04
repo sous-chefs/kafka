@@ -45,8 +45,6 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
   end
 
   execute 'compile-kafka' do
-    user  node[:kafka][:user]
-    group node[:kafka][:group]
     cwd   build_directory
     command <<-EOH.gsub(/^\s+/, '')
       tar zxvf #{local_file_path}
