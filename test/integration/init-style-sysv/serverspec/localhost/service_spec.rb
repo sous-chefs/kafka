@@ -105,14 +105,8 @@ describe 'service for sysv init style' do
         expect(kafka_service).to be_running
       end
 
-      if debian? or fedora?
-        it 'prints a message about starting kafka' do
-          expect(start_command).to return_stdout /starting.+kafka/i
-        end
-      else
-        it 'prints a message that kafka is already running' do
-          expect(start_command).to return_stdout /kafka .+ already running/
-        end
+      it 'prints a message about starting kafka' do
+        expect(start_command).to return_stdout /starting.+kafka/i
       end
 
       it 'exits with status 0' do

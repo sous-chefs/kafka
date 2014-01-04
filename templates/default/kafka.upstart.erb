@@ -1,3 +1,5 @@
+# kafka - kafka broker
+
 description "<%= @daemon_name %> daemon"
 
 start on runlevel [2345]
@@ -5,6 +7,8 @@ stop on runlevel [016]
 
 kill signal INT
 kill timeout 10
+
+setuid <%= @user %>
 
 script
   [ -f /etc/default/<%= @daemon_name %> ] && . /etc/default/<%= @daemon_name %>
