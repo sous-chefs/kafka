@@ -19,7 +19,7 @@ describe 'kafka::binary' do
   end
 
   describe '/opt/kafka/dist' do
-    it_behaves_like 'a directory in /opt/kafka' do
+    it_behaves_like 'a kafka directory' do
       let :path do
         '/opt/kafka/dist'
       end

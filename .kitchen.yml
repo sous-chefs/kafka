@@ -32,10 +32,6 @@ platforms:
         jdk_version: 7
 
 suites:
-  - name: configuration
-    run_list:
-      - recipe[kafka::_setup]
-      - recipe[kafka::_configure]
   - name: init-style-upstart
     run_list:
       - recipe[java]

@@ -1,8 +1,12 @@
 # encoding: utf-8
 
+require 'configuration_common'
 require 'files_common'
 
 shared_examples_for 'an install method' do
+  it_behaves_like 'a _setup recipe'
+  it_behaves_like 'a _configure recipe'
+
   describe 'kafka archive' do
     let :kafka_archive do
       file(kafka_archive_path)
@@ -22,40 +26,42 @@ shared_examples_for 'an install method' do
   end
 
   describe 'extracted jar' do
-    it_behaves_like 'a file in /opt/kafka' do
+    it_behaves_like 'a non-executable kafka file' do
       let :path do
         jar_path
       end
     end
   end
 
-  describe '/opt/kafka/libs' do
-    it_behaves_like 'a directory in /opt/kafka' do
-      let :path do
-        '/opt/kafka/libs'
+  context 'directories in install directory' do
+    describe '/opt/kafka/libs' do
+      it_behaves_like 'a kafka directory' do
+        let :path do
+          '/opt/kafka/libs'
+        end
       end
     end
-  end
 
-  describe '/opt/kafka/bin' do
-    let :path do
-      '/opt/kafka/bin'
-    end
+    describe '/opt/kafka/bin' do
+      let :path do
+        '/opt/kafka/bin'
+      end
 
-    let :files do
-      Dir[File.join(path, '*')]
-    end
+      let :files do
+        Dir[File.join(path, '*')]
+      end
 
-    it_behaves_like 'a directory in /opt/kafka'
+      it_behaves_like 'a kafka directory'
 
-    it 'contains kafka-run-class.sh' do
-      expect(files.grep(/kafka-run-class\.sh$/)).to be_true
-    end
+      it 'contains kafka-run-class.sh' do
+        expect(files.grep(/kafka-run-class\.sh$/)).to be_true
+      end
 
-    describe '/opt/kafka/bin/kafka-run-class.sh' do
-      it_behaves_like 'an executable file in /opt/kafka' do
-        let :path do
-          '/opt/kafka/bin/kafka-run-class.sh'
+      describe '/opt/kafka/bin/kafka-run-class.sh' do
+        it_behaves_like 'an executable kafka file' do
+          let :path do
+            '/opt/kafka/bin/kafka-run-class.sh'
+          end
         end
       end
     end
