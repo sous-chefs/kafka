@@ -11,14 +11,6 @@ describe 'kafka::source' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
   end
 
-  it 'includes kafka::_setup recipe' do
-    expect(chef_run).to include_recipe('kafka::_setup')
-  end
-
-  it 'includes kafka::_configure recipe' do
-    expect(chef_run).to include_recipe('kafka::_configure')
-  end
-
   it 'creates build directory' do
     expect(chef_run).to create_directory('/opt/kafka/build').with({
       owner: 'kafka',

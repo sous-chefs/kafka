@@ -15,43 +15,49 @@ describe 'kafka::default' do
     chef_run.converge(described_recipe)
   end
 
-  context 'when node[:kafka][:install_method] equals :source' do
-    let :install_method do
-      :source
+  shared_examples_for 'a valid install method' do
+    it 'includes kafka::_setup' do
+      expect(chef_run).to include_recipe('kafka::_setup')
     end
 
-    it 'includes kafka::source recipe' do
-      expect(chef_run).to include_recipe('kafka::source')
+    it 'includes kafka::install_method recipe' do
+      expect(chef_run).to include_recipe("kafka::#{install_method}")
+    end
+
+    it 'includes kafka::_configure' do
+      expect(chef_run).to include_recipe('kafka::_configure')
+    end
+  end
+
+  context 'when node[:kafka][:install_method] equals :source' do
+    it_behaves_like 'a valid install method' do
+      let :install_method do
+        :source
+      end
     end
   end
 
   context 'when node[:kafka][:install_method] equals \'source\'' do
-    let :install_method do
-      'source'
-    end
-
-    it 'includes kafka::source recipe' do
-      expect(chef_run).to include_recipe('kafka::source')
+    it_behaves_like 'a valid install method' do
+      let :install_method do
+        'source'
+      end
     end
   end
 
   context 'when node[:kafka][:install_method] equals :binary' do
-    let :install_method do
-      :binary
-    end
-
-    it 'includes kafka::binary recipe' do
-      expect(chef_run).to include_recipe('kafka::binary')
+    it_behaves_like 'a valid install method' do
+      let :install_method do
+        :binary
+      end
     end
   end
 
   context 'when node[:kafka][:install_method] equals \'binary\'' do
-    let :install_method do
-      'binary'
-    end
-
-    it 'includes kafka::binary recipe' do
-      expect(chef_run).to include_recipe('kafka::binary')
+    it_behaves_like 'a valid install method' do
+      let :install_method do
+        'binary'
+      end
     end
   end
 
