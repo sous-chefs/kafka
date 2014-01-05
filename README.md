@@ -30,7 +30,7 @@ Ruby 1.9.3+ and Chef 11.8.2+.
 Might work on other platforms / releases, but these are the ones that are
 included in `.kitchen.yml`.
 For some reason the `java` cookbook does not set the correct java path on Fedora
-19 and 20.
+19 and 20, which is why Fedora 18 is used rather than the 19 or 20 releases.
 
 ## Attributes
 
