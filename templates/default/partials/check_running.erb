@@ -1,0 +1,10 @@
+check_running() {
+  tries=0
+  while ( ! $(netstat --listen | grep -qE "(<%= @port %>|irc)") ); do
+    sleep 1
+    tries=$((tries + 1))
+
+    [ $tries -ge 5 ] && return 1
+  done
+  return 0
+}

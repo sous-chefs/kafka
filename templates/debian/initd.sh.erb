@@ -8,6 +8,7 @@
 ### END INIT INFO
 
 NAME=<%= @daemon_name %>
+USER=<%= @user %>
 PIDFILE=/var/run/$NAME.pid
 
 # Load the VERBOSE setting and other rcS variables
@@ -21,16 +22,18 @@ PIDFILE=/var/run/$NAME.pid
 # Load additional configuration
 [ -f /etc/default/$NAME ] && . /etc/default/$NAME
 
+<%= render 'partials/check_running.erb', variables: {port: @port} -%>
+
 do_start()
 {
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
+  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
     || return 1
 
-  start-stop-daemon --start --quiet --pidfile $PIDFILE --make-pidfile --background --exec $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG \
+  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG \
     || return 2
 
-  RETVAL="$?"
-  sleep 2 && return "$RETVAL"
+  RETVAL=$?
+  check_running && return "$RETVAL"
 }
 
 do_stop()
