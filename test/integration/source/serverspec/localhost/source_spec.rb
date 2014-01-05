@@ -1,144 +1,27 @@
 # encoding: utf-8
 
 require 'spec_helper'
+require 'install_common'
 
 describe 'kafka::source' do
-  describe 'downloaded source' do
-    let :downloaded_source do
-      file('/tmp/kitchen/cache/kafka-0.8.0-src.tgz')
+  it_behaves_like 'an install method' do
+    let :kafka_archive_path do
+      '/tmp/kitchen/cache/kafka-0.8.0-src.tgz'
     end
 
-    it 'exists' do
-      expect(downloaded_source).to be_a_file
+    let :kafka_archive_md5checksum do
+      '46b3e65e38f1bde4b6251ea131d905f4'
     end
 
-    it 'has 644 permissions' do
-      expect(downloaded_source).to be_mode 644
-    end
-
-    it 'matches md5 checksum' do
-      expect(downloaded_source).to match_md5checksum '46b3e65e38f1bde4b6251ea131d905f4'
-    end
-  end
-
-  describe 'extracted jar' do
-    let :extracted_jar do
-      file('/opt/kafka/kafka_2.9.2-0.8.0.jar')
-    end
-
-    it 'exists' do
-      expect(extracted_jar).to be_a_file
-    end
-
-    it 'is owned by kafka' do
-      expect(extracted_jar).to be_owned_by 'kafka'
-    end
-
-    it 'belongs to kafka group' do
-      expect(extracted_jar).to be_grouped_into 'kafka'
-    end
-  end
-
-  shared_examples_for 'a directory in /opt/kafka' do |opts={}|
-    let :kafka_directory do
-      file path
-    end
-
-    let :files_in_directory do
-      Dir[File.join(path, '*')]
-    end
-
-    it 'exists' do
-      expect(kafka_directory).to be_a_directory
-    end
-
-    it 'has 755 permissions' do
-      expect(kafka_directory).to be_mode 755
-    end
-
-    it 'is owned by kafka' do
-      expect(kafka_directory).to be_owned_by 'kafka'
-    end
-
-    it 'belongs to kafka group' do
-      expect(kafka_directory).to be_grouped_into 'kafka'
-    end
-
-    it 'is not empty' do
-      expect(files_in_directory).not_to be_empty
-    end
-
-    unless opts[:skip_files]
-      context 'each file in directory' do
-        it 'is owned by kafka' do
-          files_in_directory.each do |file_in_directory|
-            expect(file(file_in_directory)).to be_owned_by 'kafka'
-          end
-        end
-
-        it 'belongs to kafka group' do
-          files_in_directory.each do |file_in_directory|
-            expect(file(file_in_directory)).to be_grouped_into 'kafka'
-          end
-        end
-      end
+    let :jar_path do
+      '/opt/kafka/kafka_2.9.2-0.8.0.jar'
     end
   end
 
   describe '/opt/kafka/build' do
-    let :path do
-      '/opt/kafka/build'
-    end
-
-    it_behaves_like 'a directory in /opt/kafka', skip_files: true
-  end
-
-  describe '/opt/kafka/libs' do
-    let :path do
-      '/opt/kafka/libs'
-    end
-
-    it_behaves_like 'a directory in /opt/kafka'
-  end
-
-  describe '/opt/kafka/bin' do
-    let :path do
-      '/opt/kafka/bin'
-    end
-
-    let :files do
-      Dir[File.join(path, '*')]
-    end
-
-    it_behaves_like 'a directory in /opt/kafka'
-
-    it 'contains kafka-run-class.sh' do
-      expect(files.grep(/kafka-run-class\.sh$/)).to be_true
-    end
-
-    describe 'kafka-run-class.sh' do
-      let :run_class do
-        file '/opt/kafka/bin/kafka-run-class.sh'
-      end
-
-      it 'is a file' do
-        expect(run_class).to be_a_file
-      end
-
-      it 'is owned by kafka' do
-        expect(run_class).to be_owned_by 'kafka'
-      end
-
-      it 'belongs to kafka group' do
-        expect(run_class).to be_grouped_into 'kafka'
-      end
-
-      it 'is executable by kafka' do
-        expect(run_class).to be_executable.by_user('kafka')
-      end
-
-      it 'is executable by root' do
-        expect(run_class).to be_executable.by_user('root')
+    it_behaves_like 'a directory in /opt/kafka', skip_files: true do
+      let :path do
+        '/opt/kafka/build'
       end
     end
   end
