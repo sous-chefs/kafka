@@ -19,7 +19,7 @@ describe 'kafka::source' do
   end
 
   describe '/opt/kafka/build' do
-    it_behaves_like 'a directory in /opt/kafka', skip_files: true do
+    it_behaves_like 'a kafka directory', skip_files: true do
       let :path do
         '/opt/kafka/build'
       end
