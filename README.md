@@ -23,7 +23,8 @@ Ruby 1.9.3+ and Chef 11.8.2+.
 
 ### Platform
 
-* Debian 7.2.0, Ubuntu 13.10
+* Debian 7.2.0
+* Ubuntu 13.10
 * CentOS 6.5
 * Fedora 18
 
