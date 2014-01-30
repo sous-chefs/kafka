@@ -34,7 +34,7 @@ platforms:
 suites:
   - name: init-style-upstart
     run_list:
-      - recipe[java]
+      - recipe[java::default]
       - recipe[kafka]
     excludes:
       - centos-6.5
@@ -48,7 +48,7 @@ suites:
           connection_timeout_ms: 10_000
   - name: init-style-sysv
     run_list:
-      - recipe[java]
+      - recipe[java::default]
       - recipe[kafka]
     excludes:
       - ubuntu-13.10
@@ -60,19 +60,19 @@ suites:
           connection_timeout_ms: 10_000
   - name: binary
     run_list:
-      - recipe[java]
+      - recipe[java::default]
       - recipe[kafka]
     attributes:
       kafka:
         install_method: 'binary'
   - name: source
     run_list:
-      - recipe[java]
+      - recipe[java::default]
       - recipe[kafka]
     attributes:
       kafka:
         install_method: 'source'
   - name: zookeeper
     run_list:
-      - recipe[java]
+      - recipe[java::default]
       - recipe[kafka::zookeeper]
