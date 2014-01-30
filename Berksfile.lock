@@ -7,16 +7,7 @@
       "locked_version": "2.3.4"
     },
     "java": {
-      "locked_version": "1.17.2"
-    },
-    "windows": {
-      "locked_version": "1.11.0"
-    },
-    "chef_handler": {
-      "locked_version": "1.1.4"
-    },
-    "aws": {
-      "locked_version": "1.0.0"
+      "locked_version": "1.19.2"
     }
   }
 }
