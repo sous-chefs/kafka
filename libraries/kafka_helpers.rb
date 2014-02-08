@@ -11,3 +11,7 @@ end
 def kafka_already_installed?
   ::File.exists?(node[:kafka][:install_dir]) && ::File.exists?(kafka_jar_path)
 end
+
+def kafka_download_uri(filename)
+  [node[:kafka][:base_url], node[:kafka][:version], filename].join('/')
+end
