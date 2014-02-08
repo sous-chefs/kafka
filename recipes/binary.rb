@@ -11,19 +11,11 @@ kafka_base        = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:versi
 kafka_tar_gz      = "#{kafka_base}.tar.gz"
 download_file     = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
 local_file_path   = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
-dist_directory    = File.join(node[:kafka][:install_dir], 'dist')
-kafka_target_path = File.join(dist_directory, kafka_base)
+build_directory   = File.join(node[:kafka][:install_dir], 'build')
+kafka_target_path = File.join(build_directory, kafka_base)
 installed_path    = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
-unless (already_installed = (File.directory?(dist_directory) && File.exists?(installed_path)))
-  directory dist_directory do
-    owner     node[:kafka][:user]
-    group     node[:kafka][:group]
-    mode      '755'
-    action    :create
-    recursive true
-  end
-
+unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
   remote_file local_file_path do
     source   download_file
     mode     '644'
@@ -44,7 +36,7 @@ unless (already_installed = (File.directory?(dist_directory) && File.exists?(ins
   execute 'extract-kafka' do
     user     node[:kafka][:user]
     group    node[:kafka][:group]
-    cwd      dist_directory
+    cwd      build_directory
     command  %{tar zxf #{local_file_path}}
     action   :nothing
     notifies :run, 'execute[install-kafka]', :immediately

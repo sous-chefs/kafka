@@ -17,12 +17,4 @@ describe 'kafka::source' do
       '/opt/kafka/kafka_2.9.2-0.8.0.jar'
     end
   end
-
-  describe '/opt/kafka/build' do
-    it_behaves_like 'a kafka directory', skip_files: true do
-      let :path do
-        '/opt/kafka/build'
-      end
-    end
-  end
 end

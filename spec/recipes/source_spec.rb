@@ -11,14 +11,6 @@ describe 'kafka::source' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
   end
 
-  it 'creates build directory' do
-    expect(chef_run).to create_directory('/opt/kafka/build').with({
-      owner: 'kafka',
-      group: 'kafka',
-      mode: '755'
-    })
-  end
-
   it 'downloads remote source of Kafka' do
     expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz").with({
       source:   'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka-0.8.0-src.tgz',

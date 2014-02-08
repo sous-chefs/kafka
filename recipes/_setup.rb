@@ -14,7 +14,8 @@ end
 [
   node[:kafka][:install_dir],
   node[:kafka][:config_dir],
-  node[:kafka][:log_dir]
+  node[:kafka][:log_dir],
+  File.join(node[:kafka][:install_dir], 'build')
 ].each do |dir|
   directory dir do
     owner     node[:kafka][:user]

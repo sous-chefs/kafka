@@ -11,14 +11,6 @@ describe 'kafka::binary' do
     chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz")
   end
 
-  it 'creates dist directory' do
-    expect(chef_run).to create_directory('/opt/kafka/dist').with({
-      owner: 'kafka',
-      group: 'kafka',
-      mode: '755'
-    })
-  end
-
   it 'downloads remote binary release of Kafka' do
     expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz").with(
       source: 'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
@@ -35,7 +27,7 @@ describe 'kafka::binary' do
     expect(chef_run.ruby_block('validate-tarball')).to notify('execute[extract-kafka]').to(:run).immediately
 
     extract_kafka = chef_run.execute('extract-kafka')
-    expect(extract_kafka.cwd).to eq('/opt/kafka/dist')
+    expect(extract_kafka.cwd).to eq('/opt/kafka/build')
     expect(extract_kafka.user).to eq('kafka')
     expect(extract_kafka.group).to eq('kafka')
   end

@@ -17,14 +17,6 @@ kafka_target_path  = File.join(build_directory, kafka_src, 'target', 'RELEASE', 
 installed_path     = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
 unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
-  directory build_directory do
-    owner     node[:kafka][:user]
-    group     node[:kafka][:group]
-    mode      '755'
-    action    :create
-    recursive true
-  end
-
   remote_file local_file_path do
     source   download_file
     mode     '644'
