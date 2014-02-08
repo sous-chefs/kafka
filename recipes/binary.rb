@@ -16,7 +16,6 @@ kafka_download local_file_path do
   source       kafka_download_uri(kafka_tar_gz)
   checksum     node[:kafka][:checksum]
   md5_checksum node[:kafka][:md5_checksum]
-  notifies :run, 'execute[extract-kafka]', :immediately
   not_if { kafka_already_installed? }
 end
 
@@ -24,15 +23,11 @@ execute 'extract-kafka' do
   user     node[:kafka][:user]
   group    node[:kafka][:group]
   cwd      build_directory
-  command  %{tar zxf #{local_file_path}}
-  action   :nothing
-  notifies :run, 'execute[install-kafka]', :immediately
+  command  %(tar zxf #{local_file_path})
+  not_if { kafka_already_installed? }
 end
 
-execute 'install-kafka' do
-  user  node[:kafka][:user]
-  group node[:kafka][:group]
-  cwd   node[:kafka][:install_dir]
-  command %{cp -r #{File.join(kafka_target_path, '*')} .}
-  action :nothing
+kafka_install node[:kafka][:install_dir] do
+  from kafka_target_path
+  not_if { kafka_already_installed? }
 end

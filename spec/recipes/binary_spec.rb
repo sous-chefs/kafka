@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::binary' do
   let :chef_run do
-    ChefSpec::Runner.new(step_into: ['kafka_download']).converge(described_recipe)
+    ChefSpec::Runner.new(step_into: ['kafka_download', 'kafka_install']).converge(described_recipe)
   end
 
   let :kafka_download do
@@ -21,20 +21,14 @@ describe 'kafka::binary' do
   end
 
   it 'extracts downloaded Kafka archive' do
-    expect(kafka_download).to notify('execute[extract-kafka]').to(:run).immediately
-
-    extract_kafka = chef_run.execute('extract-kafka')
-    expect(extract_kafka.cwd).to eq('/opt/kafka/build')
-    expect(extract_kafka.user).to eq('kafka')
-    expect(extract_kafka.group).to eq('kafka')
+    expect(chef_run).to run_execute('extract-kafka').with({
+      cwd: '/opt/kafka/build',
+      user: 'kafka',
+      group: 'kafka'
+    })
   end
 
   it 'installs extracted Kafka archive' do
-    expect(chef_run.execute('extract-kafka')).to notify('execute[install-kafka]').to(:run).immediately
-
-    install_kafka = chef_run.execute('install-kafka')
-    expect(install_kafka.cwd).to eq('/opt/kafka')
-    expect(install_kafka.user).to eq('kafka')
-    expect(install_kafka.group).to eq('kafka')
+    expect(chef_run).to run_kafka_install('/opt/kafka')
   end
 end

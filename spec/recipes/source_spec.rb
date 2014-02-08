@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::source' do
   let :chef_run do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::Runner.new(step_into: ['kafka_download', 'kafka_install']).converge(described_recipe)
   end
 
   let :kafka_download do
@@ -21,18 +21,10 @@ describe 'kafka::source' do
   end
 
   it 'compiles Kafka source' do
-    expect(kafka_download).to notify('execute[compile-kafka]').to(:run).immediately
-
-    compile_kafka = chef_run.execute('compile-kafka')
-    expect(compile_kafka.cwd).to eq('/opt/kafka/build')
+    expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
   end
 
   it 'installs compiled Kafka source' do
-    expect(chef_run.execute('compile-kafka')).to notify('execute[install-kafka]').to(:run).immediately
-
-    install_kafka = chef_run.execute('install-kafka')
-    expect(install_kafka.cwd).to eq('/opt/kafka')
-    expect(install_kafka.user).to eq('kafka')
-    expect(install_kafka.group).to eq('kafka')
+    expect(chef_run).to run_kafka_install('/opt/kafka')
   end
 end
