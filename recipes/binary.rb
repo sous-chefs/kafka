@@ -45,7 +45,7 @@ unless (already_installed = (File.directory?(dist_directory) && File.exists?(ins
     user     node[:kafka][:user]
     group    node[:kafka][:group]
     cwd      dist_directory
-    command  %{tar zxvf #{local_file_path}}
+    command  %{tar zxf #{local_file_path}}
     action   :nothing
     notifies :run, 'execute[install-kafka]', :immediately
   end

@@ -45,7 +45,7 @@ unless (already_installed = (File.directory?(build_directory) && File.exists?(in
   execute 'compile-kafka' do
     cwd   build_directory
     command <<-EOH.gsub(/^\s+/, '')
-      tar zxvf #{local_file_path}
+      tar zxf #{local_file_path}
       cd #{kafka_src}
       ./sbt update
       ./sbt "++#{node[:kafka][:scala_version]} release-zip"
