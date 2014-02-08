@@ -8,7 +8,6 @@ node.default[:kafka][:checksum]      ||= 'f4b7229671aba98dba9a882244cb597aab8a90
 node.default[:kafka][:md5_checksum]  ||= '46b3e65e38f1bde4b6251ea131d905f4'
 
 kafka_src          = "kafka-#{node[:kafka][:version]}-src"
-kafka_base         = "kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]}"
 kafka_tar_gz       = "#{kafka_src}.tgz"
 download_file      = "#{node[:kafka][:base_url]}/#{node[:kafka][:version]}/#{kafka_tar_gz}"
 build_directory    = File.join(node[:kafka][:install_dir], 'build')
@@ -16,7 +15,7 @@ local_file_path    = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
 kafka_target_path  = File.join(build_directory, kafka_src, 'target', 'RELEASE', kafka_base)
 installed_path     = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
-unless (already_installed = (File.directory?(build_directory) && File.exists?(installed_path)))
+unless kafka_already_installed?
   remote_file local_file_path do
     source   download_file
     mode     '644'
