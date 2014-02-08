@@ -9,8 +9,7 @@ node.default[:kafka][:md5_checksum]  ||= '593e0cf966e6b8cd1bbff5bff713c4b3'
 
 kafka_tar_gz      = "#{kafka_base}.tar.gz"
 local_file_path   = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
-build_directory   = File.join(node[:kafka][:install_dir], 'build')
-kafka_target_path = File.join(build_directory, kafka_base)
+kafka_target_path = File.join(node[:kafka][:build_dir], kafka_base)
 
 kafka_download local_file_path do
   source       kafka_download_uri(kafka_tar_gz)
@@ -22,7 +21,7 @@ end
 execute 'extract-kafka' do
   user     node[:kafka][:user]
   group    node[:kafka][:group]
-  cwd      build_directory
+  cwd      node[:kafka][:build_dir]
   command  %(tar zxf #{local_file_path})
   not_if { kafka_already_installed? }
 end

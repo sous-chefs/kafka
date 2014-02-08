@@ -10,6 +10,7 @@ default[:kafka][:md5_checksum] = nil
 default[:kafka][:scala_version] = nil
 default[:kafka][:install_method] = :binary
 default[:kafka][:install_dir] = '/opt/kafka'
+default[:kafka][:build_dir] = File.join(node[:kafka][:install_dir], 'build')
 default[:kafka][:config_dir] = File.join(node[:kafka][:install_dir], 'config')
 default[:kafka][:log_dir] = '/var/log/kafka'
 default[:kafka][:log4j_config] = 'log4j.properties'
