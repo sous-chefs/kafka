@@ -15,42 +15,41 @@ local_file_path    = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
 kafka_target_path  = File.join(build_directory, kafka_src, 'target', 'RELEASE', kafka_base)
 installed_path     = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
-unless kafka_already_installed?
-  remote_file local_file_path do
-    source   download_file
-    mode     '644'
-    checksum node[:kafka][:checksum]
-    notifies :create, 'ruby_block[validate-tarball]', :immediately
-  end
+remote_file local_file_path do
+  source   download_file
+  mode     '644'
+  checksum node[:kafka][:checksum]
+  notifies :create, 'ruby_block[validate-tarball]', :immediately
+  not_if { kafka_already_installed? }
+end
 
-  ruby_block 'validate-tarball' do
-    block do
-      unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == node[:kafka][:md5_checksum]
-        Chef::Application.fatal!("Downloaded tarball checksum (#{checksum}) does not match known checksum (#{node[:kafka][:md5_checksum]})")
-      end
+ruby_block 'validate-tarball' do
+  block do
+    unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == node[:kafka][:md5_checksum]
+      Chef::Application.fatal!("Downloaded tarball checksum (#{checksum}) does not match known checksum (#{node[:kafka][:md5_checksum]})")
     end
-    action :nothing
-    notifies :run, 'execute[compile-kafka]', :immediately
   end
+  action :nothing
+  notifies :run, 'execute[compile-kafka]', :immediately
+end
 
-  execute 'compile-kafka' do
-    cwd   build_directory
-    command <<-EOH.gsub(/^\s+/, '')
-      tar zxf #{local_file_path}
-      cd #{kafka_src}
-      ./sbt update
-      ./sbt "++#{node[:kafka][:scala_version]} release-zip"
-    EOH
+execute 'compile-kafka' do
+  cwd   build_directory
+  command <<-EOH.gsub(/^\s+/, '')
+    tar zxf #{local_file_path}
+    cd #{kafka_src}
+    ./sbt update
+    ./sbt "++#{node[:kafka][:scala_version]} release-zip"
+  EOH
 
-    action :nothing
-    notifies :run, 'execute[install-kafka]', :immediately
-  end
+  action :nothing
+  notifies :run, 'execute[install-kafka]', :immediately
+end
 
-  execute 'install-kafka' do
-    user  node[:kafka][:user]
-    group node[:kafka][:group]
-    cwd   node[:kafka][:install_dir]
-    command %{cp -r #{File.join(kafka_target_path, '*')} .}
-    action :nothing
-  end
+execute 'install-kafka' do
+  user  node[:kafka][:user]
+  group node[:kafka][:group]
+  cwd   node[:kafka][:install_dir]
+  command %{cp -r #{File.join(kafka_target_path, '*')} .}
+  action :nothing
 end
