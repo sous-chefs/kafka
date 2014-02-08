@@ -7,10 +7,6 @@ describe 'kafka::source' do
     ChefSpec::Runner.new(step_into: ['kafka_download', 'kafka_install']).converge(described_recipe)
   end
 
-  let :kafka_download do
-    chef_run.find_resource(:kafka_download, "#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
-  end
-
   it 'downloads remote binary release of Kafka' do
     expect(chef_run).to create_kafka_download("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz").with({
       source: 'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka-0.8.0-src.tgz',
