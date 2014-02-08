@@ -11,7 +11,6 @@ kafka_tar_gz      = "#{kafka_base}.tar.gz"
 local_file_path   = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
 build_directory   = File.join(node[:kafka][:install_dir], 'build')
 kafka_target_path = File.join(build_directory, kafka_base)
-installed_path    = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
 kafka_download local_file_path do
   source       kafka_download_uri(kafka_tar_gz)
