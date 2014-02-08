@@ -8,7 +8,7 @@ def kafka_jar_path
   ::File.join(node[:kafka][:install_dir], %(#{kafka_base}.jar))
 end
 
-def kafka_already_installed?
+def kafka_installed?
   ::File.exists?(node[:kafka][:install_dir]) && ::File.exists?(kafka_jar_path)
 end
 

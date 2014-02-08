@@ -16,7 +16,7 @@ kafka_download local_file_path do
   source kafka_download_uri(kafka_tar_gz)
   checksum node[:kafka][:checksum]
   md5_checksum node[:kafka][:md5_checksum]
-  not_if { kafka_already_installed? }
+  not_if { kafka_installed? }
 end
 
 execute 'compile-kafka' do
@@ -27,10 +27,10 @@ execute 'compile-kafka' do
     ./sbt update && \
     ./sbt '++#{node[:kafka][:scala_version]} release-zip'
   EOH
-  not_if { kafka_already_installed? }
+  not_if { kafka_installed? }
 end
 
 kafka_install node[:kafka][:install_dir] do
   from kafka_target_path
-  not_if { kafka_already_installed? }
+  not_if { kafka_installed? }
 end
