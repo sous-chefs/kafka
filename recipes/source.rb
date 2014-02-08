@@ -14,22 +14,12 @@ local_file_path    = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
 kafka_target_path  = File.join(build_directory, kafka_src, 'target', 'RELEASE', kafka_base)
 installed_path     = File.join(node[:kafka][:install_dir], "#{kafka_base}.jar")
 
-remote_file local_file_path do
-  source   kafka_download_uri(kafka_tar_gz)
-  mode     '644'
+kafka_download local_file_path do
+  source kafka_download_uri(kafka_tar_gz)
   checksum node[:kafka][:checksum]
-  notifies :create, 'ruby_block[validate-tarball]', :immediately
-  not_if { kafka_already_installed? }
-end
-
-ruby_block 'validate-tarball' do
-  block do
-    unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == node[:kafka][:md5_checksum]
-      Chef::Application.fatal!("Downloaded tarball checksum (#{checksum}) does not match known checksum (#{node[:kafka][:md5_checksum]})")
-    end
-  end
-  action :nothing
+  md5_checksum node[:kafka][:md5_checksum]
   notifies :run, 'execute[compile-kafka]', :immediately
+  not_if { kafka_already_installed? }
 end
 
 execute 'compile-kafka' do

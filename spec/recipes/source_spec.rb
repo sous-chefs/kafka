@@ -7,24 +7,21 @@ describe 'kafka::source' do
     ChefSpec::Runner.new.converge(described_recipe)
   end
 
-  let :remote_file do
-    chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
+  let :kafka_download do
+    chef_run.find_resource(:kafka_download, "#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
   end
 
-  it 'downloads remote source of Kafka' do
-    expect(chef_run).to create_remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz").with({
-      source:   'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka-0.8.0-src.tgz',
+  it 'downloads remote binary release of Kafka' do
+    expect(chef_run).to create_kafka_download("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz").with({
+      source: 'https://dist.apache.org/repos/dist/release/kafka/0.8.0/kafka-0.8.0-src.tgz',
       checksum: 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a',
+      md5_checksum: '46b3e65e38f1bde4b6251ea131d905f4',
       mode: '644'
     })
   end
 
-  it 'validates downloaded Kafka archive' do
-    expect(remote_file).to notify('ruby_block[validate-tarball]').to(:create).immediately
-  end
-
   it 'compiles Kafka source' do
-    expect(chef_run.ruby_block('validate-tarball')).to notify('execute[compile-kafka]').to(:run).immediately
+    expect(kafka_download).to notify('execute[compile-kafka]').to(:run).immediately
 
     compile_kafka = chef_run.execute('compile-kafka')
     expect(compile_kafka.cwd).to eq('/opt/kafka/build')
