@@ -18,8 +18,12 @@ action :create do
 
   ruby_block 'validate-download' do
     block do
-      unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == known_md5
-        Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match known checksum (#{known_md5}))
+      if known_md5 && !known_md5.empty?
+        unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == known_md5
+          Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match known checksum (#{known_md5}))
+        end
+      else
+        Chef::Log.debug 'No MD5 checksum set, not validating downloaded archive'
       end
 
       new_resource.updated_by_last_action(true)
