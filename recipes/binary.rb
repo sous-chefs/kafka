@@ -8,8 +8,8 @@ node.default[:kafka][:checksum]      ||= 'ecadd6cf9f59e22444af5888c8b9595c5652ff
 node.default[:kafka][:md5_checksum]  ||= '593e0cf966e6b8cd1bbff5bff713c4b3'
 
 kafka_tar_gz      = "#{kafka_base}.tar.gz"
-local_file_path   = File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
-kafka_target_path = File.join(node[:kafka][:build_dir], kafka_base)
+local_file_path   = ::File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
+kafka_target_path = ::File.join(node[:kafka][:build_dir], kafka_base)
 
 kafka_download local_file_path do
   source       kafka_download_uri(kafka_tar_gz)
