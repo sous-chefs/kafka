@@ -50,6 +50,14 @@ describe 'kafka::_setup' do
     })
   end
 
+  it 'creates build directory' do
+    expect(chef_run).to create_directory('/opt/kafka/build').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
+  end
+
   it 'creates log directory' do
     expect(chef_run).to create_directory('/var/log/kafka').with({
       owner: 'kafka',

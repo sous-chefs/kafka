@@ -5,7 +5,7 @@
 
 include_recipe 'kafka'
 
-template File.join(node[:kafka][:config_dir], 'zookeeper.properties') do
+template ::File.join(node[:kafka][:config_dir], 'zookeeper.properties') do
   source 'zookeeper.properties.erb'
   owner  node[:kafka][:user]
   group  node[:kafka][:group]
@@ -19,7 +19,7 @@ directory node[:zookeeper][:log_dir] do
   recursive true
 end
 
-template File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
+template ::File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
   source  'log4j.properties.erb'
   owner node[:kafka][:user]
   group node[:kafka][:group]

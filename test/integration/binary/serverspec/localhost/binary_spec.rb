@@ -17,12 +17,4 @@ describe 'kafka::binary' do
       '/opt/kafka/kafka_2.8.0-0.8.0.jar'
     end
   end
-
-  describe '/opt/kafka/dist' do
-    it_behaves_like 'a kafka directory' do
-      let :path do
-        '/opt/kafka/dist'
-      end
-    end
-  end
 end
