@@ -3,8 +3,6 @@
 # Provider:: install
 #
 
-use_inline_resources
-
 action :run do
   execute 'install-kafka' do
     user  node[:kafka][:user]
