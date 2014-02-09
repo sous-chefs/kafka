@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Resource:: install
+#
 
 actions :run
 default_action :run

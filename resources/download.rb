@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Resource:: download
+#
 
 actions :create
 default_action :create

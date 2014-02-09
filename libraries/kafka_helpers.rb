@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Libraries:: kafka_helpers
+#
 
 def kafka_base
   %(kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]})

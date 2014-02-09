@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Provider:: install
+#
 
 use_inline_resources
 

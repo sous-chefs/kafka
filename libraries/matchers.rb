@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Libraries:: matchers
+#
 
 if defined?(ChefSpec)
   def create_kafka_download(local_path)
