@@ -8,7 +8,7 @@ action :run do
     group node[:kafka][:group]
     command <<-EOH.gsub(/^\s+/, '')
       cp -r #{::File.join(new_resource.from, '*')} #{new_resource.to} && \
-      rm -rf #{new_resource.from}
+      rm -rf #{::File.join(new_resource.from, '*')}
     EOH
   end
 end
