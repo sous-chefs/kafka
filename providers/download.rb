@@ -10,7 +10,6 @@ action :create do
     source   new_resource.source
     mode     new_resource.mode
     checksum new_resource.checksum
-    action :create
     notifies :create, 'ruby_block[validate-download]', :immediately
   end
 
