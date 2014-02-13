@@ -66,7 +66,11 @@ template init_script_path do
   owner  'root'
   group  'root'
   mode   init_script_permissions
-  variables({daemon_name: 'zookeeper', port: 2181})
+  variables({
+    daemon_name: 'zookeeper',
+    port:        2181,
+    user:        node[:kafka][:user]
+  })
 end
 
 service 'zookeeper' do
