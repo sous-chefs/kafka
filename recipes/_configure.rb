@@ -19,6 +19,9 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   owner  node[:kafka][:user]
   group  node[:kafka][:group]
   mode   '644'
+  variables({
+    zookeeper_connect: %(#{node[:kafka][:zookeeper][:connect].join(',')}#{node[:kafka][:zookeeper][:path]})
+  })
 end
 
 case node[:kafka][:init_style].to_sym
