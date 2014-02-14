@@ -164,6 +164,7 @@ well as configuring Kafka.
 * `node[:kafka][:zookeeper][:connection_timeout_ms]` - The max time that the client waits to establish a connection to ZooKeeper.
 * `node[:kafka][:zookeeper][:session_timeout_ms]` - ZooKeeper session timeout.
 * `node[:kafka][:zookeeper][:sync_time_ms]` - How far a ZK follower can be behind a ZK leader.
+* `node[:kafka][:zookeeper][:path]` - An optional zookeeper path for kafka brokers to prefix their zookeeper nodes.
 
 ### zookeeper
 

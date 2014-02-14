@@ -83,3 +83,4 @@ default[:kafka][:zookeeper][:connect] = []
 default[:kafka][:zookeeper][:connection_timeout_ms] = 6000
 default[:kafka][:zookeeper][:session_timeout_ms] = 6000
 default[:kafka][:zookeeper][:sync_time_ms] = 2000
+default[:kafka][:zookeeper][:path] = nil
