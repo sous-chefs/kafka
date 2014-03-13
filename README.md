@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
-Installs Kafka `0.8.0`, and probably any newer versions.
+Installs Kafka `v0.8.0`, and probably any newer versions.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
@@ -13,6 +13,13 @@ notable differences:
   a specific role or such, that is left up to you to decide.
 * only tested on Vagrant boxes.
 * intended to be used by wrapper cookbooks.
+
+## Status
+
+There has not been a proper release of this cookbook yet, so don't rely on the
+version specified in `metadata.rb` right now.
+I'd like to get support for `v0.8.1` of Kafka before actually making a proper
+release and then start following proper versioning.
 
 ## Requirements
 
