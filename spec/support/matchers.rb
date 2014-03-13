@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+require 'rspec/expectations'
+
 RSpec::Matchers.define :have_configured do |configuration_file|
   match do |chef_run|
     regexp = Regexp.new("^#{Regexp.quote(@attribute)}=#{Regexp.quote(@value)}$")
