@@ -23,10 +23,10 @@ end
 
 case node[:kafka][:init_style].to_sym
 when :sysv
-  env_path = value_for_platform_family(
+  env_path = value_for_platform_family({
     'debian' => '/etc/default/kafka',
     'default' => '/etc/sysconfig/kafka'
-  )
+  })
   init_script_path = '/etc/init.d/kafka'
   source_script_path = 'initd.sh.erb'
   service_provider = nil
