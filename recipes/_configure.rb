@@ -20,7 +20,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   group  node[:kafka][:group]
   mode   '644'
   variables({
-    zookeeper_connect: %(#{node[:kafka][:zookeeper][:connect].join(',')}#{node[:kafka][:zookeeper][:path]})
+    zookeeper_connect: zookeeper_connect_string
   })
 end
 

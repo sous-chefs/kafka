@@ -295,6 +295,12 @@ describe 'kafka::_configure' do
         it 'includes the path as well' do
           expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
         end
+
+        it 'does not require the path to start with a slash' do
+          zookeeper_attrs[:path].gsub!('/', '')
+
+          expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
+        end
       end
 
       it 'sets default zookeeper connection timeout' do
