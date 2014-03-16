@@ -271,8 +271,36 @@ describe 'kafka::_configure' do
     end
 
     context 'zookeeper configuration' do
-      it 'sets zookeeper hosts' do
-        expect(chef_run).to have_configured(path).with('zookeeper.connect').as('')
+      let :chef_run do
+        ChefSpec::Runner.new do |node|
+          node.set[:kafka][:zookeeper] = zookeeper_attrs
+        end.converge(described_recipe)
+      end
+
+      let :zookeeper_attrs do
+        {connect: %w(127.0.0.1)}
+      end
+
+      context 'when zookeeper.path is not set' do
+        it 'just sets hosts' do
+          expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1')
+        end
+      end
+
+      context 'when zookeeper.path is set' do
+        let :zookeeper_attrs do
+          {connect: %w(127.0.0.1 127.0.0.2), path: '/test'}
+        end
+
+        it 'includes the path as well' do
+          expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
+        end
+
+        it 'does not require the path to start with a slash' do
+          zookeeper_attrs[:path].gsub!('/', '')
+
+          expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
+        end
       end
 
       it 'sets default zookeeper connection timeout' do

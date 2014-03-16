@@ -18,3 +18,14 @@ end
 def kafka_download_uri(filename)
   [node[:kafka][:base_url], node[:kafka][:version], filename].join('/')
 end
+
+def zookeeper_connect_string
+  connect_string = node[:kafka][:zookeeper][:connect].join(',')
+
+  if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
+    connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
+    connect_string << node[:kafka][:zookeeper][:path]
+  end
+
+  connect_string
+end
