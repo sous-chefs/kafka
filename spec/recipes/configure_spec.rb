@@ -25,6 +25,18 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(path).with('broker.id').as('10002')
       end
 
+      context 'when broker id is larger than 2**31' do
+        let :chef_run do
+          ChefSpec::Runner.new do |node|
+            node.automatic[:ipaddress] = '255.255.255.255'
+          end.converge(described_recipe)
+        end
+
+        it 'mod\'s it by 2**31' do
+          expect(chef_run).to have_configured(path).with('broker.id').as('1852184791')
+        end
+      end
+
       it 'sets default max byte size of messages' do
         expect(chef_run).to have_configured(path).with('message.max.bytes').as(1_000_000)
       end

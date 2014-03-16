@@ -24,7 +24,9 @@ default[:kafka][:generic_opts] = nil
 default[:kafka][:init_style] = :sysv
 
 # General configuration
-default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
+# Mod the broker id by the largest 32 bit unsigned int to avoid kafka
+# choking on the value when it tries to start up.
+default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '').to_i % 2**31
 default[:kafka][:message_max_bytes] = 1_000_000
 default[:kafka][:num_network_threads] = 3
 default[:kafka][:num_io_threads] = 8
