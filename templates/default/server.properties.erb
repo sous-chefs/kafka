@@ -169,7 +169,7 @@
 # server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
-<%= render 'partials/option.erb', variables: {key: 'zookeeper.connect', value: @zookeeper_connect -%>
+<%= render 'partials/option.erb', variables: {key: 'zookeeper.connect', value: @zookeeper_connect} -%>
 
 # the max time that the client waits to establish a connection to zookeeper
 <%= render 'partials/option.erb', variables: {key: 'zookeeper.connection.timeout.ms', value: node[:kafka][:zookeeper][:connection_timeout_ms]} -%>
