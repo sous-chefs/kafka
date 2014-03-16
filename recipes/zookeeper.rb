@@ -32,8 +32,8 @@ end
 
 case node[:kafka][:init_style].to_sym
 when :sysv
-  env_path = value_for_platform({
-    'debian' => {'default' => '/etc/default/zookeeper'},
+  env_path = value_for_platform_family({
+    'debian' => '/etc/default/zookeeper',
     'default' => '/etc/sysconfig/zookeeper'
   })
   init_script_path = '/etc/init.d/zookeeper'
