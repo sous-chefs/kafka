@@ -131,7 +131,7 @@ describe 'service for sysv init style' do
       end
 
       it 'prints a message that kafka is not running / stopped' do
-        if debian?
+        if debian? || ubuntu?
           expect(status_command).to return_stdout /kafka is not running/
         elsif fedora?
           expect(status_command).to return_stdout /Active: failed/

@@ -5,6 +5,10 @@ module PlatformHelpers
     family == 'debian'
   end
 
+  def ubuntu?
+    family == 'ubuntu'
+  end
+
   def centos?
     family == 'redhat' && %w(5.9 6.4 6.5).include?(release)
   end

@@ -18,14 +18,18 @@ platforms:
     attributes:
       java:
         jdk_version: 6
+  - name: ubuntu-12.04
+    run_list:
+      - recipe[apt]
+    attributes:
+      java:
+        jdk_version: 7
   - name: ubuntu-13.10
     run_list:
       - recipe[apt]
     attributes:
       java:
         jdk_version: 7
-      kafka:
-        init_style: 'upstart'
   - name: fedora-18
     attributes:
       java:
@@ -50,8 +54,6 @@ suites:
     run_list:
       - recipe[java::default]
       - recipe[kafka]
-    excludes:
-      - ubuntu-13.10
     attributes:
       kafka:
         install_method: 'binary'

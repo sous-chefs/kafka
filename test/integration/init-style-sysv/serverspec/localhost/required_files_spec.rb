@@ -9,7 +9,7 @@ describe 'required files for sysv init style' do
     end
 
     let :path do
-      if debian?
+      if debian? || ubuntu?
         '/etc/default/kafka'
       else
         '/etc/sysconfig/kafka'
