@@ -9,7 +9,6 @@ node.default[:kafka][:md5_checksum]  ||= '46b3e65e38f1bde4b6251ea131d905f4'
 
 kafka_tar_gz      = [kafka_src, kafka_archive_ext].join('.')
 local_file_path   = ::File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
-kafka_target_path = ::File.join(node[:kafka][:build_dir], kafka_src, 'target', 'RELEASE', kafka_base)
 
 kafka_download local_file_path do
   source kafka_download_uri(kafka_tar_gz)
