@@ -38,5 +38,6 @@ describe 'kafka::source' do
   it 'installs compiled Kafka source' do
     expect(chef_run).to run_kafka_install('/opt/kafka')
     expect(chef_run).to run_execute('install-kafka')
+    expect(chef_run).to run_execute('remove-kafka-build')
   end
 end

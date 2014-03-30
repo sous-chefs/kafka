@@ -42,6 +42,7 @@ describe 'kafka::binary' do
   it 'installs extracted Kafka archive' do
     expect(chef_run).to run_kafka_install('/opt/kafka')
     expect(chef_run).to run_execute('install-kafka')
+    expect(chef_run).to run_execute('remove-kafka-build')
   end
 
   context 'archive extension for different versions' do
