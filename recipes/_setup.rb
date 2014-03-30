@@ -22,6 +22,5 @@ end
     group     node[:kafka][:group]
     mode      '755'
     recursive true
-    not_if { ::File.directory?(dir) }
   end
 end
