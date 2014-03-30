@@ -31,8 +31,50 @@ describe 'kafka::source' do
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
-  it 'compiles Kafka source' do
-    expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+  context 'compilation of Kafka source' do
+    let :chef_run do
+      ChefSpec::Runner.new do |node|
+        node.set[:kafka][:install_method] = :source
+        node.set[:kafka][:version] = kafka_version
+      end.converge(described_recipe)
+    end
+
+    let :compile_command do
+      chef_run.execute('compile-kafka').command
+    end
+
+    context 'when version is 0.8.0' do
+      let :kafka_version do
+        '0.8.0'
+      end
+
+      it 'runs execute block' do
+        expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+      end
+
+      it 'uses sbt' do
+        expect(compile_command).to include './sbt update'
+        expect(compile_command).to match /\.\/sbt .+ release-zip/
+      end
+    end
+
+    context 'when version is 0.8.1' do
+      let :kafka_version do
+        '0.8.1'
+      end
+
+      it 'downloads kafka' do
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.1-src.tgz))
+      end
+
+      it 'runs execute block' do
+        expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+      end
+
+      it 'uses gradle' do
+        expect(compile_command).to match /\.\/gradlew .+ releaseTarGz -x signArchives/
+      end
+    end
   end
 
   it 'installs compiled Kafka source' do

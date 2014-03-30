@@ -23,10 +23,15 @@ execute 'compile-kafka' do
   command <<-EOH.gsub(/^\s+/, '')
     tar zxf #{local_file_path} && \
     cd #{kafka_src} && \
-    ./sbt update && \
-    ./sbt '++#{node[:kafka][:scala_version]} release-zip'
+    #{kafka_build_command}
   EOH
   not_if { kafka_installed? }
+end
+
+execute 'extract-kafka' do
+  cwd ::File.dirname(kafka_target_path)
+  command %(tar zxf #{kafka_base}.#{kafka_archive_ext})
+  only_if { !kafka_installed? && node[:kafka][:version] == '0.8.1' }
 end
 
 kafka_install node[:kafka][:install_dir] do

@@ -37,6 +37,15 @@ def kafka_archive_ext
   end
 end
 
+def kafka_build_command
+  case node[:kafka][:version]
+  when '0.8.0'
+    %(./sbt update && ./sbt "++#{node[:kafka][:scala_version]} release-zip")
+  when '0.8.1'
+    %(./gradlew -PscalaVersion=#{node[:kafka][:scala_version]} releaseTarGz -x signArchives)
+  end
+end
+
 def zookeeper_connect_string
   connect_string = node[:kafka][:zookeeper][:connect].join(',')
 
