@@ -7,6 +7,10 @@ def kafka_base
   %(kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]})
 end
 
+def kafka_src
+  %(kafka-#{node[:kafka][:version]}-src)
+end
+
 def kafka_jar_path
   ::File.join(node[:kafka][:install_dir], %(#{kafka_base}.jar))
 end
