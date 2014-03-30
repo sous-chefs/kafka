@@ -3,9 +3,9 @@
 # Recipe:: binary
 #
 
-node.default[:kafka][:scala_version] ||= '2.8.0'
-node.default[:kafka][:checksum]      ||= 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e'
-node.default[:kafka][:md5_checksum]  ||= '593e0cf966e6b8cd1bbff5bff713c4b3'
+node.default[:kafka][:scala_version] ||= '2.9.2'
+node.default[:kafka][:checksum]      ||= '33825206ec02ef5e2538e77dee535899d2d15833266f23d9008d156b2e785e88'
+node.default[:kafka][:md5_checksum]  ||= 'bf0296ae67124a76966467e56d01de3e'
 
 kafka_tar_gz      = [kafka_base, kafka_archive_ext].join('.')
 local_file_path   = ::File.join(Chef::Config[:file_cache_path], kafka_tar_gz)

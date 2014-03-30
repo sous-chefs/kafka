@@ -10,16 +10,16 @@ describe 'kafka::binary' do
   end
 
   it 'downloads remote binary release of Kafka' do
-    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
-      checksum: 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e',
-      md5_checksum: '593e0cf966e6b8cd1bbff5bff713c4b3',
+    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz)).with({
+      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka_2.9.2-0.8.1.tgz',
+      checksum: '33825206ec02ef5e2538e77dee535899d2d15833266f23d9008d156b2e785e88',
+      md5_checksum: 'bf0296ae67124a76966467e56d01de3e',
       mode: '644'
     })
 
-    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.0/kafka_2.8.0-0.8.0.tar.gz',
-      checksum: 'ecadd6cf9f59e22444af5888c8b9595c5652ffab597db038418e85dfa834062e',
+    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz)).with({
+      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka_2.9.2-0.8.1.tgz',
+      checksum: '33825206ec02ef5e2538e77dee535899d2d15833266f23d9008d156b2e785e88',
       mode: '644'
     })
   end
@@ -27,7 +27,7 @@ describe 'kafka::binary' do
   it 'validates download' do
     expect(chef_run).not_to run_ruby_block('kafka-validate-download')
 
-    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz))
+    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz))
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
@@ -59,7 +59,7 @@ describe 'kafka::binary' do
       end
 
       it 'uses .tar.gz' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz))
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.0.tar.gz))
       end
     end
 
@@ -69,7 +69,7 @@ describe 'kafka::binary' do
       end
 
       it 'uses .tgz' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.1.tgz))
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz))
       end
     end
   end

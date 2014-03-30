@@ -10,16 +10,16 @@ describe 'kafka::source' do
   end
 
   it 'downloads remote source release of Kafka' do
-    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.0/kafka-0.8.0-src.tgz',
-      checksum: 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a',
-      md5_checksum: '46b3e65e38f1bde4b6251ea131d905f4',
+    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.1-src.tgz)).with({
+      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka-0.8.1-src.tgz',
+      checksum: 'a05d0f95a5e42a7260769649efbc75e6938a0dc55decb4d32e601476414ac826',
+      md5_checksum: '7174f7855cb2f7e131799cb23805cd35',
       mode: '644'
     })
 
-    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.0/kafka-0.8.0-src.tgz',
-      checksum: 'f4b7229671aba98dba9a882244cb597aab8a9018631575d28e119725a01cfc9a',
+    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.1-src.tgz)).with({
+      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka-0.8.1-src.tgz',
+      checksum: 'a05d0f95a5e42a7260769649efbc75e6938a0dc55decb4d32e601476414ac826',
       mode: '644'
     })
   end
@@ -27,7 +27,7 @@ describe 'kafka::source' do
   it 'validates download' do
     expect(chef_run).not_to run_ruby_block('kafka-validate-download')
 
-    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz))
+    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.1-src.tgz))
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
@@ -48,6 +48,10 @@ describe 'kafka::source' do
         '0.8.0'
       end
 
+      it 'downloads kafka' do
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz))
+      end
+
       it 'runs execute block' do
         expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
       end
@@ -61,10 +65,6 @@ describe 'kafka::source' do
     context 'when version is 0.8.1' do
       let :kafka_version do
         '0.8.1'
-      end
-
-      it 'downloads kafka' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka-0.8.1-src.tgz))
       end
 
       it 'runs execute block' do
