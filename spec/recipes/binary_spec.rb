@@ -23,10 +23,10 @@ describe 'kafka::binary' do
   end
 
   it 'validates download' do
-    expect(chef_run).not_to run_ruby_block('validate-download')
+    expect(chef_run).not_to run_ruby_block('kafka-validate-download')
 
     remote_file = chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka_2.8.0-0.8.0.tar.gz")
-    expect(remote_file).to notify('ruby_block[validate-download]').immediately
+    expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
   it 'extracts downloaded Kafka archive' do

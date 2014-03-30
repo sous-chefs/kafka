@@ -13,10 +13,10 @@ action :create do
     source   new_resource.source
     mode     new_resource.mode
     checksum new_resource.checksum
-    notifies :create, 'ruby_block[validate-download]', :immediately
+    notifies :create, 'ruby_block[kafka-validate-download]', :immediately
   end
 
-  ruby_block 'validate-download' do
+  ruby_block 'kafka-validate-download' do
     block do
       if known_md5 && !known_md5.empty?
         unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == known_md5
