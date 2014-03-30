@@ -3,16 +3,12 @@
 require 'spec_helper'
 
 describe 'kafka::default' do
+  TerminatedExecutionError = Class.new(StandardError)
+
   let :chef_run do
     ChefSpec::Runner.new do |node|
       node.set[:kafka][:install_method] = install_method
-    end
-  end
-
-  before do
-    Chef::Application.stub(:fatal!)
-
-    chef_run.converge(described_recipe)
+    end.converge(described_recipe)
   end
 
   shared_examples_for 'a valid install method' do
@@ -66,7 +62,12 @@ describe 'kafka::default' do
       :bork
     end
 
+    before do
+      Chef::Application.stub(:fatal!).and_raise(TerminatedExecutionError)
+    end
+
     it 'terminates the chef run' do
+      expect { chef_run.converge(described_recipe) }.to raise_error(TerminatedExecutionError)
       expect(Chef::Application).to have_received(:fatal!).with(/Unknown install_method: bork/).once
     end
   end
