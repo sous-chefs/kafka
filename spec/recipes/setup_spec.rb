@@ -4,7 +4,13 @@ require 'spec_helper'
 
 describe 'kafka::_setup' do
   let :chef_run do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::Runner.new do |node|
+      node.set[:kafka] = kafka_attrs
+    end.converge(described_recipe)
+  end
+
+  let :kafka_attrs do
+    {}
   end
 
   context 'group and user' do
@@ -22,11 +28,8 @@ describe 'kafka::_setup' do
     end
 
     context 'when overridden' do
-      let :chef_run do
-        ChefSpec::Runner.new do |node|
-          node.set[:kafka][:user] = 'spec'
-          node.set[:kafka][:group] = 'spec'
-        end.converge(described_recipe)
+      let :kafka_attrs do
+        {user: 'spec', group: 'spec'}
       end
 
       it 'creates a group with set name' do

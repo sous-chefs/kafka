@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::source' do
   let :chef_run do
-    ChefSpec::Runner.new(step_into: ['kafka_download', 'kafka_install']).converge(described_recipe)
+    ChefSpec::Runner.new(step_into: %w(kafka_download kafka_install)).converge(described_recipe)
   end
 
   it 'downloads remote binary release of Kafka' do
@@ -23,8 +23,6 @@ describe 'kafka::source' do
   end
 
   it 'validates download' do
-    # Keep this around to achieve 100% coverage until the next version of ChefSpec
-    # is released. See https://github.com/sethvargo/chefspec/issues/379
     expect(chef_run).not_to run_ruby_block('validate-download')
 
     remote_file = chef_run.remote_file("#{Chef::Config[:file_cache_path]}/kafka-0.8.0-src.tgz")
