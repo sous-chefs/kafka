@@ -4,7 +4,7 @@ require 'rspec/expectations'
 
 RSpec::Matchers.define :have_configured do |configuration_file|
   match do |chef_run|
-    regexp = Regexp.new("^#{Regexp.quote(@attribute)}=#{Regexp.quote(@value)}$")
+    regexp = Regexp.new(%(^#{Regexp.quote(@attribute)}=#{Regexp.quote(@value)}$))
     @matcher = ChefSpec::Matchers::RenderFileMatcher.new(configuration_file)
     @matcher.with_content(regexp).matches?(chef_run)
   end

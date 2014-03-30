@@ -84,7 +84,7 @@ describe 'kafka::_configure' do
 
         context 'by default' do
           it 'configures a commented attribute' do
-            expect(chef_run).to have_configured(path).with("#log.#{attribute}").as('')
+            expect(chef_run).to have_configured(path).with(%(#log.#{attribute})).as('')
           end
         end
 
@@ -100,7 +100,7 @@ describe 'kafka::_configure' do
           end
 
           it 'transforms it to a CSV string' do
-            expect(chef_run).to have_configured(path).with("log.#{attribute}").as('topic1:12345,topic2:3000')
+            expect(chef_run).to have_configured(path).with(%(log.#{attribute})).as('topic1:12345,topic2:3000')
           end
         end
       end
