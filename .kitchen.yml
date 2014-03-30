@@ -48,7 +48,6 @@ suites:
       - fedora-18
     attributes:
       kafka:
-        base_url: 'https://archive.apache.org/dist/kafka'
         install_method: 'binary'
         init_style: 'upstart'
         zookeeper:
@@ -59,7 +58,6 @@ suites:
       - recipe[kafka]
     attributes:
       kafka:
-        base_url: 'https://archive.apache.org/dist/kafka'
         install_method: 'binary'
         init_style: 'sysv'
         zookeeper:
@@ -70,7 +68,6 @@ suites:
       - recipe[kafka]
     attributes:
       kafka:
-        base_url: 'https://archive.apache.org/dist/kafka'
         install_method: 'binary'
   - name: source
     run_list:
@@ -78,12 +75,8 @@ suites:
       - recipe[kafka]
     attributes:
       kafka:
-        base_url: 'https://archive.apache.org/dist/kafka'
         install_method: 'source'
   - name: zookeeper
     run_list:
       - recipe[java::default]
       - recipe[kafka::zookeeper]
-    attributes:
-      kafka:
-        base_url: 'https://archive.apache.org/dist/kafka'

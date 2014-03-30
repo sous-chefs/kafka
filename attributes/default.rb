@@ -4,7 +4,7 @@
 #
 
 default[:kafka][:version] = '0.8.0'
-default[:kafka][:base_url] = 'https://dist.apache.org/repos/dist/release/kafka'
+default[:kafka][:base_url] = 'https://archive.apache.org/dist/kafka'
 default[:kafka][:checksum] = nil
 default[:kafka][:md5_checksum] = nil
 default[:kafka][:scala_version] = nil
