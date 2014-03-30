@@ -8,7 +8,7 @@ node.default[:kafka][:checksum]      ||= 'f4b7229671aba98dba9a882244cb597aab8a90
 node.default[:kafka][:md5_checksum]  ||= '46b3e65e38f1bde4b6251ea131d905f4'
 
 kafka_src         = %(kafka-#{node[:kafka][:version]}-src)
-kafka_tar_gz      = %(#{kafka_src}.tgz)
+kafka_tar_gz      = [kafka_src, kafka_archive_ext].join('.')
 local_file_path   = ::File.join(Chef::Config[:file_cache_path], kafka_tar_gz)
 kafka_target_path = ::File.join(node[:kafka][:build_dir], kafka_src, 'target', 'RELEASE', kafka_base)
 

@@ -19,6 +19,20 @@ def kafka_download_uri(filename)
   [node[:kafka][:base_url], node[:kafka][:version], filename].join('/')
 end
 
+def kafka_archive_ext
+  case node[:kafka][:install_method].to_sym
+  when :binary
+    case node[:kafka][:version]
+    when '0.8.0'
+      'tar.gz'
+    when '0.8.1'
+      'tgz'
+    end
+  else
+    'tgz'
+  end
+end
+
 def zookeeper_connect_string
   connect_string = node[:kafka][:zookeeper][:connect].join(',')
 
