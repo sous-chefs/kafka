@@ -7,32 +7,6 @@ shared_examples_for 'an install method' do
   it_behaves_like 'a _setup recipe'
   it_behaves_like 'a _configure recipe'
 
-  describe 'kafka archive' do
-    let :kafka_archive do
-      file(kafka_archive_path)
-    end
-
-    it 'exists' do
-      expect(kafka_archive).to be_a_file
-    end
-
-    it 'has 644 permissions' do
-      expect(kafka_archive).to be_mode 644
-    end
-
-    it 'matches md5 checksum' do
-      expect(kafka_archive).to match_md5checksum kafka_archive_md5checksum
-    end
-  end
-
-  describe 'extracted jar' do
-    it_behaves_like 'a non-executable kafka file' do
-      let :path do
-        jar_path
-      end
-    end
-  end
-
   context 'directories in install directory' do
     describe '/opt/kafka/libs' do
       it_behaves_like 'a kafka directory' do
