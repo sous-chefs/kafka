@@ -7,23 +7,23 @@ include_recipe 'kafka'
 
 template ::File.join(node[:kafka][:config_dir], 'zookeeper.properties') do
   source 'zookeeper.properties.erb'
-  owner  node[:kafka][:user]
-  group  node[:kafka][:group]
-  mode   '644'
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
+  mode '644'
 end
 
 directory node[:zookeeper][:log_dir] do
-  owner   node[:kafka][:user]
-  group   node[:kafka][:group]
-  mode    '755'
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
+  mode '755'
   recursive true
 end
 
 template ::File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
-  source  'log4j.properties.erb'
+  source 'log4j.properties.erb'
   owner node[:kafka][:user]
   group node[:kafka][:group]
-  mode  '644'
+  mode '644'
   variables({
     process: 'zookeeper',
     log_dir: node[:zookeeper][:log_dir]
@@ -50,26 +50,26 @@ end
 
 template env_path do
   source 'kafka.env.erb'
-  owner  'root'
-  group  'root'
-  mode   '644'
+  owner 'root'
+  group 'root'
+  mode '644'
   variables({
-    main_class:   'org.apache.zookeeper.server.quorum.QuorumPeerMain',
-    jmx_port:     node[:zookeeper][:jmx_port],
-    config:        'zookeeper.properties',
-    log4j_config:  'zookeeper.log4j.properties'
+    main_class: 'org.apache.zookeeper.server.quorum.QuorumPeerMain',
+    jmx_port: node[:zookeeper][:jmx_port],
+    config: 'zookeeper.properties',
+    log4j_config: 'zookeeper.log4j.properties'
   })
 end
 
 template init_script_path do
   source source_script_path
-  owner  'root'
-  group  'root'
-  mode   init_script_permissions
+  owner 'root'
+  group 'root'
+  mode init_script_permissions
   variables({
     daemon_name: 'zookeeper',
-    port:        2181,
-    user:        node[:kafka][:user]
+    port: 2181,
+    user: node[:kafka][:user]
   })
 end
 

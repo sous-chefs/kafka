@@ -68,7 +68,7 @@ describe 'kafka::default' do
 
     it 'terminates the chef run' do
       expect { chef_run.converge(described_recipe) }.to raise_error(TerminatedExecutionError)
-      expect(Chef::Application).to have_received(:fatal!).with(/Unknown install_method: bork/).once
+      expect(Chef::Application).to have_received(:fatal!).with(/Unknown install_method: :bork/).once
     end
   end
 end

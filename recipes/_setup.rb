@@ -6,7 +6,7 @@
 group node[:kafka][:group]
 
 user node[:kafka][:user] do
-  gid   node[:kafka][:group]
+  gid node[:kafka][:group]
   shell '/sbin/nologin'
   supports(manage_home: false)
 end
@@ -18,9 +18,9 @@ end
   node[:kafka][:build_dir]
 ].each do |dir|
   directory dir do
-    owner     node[:kafka][:user]
-    group     node[:kafka][:group]
-    mode      '755'
+    owner node[:kafka][:user]
+    group node[:kafka][:group]
+    mode '755'
     recursive true
   end
 end

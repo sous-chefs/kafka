@@ -5,9 +5,9 @@
 
 template ::File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
   source 'log4j.properties.erb'
-  owner  node[:kafka][:user]
-  group  node[:kafka][:group]
-  mode   '644'
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
+  mode '644'
   variables({
     process: 'kafka',
     log_dir: node[:kafka][:log_dir]
@@ -16,9 +16,9 @@ end
 
 template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   source 'server.properties.erb'
-  owner  node[:kafka][:user]
-  group  node[:kafka][:group]
-  mode   '644'
+  owner node[:kafka][:user]
+  group node[:kafka][:group]
+  mode '644'
   variables({
     zookeeper_connect: zookeeper_connect_string
   })
@@ -44,22 +44,22 @@ end
 
 template env_path do
   source 'kafka.env.erb'
-  owner  'root'
-  group  'root'
-  mode   '644'
+  owner 'root'
+  group 'root'
+  mode '644'
   variables({
-    main_class:   'kafka.Kafka',
-    jmx_port:     node[:kafka][:jmx_port],
-    config:       node[:kafka][:config],
+    main_class: 'kafka.Kafka',
+    jmx_port: node[:kafka][:jmx_port],
+    config: node[:kafka][:config],
     log4j_config: 'log4j.properties'
   })
 end
 
 template init_script_path do
   source source_script_path
-  owner  'root'
-  group  'root'
-  mode   init_script_permissions
+  owner 'root'
+  group 'root'
+  mode init_script_permissions
   variables({
     daemon_name: 'kafka',
     port: node[:kafka][:port],
