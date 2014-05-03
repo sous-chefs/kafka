@@ -4,7 +4,13 @@ require 'spec_helper'
 
 describe 'kafka::_configure' do
   let :chef_run do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::Runner.new do |node|
+      node.set[:kafka][:version] = kafka_version
+    end.converge(described_recipe)
+  end
+
+  let :kafka_version do
+    '0.8.1'
   end
 
   describe 'broker configuration file' do
@@ -161,8 +167,36 @@ describe 'kafka::_configure' do
         end
       end
 
-      it 'sets default log cleanup interval (minutes)' do
-        expect(chef_run).to have_configured(path).with('log.cleanup.interval.mins').as(10)
+      context 'when kafka 0.8.0' do
+        let :kafka_version do
+          '0.8.0'
+        end
+
+        it 'sets default log cleanup interval (minutes)' do
+          expect(chef_run).to have_configured(path).with('log.cleanup.interval.mins').as(10)
+        end
+
+        it 'does not set default log retention check interval (milliseconds)' do
+          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
+        end
+
+        it 'does not set log cleaner' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.enable').as(false)
+        end
+      end
+
+      context 'when kafka 0.8.1' do
+        it 'does not set default log cleanup interval (minutes)' do
+          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
+        end
+
+        it 'sets default log retention check interval (milliseconds)' do
+          expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
+        end
+
+        it 'configures log cleaner attribute' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(false)
+        end
       end
 
       it 'sets default max bytesize of index' do

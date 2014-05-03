@@ -81,8 +81,18 @@
 # the maximum size of the log for some specific topic before deleting it
 <%= render 'partials/hash_option.erb', variables: {key: 'log.retention.bytes.per.topic', value: node[:kafka][:log][:retention_bytes_per_topic]} -%>
 
+<% if node[:kafka][:version] == '0.8.0' %>
 # the frequency in minutes that the log cleaner checks whether any log is eligible for deletion
 <%= render 'partials/option.erb', variables: {key: 'log.cleanup.interval.mins', value: node[:kafka][:log][:cleanup_interval_mins]} -%>
+<% else %>
+# The interval at which log segments are checked to see if they can be deleted according
+# to the retention policies
+<%= render 'partials/option.erb', variables: {key: 'log.retention.check.interval.ms', value: node[:kafka][:log][:retention_check_interval_ms]} -%>
+
+# By default the log cleaner is disabled and the log retention policy will default to just delete segments after their retention expires.
+# If log.cleaner.enable=true is set the cleaner will be enabled and individual logs can then be marked for log compaction.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.enable', value: node[:kafka][:log][:cleaner_enable]} -%>
+<% end %>
 
 # the maximum size in bytes of the offset index
 <%= render 'partials/option.erb', variables: {key: 'log.index.size.max.bytes', value: node[:kafka][:log][:index_size_max_bytes]} -%>
