@@ -40,7 +40,9 @@ when :sysv
 when :upstart
   env_path = '/etc/default/kafka'
   init_script_path = '/etc/init/kafka.conf'
-  source_script_path = 'kafka.upstart.erb'
+  source_script_path = value_for_platform_family({
+    'default' => 'upstart/default.erb'
+  })
   service_provider = Chef::Provider::Service::Upstart
   init_script_permissions = '644'
 end

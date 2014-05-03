@@ -562,7 +562,7 @@ describe 'kafka::_configure' do
         end
 
         let :source_template do
-          'kafka.upstart.erb'
+          'upstart/default.erb'
         end
       end
     end
