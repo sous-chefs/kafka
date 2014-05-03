@@ -62,7 +62,7 @@ describe 'kafka::_configure' do
 
     context 'socket server configuration' do
       it 'sets default port' do
-        expect(chef_run).to have_configured(path).with('port').as(6667)
+        expect(chef_run).to have_configured(path).with('port').as(9092)
       end
 
       it 'sets host name from node hostname attribute' do
@@ -79,7 +79,7 @@ describe 'kafka::_configure' do
         end
 
         it 'does not configure advertised port attribute' do
-          expect(chef_run).not_to have_configured(path).with('advertised.port').as(6667)
+          expect(chef_run).not_to have_configured(path).with('advertised.port').as(9092)
         end
       end
 
@@ -89,7 +89,7 @@ describe 'kafka::_configure' do
         end
 
         it 'configures advertised port attribute' do
-          expect(chef_run).to have_configured(path).with('advertised.port').as(6667)
+          expect(chef_run).to have_configured(path).with('advertised.port').as(9092)
         end
       end
 

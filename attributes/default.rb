@@ -33,7 +33,7 @@ default[:kafka][:num_io_threads] = 8
 default[:kafka][:queued_max_requests] = 500
 
 # Socket server configuration
-default[:kafka][:port] = 6667
+default[:kafka][:port] = 9092
 default[:kafka][:host_name] = node[:hostname]
 default[:kafka][:advertised_host_name] = node[:kafka][:host_name]
 default[:kafka][:advertised_port] = node[:kafka][:port]
