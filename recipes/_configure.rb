@@ -30,8 +30,11 @@ when :sysv
     'debian' => '/etc/default/kafka',
     'default' => '/etc/sysconfig/kafka'
   })
+  source_script_path = value_for_platform_family({
+    'debian' => 'sysv/debian.erb',
+    'default' => 'sysv/default.erb'
+  })
   init_script_path = '/etc/init.d/kafka'
-  source_script_path = 'initd.sh.erb'
   service_provider = nil
   init_script_permissions = '755'
 when :upstart

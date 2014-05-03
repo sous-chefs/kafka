@@ -404,10 +404,14 @@ describe 'kafka::_configure' do
 
   shared_examples_for 'an init style' do
     let :chef_run do
-      ChefSpec::Runner.new do |node|
+      ChefSpec::Runner.new(platform_and_version) do |node|
         node.set[:kafka][:scala_version] = '2.8.0'
         node.set[:kafka][:init_style] = init_style
       end.converge(described_recipe)
+    end
+
+    let :platform_and_version do
+      {}
     end
 
     let :script_permissions do
@@ -418,7 +422,8 @@ describe 'kafka::_configure' do
       expect(chef_run).to create_template(init_path).with({
         owner: 'root',
         group: 'root',
-        mode: script_permissions
+        mode: script_permissions,
+        source: source_template,
       })
     end
 
@@ -483,6 +488,58 @@ describe 'kafka::_configure' do
         let :env_path do
           '/etc/sysconfig/kafka'
         end
+
+        let :source_template do
+          'sysv/default.erb'
+        end
+      end
+
+      context 'and platform is \'ubuntu\'' do
+        it_behaves_like 'an init style' do
+          let :platform_and_version do
+            {platform: 'ubuntu', version: '13.10'}
+          end
+
+          let :init_style do
+            'sysv'
+          end
+
+          let :init_path do
+            '/etc/init.d/kafka'
+          end
+
+          let :env_path do
+            '/etc/default/kafka'
+          end
+
+          let :source_template do
+            'sysv/debian.erb'
+          end
+        end
+      end
+
+      context 'and platform is \'debian\'' do
+        it_behaves_like 'an init style' do
+          let :platform_and_version do
+            {platform: 'debian', version: '7.2'}
+          end
+
+          let :init_style do
+            'sysv'
+          end
+
+          let :init_path do
+            '/etc/init.d/kafka'
+          end
+
+          let :env_path do
+            '/etc/default/kafka'
+          end
+
+          let :source_template do
+            'sysv/debian.erb'
+          end
+        end
       end
     end
 
@@ -502,6 +559,10 @@ describe 'kafka::_configure' do
 
         let :script_permissions do
           '644'
+        end
+
+        let :source_template do
+          'kafka.upstart.erb'
         end
       end
     end
