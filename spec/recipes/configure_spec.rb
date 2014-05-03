@@ -69,6 +69,30 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
       end
 
+      context 'when kafka 0.8.0' do
+        let :kafka_version do
+          '0.8.0'
+        end
+
+        it 'does not configure advertised host.name attribute' do
+          expect(chef_run).not_to have_configured(path).with('advertised.host.name').as('Fauxhai')
+        end
+
+        it 'does not configure advertised port attribute' do
+          expect(chef_run).not_to have_configured(path).with('advertised.port').as(6667)
+        end
+      end
+
+      context 'when kafka > 0.8.0' do
+        it 'configures advertised host.name attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.host.name').as('Fauxhai')
+        end
+
+        it 'configures advertised port attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.port').as(6667)
+        end
+      end
+
       it 'sets default send buffer bytes' do
         expect(chef_run).to have_configured(path).with('socket.send.buffer.bytes').as(100 * 1024)
       end

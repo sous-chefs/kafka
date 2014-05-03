@@ -35,6 +35,8 @@ default[:kafka][:queued_max_requests] = 500
 # Socket server configuration
 default[:kafka][:port] = 6667
 default[:kafka][:host_name] = node[:hostname]
+default[:kafka][:advertised_host_name] = node[:kafka][:host_name]
+default[:kafka][:advertised_port] = node[:kafka][:port]
 default[:kafka][:socket][:send_buffer_bytes] = 100 * 1024
 default[:kafka][:socket][:receive_buffer_bytes] = 100 * 1024
 default[:kafka][:socket][:request_max_bytes] = 100 * 1024 * 1024

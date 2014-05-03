@@ -40,6 +40,17 @@
 # it will bind to all interfaces, and publish one to ZK.
 <%= render 'partials/option.erb', variables: {key: 'host.name', value: node[:kafka][:host_name]} -%>
 
+<% unless node[:kafka][:version] == '0.8.0' %>
+# Hostname the broker will advertise to producers and consumers. If not set, it uses the
+# value for "host.name" if configured.  Otherwise, it will use the value returned from
+# java.net.InetAddress.getCanonicalHostName().
+<%= render 'partials/option.erb', variables: {key: 'advertised.host.name', value: node[:kafka][:advertised_host_name]} -%>
+
+# The port to publish to ZooKeeper for clients to use. If this is not set,
+# it will publish the same port that the broker binds to.
+<%= render 'partials/option.erb', variables: {key: 'advertised.port', value: node[:kafka][:advertised_port]} -%>
+<% end %>
+
 # The SO_SNDBUFF buffer of the socket sever sockets
 <%= render 'partials/option.erb', variables: {key: 'socket.send.buffer.bytes', value: node[:kafka][:socket][:send_buffer_bytes]} -%>
 
