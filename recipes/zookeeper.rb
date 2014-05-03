@@ -36,14 +36,19 @@ when :sysv
     'debian' => '/etc/default/zookeeper',
     'default' => '/etc/sysconfig/zookeeper'
   })
+  source_script_path = value_for_platform_family({
+    'debian' => 'sysv/debian.erb',
+    'default' => 'sysv/default.erb'
+  })
   init_script_path = '/etc/init.d/zookeeper'
-  source_script_path = 'initd.sh.erb'
   service_provider = nil
   init_script_permissions = '755'
 when :upstart
   env_path = '/etc/default/zookeeper'
   init_script_path = '/etc/init/zookeeper.conf'
-  source_script_path = 'kafka.upstart.erb'
+  source_script_path = value_for_platform_family({
+    'default' => 'upstart/default.erb'
+  })
   service_provider = Chef::Provider::Service::Upstart
   init_script_permissions = '644'
 end
