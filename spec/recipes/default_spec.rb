@@ -17,7 +17,7 @@ describe 'kafka::default' do
     end
 
     it 'includes kafka::install_method recipe' do
-      expect(chef_run).to include_recipe("kafka::#{install_method}")
+      expect(chef_run).to include_recipe(%(kafka::#{install_method}))
     end
 
     it 'includes kafka::_configure' do

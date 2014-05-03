@@ -51,7 +51,7 @@ suites:
         install_method: 'binary'
         init_style: 'upstart'
         zookeeper:
-          connection_timeout_ms: 10_000
+          connection_timeout_ms: 15_000
   - name: init-style-sysv
     run_list:
       - recipe[java::default]
@@ -61,7 +61,7 @@ suites:
         install_method: 'binary'
         init_style: 'sysv'
         zookeeper:
-          connection_timeout_ms: 10_000
+          connection_timeout_ms: 15_000
   - name: binary
     run_list:
       - recipe[java::default]

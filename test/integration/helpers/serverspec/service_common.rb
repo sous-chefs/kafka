@@ -29,15 +29,7 @@ shared_examples_for 'a kafka start command' do
     end
 
     it 'contains a log message about start up' do
-      expect(log_file.content).to match /Kafka Server .+ Starting/
-    end
-
-    it 'contains a log message about awaiting connections' do
-      expect(log_file.content).to match /Awaiting socket connections/
-    end
-
-    it 'contains a log message that the broker has started' do
-      expect(log_file.content).to match /Socket Server on Broker .+ Started/
+      expect(log_file.content).to match /Kafka Server .+ Starting/i
     end
   end
 
@@ -63,7 +55,7 @@ shared_examples_for 'a kafka stop command' do
     end
 
     it 'logs that shut down is completed' do
-      expect(log_file.content).to match /Kafka Server .+ Shut down completed/
+      expect(log_file.content).to match /Kafka Server .+ Shut down completed/i
     end
   end
 end

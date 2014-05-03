@@ -7,9 +7,10 @@ action :run do
   execute 'install-kafka' do
     user  node[:kafka][:user]
     group node[:kafka][:group]
-    command <<-EOH.gsub(/^\s+/, '')
-      cp -r #{::File.join(new_resource.from, '*')} #{new_resource.to} && \
-      rm -rf #{::File.join(new_resource.from, '*')}
-    EOH
+    command %(cp -r #{::File.join(new_resource.from, '*')} #{new_resource.to})
+  end
+
+  execute 'remove-kafka-build' do
+    command %(rm -rf #{new_resource.from})
   end
 end

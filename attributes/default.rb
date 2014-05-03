@@ -3,11 +3,11 @@
 # Attributes:: default
 #
 
-default[:kafka][:version] = '0.8.0'
+default[:kafka][:version] = '0.8.1.1'
 default[:kafka][:base_url] = 'https://archive.apache.org/dist/kafka'
 default[:kafka][:checksum] = nil
 default[:kafka][:md5_checksum] = nil
-default[:kafka][:scala_version] = nil
+default[:kafka][:scala_version] = '2.9.2'
 default[:kafka][:install_method] = :binary
 default[:kafka][:install_dir] = '/opt/kafka'
 default[:kafka][:build_dir] = ::File.join(node[:kafka][:install_dir], 'build')
@@ -33,8 +33,10 @@ default[:kafka][:num_io_threads] = 8
 default[:kafka][:queued_max_requests] = 500
 
 # Socket server configuration
-default[:kafka][:port] = 6667
+default[:kafka][:port] = 9092
 default[:kafka][:host_name] = node[:hostname]
+default[:kafka][:advertised_host_name] = node[:kafka][:host_name]
+default[:kafka][:advertised_port] = node[:kafka][:port]
 default[:kafka][:socket][:send_buffer_bytes] = 100 * 1024
 default[:kafka][:socket][:receive_buffer_bytes] = 100 * 1024
 default[:kafka][:socket][:request_max_bytes] = 100 * 1024 * 1024
@@ -50,6 +52,8 @@ default[:kafka][:log][:retention_hours] = 24 * 7
 default[:kafka][:log][:retention_hours_per_topic] = {}
 default[:kafka][:log][:retention_bytes] = -1
 default[:kafka][:log][:retention_bytes_per_topic] = {}
+default[:kafka][:log][:retention_check_interval_ms] = 60000
+default[:kafka][:log][:cleaner_enable] = false
 default[:kafka][:log][:cleanup_interval_mins] = 10
 default[:kafka][:log][:index_size_max_bytes] = 10 * 1024 * 1024
 default[:kafka][:log][:index_interval_bytes] = 4096

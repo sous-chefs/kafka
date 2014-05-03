@@ -4,7 +4,13 @@ require 'spec_helper'
 
 describe 'kafka::_configure' do
   let :chef_run do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::Runner.new do |node|
+      node.set[:kafka][:version] = kafka_version
+    end.converge(described_recipe)
+  end
+
+  let :kafka_version do
+    '0.8.1'
   end
 
   describe 'broker configuration file' do
@@ -56,11 +62,35 @@ describe 'kafka::_configure' do
 
     context 'socket server configuration' do
       it 'sets default port' do
-        expect(chef_run).to have_configured(path).with('port').as(6667)
+        expect(chef_run).to have_configured(path).with('port').as(9092)
       end
 
       it 'sets host name from node hostname attribute' do
         expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
+      end
+
+      context 'when kafka 0.8.0' do
+        let :kafka_version do
+          '0.8.0'
+        end
+
+        it 'does not configure advertised host.name attribute' do
+          expect(chef_run).not_to have_configured(path).with('advertised.host.name').as('Fauxhai')
+        end
+
+        it 'does not configure advertised port attribute' do
+          expect(chef_run).not_to have_configured(path).with('advertised.port').as(9092)
+        end
+      end
+
+      context 'when kafka > 0.8.0' do
+        it 'configures advertised host.name attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.host.name').as('Fauxhai')
+        end
+
+        it 'configures advertised port attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.port').as(9092)
+        end
       end
 
       it 'sets default send buffer bytes' do
@@ -84,7 +114,7 @@ describe 'kafka::_configure' do
 
         context 'by default' do
           it 'configures a commented attribute' do
-            expect(chef_run).to have_configured(path).with("#log.#{attribute}").as('')
+            expect(chef_run).to have_configured(path).with(%(#log.#{attribute})).as('')
           end
         end
 
@@ -100,7 +130,7 @@ describe 'kafka::_configure' do
           end
 
           it 'transforms it to a CSV string' do
-            expect(chef_run).to have_configured(path).with("log.#{attribute}").as('topic1:12345,topic2:3000')
+            expect(chef_run).to have_configured(path).with(%(log.#{attribute})).as('topic1:12345,topic2:3000')
           end
         end
       end
@@ -161,8 +191,36 @@ describe 'kafka::_configure' do
         end
       end
 
-      it 'sets default log cleanup interval (minutes)' do
-        expect(chef_run).to have_configured(path).with('log.cleanup.interval.mins').as(10)
+      context 'when kafka 0.8.0' do
+        let :kafka_version do
+          '0.8.0'
+        end
+
+        it 'sets default log cleanup interval (minutes)' do
+          expect(chef_run).to have_configured(path).with('log.cleanup.interval.mins').as(10)
+        end
+
+        it 'does not set default log retention check interval (milliseconds)' do
+          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
+        end
+
+        it 'does not set log cleaner' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.enable').as(false)
+        end
+      end
+
+      context 'when kafka 0.8.1' do
+        it 'does not set default log cleanup interval (minutes)' do
+          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
+        end
+
+        it 'sets default log retention check interval (milliseconds)' do
+          expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
+        end
+
+        it 'configures log cleaner attribute' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(false)
+        end
       end
 
       it 'sets default max bytesize of index' do

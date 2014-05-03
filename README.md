@@ -88,9 +88,12 @@ well as configuring Kafka.
 #### Socket server configuration
 
 * `node[:kafka][:port]` - The port Kafka will listen on for incoming requests.
-  Defaults to 6667.
+  Defaults to 9092.
 * `node[:kafka][:host_name]` - Hostname of broker. If this is set, it will only bind to this address.
   If this is not set, it will bind to all interfaces, and publish one to ZK.
+* `node[:kafka][:advertised_host_name]` - Hostname the broker will advertise to producers and consumers (defaults to
+  `node[:kafka][:host_name]`).
+* `node[:kafka][:advertised_port]` - The port to publish to ZooKeeper for clients to use (defaults to `node[:kafka][:port]`).
 * `node[:kafka][:socket][:send_buffer_bytes]` - The send buffer (`SO_SNDBUF`) used by the
   socket server.
 * `node[:kafka][:socket][:receive_buffer_bytes]` - The receive buffer (`SO_RCVBUF`) used by
@@ -120,7 +123,12 @@ well as configuring Kafka.
 * `node[:kafka][:log][:retention_bytes_per_topic]` - The maximum size of the log
   for specific topics. Should be a hash of topic -> max size mappings.
 * `node[:kafka][:log][:cleanup_interval_mins]` - The frequency in minutes that
-  the log cleaner checks whether any log is eligible for deletion.
+  the log cleaner checks whether any log is eligible for deletion (only for
+  `v0.8.0`).
+* `node[:kafka][:log][:retention_check_interval_ms]` - The interval at which log
+  segments are checked to see if they can be deleted according to retention
+  policies (only for > `v0.8.0`).
+* `node[:kafka][:log][:cleaner_enable]` - If log.cleaner.enable=true is set the cleaner will be enabled and individual logs can then be marked for log compaction (only for > `v0.8.0`).
 * `node[:kafka][:log][:index_size_max_bytes]` - The maximum size in bytes of the offset index.
 * `node[:kafka][:log][:index_interval_bytes]` - The interval with which we add an entry to the offset index.
 * `node[:kafka][:log][:flush_interval_messages]` - The number of messages accumulated on a log partition
