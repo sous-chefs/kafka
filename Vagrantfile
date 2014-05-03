@@ -5,7 +5,7 @@ Vagrant.configure('2') do |config|
   config.vm.box_url = 'https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box'
 
   config.omnibus.chef_version = :latest
-  config.berkshelf.enbaled = true
+  config.berkshelf.enabled = true
 
   config.vm.define 'zookeeper' do |zookeeper|
     zookeeper.vm.network :private_network, ip: '192.168.50.5'
