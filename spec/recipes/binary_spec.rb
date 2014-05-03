@@ -10,24 +10,14 @@ describe 'kafka::binary' do
   end
 
   it 'downloads remote binary release of Kafka' do
-    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka_2.9.2-0.8.1.tgz',
-      checksum: '33825206ec02ef5e2538e77dee535899d2d15833266f23d9008d156b2e785e88',
-      md5_checksum: 'bf0296ae67124a76966467e56d01de3e',
-      mode: '644'
-    })
-
-    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz)).with({
-      source: 'https://archive.apache.org/dist/kafka/0.8.1/kafka_2.9.2-0.8.1.tgz',
-      checksum: '33825206ec02ef5e2538e77dee535899d2d15833266f23d9008d156b2e785e88',
-      mode: '644'
-    })
+    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
+    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
   end
 
   it 'validates download' do
     expect(chef_run).not_to run_ruby_block('kafka-validate-download')
 
-    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz))
+    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
@@ -70,6 +60,16 @@ describe 'kafka::binary' do
 
       it 'uses .tgz' do
         expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz))
+      end
+    end
+
+    context 'when version is 0.8.1.1' do
+      let :kafka_version do
+        '0.8.1.1'
+      end
+
+      it 'uses .tgz' do
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
       end
     end
   end

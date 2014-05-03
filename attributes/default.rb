@@ -3,7 +3,7 @@
 # Attributes:: default
 #
 
-default[:kafka][:version] = '0.8.1'
+default[:kafka][:version] = '0.8.1.1'
 default[:kafka][:base_url] = 'https://archive.apache.org/dist/kafka'
 default[:kafka][:checksum] = nil
 default[:kafka][:md5_checksum] = nil

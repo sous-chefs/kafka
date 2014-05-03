@@ -19,7 +19,7 @@ def kafka_target_path
     case node[:kafka][:version]
     when '0.8.0'
       ::File.join(node[:kafka][:build_dir], kafka_src, 'target', 'RELEASE', kafka_base)
-    when '0.8.1'
+    else
       ::File.join(node[:kafka][:build_dir], kafka_src, 'core', 'build', 'distributions', kafka_base)
     end
   end
@@ -43,7 +43,7 @@ def kafka_archive_ext
     case node[:kafka][:version]
     when '0.8.0'
       'tar.gz'
-    when '0.8.1'
+    else
       'tgz'
     end
   else
@@ -55,7 +55,7 @@ def kafka_build_command
   case node[:kafka][:version]
   when '0.8.0'
     %(./sbt update && ./sbt "++#{node[:kafka][:scala_version]} release-zip")
-  when '0.8.1'
+  else
     %(./gradlew -PscalaVersion=#{node[:kafka][:scala_version]} releaseTarGz -x signArchives)
   end
 end
