@@ -29,7 +29,7 @@ end
 execute 'extract-kafka' do
   cwd ::File.dirname(kafka_target_path)
   command %(tar zxf #{kafka_base}.#{kafka_archive_ext})
-  only_if { !kafka_installed? && node[:kafka][:version] == '0.8.1' }
+  only_if { !kafka_installed? && !kafka_v0_8_0? }
 end
 
 kafka_install node[:kafka][:install_dir] do
