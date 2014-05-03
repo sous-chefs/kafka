@@ -80,7 +80,7 @@ GEM
       multipart-post (~> 1.2.0)
     faraday_middleware (0.9.1)
       faraday (>= 0.7.4, < 0.10)
-    fauxhai (2.1.0)
+    fauxhai (2.1.2)
       net-ssh
       ohai
     ffi (1.9.3)
