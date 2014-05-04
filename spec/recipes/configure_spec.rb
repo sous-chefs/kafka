@@ -149,14 +149,6 @@ describe 'kafka::_configure' do
           expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms')
         end
 
-        it 'does not set log cleanup interval (minutes)' do
-          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
-        end
-
-        it 'does not set log retention check interval (milliseconds)' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-        end
-
         it 'does not set delete delay ms' do
           expect(chef_run).not_to have_configured(path).with('log.delete.delay.ms')
         end
