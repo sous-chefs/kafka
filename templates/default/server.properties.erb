@@ -151,6 +151,11 @@
 # The frequency with which we checkpoint the last flush point for logs for recovery.
 # You should not need to change this.
 <%= render 'partials/option.erb', variables: {key: 'log.flush.offset.checkpoint.interval.ms', value: node[:kafka][:log][:flush_offset_checkpoint_interval_ms]} -%>
+
+# This can take either the value delete or compact.
+# If delete is set, log segments will be deleted when they reach the size or time limits set.
+# If compact is set log compaction will be used to clean out obsolete records.
+<%= render 'partials/option.erb', variables: {key: 'log.cleanup.policy', value: node[:kafka][:log][:cleanup_policy]} -%>
 <% end %>
 
 <% unless node[:kafka][:version] == '0.8.0' %>

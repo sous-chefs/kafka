@@ -192,6 +192,10 @@ describe 'kafka::_configure' do
         it 'does not set auto create topics enable' do
           expect(chef_run).not_to have_configured(path).with('auto.create.topics.enable')
         end
+
+        it 'does not set cleanup policy' do
+          expect(chef_run).not_to have_configured(path).with('log.cleanup.policy')
+        end
       end
 
       context 'log cleaner configuration' do
@@ -385,6 +389,7 @@ describe 'kafka::_configure' do
             flush_scheduler_interval_ms: 3000,
             delete_delay_ms: 1000,
             flush_offset_checkpoint_interval_ms: 1000,
+            cleanup_policy: 'delete',
           },
           auto_create_topics: true,
           controller: {
@@ -658,6 +663,10 @@ describe 'kafka::_configure' do
           it 'does not set flush offset checkpoint interval' do
             expect(chef_run).not_to have_configured(path).with('log.flush.offset.checkpoint.interval.ms')
           end
+
+          it 'does not set cleanup policy' do
+            expect(chef_run).not_to have_configured(path).with('log.cleanup.policy')
+          end
         end
 
         context 'when kafka 0.8.1' do
@@ -675,6 +684,10 @@ describe 'kafka::_configure' do
 
           it 'sets flush offset checkpoint interval' do
             expect(chef_run).to have_configured(path).with('log.flush.offset.checkpoint.interval.ms').as(1000)
+          end
+
+          it 'sets cleanup policy' do
+            expect(chef_run).to have_configured(path).with('log.cleanup.policy').as('delete')
           end
         end
 

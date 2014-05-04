@@ -65,6 +65,7 @@ default[:kafka][:log][:flush_scheduler_interval_ms] = nil
 default[:kafka][:auto_create_topics] = nil
 default[:kafka][:log][:delete_delay_ms] = nil
 default[:kafka][:log][:flush_offset_checkpoint_interval_ms] = nil
+default[:kafka][:log][:cleanup_policy] = nil
 
 # Log cleaner configuration
 default[:kafka][:log][:cleaner_enable] = nil
