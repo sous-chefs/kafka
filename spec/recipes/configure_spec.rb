@@ -153,10 +153,6 @@ describe 'kafka::_configure' do
           it 'does not set log retention check interval (milliseconds)' do
             expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms')
           end
-
-          it 'does not set log cleaner enable' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.enable').as(false)
-          end
         end
 
         context 'when kafka 0.8.1' do
@@ -166,10 +162,6 @@ describe 'kafka::_configure' do
 
           it 'does not set log retention check interval (milliseconds)' do
             expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-          end
-
-          it 'does not set log cleaner enable' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.enable').as(false)
           end
         end
 
@@ -199,6 +191,44 @@ describe 'kafka::_configure' do
 
         it 'does not set auto create topics enable' do
           expect(chef_run).not_to have_configured(path).with('auto.create.topics.enable')
+        end
+      end
+
+      context 'log cleaner configuration' do
+        it 'does not set cleaner enable' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.enable')
+        end
+
+        it 'does not set cleaner threads' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.threads')
+        end
+
+        it 'does not set cleaner io max bytes per second' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.max.bytes.per.second')
+        end
+
+        it 'does not set cleaner dedupe buffer size' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.dedupe.buffer.size')
+        end
+
+        it 'does not set cleaner io buffer size' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.size')
+        end
+
+        it 'does not set cleaner io buffer load factor' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.load.factor')
+        end
+
+        it 'does not set cleaner backoff (milliseconds)' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.backoff.ms')
+        end
+
+        it 'does not set cleaner min cleanable ratio' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.min.cleanable.ratio')
+        end
+
+        it 'does not set cleaner delete retention ms' do
+          expect(chef_run).not_to have_configured(path).with('log.cleaner.delete.retention.ms')
         end
       end
 
@@ -338,7 +368,15 @@ describe 'kafka::_configure' do
             retention_hours: 24 * 7,
             retention_bytes: -1,
             retention_check_interval_ms: 60000,
-            cleaner_enable: false,
+            cleaner_enable: true,
+            cleaner_threads: 8,
+            cleaner_io_max_bytes_per_second: 10,
+            cleaner_dedupe_buffer_size: 1000,
+            cleaner_io_buffer_size: 50 * 1024,
+            cleaner_io_buffer_load_factor: 0.8,
+            cleaner_backoff_ms: 1500,
+            cleaner_min_cleanable_ratio: 0.1,
+            cleaner_delete_retention_ms: 1250,
             cleanup_interval_mins: 10,
             index_size_max_bytes: 10 * 1024 * 1024,
             index_interval_bytes: 4096,
@@ -590,10 +628,6 @@ describe 'kafka::_configure' do
           it 'does not set default log retention check interval (milliseconds)' do
             expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
           end
-
-          it 'does not set log cleaner' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.enable').as(false)
-          end
         end
 
         context 'when kafka 0.8.1' do
@@ -603,10 +637,6 @@ describe 'kafka::_configure' do
 
           it 'sets log retention check interval (milliseconds)' do
             expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-          end
-
-          it 'configures log cleaner attribute' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(false)
           end
         end
 
@@ -640,6 +670,88 @@ describe 'kafka::_configure' do
 
         it 'automatically creates topics' do
           expect(chef_run).to have_configured(path).with('auto.create.topics.enable').as(true)
+        end
+      end
+
+      context 'log cleaner configuration' do
+        context 'when kafka 0.8.0' do
+          let :kafka_version do
+            '0.8.0'
+          end
+
+          it 'does not set cleaner enable' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.enable')
+          end
+
+          it 'does not set cleaner threads' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.threads')
+          end
+
+          it 'does not set cleaner io max bytes per second' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.max.bytes.per.second')
+          end
+
+          it 'does not set cleaner dedupe buffer size' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.dedupe.buffer.size')
+          end
+
+          it 'does not set cleaner io buffer size' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.size')
+          end
+
+          it 'does not set cleaner io buffer load factor' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.load.factor')
+          end
+
+          it 'does not set cleaner backoff (milliseconds)' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.backoff.ms')
+          end
+
+          it 'does not set cleaner min cleanable ratio' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.min.cleanable.ratio')
+          end
+
+          it 'does not set cleaner delete retention ms' do
+            expect(chef_run).not_to have_configured(path).with('log.cleaner.delete.retention.ms')
+          end
+        end
+
+        context 'when kafka > 0.8.0' do
+          it 'sets cleaner enable' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(true)
+          end
+
+          it 'sets cleaner threads' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.threads').as(8)
+          end
+
+          it 'sets cleaner io max bytes per second' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.io.max.bytes.per.second').as(10)
+          end
+
+          it 'sets cleaner dedupe buffer size' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.dedupe.buffer.size').as(1000)
+          end
+
+          it 'sets cleaner io buffer size' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.size').as(50 * 1024)
+          end
+
+          it 'sets cleaner io buffer load factor' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.load.factor').as(0.8)
+          end
+
+          it 'sets cleaner backoff (milliseconds)' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.backoff.ms').as(1500)
+          end
+
+          it 'sets cleaner min cleanable ratio' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.min.cleanable.ratio').as(0.1)
+          end
+
+          it 'sets cleaner delete retention ms' do
+            expect(chef_run).to have_configured(path).with('log.cleaner.delete.retention.ms').as(1250)
+          end
         end
       end
 

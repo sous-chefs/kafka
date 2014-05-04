@@ -55,7 +55,6 @@ default[:kafka][:log][:retention_hours_per_topic] = {}
 default[:kafka][:log][:retention_bytes] = nil
 default[:kafka][:log][:retention_bytes_per_topic] = {}
 default[:kafka][:log][:retention_check_interval_ms] = nil
-default[:kafka][:log][:cleaner_enable] = nil
 default[:kafka][:log][:cleanup_interval_mins] = nil
 default[:kafka][:log][:index_size_max_bytes] = nil
 default[:kafka][:log][:index_interval_bytes] = nil
@@ -64,6 +63,17 @@ default[:kafka][:log][:flush_interval_ms] = nil
 default[:kafka][:log][:flush_interval_ms_per_topic] = {}
 default[:kafka][:log][:flush_scheduler_interval_ms] = nil
 default[:kafka][:auto_create_topics] = nil
+
+# Log cleaner configuration
+default[:kafka][:log][:cleaner_enable] = nil
+default[:kafka][:log][:cleaner_threads] = nil
+default[:kafka][:log][:cleaner_io_max_bytes_per_second] = nil
+default[:kafka][:log][:cleaner_dedupe_buffer_size] = nil
+default[:kafka][:log][:cleaner_io_buffer_size] = nil
+default[:kafka][:log][:cleaner_io_buffer_load_factor] = nil
+default[:kafka][:log][:cleaner_backoff_ms] = nil
+default[:kafka][:log][:cleaner_min_cleanable_ratio] = nil
+default[:kafka][:log][:cleaner_delete_retention_ms] = nil
 
 # Replication configuration
 default[:kafka][:controller][:socket_timeout_ms] = nil

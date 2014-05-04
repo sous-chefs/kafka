@@ -141,6 +141,38 @@
 # enable auto creation of topic on the broker
 <%= render 'partials/option.erb', variables: {key: 'auto.create.topics.enable', value: node[:kafka][:auto_create_topics]} -%>
 
+<% unless node[:kafka][:version] == '0.8.0' %>
+############################# Log Configuration #############################
+
+# this configuration must be set to true for log compaction to run.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.enable', value: node[:kafka][:log][:cleaner_enable]} -%>
+
+# The number of threads to use for cleaning logs in log compaction.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.threads', value: node[:kafka][:log][:cleaner_threads]} -%>
+
+# The maximum amount of I/O the log cleaner can do while performing log compaction.
+# This setting allows setting a limit for the cleaner to avoid impacting live request serving.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.max.bytes.per.second', value: node[:kafka][:log][:cleaner_io_max_bytes_per_second]} -%>
+
+# The size of the buffer the log cleaner uses for indexing and deduplicating logs during cleaning.
+# Larger is better provided you have sufficient memory.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.dedupe.buffer.size', value: node[:kafka][:log][:cleaner_dedupe_buffer_size]} -%>
+
+# The size of the I/O chunk used during log cleaning. You probably don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.buffer.size', value: node[:kafka][:log][:cleaner_io_buffer_size]} -%>
+
+# The load factor of the hash table used in log cleaning. You probably don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.buffer.load.factor', value: node[:kafka][:log][:cleaner_io_buffer_load_factor]} -%>
+
+# The interval between checks to see if any logs need cleaning.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.backoff.ms', value: node[:kafka][:log][:cleaner_backoff_ms]} -%>
+
+# This configuration controls how frequently the log compactor will attempt to clean the log (assuming log compaction is enabled).
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.min.cleanable.ratio', value: node[:kafka][:log][:cleaner_min_cleanable_ratio]} -%>
+
+# The amount of time to retain delete tombstone markers for log compacted topics.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.delete.retention.ms', value: node[:kafka][:log][:cleaner_delete_retention_ms]} -%>
+<% end %>
 ############################# Replication Configuration #############################
 
 # the socket timeout for controller-to-broker channels
