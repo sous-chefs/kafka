@@ -454,8 +454,20 @@ describe 'kafka::_configure' do
           end
 
           context 'by default' do
-            it 'configures a commented attribute' do
-              expect(chef_run).to have_configured(path).with(%(#log.#{attribute})).as('')
+            context 'and kafka version is 0.8.0' do
+              let :kafka_version do
+                '0.8.0'
+              end
+
+              it 'configures a commented attribute' do
+                expect(chef_run).to have_configured(path).with(%(#log.#{attribute})).as('')
+              end
+            end
+
+            context 'and kafka version is > 0.8.0' do
+              it 'ignores it' do
+                expect(chef_run).not_to have_configured(path).with(%(#log.#{attribute})).as('')
+              end
             end
           end
 
@@ -464,14 +476,24 @@ describe 'kafka::_configure' do
               {'topic1' => 12345, 'topic2' => 3000}
             end
 
-            let :chef_run do
-              ChefSpec::Runner.new do |node|
-                node.set[:kafka][:log][option] = mappings
-              end.converge(described_recipe)
+            before do
+              kafka_attributes[:log].merge!({option => mappings})
             end
 
-            it 'transforms it to a CSV string' do
-              expect(chef_run).to have_configured(path).with(%(log.#{attribute})).as('topic1:12345,topic2:3000')
+            context 'and kafka version is 0.8.0' do
+              let :kafka_version do
+                '0.8.0'
+              end
+
+              it 'transforms it to a CSV string' do
+                expect(chef_run).to have_configured(path).with(%(log.#{attribute})).as('topic1:12345,topic2:3000')
+              end
+            end
+
+            context 'and kafka version is > 0.8.0' do
+              it 'ignores it' do
+                expect(chef_run).not_to have_configured(path).with(%(log.#{attribute}))
+              end
             end
           end
         end
