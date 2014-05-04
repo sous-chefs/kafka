@@ -87,14 +87,15 @@
 <% if node[:kafka][:version] == '0.8.0' %>
 # the number of hours before rolling out a new log segment for some specific topic
 <%= render 'partials/hash_option.erb', variables: {key: 'log.roll.hours.per.topic', value: node[:kafka][:log][:roll_hours_per_topic]} -%>
-<% end %>
 
 # the number of hours to keep a log file before deleting it
 <%= render 'partials/option.erb', variables: {key: 'log.retention.hours', value: node[:kafka][:log][:retention_hours]} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
 # the number of hours to keep a log file before deleting it for some specific topic
 <%= render 'partials/hash_option.erb', variables: {key: 'log.retention.hours.per.topic', value: node[:kafka][:log][:retention_hours_per_topic]} -%>
+<% else %>
+# the number of hours to keep a log file before deleting it
+<%= render 'partials/option.erb', variables: {key: 'log.retention.minutes', value: node[:kafka][:log][:retention_minutes]} -%>
 <% end %>
 
 # the maximum size of the log before deleting it

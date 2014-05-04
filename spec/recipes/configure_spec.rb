@@ -141,28 +141,20 @@ describe 'kafka::_configure' do
           expect(chef_run).not_to have_configured(path).with('log.retention.bytes.per.topic')
         end
 
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not set log cleanup interval (minutes)' do
-            expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins')
-          end
-
-          it 'does not set log retention check interval (milliseconds)' do
-            expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms')
-          end
+        it 'does not set log cleanup interval (minutes)' do
+          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins')
         end
 
-        context 'when kafka 0.8.1' do
-          it 'does not set log cleanup interval (minutes)' do
-            expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
-          end
+        it 'does not set log retention check interval (milliseconds)' do
+          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms')
+        end
 
-          it 'does not set log retention check interval (milliseconds)' do
-            expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-          end
+        it 'does not set log cleanup interval (minutes)' do
+          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
+        end
+
+        it 'does not set log retention check interval (milliseconds)' do
+          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
         end
 
         it 'does not set delete delay ms' do
@@ -372,7 +364,7 @@ describe 'kafka::_configure' do
             dirs: ['/tmp/kafka-logs'],
             segment_bytes: 1024 * 1024 * 1024,
             roll_hours: 24 * 7,
-            retention_mins: 24 * 7 * 60,
+            retention_minutes: 24 * 7 * 60,
             retention_hours: 24 * 7,
             retention_bytes: -1,
             retention_check_interval_ms: 60000,
@@ -602,8 +594,28 @@ describe 'kafka::_configure' do
           end
         end
 
-        it 'sets log retention hours' do
-          expect(chef_run).to have_configured(path).with('log.retention.hours').as(24 * 7)
+        context 'when kafka 0.8.0' do
+          let :kafka_version do
+            '0.8.0'
+          end
+
+          it 'sets log retention hours' do
+            expect(chef_run).to have_configured(path).with('log.retention.hours').as(24 * 7)
+          end
+
+          it 'does not set log retention minutes' do
+            expect(chef_run).not_to have_configured(path).with('log.retention.minutes')
+          end
+        end
+
+        context 'when kafka > 0.8.0' do
+          it 'does not set log retention hours' do
+            expect(chef_run).not_to have_configured(path).with('log.retention.hours')
+          end
+
+          it 'sets log retention minutes' do
+            expect(chef_run).to have_configured(path).with('log.retention.minutes').as(24 * 7 * 60)
+          end
         end
 
         context 'log retention hours per topic' do
