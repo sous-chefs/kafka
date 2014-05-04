@@ -91,8 +91,8 @@ default[:kafka][:replica][:fetch_wait_max_ms] = nil
 default[:kafka][:replica][:fetch_min_bytes] = nil
 default[:kafka][:num_replica_fetchers] = nil
 default[:kafka][:replica][:high_watermark_checkpoint_interval_ms] = nil
-default[:kafka][:fetch][:purgatory_purge_interval_requests] = nil
-default[:kafka][:producer][:purgatory_purge_interval_requests] = nil
+default[:kafka][:fetch_purgatory_purge_interval_requests] = nil
+default[:kafka][:producer_purgatory_purge_interval_requests] = nil
 
 # Controlled shutdown configuration
 default[:kafka][:controlled_shutdown][:max_retries] = nil
@@ -105,7 +105,7 @@ default[:kafka][:leader][:imbalance_per_broker_percentage] = nil
 default[:kafka][:leader][:imbalance_check_interval_seconds] = nil
 
 # Consumer offset management configuration (> v0.8.0 configuration options)
-default[:offset_metadata_max_bytes] = nil
+default[:kafka][:offset_metadata_max_bytes] = nil
 
 # ZooKeeper configuration
 default[:kafka][:zookeeper][:connect] = []

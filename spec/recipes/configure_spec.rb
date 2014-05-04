@@ -400,12 +400,8 @@ describe 'kafka::_configure' do
             high_watermark_checkpoint_interval_ms: 5000,
           },
           num_replica_fetchers: 1,
-          fetch: {
-            purgatory_purge_interval_requests: 10_000
-          },
-          producer: {
-            purgatory_purge_interval_requests: 10_000
-          },
+          fetch_purgatory_purge_interval_requests: 10_000,
+          producer_purgatory_purge_interval_requests: 10_000,
           controlled_shutdown: {
             max_retries: 3,
             retry_backoff_ms: 5000,
