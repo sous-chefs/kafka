@@ -61,6 +61,10 @@ describe 'kafka::_configure' do
           expect(chef_run).not_to have_configured(path).with('num.io.threads')
         end
 
+        it 'does not set number of background threads' do
+          expect(chef_run).not_to have_configured(path).with('background.threads')
+        end
+
         it 'does not set queued max requests' do
           expect(chef_run).not_to have_configured(path).with('queued.max.requests')
         end
@@ -376,6 +380,20 @@ describe 'kafka::_configure' do
 
         it 'sets number of io threads' do
           expect(chef_run).to have_configured(path).with('num.io.threads').as(8)
+        end
+
+        context 'when kafka 0.8.0' do
+          let :kafka_version do
+            '0.8.0'
+          end
+
+          it 'does not set background threads' do
+            expect(chef_run).not_to have_configured(path).with('background.threads').as(4)
+          end
+        end
+
+        it 'sets number of background threads' do
+          expect(chef_run).to have_configured(path).with('background.threads').as(4)
         end
 
         it 'sets queued max requests' do

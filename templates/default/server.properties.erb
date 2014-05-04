@@ -28,6 +28,11 @@
 # The number of io threads that the server uses for carrying out network requests
 <%= render 'partials/option.erb', variables: {key: 'num.io.threads', value: node[:kafka][:num_io_threads]} -%>
 
+<% unless node[:kafka][:version] == '0.8.0' %>
+# The number of threads to use for various background processing tasks such as file deletion
+<%= render 'partials/option.erb', variables: {key: 'background.threads', value: node[:kafka][:background_threads]} -%>
+<% end %>
+
 # The number of queued requests allowed before blocking the network threads
 <%= render 'partials/option.erb', variables: {key: 'queued.max.requests', value: node[:kafka][:queued_max_requests]} -%>
 
