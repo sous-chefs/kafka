@@ -165,6 +165,14 @@ describe 'kafka::_configure' do
           end
         end
 
+        it 'does not set delete delay ms' do
+          expect(chef_run).not_to have_configured(path).with('log.delete.delay.ms')
+        end
+
+        it 'does not set flush offset checkpoint interval' do
+          expect(chef_run).not_to have_configured(path).with('log.flush.offset.checkpoint.interval.ms')
+        end
+
         it 'does not set max bytesize of index' do
           expect(chef_run).not_to have_configured(path).with('log.index.size.max.bytes').as(10 * 1024 * 1024)
         end
@@ -383,6 +391,8 @@ describe 'kafka::_configure' do
             flush_interval_messages: 10_000,
             flush_interval_ms: 3000,
             flush_scheduler_interval_ms: 3000,
+            delete_delay_ms: 1000,
+            flush_offset_checkpoint_interval_ms: 1000,
           },
           auto_create_topics: true,
           controller: {
@@ -628,6 +638,14 @@ describe 'kafka::_configure' do
           it 'does not set default log retention check interval (milliseconds)' do
             expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
           end
+
+          it 'does not set delete delay ms' do
+            expect(chef_run).not_to have_configured(path).with('log.delete.delay.ms')
+          end
+
+          it 'does not set flush offset checkpoint interval' do
+            expect(chef_run).not_to have_configured(path).with('log.flush.offset.checkpoint.interval.ms')
+          end
         end
 
         context 'when kafka 0.8.1' do
@@ -637,6 +655,14 @@ describe 'kafka::_configure' do
 
           it 'sets log retention check interval (milliseconds)' do
             expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
+          end
+
+          it 'sets delete delay ms' do
+            expect(chef_run).to have_configured(path).with('log.delete.delay.ms').as(1000)
+          end
+
+          it 'sets flush offset checkpoint interval' do
+            expect(chef_run).to have_configured(path).with('log.flush.offset.checkpoint.interval.ms').as(1000)
           end
         end
 

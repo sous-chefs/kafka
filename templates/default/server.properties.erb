@@ -142,6 +142,17 @@
 <%= render 'partials/option.erb', variables: {key: 'auto.create.topics.enable', value: node[:kafka][:auto_create_topics]} -%>
 
 <% unless node[:kafka][:version] == '0.8.0' %>
+# The period of time we hold log files around after they are removed from the index.
+# This period of time allows any in-progress reads to complete uninterrupted without locking.
+# You generally don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.delete.delay.ms', value: node[:kafka][:log][:delete_delay_ms]} -%>
+
+# The frequency with which we checkpoint the last flush point for logs for recovery.
+# You should not need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.flush.offset.checkpoint.interval.ms', value: node[:kafka][:log][:flush_offset_checkpoint_interval_ms]} -%>
+<% end %>
+
+<% unless node[:kafka][:version] == '0.8.0' %>
 ############################# Log Configuration #############################
 
 # this configuration must be set to true for log compaction to run.
