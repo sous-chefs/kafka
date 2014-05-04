@@ -27,66 +27,68 @@ default[:kafka][:init_style] = :sysv
 # Mod the broker id by the largest 32 bit unsigned int to avoid kafka
 # choking on the value when it tries to start up.
 default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '').to_i % 2**31
-default[:kafka][:message_max_bytes] = 1_000_000
-default[:kafka][:num_network_threads] = 3
-default[:kafka][:num_io_threads] = 8
-default[:kafka][:queued_max_requests] = 500
+default[:kafka][:message_max_bytes] = nil
+default[:kafka][:num_network_threads] = nil
+default[:kafka][:num_io_threads] = nil
+default[:kafka][:background_threads] = nil
+default[:kafka][:queued_max_requests] = nil
 
 # Socket server configuration
-default[:kafka][:port] = 9092
+default[:kafka][:port] = nil
 default[:kafka][:host_name] = node[:hostname]
-default[:kafka][:advertised_host_name] = node[:kafka][:host_name]
-default[:kafka][:advertised_port] = node[:kafka][:port]
-default[:kafka][:socket][:send_buffer_bytes] = 100 * 1024
-default[:kafka][:socket][:receive_buffer_bytes] = 100 * 1024
-default[:kafka][:socket][:request_max_bytes] = 100 * 1024 * 1024
+default[:kafka][:advertised_host_name] = nil
+default[:kafka][:advertised_port] = nil
+default[:kafka][:socket][:send_buffer_bytes] = nil
+default[:kafka][:socket][:receive_buffer_bytes] = nil
+default[:kafka][:socket][:request_max_bytes] = nil
 
 # Log configuration
-default[:kafka][:num_partitions] = 1
-default[:kafka][:log][:dirs] = ['/tmp/kafka-logs']
-default[:kafka][:log][:segment_bytes] = 1 * 1024 * 1024 * 1024
+default[:kafka][:num_partitions] = nil
+default[:kafka][:log][:dirs] = []
+default[:kafka][:log][:segment_bytes] = nil
 default[:kafka][:log][:segment_bytes_per_topic] = {}
-default[:kafka][:log][:roll_hours] = 24 * 7
+default[:kafka][:log][:roll_hours] = nil
 default[:kafka][:log][:roll_hours_per_topic] = {}
-default[:kafka][:log][:retention_hours] = 24 * 7
+default[:kafka][:log][:retention_mins] = nil
+default[:kafka][:log][:retention_hours] = nil
 default[:kafka][:log][:retention_hours_per_topic] = {}
-default[:kafka][:log][:retention_bytes] = -1
+default[:kafka][:log][:retention_bytes] = nil
 default[:kafka][:log][:retention_bytes_per_topic] = {}
-default[:kafka][:log][:retention_check_interval_ms] = 60000
-default[:kafka][:log][:cleaner_enable] = false
-default[:kafka][:log][:cleanup_interval_mins] = 10
-default[:kafka][:log][:index_size_max_bytes] = 10 * 1024 * 1024
-default[:kafka][:log][:index_interval_bytes] = 4096
-default[:kafka][:log][:flush_interval_messages] = 10_000
-default[:kafka][:log][:flush_interval_ms] = 3000
+default[:kafka][:log][:retention_check_interval_ms] = nil
+default[:kafka][:log][:cleaner_enable] = nil
+default[:kafka][:log][:cleanup_interval_mins] = nil
+default[:kafka][:log][:index_size_max_bytes] = nil
+default[:kafka][:log][:index_interval_bytes] = nil
+default[:kafka][:log][:flush_interval_messages] = nil
+default[:kafka][:log][:flush_interval_ms] = nil
 default[:kafka][:log][:flush_interval_ms_per_topic] = {}
-default[:kafka][:log][:flush_scheduler_interval_ms] = node[:kafka][:log][:flush_interval_ms]
-default[:kafka][:auto_create_topics] = true
+default[:kafka][:log][:flush_scheduler_interval_ms] = nil
+default[:kafka][:auto_create_topics] = nil
 
 # Replication configuration
-default[:kafka][:controller][:socket_timeout_ms] = 30_000
-default[:kafka][:controller][:message_queue_size] = 10
-default[:kafka][:default_replication_factor] = 1
-default[:kafka][:replica][:lag_time_max_ms] = 10_000
-default[:kafka][:replica][:lag_max_messages] = 4000
-default[:kafka][:replica][:socket_timeout_ms] = 30 * 1000
-default[:kafka][:replica][:socket_receive_buffer_bytes] = 64 * 1024
-default[:kafka][:replica][:fetch_max_bytes] = 1024 * 1024
-default[:kafka][:replica][:fetch_wait_max_ms] = 500
-default[:kafka][:replica][:fetch_min_bytes] = 1
-default[:kafka][:num_replica_fetchers] = 1
-default[:kafka][:replica][:high_watermark_checkpoint_interval_ms] = 5000
-default[:kafka][:fetch][:purgatory_purge_interval_requests] = 10_000
-default[:kafka][:producer][:purgatory_purge_interval_requests] = 10_000
+default[:kafka][:controller][:socket_timeout_ms] = nil
+default[:kafka][:controller][:message_queue_size] = nil
+default[:kafka][:default_replication_factor] = nil
+default[:kafka][:replica][:lag_time_max_ms] = nil
+default[:kafka][:replica][:lag_max_messages] = nil
+default[:kafka][:replica][:socket_timeout_ms] = nil
+default[:kafka][:replica][:socket_receive_buffer_bytes] = nil
+default[:kafka][:replica][:fetch_max_bytes] = nil
+default[:kafka][:replica][:fetch_wait_max_ms] = nil
+default[:kafka][:replica][:fetch_min_bytes] = nil
+default[:kafka][:num_replica_fetchers] = nil
+default[:kafka][:replica][:high_watermark_checkpoint_interval_ms] = nil
+default[:kafka][:fetch][:purgatory_purge_interval_requests] = nil
+default[:kafka][:producer][:purgatory_purge_interval_requests] = nil
 
 # Controlled shutdown configuration
-default[:kafka][:controlled_shutdown][:max_retries] = 3
-default[:kafka][:controlled_shutdown][:retry_backoff_ms] = 5000
-default[:kafka][:controlled_shutdown][:enabled] = false
+default[:kafka][:controlled_shutdown][:max_retries] = nil
+default[:kafka][:controlled_shutdown][:retry_backoff_ms] = nil
+default[:kafka][:controlled_shutdown][:enabled] = nil
 
 # ZooKeeper configuration
 default[:kafka][:zookeeper][:connect] = []
-default[:kafka][:zookeeper][:connection_timeout_ms] = 6000
-default[:kafka][:zookeeper][:session_timeout_ms] = 6000
-default[:kafka][:zookeeper][:sync_time_ms] = 2000
+default[:kafka][:zookeeper][:connection_timeout_ms] = nil
+default[:kafka][:zookeeper][:session_timeout_ms] = nil
+default[:kafka][:zookeeper][:sync_time_ms] = nil
 default[:kafka][:zookeeper][:path] = nil
