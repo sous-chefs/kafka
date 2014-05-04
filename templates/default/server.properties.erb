@@ -28,7 +28,7 @@
 # The number of io threads that the server uses for carrying out network requests
 <%= render 'partials/option.erb', variables: {key: 'num.io.threads', value: node[:kafka][:num_io_threads]} -%>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
+<% unless kafka_v0_8_0? %>
 # The number of threads to use for various background processing tasks such as file deletion
 <%= render 'partials/option.erb', variables: {key: 'background.threads', value: node[:kafka][:background_threads]} -%>
 <% end %>
@@ -45,7 +45,7 @@
 # it will bind to all interfaces, and publish one to ZK.
 <%= render 'partials/option.erb', variables: {key: 'host.name', value: node[:kafka][:host_name]} -%>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
+<% unless kafka_v0_8_0? %>
 # Hostname the broker will advertise to producers and consumers. If not set, it uses the
 # value for "host.name" if configured.  Otherwise, it will use the value returned from
 # java.net.InetAddress.getCanonicalHostName().
@@ -76,7 +76,7 @@
 # The maximum size of a single log file
 <%= render 'partials/option.erb', variables: {key: 'log.segment.bytes', value: node[:kafka][:log][:segment_bytes]} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
+<% if kafka_v0_8_0? %>
 # The maximum size of a single log file for some specific topic
 <%= render 'partials/hash_option.erb', variables: {key: 'log.segment.bytes.per.topic', value: node[:kafka][:log][:segment_bytes_per_topic]} -%>
 <% end %>
@@ -84,7 +84,7 @@
 # The maximum time before a new log segment is rolled out
 <%= render 'partials/option.erb', variables: {key: 'log.roll.hours', value: node[:kafka][:log][:roll_hours]} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
+<% if kafka_v0_8_0? %>
 # The number of hours before rolling out a new log segment for some specific topic
 <%= render 'partials/hash_option.erb', variables: {key: 'log.roll.hours.per.topic', value: node[:kafka][:log][:roll_hours_per_topic]} -%>
 
@@ -101,12 +101,10 @@
 # The maximum size of the log before deleting it
 <%= render 'partials/option.erb', variables: {key: 'log.retention.bytes', value: node[:kafka][:log][:retention_bytes]} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
+<% if kafka_v0_8_0? %>
 # The maximum size of the log for some specific topic before deleting it
 <%= render 'partials/hash_option.erb', variables: {key: 'log.retention.bytes.per.topic', value: node[:kafka][:log][:retention_bytes_per_topic]} -%>
-<% end %>
 
-<% if node[:kafka][:version] == '0.8.0' %>
 # The frequency in minutes that the log cleaner checks whether any log is eligible for deletion
 <%= render 'partials/option.erb', variables: {key: 'log.cleanup.interval.mins', value: node[:kafka][:log][:cleanup_interval_mins]} -%>
 <% else %>
@@ -131,7 +129,7 @@
 # The maximum time in ms that a message in any topic is kept in memory before flushed to disk
 <%= render 'partials/option.erb', variables: {key: 'log.flush.interval.ms', value: node[:kafka][:log][:flush_interval_ms]} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
+<% if kafka_v0_8_0? %>
 # The maximum time in ms that a message in selected topics is kept in memory before flushed to disk, e.g., topic1:3000,topic2:6000
 <%= render 'partials/hash_option.erb', variables: {key: 'log.flush.interval.ms.per.topic', value: node[:kafka][:log][:flush_interval_ms_per_topic]} -%>
 <% end %>
@@ -142,7 +140,7 @@
 # Enable auto creation of topic on the broker
 <%= render 'partials/option.erb', variables: {key: 'auto.create.topics.enable', value: node[:kafka][:auto_create_topics]} -%>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
+<% unless kafka_v0_8_0? %>
 # The period of time we hold log files around after they are removed from the index.
 # This period of time allows any in-progress reads to complete uninterrupted without locking.
 # You generally don't need to change this.
@@ -156,9 +154,7 @@
 # If delete is set, log segments will be deleted when they reach the size or time limits set.
 # If compact is set log compaction will be used to clean out obsolete records.
 <%= render 'partials/option.erb', variables: {key: 'log.cleanup.policy', value: node[:kafka][:log][:cleanup_policy]} -%>
-<% end %>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
 ############################# Log Cleaner Configuration #############################
 
 # This configuration must be set to true for log compaction to run.
@@ -247,7 +243,7 @@
 # Enable controlled shutdown of the server
 <%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.enable', value: node[:kafka][:controlled_shutdown][:enabled]} -%>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
+<% unless kafka_v0_8_0? %>
 ############################# Leader Imbalance Configuration #############################
 
 # If this is enabled the controller will automatically try to balance leadership for partitions

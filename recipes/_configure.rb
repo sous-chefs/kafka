@@ -22,6 +22,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   variables({
     zookeeper_connect: zookeeper_connect_string
   })
+  helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
 end
 
 template kafka_init_opts[:env_path] do
