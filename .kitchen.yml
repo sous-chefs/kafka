@@ -48,7 +48,6 @@ suites:
       - fedora-18
     attributes:
       kafka:
-        install_method: 'binary'
         init_style: 'upstart'
         zookeeper:
           connect: ['localhost:2181']
@@ -59,8 +58,6 @@ suites:
       - recipe[kafka]
     attributes:
       kafka:
-        install_method: 'binary'
-        init_style: 'sysv'
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
