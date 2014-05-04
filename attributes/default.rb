@@ -34,7 +34,7 @@ default[:kafka][:background_threads] = nil
 default[:kafka][:queued_max_requests] = nil
 
 # Socket server configuration
-default[:kafka][:port] = nil
+default[:kafka][:port] = 6667
 default[:kafka][:host_name] = node[:hostname]
 default[:kafka][:advertised_host_name] = nil
 default[:kafka][:advertised_port] = nil

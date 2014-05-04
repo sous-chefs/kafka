@@ -67,8 +67,8 @@ describe 'kafka::_configure' do
       end
 
       context 'socket server configuration' do
-        it 'does not set port' do
-          expect(chef_run).not_to have_configured(path).with('port').as(9092)
+        it 'sets port' do
+          expect(chef_run).to have_configured(path).with('port').as(6667)
         end
 
         it 'does not set host name from node hostname attribute' do
