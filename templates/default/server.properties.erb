@@ -198,6 +198,27 @@
 # enable controlled shutdown of the server
 <%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.enable', value: node[:kafka][:controlled_shutdown][:enabled]} -%>
 
+<% unless node[:kafka][:version] == '0.8.0' %>
+############################# Leader imbalance configuration #############################
+
+# If this is enabled the controller will automatically try to balance leadership for partitions
+# among the brokers by periodically returning leadership to the "preferred" replica for each
+# partition if it is available.
+<%= render 'partials/option.erb', variables: {key: 'auto.leader.rebalance.enable', value: node[:kafka][:auto_leader_rebalance_enable]} -%>
+
+# The percentage of leader imbalance allowed per broker. The controller will rebalance leadership
+# if this ratio goes above the configured value per broker.
+<%= render 'partials/option.erb', variables: {key: 'leader.imbalance.per.broker.percentage', value: node[:kafka][:leader][:imbalance_per_broker_percentage]} -%>
+
+# The frequency with which to check for leader imbalance.
+<%= render 'partials/option.erb', variables: {key: 'leader.imbalance.check.interval.seconds', value: node[:kafka][:leader][:imbalance_check_interval_seconds]} -%>
+
+############################# Consumer offset management #############################
+
+# The maximum amount of metadata to allow clients to save with their offsets.
+<%= render 'partials/option.erb', variables: {key: 'offset.metadata.max.bytes', value: node[:kafka][:offset_metadata_max_bytes]} -%>
+
+<% end %>
 ############################# Zookeeper #############################
 
 # Zookeeper connection string (see zookeeper docs for details).

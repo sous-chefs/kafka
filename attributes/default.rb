@@ -86,6 +86,14 @@ default[:kafka][:controlled_shutdown][:max_retries] = nil
 default[:kafka][:controlled_shutdown][:retry_backoff_ms] = nil
 default[:kafka][:controlled_shutdown][:enabled] = nil
 
+# Leader related configuration (> v0.8.0 configuration options)
+default[:kafka][:auto_leader_rebalance_enable] = nil
+default[:kafka][:leader][:imbalance_per_broker_percentage] = nil
+default[:kafka][:leader][:imbalance_check_interval_seconds] = nil
+
+# Consumer offset management configuration (> v0.8.0 configuration options)
+default[:offset_metadata_max_bytes] = nil
+
 # ZooKeeper configuration
 default[:kafka][:zookeeper][:connect] = []
 default[:kafka][:zookeeper][:connection_timeout_ms] = nil

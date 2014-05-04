@@ -274,6 +274,24 @@ describe 'kafka::_configure' do
         end
       end
 
+      context 'leader related configuration' do
+        it 'does not set auto leader imbalance enable' do
+          expect(chef_run).not_to have_configured(path).with('auto.leader.rebalance.enable')
+        end
+
+        it 'does not set leader imbalance per broker (percentage)' do
+          expect(chef_run).not_to have_configured(path).with('leader.imbalance.per.broker.percentage')
+        end
+
+        it 'does not set leader imbalance check interval (seconds)' do
+          expect(chef_run).not_to have_configured(path).with('leader.imbalance.check.interval.seconds')
+        end
+
+        it 'does not set offset metadata max (bytes)' do
+          expect(chef_run).not_to have_configured(path).with('offset.metadata.max.bytes')
+        end
+      end
+
       context 'zookeeper configuration' do
         it 'does not set zookeeper connect' do
           expect(chef_run).not_to have_configured(path).with('zookeeper.connect')
@@ -356,6 +374,12 @@ describe 'kafka::_configure' do
             retry_backoff_ms: 5000,
             enabled: false,
           },
+          auto_leader_rebalance_enable: true,
+          leader: {
+            imbalance_per_broker_percentage: 0.7,
+            imbalance_check_interval_seconds: 3,
+          },
+          offset_metadata_max_bytes: 1000,
           zookeeper: {
             connect: [],
             connection_timeout_ms: 6000,
@@ -688,6 +712,58 @@ describe 'kafka::_configure' do
 
         it 'sets value for enable' do
           expect(chef_run).to have_configured(path).with('controlled.shutdown.enable').as(false)
+        end
+      end
+
+      context 'leader related configuration' do
+        context 'when kafka 0.8.0' do
+          let :kafka_version do
+            '0.8.0'
+          end
+
+          it 'does not set auto leader imbalance enable' do
+            expect(chef_run).not_to have_configured(path).with('auto.leader.rebalance.enable').as(true)
+          end
+
+          it 'does not set leader imbalance per broker (percentage)' do
+            expect(chef_run).not_to have_configured(path).with('leader.imbalance.per.broker.percentage').as(0.7)
+          end
+
+          it 'does not set leader imbalance check interval (seconds)' do
+            expect(chef_run).not_to have_configured(path).with('leader.imbalance.check.interval.seconds').as(3)
+          end
+        end
+
+        context 'when kafka > 0.8.0' do
+          it 'sets auto leader imbalance enable' do
+            expect(chef_run).to have_configured(path).with('auto.leader.rebalance.enable').as(true)
+          end
+
+          it 'sets leader imbalance per broker (percentage)' do
+            expect(chef_run).to have_configured(path).with('leader.imbalance.per.broker.percentage').as(0.7)
+          end
+
+          it 'sets leader imbalance check interval (seconds)' do
+            expect(chef_run).to have_configured(path).with('leader.imbalance.check.interval.seconds').as(3)
+          end
+        end
+      end
+
+      context 'consumer offset management configuration' do
+        context 'when kafka 0.8.0' do
+          let :kafka_version do
+            '0.8.0'
+          end
+
+          it 'does not set offset metadata max (bytes)' do
+            expect(chef_run).not_to have_configured(path).with('offset.metadata.max.bytes').as(1000)
+          end
+        end
+
+        context 'when kafka > 0.8.0' do
+          it 'sets offset metadata max (bytes)' do
+            expect(chef_run).to have_configured(path).with('offset.metadata.max.bytes').as(1000)
+          end
         end
       end
 
