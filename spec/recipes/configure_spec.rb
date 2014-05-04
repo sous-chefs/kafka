@@ -84,33 +84,33 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set advertised port attribute' do
-          expect(chef_run).not_to have_configured(path).with('advertised.port').as(9092)
+          expect(chef_run).not_to have_configured(path).with('advertised.port')
         end
 
         it 'does not set send buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('socket.send.buffer.bytes').as(100 * 1024)
+          expect(chef_run).not_to have_configured(path).with('socket.send.buffer.bytes')
         end
 
         it 'does not set receive buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('socket.receive.buffer.bytes').as(100 * 1024)
+          expect(chef_run).not_to have_configured(path).with('socket.receive.buffer.bytes')
         end
 
         it 'does not set receive request max size' do
-          expect(chef_run).not_to have_configured(path).with('socket.request.max.bytes').as(100 * 1024 * 1024)
+          expect(chef_run).not_to have_configured(path).with('socket.request.max.bytes')
         end
       end
 
       context 'log configuration' do
         it 'does not set number of partitions' do
-          expect(chef_run).not_to have_configured(path).with('num.partitions').as(1)
+          expect(chef_run).not_to have_configured(path).with('num.partitions')
         end
 
         it 'does not set log dir(s)' do
-          expect(chef_run).not_to have_configured(path).with('log.dirs').as('/tmp/kafka-logs')
+          expect(chef_run).not_to have_configured(path).with('log.dirs')
         end
 
         it 'does not set log segment bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.segment.bytes').as(1 * 1024 * 1024 * 1024)
+          expect(chef_run).not_to have_configured(path).with('log.segment.bytes')
         end
 
         it 'does not set segment bytes per topic' do
@@ -118,7 +118,7 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set roll hours' do
-          expect(chef_run).not_to have_configured(path).with('log.roll.hours').as(24 * 7)
+          expect(chef_run).not_to have_configured(path).with('log.roll.hours')
         end
 
         it 'does not set roll hours per topic' do
@@ -126,7 +126,7 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set log retention hours' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.hours').as(24 * 7)
+          expect(chef_run).not_to have_configured(path).with('log.retention.hours')
         end
 
         it 'does not set retention hours per topic' do
@@ -134,7 +134,7 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set log retention bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.bytes').as(-1)
+          expect(chef_run).not_to have_configured(path).with('log.retention.bytes')
         end
 
         it 'does not set retention bytes per topic' do
@@ -158,19 +158,19 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set max bytesize of index' do
-          expect(chef_run).not_to have_configured(path).with('log.index.size.max.bytes').as(10 * 1024 * 1024)
+          expect(chef_run).not_to have_configured(path).with('log.index.size.max.bytes')
         end
 
         it 'does not set index interval bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.index.interval.bytes').as(4096)
+          expect(chef_run).not_to have_configured(path).with('log.index.interval.bytes')
         end
 
         it 'does not set log flush interval (messages)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.interval.messages').as(10_000)
+          expect(chef_run).not_to have_configured(path).with('log.flush.interval.messages')
         end
 
         it 'does not set log flush interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.interval.ms').as(3000)
+          expect(chef_run).not_to have_configured(path).with('log.flush.interval.ms')
         end
 
         it 'does not set flush interval (ms) per topic' do
@@ -178,7 +178,7 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set log flush scheduler interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.scheduler.interval.ms').as(3000)
+          expect(chef_run).not_to have_configured(path).with('log.flush.scheduler.interval.ms')
         end
 
         it 'does not set auto create topics enable' do
@@ -230,73 +230,73 @@ describe 'kafka::_configure' do
 
       context 'replication configuration' do
         it 'does not set controller socket timeout' do
-          expect(chef_run).not_to have_configured(path).with('controller.socket.timeout.ms').as(30_000)
+          expect(chef_run).not_to have_configured(path).with('controller.socket.timeout.ms')
         end
 
         it 'does not set controller message queue size' do
-          expect(chef_run).not_to have_configured(path).with('controller.message.queue.size').as(10)
+          expect(chef_run).not_to have_configured(path).with('controller.message.queue.size')
         end
 
         it 'does not set default replication factor' do
-          expect(chef_run).not_to have_configured(path).with('default.replication.factor').as(1)
+          expect(chef_run).not_to have_configured(path).with('default.replication.factor')
         end
 
         it 'does not set replica lag time max (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.lag.time.max.ms').as(10_000)
+          expect(chef_run).not_to have_configured(path).with('replica.lag.time.max.ms')
         end
 
         it 'does not set replica message lag max' do
-          expect(chef_run).not_to have_configured(path).with('replica.lag.max.messages').as(4000)
+          expect(chef_run).not_to have_configured(path).with('replica.lag.max.messages')
         end
 
         it 'does not set replica socket timeout' do
-          expect(chef_run).not_to have_configured(path).with('replica.socket.timeout.ms').as(30 * 1000)
+          expect(chef_run).not_to have_configured(path).with('replica.socket.timeout.ms')
         end
 
         it 'does not set replica socket receive buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.socket.receive.buffer.bytes').as(64 * 1024)
+          expect(chef_run).not_to have_configured(path).with('replica.socket.receive.buffer.bytes')
         end
 
         it 'does not set replica fetch max bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.max.bytes').as(1024 * 1024)
+          expect(chef_run).not_to have_configured(path).with('replica.fetch.max.bytes')
         end
 
         it 'does not set replica fetch min bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.min.bytes').as(1)
+          expect(chef_run).not_to have_configured(path).with('replica.fetch.min.bytes')
         end
 
         it 'does not set replica fetch max wait (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.wait.max.ms').as(500)
+          expect(chef_run).not_to have_configured(path).with('replica.fetch.wait.max.ms')
         end
 
         it 'does not set replica fetchers' do
-          expect(chef_run).not_to have_configured(path).with('num.replica.fetchers').as(1)
+          expect(chef_run).not_to have_configured(path).with('num.replica.fetchers')
         end
 
         it 'does not set replica high watermark checkpoint interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.high.watermark.checkpoint.interval.ms').as(5000)
+          expect(chef_run).not_to have_configured(path).with('replica.high.watermark.checkpoint.interval.ms')
         end
 
         it 'does not set fetch purgatory purge interval' do
-          expect(chef_run).not_to have_configured(path).with('fetch.purgatory.purge.interval.requests').as(10_000)
+          expect(chef_run).not_to have_configured(path).with('fetch.purgatory.purge.interval.requests')
         end
 
         it 'does not set producer purgatory purge interval' do
-          expect(chef_run).not_to have_configured(path).with('producer.purgatory.purge.interval.requests').as(10_000)
+          expect(chef_run).not_to have_configured(path).with('producer.purgatory.purge.interval.requests')
         end
       end
 
       context 'controlled shutdown configuration' do
         it 'does not set max retries' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.max.retries').as(3)
+          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.max.retries')
         end
 
         it 'does not set retry backoff (ms)' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.retry.backoff.ms').as(5000)
+          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.retry.backoff.ms')
         end
 
         it 'does not set value for enable' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.enable').as(false)
+          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.enable')
         end
       end
 
@@ -324,15 +324,15 @@ describe 'kafka::_configure' do
         end
 
         it 'does not set zookeeper connection timeout' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.connection.timeout.ms').as(6000)
+          expect(chef_run).not_to have_configured(path).with('zookeeper.connection.timeout.ms')
         end
 
         it 'does not set zookeeper session timeout' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.session.timeout.ms').as(6000)
+          expect(chef_run).not_to have_configured(path).with('zookeeper.session.timeout.ms')
         end
 
         it 'does not set zookeeper sync time (ms)' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.sync.time.ms').as(2000)
+          expect(chef_run).not_to have_configured(path).with('zookeeper.sync.time.ms')
         end
       end
     end
