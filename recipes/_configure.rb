@@ -24,30 +24,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   })
 end
 
-case node[:kafka][:init_style].to_sym
-when :sysv
-  env_path = value_for_platform_family({
-    'debian' => '/etc/default/kafka',
-    'default' => '/etc/sysconfig/kafka'
-  })
-  source_script_path = value_for_platform_family({
-    'debian' => 'sysv/debian.erb',
-    'default' => 'sysv/default.erb'
-  })
-  init_script_path = '/etc/init.d/kafka'
-  service_provider = nil
-  init_script_permissions = '755'
-when :upstart
-  env_path = '/etc/default/kafka'
-  init_script_path = '/etc/init/kafka.conf'
-  source_script_path = value_for_platform_family({
-    'default' => 'upstart/default.erb'
-  })
-  service_provider = Chef::Provider::Service::Upstart
-  init_script_permissions = '644'
-end
-
-template env_path do
+template kafka_init_opts[:env_path] do
   source 'kafka.env.erb'
   owner 'root'
   group 'root'
@@ -60,11 +37,11 @@ template env_path do
   })
 end
 
-template init_script_path do
-  source source_script_path
+template kafka_init_opts[:script_path] do
+  source kafka_init_opts[:source]
   owner 'root'
   group 'root'
-  mode init_script_permissions
+  mode kafka_init_opts[:permissions]
   variables({
     daemon_name: 'kafka',
     port: node[:kafka][:port],
@@ -73,7 +50,7 @@ template init_script_path do
 end
 
 service 'kafka' do
-  provider service_provider
+  provider kafka_init_opts[:provider]
   supports start: true, stop: true, restart: true
   action [:enable]
 end

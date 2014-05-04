@@ -30,30 +30,7 @@ template ::File.join(node[:kafka][:config_dir], 'zookeeper.log4j.properties') do
   })
 end
 
-case node[:kafka][:init_style].to_sym
-when :sysv
-  env_path = value_for_platform_family({
-    'debian' => '/etc/default/zookeeper',
-    'default' => '/etc/sysconfig/zookeeper'
-  })
-  source_script_path = value_for_platform_family({
-    'debian' => 'sysv/debian.erb',
-    'default' => 'sysv/default.erb'
-  })
-  init_script_path = '/etc/init.d/zookeeper'
-  service_provider = nil
-  init_script_permissions = '755'
-when :upstart
-  env_path = '/etc/default/zookeeper'
-  init_script_path = '/etc/init/zookeeper.conf'
-  source_script_path = value_for_platform_family({
-    'default' => 'upstart/default.erb'
-  })
-  service_provider = Chef::Provider::Service::Upstart
-  init_script_permissions = '644'
-end
-
-template env_path do
+template zookeeper_init_opts[:env_path] do
   source 'kafka.env.erb'
   owner 'root'
   group 'root'
@@ -66,11 +43,11 @@ template env_path do
   })
 end
 
-template init_script_path do
-  source source_script_path
+template zookeeper_init_opts[:script_path] do
+  source zookeeper_init_opts[:source]
   owner 'root'
   group 'root'
-  mode init_script_permissions
+  mode zookeeper_init_opts[:permissions]
   variables({
     daemon_name: 'zookeeper',
     port: 2181,
@@ -79,7 +56,7 @@ template init_script_path do
 end
 
 service 'zookeeper' do
-  provider service_provider
+  provider zookeeper_init_opts[:provider]
   supports start: true, stop: true, restart: true
   action [:enable, :start]
 end

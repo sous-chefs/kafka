@@ -59,6 +59,10 @@ def kafka_install_method
   node[:kafka][:install_method].to_sym
 end
 
+def kafka_init_style
+  node[:kafka][:init_style].to_sym
+end
+
 def kafka_binary_install?
   kafka_install_method == :binary
 end
@@ -72,4 +76,38 @@ def zookeeper_connect_string
   end
 
   connect_string
+end
+
+def zookeeper_init_opts
+  @zookeeper_init_opts ||= kafka_create_init_opts('zookeeper')
+end
+
+def kafka_init_opts
+  @kafka_init_opts ||= kafka_create_init_opts('kafka')
+end
+
+def kafka_create_init_opts(app)
+  Hash.new.tap do |opts|
+    case kafka_init_style
+    when :sysv
+      opts[:env_path] = value_for_platform_family({
+        'debian' => %(/etc/default/#{app}),
+        'default' => %(/etc/sysconfig/#{app})
+      })
+      opts[:source] = value_for_platform_family({
+        'debian' => 'sysv/debian.erb',
+        'default' => 'sysv/default.erb'
+      })
+      opts[:script_path] = %(/etc/init.d/#{app})
+      opts[:permissions] = '755'
+    when :upstart
+      opts[:env_path] = %(/etc/default/#{app})
+      opts[:source] = value_for_platform_family({
+        'default' => 'upstart/default.erb'
+      })
+      opts[:script_path] = %(/etc/init/#{app}.conf)
+      opts[:provider] = ::Chef::Provider::Service::Upstart
+      opts[:permissions] = '644'
+    end
+  end
 end

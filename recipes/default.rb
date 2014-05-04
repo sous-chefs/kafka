@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-case node[:kafka][:install_method].to_sym
+case kafka_install_method
 when :source, :binary
   include_recipe 'kafka::_setup'
   include_recipe %(kafka::#{node[:kafka][:install_method]})
