@@ -46,6 +46,18 @@ In order to keep the README in some kind of manageable state (and thus in sync
 with attributes), attributes are documented inline (in the `attribute` files
 that is).
 
+All of the configuration parameters defined in the official Kafka documentation
+should be available as attributes (this applies to `v0.8.0`, `v0.8.1` and
+`v0.8.1.1`).
+
+Almost all of the attributes are set to `nil` by default, thus the default
+values defined in Kafka will be used instead, since the Kafka team will most
+likely be better at keeping values up-to-date, and this cookbook won't have to
+be responsible for setting "correct" default values.
+
+Configuration attributes that are `nil` will still show up in the rendered
+configuration file, but they will be "commented".
+
 ## Recipes
 
 This section describes the different recipes that exists, and how to use them.
