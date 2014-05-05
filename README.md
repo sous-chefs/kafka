@@ -58,6 +58,10 @@ be responsible for setting "correct" default values.
 Configuration attributes that are `nil` will still show up in the rendered
 configuration file, but they will be "commented".
 
+In the case that there's a new release of Kafka and you notice that there are
+configuration parameters that are not included in this cookbook, pull requests
+are welcome.
+
 ## Recipes
 
 This section describes the different recipes that exists, and how to use them.
