@@ -24,7 +24,11 @@ def kafka_target_path
 end
 
 def kafka_jar_path
-  ::File.join(node[:kafka][:install_dir], %(#{kafka_base}.jar))
+  if kafka_v0_8_0?
+    ::File.join(node[:kafka][:install_dir], %(#{kafka_base}.jar))
+  else
+    ::File.join(node[:kafka][:install_dir], 'libs', %(#{kafka_base}.jar))
+  end
 end
 
 def kafka_installed?
@@ -68,14 +72,16 @@ def kafka_binary_install?
 end
 
 def zookeeper_connect_string
-  connect_string = node[:kafka][:zookeeper][:connect].join(',')
+  if node[:kafka][:zookeeper][:connect] && node[:kafka][:zookeeper][:connect].any?
+    connect_string = node[:kafka][:zookeeper][:connect].join(',')
 
-  if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
-    connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
-    connect_string << node[:kafka][:zookeeper][:path]
+    if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
+      connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
+      connect_string << node[:kafka][:zookeeper][:path]
+    end
+
+    connect_string
   end
-
-  connect_string
 end
 
 def zookeeper_init_opts

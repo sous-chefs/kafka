@@ -17,186 +17,267 @@
 ############################# General Configuration #############################
 
 # The id of the broker. This must be set to a unique integer for each broker.
-<%= render 'partials/option.erb', variables: {key: 'broker.id', value: node[:kafka][:broker_id]} -%>
+<%= render 'partials/option.erb', variables: {key: 'broker.id', value: config.broker_id} -%>
 
 # The maximum size of message that the server can receive
-<%= render 'partials/option.erb', variables: {key: 'message.max.bytes', value: node[:kafka][:message_max_bytes]} -%>
+<%= render 'partials/option.erb', variables: {key: 'message.max.bytes', value: config.message_max_bytes} -%>
 
 # The number of network threads that the server uses for handling network requests
-<%= render 'partials/option.erb', variables: {key: 'num.network.threads', value: node[:kafka][:num_network_threads]} -%>
+<%= render 'partials/option.erb', variables: {key: 'num.network.threads', value: config.num_network_threads} -%>
 
 # The number of io threads that the server uses for carrying out network requests
-<%= render 'partials/option.erb', variables: {key: 'num.io.threads', value: node[:kafka][:num_io_threads]} -%>
+<%= render 'partials/option.erb', variables: {key: 'num.io.threads', value: config.num_io_threads} -%>
+
+<% unless kafka_v0_8_0? %>
+# The number of threads to use for various background processing tasks such as file deletion
+<%= render 'partials/option.erb', variables: {key: 'background.threads', value: config.background_threads} -%>
+<% end %>
 
 # The number of queued requests allowed before blocking the network threads
-<%= render 'partials/option.erb', variables: {key: 'queued.max.requests', value: node[:kafka][:queued_max_requests]} -%>
+<%= render 'partials/option.erb', variables: {key: 'queued.max.requests', value: config.queued_max_requests} -%>
 
 ############################# Socket Server Configuration #############################
 
 # The port to listen and accept connections on
-<%= render 'partials/option.erb', variables: {key: 'port', value: node[:kafka][:port]} -%>
+<%= render 'partials/option.erb', variables: {key: 'port', value: config.port} -%>
 
 # Hostname of broker. If this is set, it will only bind to this address. If this is not set,
 # it will bind to all interfaces, and publish one to ZK.
-<%= render 'partials/option.erb', variables: {key: 'host.name', value: node[:kafka][:host_name]} -%>
+<%= render 'partials/option.erb', variables: {key: 'host.name', value: config.host_name} -%>
 
-<% unless node[:kafka][:version] == '0.8.0' %>
+<% unless kafka_v0_8_0? %>
 # Hostname the broker will advertise to producers and consumers. If not set, it uses the
 # value for "host.name" if configured.  Otherwise, it will use the value returned from
 # java.net.InetAddress.getCanonicalHostName().
-<%= render 'partials/option.erb', variables: {key: 'advertised.host.name', value: node[:kafka][:advertised_host_name]} -%>
+<%= render 'partials/option.erb', variables: {key: 'advertised.host.name', value: config.advertised_host_name} -%>
 
 # The port to publish to ZooKeeper for clients to use. If this is not set,
 # it will publish the same port that the broker binds to.
-<%= render 'partials/option.erb', variables: {key: 'advertised.port', value: node[:kafka][:advertised_port]} -%>
+<%= render 'partials/option.erb', variables: {key: 'advertised.port', value: config.advertised_port} -%>
 <% end %>
 
-# The SO_SNDBUFF buffer of the socket sever sockets
-<%= render 'partials/option.erb', variables: {key: 'socket.send.buffer.bytes', value: node[:kafka][:socket][:send_buffer_bytes]} -%>
+# The SO_SNDBUFF buffer of the socket server sockets
+<%= render 'partials/option.erb', variables: {key: 'socket.send.buffer.bytes', value: config.socket.send_buffer_bytes} -%>
 
-# The SO_RCVBUFF buffer of the socket sever sockets
-<%= render 'partials/option.erb', variables: {key: 'socket.receive.buffer.bytes', value: node[:kafka][:socket][:receive_buffer_bytes]} -%>
+# The SO_RCVBUFF buffer of the socket server sockets
+<%= render 'partials/option.erb', variables: {key: 'socket.receive.buffer.bytes', value: config.socket.receive_buffer_bytes} -%>
 
 # The maximum number of bytes in a socket request
-<%= render 'partials/option.erb', variables: {key: 'socket.request.max.bytes', value: node[:kafka][:socket][:request_max_bytes]} -%>
+<%= render 'partials/option.erb', variables: {key: 'socket.request.max.bytes', value: config.socket.request_max_bytes} -%>
 
 ############################# Log Configuration #############################
 
 # The default number of log partitions per topic
-<%= render 'partials/option.erb', variables: {key: 'num.partitions', value: node[:kafka][:num_partitions]} -%>
+<%= render 'partials/option.erb', variables: {key: 'num.partitions', value: config.num_partitions} -%>
 
 # The directories in which the log data is kept
-<%= render 'partials/option.erb', variables: {key: 'log.dirs', value: node[:kafka][:log][:dirs]} -%>
+<%= render 'partials/option.erb', variables: {key: 'log.dirs', value: config.log.dirs.join(',')} -%>
 
 # The maximum size of a single log file
-<%= render 'partials/option.erb', variables: {key: 'log.segment.bytes', value: node[:kafka][:log][:segment_bytes]} -%>
+<%= render 'partials/option.erb', variables: {key: 'log.segment.bytes', value: config.log.segment_bytes} -%>
 
+<% if kafka_v0_8_0? %>
 # The maximum size of a single log file for some specific topic
-<%= render 'partials/hash_option.erb', variables: {key: 'log.segment.bytes.per.topic', value: node[:kafka][:log][:segment_bytes_per_topic]} -%>
+<%= render 'partials/hash_option.erb', variables: {key: 'log.segment.bytes.per.topic', value: config.log.segment_bytes_per_topic} -%>
+<% end %>
 
-# the maximum time before a new log segment is rolled out
-<%= render 'partials/option.erb', variables: {key: 'log.roll.hours', value: node[:kafka][:log][:roll_hours]} -%>
+# The maximum time before a new log segment is rolled out
+<%= render 'partials/option.erb', variables: {key: 'log.roll.hours', value: config.log.roll_hours} -%>
 
-# the number of hours before rolling out a new log segment for some specific topic
-<%= render 'partials/hash_option.erb', variables: {key: 'log.roll.hours.per.topic', value: node[:kafka][:log][:roll_hours_per_topic]} -%>
+<% if kafka_v0_8_0? %>
+# The number of hours before rolling out a new log segment for some specific topic
+<%= render 'partials/hash_option.erb', variables: {key: 'log.roll.hours.per.topic', value: config.log.roll_hours_per_topic} -%>
 
-# the number of hours to keep a log file before deleting it
-<%= render 'partials/option.erb', variables: {key: 'log.retention.hours', value: node[:kafka][:log][:retention_hours]} -%>
+# The number of hours to keep a log file before deleting it
+<%= render 'partials/option.erb', variables: {key: 'log.retention.hours', value: config.log.retention_hours} -%>
 
-# the number of hours to keep a log file before deleting it for some specific topic
-<%= render 'partials/hash_option.erb', variables: {key: 'log.retention.hours.per.topic', value: node[:kafka][:log][:retention_hours_per_topic]} -%>
+# The number of hours to keep a log file before deleting it for some specific topic
+<%= render 'partials/hash_option.erb', variables: {key: 'log.retention.hours.per.topic', value: config.log.retention_hours_per_topic} -%>
+<% else %>
+# The number of hours to keep a log file before deleting it
+<%= render 'partials/option.erb', variables: {key: 'log.retention.minutes', value: config.log.retention_minutes} -%>
+<% end %>
 
-# the maximum size of the log before deleting it
-<%= render 'partials/option.erb', variables: {key: 'log.retention.bytes', value: node[:kafka][:log][:retention_bytes]} -%>
+# The maximum size of the log before deleting it
+<%= render 'partials/option.erb', variables: {key: 'log.retention.bytes', value: config.log.retention_bytes} -%>
 
-# the maximum size of the log for some specific topic before deleting it
-<%= render 'partials/hash_option.erb', variables: {key: 'log.retention.bytes.per.topic', value: node[:kafka][:log][:retention_bytes_per_topic]} -%>
+<% if kafka_v0_8_0? %>
+# The maximum size of the log for some specific topic before deleting it
+<%= render 'partials/hash_option.erb', variables: {key: 'log.retention.bytes.per.topic', value: config.log.retention_bytes_per_topic} -%>
 
-<% if node[:kafka][:version] == '0.8.0' %>
-# the frequency in minutes that the log cleaner checks whether any log is eligible for deletion
-<%= render 'partials/option.erb', variables: {key: 'log.cleanup.interval.mins', value: node[:kafka][:log][:cleanup_interval_mins]} -%>
+# The frequency in minutes that the log cleaner checks whether any log is eligible for deletion
+<%= render 'partials/option.erb', variables: {key: 'log.cleanup.interval.mins', value: config.log.cleanup_interval_mins} -%>
 <% else %>
 # The interval at which log segments are checked to see if they can be deleted according
 # to the retention policies
-<%= render 'partials/option.erb', variables: {key: 'log.retention.check.interval.ms', value: node[:kafka][:log][:retention_check_interval_ms]} -%>
+<%= render 'partials/option.erb', variables: {key: 'log.retention.check.interval.ms', value: config.log.retention_check_interval_ms} -%>
 
 # By default the log cleaner is disabled and the log retention policy will default to just delete segments after their retention expires.
 # If log.cleaner.enable=true is set the cleaner will be enabled and individual logs can then be marked for log compaction.
-<%= render 'partials/option.erb', variables: {key: 'log.cleaner.enable', value: node[:kafka][:log][:cleaner_enable]} -%>
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.enable', value: config.log.cleaner_enable} -%>
 <% end %>
 
-# the maximum size in bytes of the offset index
-<%= render 'partials/option.erb', variables: {key: 'log.index.size.max.bytes', value: node[:kafka][:log][:index_size_max_bytes]} -%>
+# The maximum size in bytes of the offset index
+<%= render 'partials/option.erb', variables: {key: 'log.index.size.max.bytes', value: config.log.index_size_max_bytes} -%>
 
-# the interval with which we add an entry to the offset index
-<%= render 'partials/option.erb', variables: {key: 'log.index.interval.bytes', value: node[:kafka][:log][:index_interval_bytes]} -%>
+# The interval with which we add an entry to the offset index
+<%= render 'partials/option.erb', variables: {key: 'log.index.interval.bytes', value: config.log.index_interval_bytes} -%>
 
-# the number of messages accumulated on a log partition before messages are flushed to disk
-<%= render 'partials/option.erb', variables: {key: 'log.flush.interval.messages', value: node[:kafka][:log][:flush_interval_messages]} -%>
+# The number of messages accumulated on a log partition before messages are flushed to disk
+<%= render 'partials/option.erb', variables: {key: 'log.flush.interval.messages', value: config.log.flush_interval_messages} -%>
 
-# the maximum time in ms that a message in any topic is kept in memory before flushed to disk
-<%= render 'partials/option.erb', variables: {key: 'log.flush.interval.ms', value: node[:kafka][:log][:flush_interval_ms]} -%>
+# The maximum time in ms that a message in any topic is kept in memory before flushed to disk
+<%= render 'partials/option.erb', variables: {key: 'log.flush.interval.ms', value: config.log.flush_interval_ms} -%>
 
-# the maximum time in ms that a message in selected topics is kept in memory before flushed to disk, e.g., topic1:3000,topic2:6000
-<%= render 'partials/hash_option.erb', variables: {key: 'log.flush.interval.ms.per.topic', value: node[:kafka][:log][:flush_interval_ms_per_topic]} -%>
+<% if kafka_v0_8_0? %>
+# The maximum time in ms that a message in selected topics is kept in memory before flushed to disk, e.g., topic1:3000,topic2:6000
+<%= render 'partials/hash_option.erb', variables: {key: 'log.flush.interval.ms.per.topic', value: config.log.flush_interval_ms_per_topic} -%>
+<% end %>
 
-# the frequency in ms that the log flusher checks whether any log needs to be flushed to disk
-<%= render 'partials/option.erb', variables: {key: 'log.flush.scheduler.interval.ms', value: node[:kafka][:log][:flush_scheduler_interval_ms]} -%>
+# The frequency in ms that the log flusher checks whether any log needs to be flushed to disk
+<%= render 'partials/option.erb', variables: {key: 'log.flush.scheduler.interval.ms', value: config.log.flush_scheduler_interval_ms} -%>
 
-# enable auto creation of topic on the broker
-<%= render 'partials/option.erb', variables: {key: 'auto.create.topics.enable', value: node[:kafka][:auto_create_topics]} -%>
+# Enable auto creation of topic on the broker
+<%= render 'partials/option.erb', variables: {key: 'auto.create.topics.enable', value: config.auto_create_topics} -%>
 
+<% unless kafka_v0_8_0? %>
+# The period of time we hold log files around after they are removed from the index.
+# This period of time allows any in-progress reads to complete uninterrupted without locking.
+# You generally don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.delete.delay.ms', value: config.log.delete_delay_ms} -%>
+
+# The frequency with which we checkpoint the last flush point for logs for recovery.
+# You should not need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.flush.offset.checkpoint.interval.ms', value: config.log.flush_offset_checkpoint_interval_ms} -%>
+
+# This can take either the value delete or compact.
+# If delete is set, log segments will be deleted when they reach the size or time limits set.
+# If compact is set log compaction will be used to clean out obsolete records.
+<%= render 'partials/option.erb', variables: {key: 'log.cleanup.policy', value: config.log.cleanup_policy} -%>
+
+############################# Log Cleaner Configuration #############################
+
+# This configuration must be set to true for log compaction to run.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.enable', value: config.log.cleaner_enable} -%>
+
+# The number of threads to use for cleaning logs in log compaction.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.threads', value: config.log.cleaner_threads} -%>
+
+# The maximum amount of I/O the log cleaner can do while performing log compaction.
+# This setting allows setting a limit for the cleaner to avoid impacting live request serving.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.max.bytes.per.second', value: config.log.cleaner_io_max_bytes_per_second} -%>
+
+# The size of the buffer the log cleaner uses for indexing and deduplicating logs during cleaning.
+# Larger is better provided you have sufficient memory.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.dedupe.buffer.size', value: config.log.cleaner_dedupe_buffer_size} -%>
+
+# The size of the I/O chunk used during log cleaning. You probably don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.buffer.size', value: config.log.cleaner_io_buffer_size} -%>
+
+# The load factor of the hash table used in log cleaning. You probably don't need to change this.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.io.buffer.load.factor', value: config.log.cleaner_io_buffer_load_factor} -%>
+
+# The interval between checks to see if any logs need cleaning.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.backoff.ms', value: config.log.cleaner_backoff_ms} -%>
+
+# This configuration controls how frequently the log compactor will attempt to clean the log (assuming log compaction is enabled).
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.min.cleanable.ratio', value: config.log.cleaner_min_cleanable_ratio} -%>
+
+# The amount of time to retain delete tombstone markers for log compacted topics.
+<%= render 'partials/option.erb', variables: {key: 'log.cleaner.delete.retention.ms', value: config.log.cleaner_delete_retention_ms} -%>
+<% end %>
 ############################# Replication Configuration #############################
 
-# the socket timeout for controller-to-broker channels
-<%= render 'partials/option.erb', variables: {key: 'controller.socket.timeout.ms', value: node[:kafka][:controller][:socket_timeout_ms]} -%>
+# The socket timeout for controller-to-broker channels
+<%= render 'partials/option.erb', variables: {key: 'controller.socket.timeout.ms', value: config.controller.socket_timeout_ms} -%>
 
-# the buffer size for controller-to-broker-channels
-<%= render 'partials/option.erb', variables: {key: 'controller.message.queue.size', value: node[:kafka][:controller][:message_queue_size]} -%>
+# The buffer size for controller-to-broker-channels
+<%= render 'partials/option.erb', variables: {key: 'controller.message.queue.size', value: config.controller.message_queue_size} -%>
 
-# default replication factor for automatically created topics
-<%= render 'partials/option.erb', variables: {key: 'default.replication.factor', value: node[:kafka][:default_replication_factor]} -%>
+# Default replication factor for automatically created topics
+<%= render 'partials/option.erb', variables: {key: 'default.replication.factor', value: config.default_replication_factor} -%>
 
-# if a follower hasn't sent any fetch requests during this time, the leader will remove the follower from isr
-<%= render 'partials/option.erb', variables: {key: 'replica.lag.time.max.ms', value: node[:kafka][:replica][:lag_time_max_ms]} -%>
+# If a follower hasn't sent any fetch requests during this time, the leader will remove the follower from isr
+<%= render 'partials/option.erb', variables: {key: 'replica.lag.time.max.ms', value: config.replica.lag_time_max_ms} -%>
 
 # If the lag in messages between a leader and a follower exceeds this number, the leader will remove the follower from isr
-<%= render 'partials/option.erb', variables: {key: 'replica.lag.max.messages', value: node[:kafka][:replica][:lag_max_messages]} -%>
+<%= render 'partials/option.erb', variables: {key: 'replica.lag.max.messages', value: config.replica.lag_max_messages} -%>
 
-# the socket timeout for network requests
-<%= render 'partials/option.erb', variables: {key: 'replica.socket.timeout.ms', value: node[:kafka][:replica][:socket_timeout_ms]} -%>
+# The socket timeout for network requests
+<%= render 'partials/option.erb', variables: {key: 'replica.socket.timeout.ms', value: config.replica.socket_timeout_ms} -%>
 
-# the socket receive buffer for network requests
-<%= render 'partials/option.erb', variables: {key: 'replica.socket.receive.buffer.bytes', value: node[:kafka][:replica][:socket_receive_buffer_bytes]} -%>
+# The socket receive buffer for network requests
+<%= render 'partials/option.erb', variables: {key: 'replica.socket.receive.buffer.bytes', value: config.replica.socket_receive_buffer_bytes} -%>
 
-# the number of bytes of messages to attempt to fetch
-<%= render 'partials/option.erb', variables: {key: 'replica.fetch.max.bytes', value: node[:kafka][:replica][:fetch_max_bytes]} -%>
+# The number of bytes of messages to attempt to fetch
+<%= render 'partials/option.erb', variables: {key: 'replica.fetch.max.bytes', value: config.replica.fetch_max_bytes} -%>
 
-# minimum bytes expected for each fetch response. If not enough bytes, wait up to replicaMaxWaitTimeMs
-<%= render 'partials/option.erb', variables: {key: 'replica.fetch.min.bytes', value: node[:kafka][:replica][:fetch_min_bytes]} -%>
+# Minimum bytes expected for each fetch response. If not enough bytes, wait up to replicaMaxWaitTimeMs
+<%= render 'partials/option.erb', variables: {key: 'replica.fetch.min.bytes', value: config.replica.fetch_min_bytes} -%>
 
-# max wait time for each fetcher request issued by follower replicas
-<%= render 'partials/option.erb', variables: {key: 'replica.fetch.wait.max.ms', value: node[:kafka][:replica][:fetch_wait_max_ms]} -%>
+# Max wait time for each fetcher request issued by follower replicas
+<%= render 'partials/option.erb', variables: {key: 'replica.fetch.wait.max.ms', value: config.replica.fetch_wait_max_ms} -%>
 
-# number of fetcher threads used to replicate messages from a source broker.
+# Number of fetcher threads used to replicate messages from a source broker.
 # Increasing this value can increase the degree of I/O parallelism in the follower broker.
-<%= render 'partials/option.erb', variables: {key: 'num.replica.fetchers', value: node[:kafka][:num_replica_fetchers]} -%>
+<%= render 'partials/option.erb', variables: {key: 'num.replica.fetchers', value: config.num_replica_fetchers} -%>
 
-# the frequency with which the high watermark is saved out to disk
-<%= render 'partials/option.erb', variables: {key: 'replica.high.watermark.checkpoint.interval.ms', value: node[:kafka][:replica][:high_watermark_checkpoint_interval_ms]} -%>
+# The frequency with which the high watermark is saved out to disk
+<%= render 'partials/option.erb', variables: {key: 'replica.high.watermark.checkpoint.interval.ms', value: config.replica.high_watermark_checkpoint_interval_ms} -%>
 
-# the purge interval (in number of requests) of the fetch request purgatory
-<%= render 'partials/option.erb', variables: {key: 'fetch.purgatory.purge.interval.requests', value: node[:kafka][:fetch][:purgatory_purge_interval_requests]} -%>
+# The purge interval (in number of requests) of the fetch request purgatory
+<%= render 'partials/option.erb', variables: {key: 'fetch.purgatory.purge.interval.requests', value: config.fetch_purgatory_purge_interval_requests} -%>
 
-# the purge interval (in number of requests) of the producer request purgatory
-<%= render 'partials/option.erb', variables: {key: 'producer.purgatory.purge.interval.requests', value: node[:kafka][:producer][:purgatory_purge_interval_requests]} -%>
+# The purge interval (in number of requests) of the producer request purgatory
+<%= render 'partials/option.erb', variables: {key: 'producer.purgatory.purge.interval.requests', value: config.producer_purgatory_purge_interval_requests} -%>
 
-############################# Controlled shutdown configuration #############################
+############################# Controlled Shutdown Configuration #############################
 
 # Controlled shutdown can fail for multiple reasons. This determines the number of retries when such failure happens
-<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.max.retries', value: node[:kafka][:controlled_shutdown][:max_retries]} -%>
+<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.max.retries', value: config.controlled_shutdown.max_retries} -%>
 
 # Before each retry, the system needs time to recover from the state that caused the previous failure (Controller
 # fail over, replica lag etc). This config determines the amount of time to wait before retrying.
-<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.retry.backoff.ms', value: node[:kafka][:controlled_shutdown][:retry_backoff_ms]} -%>
+<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.retry.backoff.ms', value: config.controlled_shutdown.retry_backoff_ms} -%>
 
-# enable controlled shutdown of the server
-<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.enable', value: node[:kafka][:controlled_shutdown][:enabled]} -%>
+# Enable controlled shutdown of the server
+<%= render 'partials/option.erb', variables: {key: 'controlled.shutdown.enable', value: config.controlled_shutdown.enabled} -%>
 
-############################# Zookeeper #############################
+<% unless kafka_v0_8_0? %>
+############################# Leader Imbalance Configuration #############################
 
-# Zookeeper connection string (see zookeeper docs for details).
+# If this is enabled the controller will automatically try to balance leadership for partitions
+# among the brokers by periodically returning leadership to the "preferred" replica for each
+# partition if it is available.
+<%= render 'partials/option.erb', variables: {key: 'auto.leader.rebalance.enable', value: config.auto_leader_rebalance_enable} -%>
+
+# The percentage of leader imbalance allowed per broker. The controller will rebalance leadership
+# if this ratio goes above the configured value per broker.
+<%= render 'partials/option.erb', variables: {key: 'leader.imbalance.per.broker.percentage', value: config.leader.imbalance_per_broker_percentage} -%>
+
+# The frequency with which to check for leader imbalance.
+<%= render 'partials/option.erb', variables: {key: 'leader.imbalance.check.interval.seconds', value: config.leader.imbalance_check_interval_seconds} -%>
+
+############################# Consumer Offset Management #############################
+
+# The maximum amount of metadata to allow clients to save with their offsets.
+<%= render 'partials/option.erb', variables: {key: 'offset.metadata.max.bytes', value: config.offset_metadata_max_bytes} -%>
+
+<% end %>
+############################# ZooKeeper #############################
+
+# ZooKeeper connection string (see ZooKeeper docs for details).
 # This is a comma separated host:port pairs, each corresponding to a zk
 # server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
 <%= render 'partials/option.erb', variables: {key: 'zookeeper.connect', value: @zookeeper_connect} -%>
 
-# the max time that the client waits to establish a connection to zookeeper
-<%= render 'partials/option.erb', variables: {key: 'zookeeper.connection.timeout.ms', value: node[:kafka][:zookeeper][:connection_timeout_ms]} -%>
+# The max time that the client waits to establish a connection to ZooKeeper
+<%= render 'partials/option.erb', variables: {key: 'zookeeper.connection.timeout.ms', value: config.zookeeper.connection_timeout_ms} -%>
 
-# zookeeper session timeout
-<%= render 'partials/option.erb', variables: {key: 'zookeeper.session.timeout.ms', value: node[:kafka][:zookeeper][:session_timeout_ms]} -%>
+# ZooKeeper session timeout
+<%= render 'partials/option.erb', variables: {key: 'zookeeper.session.timeout.ms', value: config.zookeeper.session_timeout_ms} -%>
 
-# how far a ZK follower can be behind a ZK leader
-<%= render 'partials/option.erb', variables: {key: 'zookeeper.sync.time.ms', value: node[:kafka][:zookeeper][:sync_time_ms]} -%>
+# How far a ZK follower can be behind a ZK leader
+<%= render 'partials/option.erb', variables: {key: 'zookeeper.sync.time.ms', value: config.zookeeper.sync_time_ms} -%>

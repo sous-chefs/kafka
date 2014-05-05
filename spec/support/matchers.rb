@@ -4,12 +4,14 @@ require 'rspec/expectations'
 
 RSpec::Matchers.define :have_configured do |configuration_file|
   match do |chef_run|
-    regexp = Regexp.new(%(^#{Regexp.quote(@attribute)}=#{Regexp.quote(@value)}$))
+    regexp_str = %(^#{Regexp.quote(@attribute)})
+    regexp_str << %(=#{Regexp.quote(@value)}$) if @value
+    regexp = Regexp.new(regexp_str)
     @matcher = ChefSpec::Matchers::RenderFileMatcher.new(configuration_file)
     @matcher.with_content(regexp).matches?(chef_run)
   end
 
-  failure_message_for_should do |actual|
+  failure_message_for_should do
     @matcher.failure_message_for_should
   end
 
