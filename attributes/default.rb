@@ -5,8 +5,8 @@
 
 default[:kafka][:version] = '0.8.1.1'
 default[:kafka][:base_url] = 'https://archive.apache.org/dist/kafka'
-default[:kafka][:checksum] = nil
-default[:kafka][:md5_checksum] = nil
+default[:kafka][:checksum] = 'cb141c1d50b1bd0d741d68e5e21c090341d961cd801e11e42fb693fa53e9aaed'
+default[:kafka][:md5_checksum] = '7541ed160f1b3aa1a5334d4e782ba4d3'
 default[:kafka][:scala_version] = '2.9.2'
 default[:kafka][:install_method] = :binary
 default[:kafka][:install_dir] = '/opt/kafka'
