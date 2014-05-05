@@ -7,7 +7,7 @@ Installs Kafka `v0.8.0`, and probably any newer versions.
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases (of Kafka `0.8.0`).
+* supports both source and binary releases (of Kafka >= `0.8.0`).
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
@@ -31,11 +31,11 @@ Ruby 1.9.3+ and Chef 11.8.2+.
 ### Platform
 
 * Debian 7.2.0
-* Ubuntu 13.10
+* Ubuntu 12.04 & 13.10
 * CentOS 6.5
 * Fedora 18
 
-Might work on other platforms / releases, but these are the ones that are
+Might work on other platforms / versions, but these are the ones that are
 included in `.kitchen.yml`, so YMMV.
 For some reason the `java` cookbook does not set the correct java path on Fedora
 19 and 20, which is why Fedora 18 is used rather than the 19 or 20 releases.
@@ -58,12 +58,12 @@ Includes either `source` or `binary` recipe depending on what
 ### source
 
 Downloads, compiles and installs Kafka from the official source releases.
-Defaults to using `0.8.0` as Kafka version.
+Defaults to installing `0.8.1.1` of Kafka.
 
 ### binary
 
 Downloads and installs Kafka from the official binary releases.
-Defaults to using `0.8.0` as Kafka version.
+Defaults to installing `0.8.1.1` of Kafka.
 
 ### zookeeper
 
