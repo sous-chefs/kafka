@@ -12,7 +12,7 @@ recipe 'kafka::source', 'Downloads, compiles and installs Kafka from source rele
 recipe 'kafka::binary', 'Downloads, extracts and installs Kafka from binary releases'
 recipe 'kafka::zookeeper', 'Setups standalone ZooKeeper instance using the ZooKeeper version that is bundled with Kafka'
 
-recommends 'java', '~> 1.19'
+recommends 'java', '~> 1.22'
 
 %w(centos fedora debian ubuntu).each do |os|
   supports os
