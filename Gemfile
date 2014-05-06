@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem 'stove'
   gem 'rake'
 end
 
