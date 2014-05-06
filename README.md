@@ -14,13 +14,6 @@ notable differences:
 * only tested on Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
-## Status
-
-There has not been a proper release of this cookbook yet, so don't rely on the
-version specified in `metadata.rb` right now.
-I'd like to get support for `v0.8.1` of Kafka before actually making a proper
-release and then start following proper versioning.
-
 ## Requirements
 
 This cookbook does not depend on any specific cookbooks, but it requires that
