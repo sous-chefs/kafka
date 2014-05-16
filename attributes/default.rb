@@ -80,6 +80,10 @@ default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
 default[:kafka][:generic_opts] = nil
 
 #
+# JVM Performance options for Kafka.
+default[:kafka][:jvm_performance_opts] = "-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true"
+
+#
 # The type of "init" system to install scripts for. Valid values are currently
 # :sysv and :upstart.
 default[:kafka][:init_style] = :sysv
