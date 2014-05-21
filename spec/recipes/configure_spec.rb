@@ -1048,12 +1048,16 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
       end
 
+      it 'sets KAFKA_GC_LOG_OPTS' do
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_GC_LOG_OPTS').as('"-Xloggc:/var/log/kafka/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"')
+      end
+
       it 'sets KAFKA_OPTS' do
         expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
       end
 
-      it 'sets KAFKA_GC_LOG_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_GC_LOG_OPTS').as('"-Xloggc:/var/log/kafka/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"')
+      it 'sets KAFKA_JVM_PERFORMANCE_OPTS' do
+        expect(chef_run).to have_configured(env_path).with('export KAFKA_JVM_PERFORMANCE_OPTS').as('"-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true"')
       end
 
       it 'sets KAFKA_RUN' do
