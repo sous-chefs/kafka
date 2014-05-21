@@ -985,12 +985,15 @@ describe 'kafka::_configure' do
     end
 
     it 'configures log level' do
-      expect(chef_run).to have_configured(path).with('log4j.rootLogger').as('INFO,R')
-      expect(chef_run).to have_configured(path).with('log4j.logger.kafka').as('INFO')
+      expect(chef_run).to have_configured(path).with('log4j.rootLogger').as('INFO, stdout')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka').as('INFO, kafkaAppender')
     end
 
     it 'configures actual log path' do
-      expect(chef_run).to have_configured(path).with('log4j.appender.R.File').as('/var/log/kafka/kafka.log')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.File').as('/var/log/kafka/kafka-server.log')
+      expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender.File').as('/var/log/kafka/kafka-state-change.log')
+      expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender.File').as('/var/log/kafka/kafka-request.log')
+      expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender.File').as('/var/log/kafka/kafka-controller.log')
     end
 
     it 'configures log level for ZkClient' do
