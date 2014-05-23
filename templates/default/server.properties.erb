@@ -71,7 +71,7 @@
 <%= render 'partials/option.erb', variables: {key: 'num.partitions', value: config.num_partitions} -%>
 
 # The directories in which the log data is kept
-<%= render 'partials/option.erb', variables: {key: 'log.dirs', value: config.log.dirs.join(',')} -%>
+<%= render 'partials/option.erb', variables: {key: 'log.dirs', value: @log_dirs} -%>
 
 # The maximum size of a single log file
 <%= render 'partials/option.erb', variables: {key: 'log.segment.bytes', value: config.log.segment_bytes} -%>
