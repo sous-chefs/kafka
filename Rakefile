@@ -9,7 +9,7 @@ desc 'Package the latest version as a .tar.gz archive'
 task :package do # => :spec do
   contents = Dir.glob('*')
   contents.reject! { |path| path.start_with?('.') }
-  contents.reject! { |path| %w(test spec).include?(path) }
+  contents.reject! { |path| %w(test spec gemfiles).include?(path) }
   contents.select! { |path| File.directory?(path) }
   contents << 'metadata.rb'
   contents << 'README.md'
