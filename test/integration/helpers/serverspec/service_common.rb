@@ -19,9 +19,9 @@ shared_context 'service setup' do
 end
 
 shared_examples_for 'a kafka start command' do
-  describe '/var/log/kafka/kafka-server.log' do
+  describe '/var/log/kafka/kafka.log' do
     let :log_file do
-      file '/var/log/kafka/kafka-server.log'
+      file '/var/log/kafka/kafka.log'
     end
 
     it 'exists' do
@@ -46,10 +46,10 @@ end
 
 shared_examples_for 'a kafka stop command' do
   let :log_file do
-    file '/var/log/kafka/kafka-server.log'
+    file '/var/log/kafka/kafka.log'
   end
 
-  describe '/var/log/kafka/kafka-server.log' do
+  describe '/var/log/kafka/kafka.log' do
     it 'exists' do
       expect(log_file).to be_a_file
     end
