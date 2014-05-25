@@ -6,7 +6,7 @@ require 'tmpdir'
 RSpec::Core::RakeTask.new(:spec)
 
 desc 'Package the latest version as a .tar.gz archive'
-task :package do # => :spec do
+task :package => :spec do
   contents = Dir.glob('*')
   contents.reject! { |path| path.start_with?('.') }
   contents.reject! { |path| %w(test spec gemfiles).include?(path) }
@@ -34,7 +34,7 @@ task :package do # => :spec do
 
     puts %(Created archive of #{version} as #{archive})
   else
-    puts %(#{archive} already exist, ignoring...)
+    puts %(#{archive} already exist, exiting...)
     exit(1)
   end
 end
