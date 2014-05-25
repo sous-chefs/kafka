@@ -5,3 +5,4 @@ vendor
 TODO.md
 .coverage
 .bundle
+Berksfile.lock
