@@ -41,7 +41,7 @@ suites:
   - name: init-style-upstart
     run_list:
       - recipe[java::default]
-      - recipe[kafka]
+      - recipe[kafka::default]
     excludes:
       - centos-6.5
       - debian-7.2.0
@@ -55,21 +55,40 @@ suites:
   - name: init-style-sysv
     run_list:
       - recipe[java::default]
-      - recipe[kafka]
+      - recipe[kafka::default]
     attributes:
       kafka:
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
-  - name: source
+  - name: source-init-style-upstart
     run_list:
       - recipe[java::default]
-      - recipe[kafka]
+      - recipe[kafka::default]
+    excludes:
+      - centos-6.5
+      - debian-7.2.0
+      - fedora-18
     attributes:
       kafka:
+        install_method: 'source'
         checksum: '123c72a6d7562db836c71362ae9c6bc21e9549cf20c97cccf9acef0a83118f74'
         md5_checksum: '81f1d7067c9848ecacebb16561b992d4'
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
+  - name: source-init-style-sysv
+    run_list:
+      - recipe[java::default]
+      - recipe[kafka::default]
+    attributes:
+      kafka:
         install_method: 'source'
+        checksum: '123c72a6d7562db836c71362ae9c6bc21e9549cf20c97cccf9acef0a83118f74'
+        md5_checksum: '81f1d7067c9848ecacebb16561b992d4'
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
   - name: zookeeper
     run_list:
       - recipe[java::default]
