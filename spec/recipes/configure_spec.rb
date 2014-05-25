@@ -357,7 +357,7 @@ describe 'kafka::_configure' do
           },
           num_partitions: 1,
           log: {
-            dirs: ['/tmp/kafka-logs'],
+            dirs: ['/tmp/kafka-logs-1', '/tmp/kafka-logs-2'],
             segment_bytes: 1024 * 1024 * 1024,
             roll_hours: 24 * 7,
             retention_minutes: 24 * 7 * 60,
@@ -560,7 +560,7 @@ describe 'kafka::_configure' do
         end
 
         it 'sets log dir(s)' do
-          expect(chef_run).to have_configured(path).with('log.dirs').as('/tmp/kafka-logs')
+          expect(chef_run).to have_configured(path).with('log.dirs').as("/tmp/kafka-logs-1,/tmp/kafka-logs-2")
         end
 
         it 'sets log segment bytes' do
