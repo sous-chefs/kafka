@@ -1,11 +1,13 @@
-DEPENDENCIES
-  apt
-  kafka
-    path: .
-    metadata: true
-
-GRAPH
-  apt (2.4.0)
-  java (1.22.0)
-  kafka (0.1.0)
-    java (~> 1.22)
+{
+  "sources": {
+    "kafka": {
+      "path": "."
+    },
+    "apt": {
+      "locked_version": "2.3.4"
+    },
+    "java": {
+      "locked_version": "1.22.0"
+    }
+  }
+}
