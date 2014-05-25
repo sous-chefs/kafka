@@ -115,6 +115,7 @@ describe 'service for sysv init style' do
       it 'prints a message that kafka is running' do
         if fedora?
           expect(status_command).to return_stdout /Active: active \(running\)/
+          expect(status_command).to return_stdout /Started SYSV: kafka daemon/
         else
           expect(status_command).to return_stdout /kafka.+running/i
         end
@@ -135,6 +136,7 @@ describe 'service for sysv init style' do
           expect(status_command).to return_stdout /kafka is not running/
         elsif fedora?
           expect(status_command).to return_stdout /Active: failed/
+          expect(status_command).to return_stdout /Stopped SYSV: kafka daemon/
         else
           expect(status_command).to return_stdout /kafka is stopped/
         end

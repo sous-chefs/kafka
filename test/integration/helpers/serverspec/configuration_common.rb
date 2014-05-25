@@ -55,7 +55,7 @@ shared_examples_for 'a _configure recipe' do
     end
   end
 
-  describe service('kafka') do
+  describe service('kafka'), pending: fedora? do
     it { should be_enabled }
   end
 end
