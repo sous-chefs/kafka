@@ -14,12 +14,12 @@ platforms:
     attributes:
       java:
         jdk_version: 7
-  - name: debian-7.2.0
+  - name: debian-7.4
     run_list:
       - recipe[apt]
     attributes:
       java:
-        jdk_version: 6
+        jdk_version: 7
   - name: ubuntu-12.04
     run_list:
       - recipe[apt]
@@ -44,7 +44,7 @@ suites:
       - recipe[kafka::default]
     excludes:
       - centos-6.5
-      - debian-7.2.0
+      - debian-7.4
       - fedora-20
     attributes:
       kafka:
@@ -67,7 +67,7 @@ suites:
       - recipe[kafka::default]
     excludes:
       - centos-6.5
-      - debian-7.2.0
+      - debian-7.4
       - fedora-20
     attributes:
       kafka:
