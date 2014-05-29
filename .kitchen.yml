@@ -32,7 +32,7 @@ platforms:
     attributes:
       java:
         jdk_version: 7
-  - name: fedora-18
+  - name: fedora-20
     attributes:
       java:
         jdk_version: 7
@@ -45,7 +45,7 @@ suites:
     excludes:
       - centos-6.5
       - debian-7.2.0
-      - fedora-18
+      - fedora-20
     attributes:
       kafka:
         init_style: 'upstart'
@@ -68,7 +68,7 @@ suites:
     excludes:
       - centos-6.5
       - debian-7.2.0
-      - fedora-18
+      - fedora-20
     attributes:
       kafka:
         install_method: 'source'
