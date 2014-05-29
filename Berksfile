@@ -1,6 +1,4 @@
-# encoding: utf-8
-
-site :opscode
+source 'https://api.berkshelf.com'
 
 metadata
 
