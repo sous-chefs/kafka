@@ -9,5 +9,6 @@ group :test do
   gem 'chefspec'
   gem 'test-kitchen'
   gem 'kitchen-vagrant'
+  gem 'kitchen-docker'
   gem 'busser-serverspec'
 end
