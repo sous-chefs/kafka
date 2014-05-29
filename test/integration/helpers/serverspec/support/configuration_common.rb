@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'files_common'
+require 'support/files_common'
 
 shared_examples_for 'a _setup recipe' do
   describe group('kafka') do

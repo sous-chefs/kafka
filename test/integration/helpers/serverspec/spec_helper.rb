@@ -6,7 +6,7 @@ require 'pathname'
 include Serverspec::Helper::Exec
 include Serverspec::Helper::DetectOS
 
-require 'platform_helpers'
+require 'support/platform_helpers'
 
 RSpec.configure do |config|
   config.os = backend.check_os

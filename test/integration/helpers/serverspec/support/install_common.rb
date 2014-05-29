@@ -1,7 +1,6 @@
 # encoding: utf-8
 
-require 'configuration_common'
-require 'files_common'
+require 'support/configuration_common'
 
 shared_examples_for 'an install method' do
   it_behaves_like 'a _setup recipe'
