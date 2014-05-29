@@ -1,0 +1,50 @@
+---
+driver:
+  name: docker
+  socket: tcp://localhost:4243
+  require_chef_omnibus: true
+  memory: '512m'
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.4
+    attributes:
+      java:
+        jdk_version: 7
+  - name: debian-7.4
+    attributes:
+      java:
+        jdk_version: 7
+  - name: ubuntu-14.04
+    attributes:
+      java:
+        jdk_version: 7
+
+suites:
+  - name: init-style-sysv
+    run_list:
+      - recipe[java::default]
+      - recipe[kafka::default]
+    attributes:
+      kafka:
+        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '') %>
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
+  - name: source-init-style-sysv
+    run_list:
+      - recipe[java::default]
+      - recipe[kafka::default]
+    attributes:
+      kafka:
+        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+        install_method: 'source'
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '') %>
+        zookeeper:
+          connect: ['localhost:2181']
+          connection_timeout_ms: 15_000
