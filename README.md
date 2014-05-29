@@ -23,15 +23,13 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 
 ### Platform
 
-* Debian 7.2.0
-* Ubuntu 12.04 & 13.10
 * CentOS 6.5
-* Fedora 18
+* Debian 7.4
+* Fedora 20
+* Ubuntu 14.04
 
 Might work on other platforms / versions, but these are the ones that are
 included in `.kitchen.yml`, so YMMV.
-For some reason the `java` cookbook does not set the correct java path on Fedora
-19 and 20, which is why Fedora 18 is used rather than the 19 or 20 releases.
 
 ## Attributes
 
