@@ -30,8 +30,8 @@ suites:
     attributes:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '') %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
@@ -43,8 +43,8 @@ suites:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         install_method: 'source'
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '') %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
