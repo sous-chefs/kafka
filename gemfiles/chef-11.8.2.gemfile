@@ -2,6 +2,6 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'berkshelf'
-  gem 'chef', '= 11.8.0'
+  gem 'chef', '= 11.8.2'
   gem 'chefspec'
 end

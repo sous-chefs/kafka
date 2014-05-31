@@ -8,8 +8,8 @@ rvm:
 gemfile:
   - Gemfile
   - gemfiles/chef-11.4.4.gemfile
-  - gemfiles/chef-11.6.0.gemfile
-  - gemfiles/chef-11.8.0.gemfile
+  - gemfiles/chef-11.6.2.gemfile
+  - gemfiles/chef-11.8.2.gemfile
 matrix:
   fast_finish: true
   exclude:
@@ -19,10 +19,18 @@ matrix:
       gemfile: gemfiles/chef-11.4.4.gemfile
     - rvm: ruby-head
       gemfile: gemfiles/chef-11.4.4.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/chef-11.6.2.gemfile
+    - rvm: 2.1.0
+      gemfile: gemfiles/chef-11.6.2.gemfile
     - rvm: ruby-head
-      gemfile: gemfiles/chef-11.6.0.gemfile
+      gemfile: gemfiles/chef-11.6.2.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/chef-11.8.2.gemfile
+    - rvm: 2.1.0
+      gemfile: gemfiles/chef-11.8.2.gemfile
     - rvm: ruby-head
-      gemfile: gemfiles/chef-11.8.0.gemfile
+      gemfile: gemfiles/chef-11.8.2.gemfile
   allow_failures:
     - rvm: ruby-head
     - gemfile: gemfiles/chef-11.4.4.gemfile
