@@ -38,3 +38,36 @@ task :package => :spec do
     exit(1)
   end
 end
+
+desc 'Test all v0.8.x versions'
+namespace :test do
+  task :docker do
+    docker_vm_running = %x{boot2docker status} && $?.success?
+
+    unless docker_vm_running
+      %x{boot2docker up}
+    end
+
+    versions = %w[0.8.0 0.8.1 0.8.1.1]
+    versions.each do |version|
+      envs = []
+      envs << %(KITCHEN_LOCAL_YAML=.kitchen.docker.yml)
+      envs << %(KAFKA_VERSION=#{version})
+      envs << %(SCALA_VERSION=2.8.0) if version == '0.8.0'
+      envs = envs.join(' ')
+
+      rd, wr = IO.pipe
+      pid = Process.fork do
+        $stdout.reopen(wr)
+        rd.close
+        exec(%(#{envs} bundle exec kitchen test))
+      end
+      wr.close
+      rd.each do |line|
+        puts line
+      end
+      _, status = Process.waitpid2(pid)
+      break unless status.success?
+    end
+  end
+end

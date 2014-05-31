@@ -30,6 +30,7 @@ suites:
     attributes:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+        scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
         zookeeper:
