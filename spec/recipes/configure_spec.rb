@@ -1003,7 +1003,7 @@ describe 'kafka::_configure' do
 
     it 'configures loggers' do
       expect(chef_run).to have_configured(path).with('log4j.logger.org.IOItec.zkclient.ZkClient').as('INFO')
-      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.network.RequestChannel$').as('WARN, requestAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.network.RequestChannel\$').as('WARN, requestAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.request.logger').as('WARN, requestAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.controller').as('INFO, controllerAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.state.change.logger').as('INFO, stateChangeAppender')
@@ -1052,31 +1052,31 @@ describe 'kafka::_configure' do
       end
 
       it 'sets SCALA_VERSION' do
-        expect(chef_run).to have_configured(env_path).with('export SCALA_VERSION').as('"2.8.0"')
+        expect(chef_run).to have_configured(env_path).with('(export |)SCALA_VERSION').as('"2.8.0"')
       end
 
       it 'sets JMX_PORT' do
-        expect(chef_run).to have_configured(env_path).with('export JMX_PORT').as('"9999"')
+        expect(chef_run).to have_configured(env_path).with('(export |)JMX_PORT').as('"9999"')
       end
 
       it 'sets KAFKA_LOG4J_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_LOG4J_OPTS').as('"-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_LOG4J_OPTS').as('"-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties"')
       end
 
       it 'sets KAFKA_HEAP_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_HEAP_OPTS').as('"-Xmx1G -Xms1G"')
       end
 
       it 'sets KAFKA_GC_LOG_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_GC_LOG_OPTS').as('"-Xloggc:/var/log/kafka/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_GC_LOG_OPTS').as('"-Xloggc:/var/log/kafka/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"')
       end
 
       it 'sets KAFKA_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_OPTS').as('""')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_OPTS').as('""')
       end
 
       it 'sets KAFKA_JVM_PERFORMANCE_OPTS' do
-        expect(chef_run).to have_configured(env_path).with('export KAFKA_JVM_PERFORMANCE_OPTS').as('"-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_JVM_PERFORMANCE_OPTS').as('"-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true"')
       end
 
       it 'sets KAFKA_RUN' do
@@ -1182,6 +1182,30 @@ describe 'kafka::_configure' do
 
         let :source_template do
           'upstart/default.erb'
+        end
+      end
+    end
+
+    context 'when init_style is :systemd' do
+      it_behaves_like 'an init style' do
+        let :init_style do
+          'systemd'
+        end
+
+        let :init_path do
+          '/etc/systemd/system/kafka.service'
+        end
+
+        let :env_path do
+          '/etc/sysconfig/kafka'
+        end
+
+        let :script_permissions do
+          '644'
+        end
+
+        let :source_template do
+          'systemd/default.erb'
         end
       end
     end
