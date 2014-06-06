@@ -10,6 +10,7 @@ gemfile:
   - gemfiles/chef-11.4.4.gemfile
   - gemfiles/chef-11.6.2.gemfile
   - gemfiles/chef-11.8.2.gemfile
+  - gemfiles/chef-11.10.4.gemfile
 matrix:
   fast_finish: true
   exclude:
