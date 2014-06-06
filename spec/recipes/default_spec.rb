@@ -63,7 +63,7 @@ describe 'kafka::default' do
     end
 
     before do
-      Chef::Application.stub(:fatal!).and_raise(TerminatedExecutionError)
+      allow(Chef::Application).to receive(:fatal!).and_raise(TerminatedExecutionError)
     end
 
     it 'terminates the chef run' do
