@@ -11,8 +11,10 @@ RSpec::Matchers.define :have_configured do |configuration_file|
     @matcher.with_content(regexp).matches?(chef_run)
   end
 
-  failure_message do
-    @matcher.failure_message
+  if respond_to?(:failure_message)
+    failure_message { @matcher.failure_message }
+  elsif respond_to?(:failure_message_for_should)
+    failure_message_for_should { @matcher.failure_message_for_should }
   end
 
   chain :as do |value|
