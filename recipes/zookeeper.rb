@@ -57,6 +57,6 @@ end
 
 service 'zookeeper' do
   provider zookeeper_init_opts[:provider]
-  supports start: true, stop: true, restart: true
+  supports start: true, stop: true, restart: true, status: true
   action [:enable, :start]
 end
