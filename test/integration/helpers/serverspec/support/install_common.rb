@@ -27,7 +27,7 @@ shared_examples_for 'an install method' do
       it_behaves_like 'a kafka directory'
 
       it 'contains kafka-run-class.sh' do
-        expect(files.grep(/kafka-run-class\.sh$/)).to be_true
+        expect(files.grep(/kafka-run-class\.sh$/)).to be true
       end
 
       describe '/opt/kafka/bin/kafka-run-class.sh' do
