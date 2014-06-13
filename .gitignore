@@ -1,9 +1,10 @@
-vendor
-.kitchen/
-.kitchen.local.yml
-.vagrant
-TODO.md
 .coverage
 .bundle
+.kitchen
+.kitchen.local.yml
+.vagrant
 Berksfile.lock
+kafka-cookbook-*.tar.gz
+/vendor
 /pkg
+TODO.md
