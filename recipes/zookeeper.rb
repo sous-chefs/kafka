@@ -3,7 +3,14 @@
 # Recipe:: zookeeper
 #
 
-include_recipe 'kafka'
+include_recipe 'kafka::_setup'
+
+case node[:kafka][:install_method].to_sym
+when :source, :binary
+  include_recipe %(kafka::#{node[:kafka][:install_method]})
+else
+  Chef::Application.fatal! %(Unknown install_method: #{node[:kafka][:install_method]})
+end
 
 template ::File.join(node[:kafka][:config_dir], 'zookeeper.properties') do
   source 'zookeeper.properties.erb'
