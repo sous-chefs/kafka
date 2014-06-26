@@ -12,6 +12,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
     process: 'kafka',
     log_dir: node[:kafka][:log_dir]
   })
+  notifies :restart, 'service[kafka]', :delayed
 end
 
 template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
@@ -25,6 +26,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   })
   helper(:config) { node[:kafka] }
   helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
+  notifies :restart, 'service[kafka]', :delayed
 end
 
 template kafka_init_opts[:env_path] do
@@ -38,6 +40,7 @@ template kafka_init_opts[:env_path] do
     config: node[:kafka][:config],
     log4j_config: 'log4j.properties'
   })
+  notifies :restart, 'service[kafka]', :delayed
 end
 
 template kafka_init_opts[:script_path] do
@@ -50,6 +53,7 @@ template kafka_init_opts[:script_path] do
     port: node[:kafka][:port],
     user: node[:kafka][:user]
   })
+  notifies :restart, 'service[kafka]', :delayed
 end
 
 service 'kafka' do
