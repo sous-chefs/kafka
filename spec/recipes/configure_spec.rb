@@ -1177,13 +1177,21 @@ describe 'kafka::_configure' do
     end
 
     context 'automatic_restart attribute' do
-      let :config_template do
-        chef_run.template('/opt/kafka/config/server.properties')
+      let :config_paths do
+        %w[/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties /etc/sysconfig/kafka /etc/init.d/kafka]
+      end
+
+      let :config_templates do
+        config_paths.map do |config_path|
+          chef_run.template(config_path)
+        end
       end
 
       context 'by default' do
         it 'does not restart kafka on configuration changes' do
-          expect(config_template).not_to notify('service[kafka]').to(:restart)
+          config_templates.each do |template|
+            expect(template).not_to notify('service[kafka]').to(:restart)
+          end
         end
       end
 
@@ -1193,7 +1201,9 @@ describe 'kafka::_configure' do
         end
 
         it 'restarts kafka when configuration is changed' do
-          expect(config_template).to notify('service[kafka]').to(:restart)
+          config_templates.each do |template|
+            expect(template).to notify('service[kafka]').to(:restart)
+          end
         end
       end
     end

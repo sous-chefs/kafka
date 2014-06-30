@@ -12,6 +12,9 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
     process: 'kafka',
     log_dir: node[:kafka][:log_dir]
   })
+  if restart_on_configuration_change?
+    notifies :restart, 'service[kafka]', :delayed
+  end
 end
 
 template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
@@ -41,6 +44,9 @@ template kafka_init_opts[:env_path] do
     config: node[:kafka][:config],
     log4j_config: 'log4j.properties'
   })
+  if restart_on_configuration_change?
+    notifies :restart, 'service[kafka]', :delayed
+  end
 end
 
 template kafka_init_opts[:script_path] do
@@ -53,6 +59,9 @@ template kafka_init_opts[:script_path] do
     port: node[:kafka][:port],
     user: node[:kafka][:user]
   })
+  if restart_on_configuration_change?
+    notifies :restart, 'service[kafka]', :delayed
+  end
 end
 
 service 'kafka' do
