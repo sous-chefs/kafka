@@ -121,3 +121,9 @@ def kafka_create_init_opts(app)
     end
   end
 end
+
+def kafka_service_actions
+  actions = [:enable]
+  actions << :start if node[:kafka][:automatic_start]
+  actions
+end

@@ -1171,6 +1171,25 @@ describe 'kafka::_configure' do
     end
   end
 
+    context 'automatic_start attribute' do
+      context 'by default' do
+        it 'does not add `:start` action to kafka service' do
+          expect(chef_run).to_not start_service('kafka')
+        end
+      end
+
+      context 'when set to true' do
+        let :kafka_attributes do
+          {automatic_start: true}
+        end
+
+        it 'adds `:start` action to kafka service' do
+          expect(chef_run).to start_service('kafka')
+        end
+      end
+    end
+  end
+
   it 'enables a \'kafka\' service' do
     expect(chef_run).to enable_service('kafka')
   end

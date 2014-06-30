@@ -88,6 +88,10 @@ default[:kafka][:jvm_performance_opts] = "-server -XX:+UseCompressedOops -XX:+Us
 # :sysv and :upstart.
 default[:kafka][:init_style] = :sysv
 
+#
+# Automatically start kafka service.
+default[:kafka][:automatic_start] = false
+
 # General configuration
 #
 # Id of the (current) Kafka broker being set up. This must be set to a unique
