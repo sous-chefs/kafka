@@ -92,6 +92,10 @@ default[:kafka][:init_style] = :sysv
 # Automatically start kafka service.
 default[:kafka][:automatic_start] = false
 
+#
+# Automatically restart kafka on configuration change.
+default[:kafka][:automatic_restart] = false
+
 # General configuration
 #
 # Id of the (current) Kafka broker being set up. This must be set to a unique

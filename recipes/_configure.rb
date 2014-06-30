@@ -25,6 +25,9 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   })
   helper(:config) { node[:kafka] }
   helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
+  if restart_on_configuration_change?
+    notifies :restart, 'service[kafka]', :delayed
+  end
 end
 
 template kafka_init_opts[:env_path] do

@@ -127,3 +127,7 @@ def kafka_service_actions
   actions << :start if node[:kafka][:automatic_start]
   actions
 end
+
+def restart_on_configuration_change?
+  !!node[:kafka][:automatic_restart]
+end
