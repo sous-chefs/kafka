@@ -94,6 +94,10 @@ default[:kafka][:automatic_start] = false
 
 #
 # Automatically restart kafka on configuration change.
+# This also implies `automatic_start` even if it's set to `false`.
+# The reason for this is that I can see the need for automatically starting
+# Kafka if it's not running, but not necessarily restart on configuration
+# changes.
 default[:kafka][:automatic_restart] = false
 
 # General configuration
