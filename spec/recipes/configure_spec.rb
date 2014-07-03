@@ -1205,12 +1205,16 @@ describe 'kafka::_configure' do
             expect(template).to notify('service[kafka]').to(:restart)
           end
         end
+
+        it 'starts kafka' do
+          expect(chef_run).to start_service('kafka')
+        end
       end
     end
 
     context 'automatic_start attribute' do
       context 'by default' do
-        it 'does not add `:start` action to kafka service' do
+        it 'does not start kafka' do
           expect(chef_run).to_not start_service('kafka')
         end
       end
@@ -1220,17 +1224,7 @@ describe 'kafka::_configure' do
           {automatic_start: true}
         end
 
-        it 'adds `:start` action to kafka service' do
-          expect(chef_run).to start_service('kafka')
-        end
-      end
-
-      context 'when automatic_restart is set to true' do
-        let :kafka_attributes do
-          {automatic_restart: true}
-        end
-
-        it 'adds `:start` action to kafka service' do
+        it 'starts kafka' do
           expect(chef_run).to start_service('kafka')
         end
       end
