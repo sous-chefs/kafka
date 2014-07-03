@@ -121,3 +121,17 @@ def kafka_create_init_opts(app)
     end
   end
 end
+
+def start_automatically?
+  !!node[:kafka][:automatic_start] || restart_on_configuration_change?
+end
+
+def restart_on_configuration_change?
+  !!node[:kafka][:automatic_restart]
+end
+
+def kafka_service_actions
+  actions = [:enable]
+  actions << :start if start_automatically?
+  actions
+end

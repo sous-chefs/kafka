@@ -1171,7 +1171,69 @@ describe 'kafka::_configure' do
     end
   end
 
-  it 'enables a \'kafka\' service' do
-    expect(chef_run).to enable_service('kafka')
+  context 'kafka service' do
+    it 'enables a \'kafka\' service' do
+      expect(chef_run).to enable_service('kafka')
+    end
+
+    context 'automatic_restart attribute' do
+      let :config_paths do
+        %w[/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties /etc/sysconfig/kafka /etc/init.d/kafka]
+      end
+
+      let :config_templates do
+        config_paths.map do |config_path|
+          chef_run.template(config_path)
+        end
+      end
+
+      context 'by default' do
+        it 'does not restart kafka on configuration changes' do
+          config_templates.each do |template|
+            expect(template).not_to notify('service[kafka]').to(:restart)
+          end
+        end
+      end
+
+      context 'when set to true' do
+        let :kafka_attributes do
+          {automatic_restart: true}
+        end
+
+        it 'restarts kafka when configuration is changed' do
+          config_templates.each do |template|
+            expect(template).to notify('service[kafka]').to(:restart)
+          end
+        end
+      end
+    end
+
+    context 'automatic_start attribute' do
+      context 'by default' do
+        it 'does not add `:start` action to kafka service' do
+          expect(chef_run).to_not start_service('kafka')
+        end
+      end
+
+      context 'when set to true' do
+        let :kafka_attributes do
+          {automatic_start: true}
+        end
+
+        it 'adds `:start` action to kafka service' do
+          expect(chef_run).to start_service('kafka')
+        end
+      end
+
+      context 'when automatic_restart is set to true' do
+        let :kafka_attributes do
+          {automatic_restart: true}
+        end
+
+        it 'adds `:start` action to kafka service' do
+          expect(chef_run).to start_service('kafka')
+        end
+      end
+    end
   end
 end

@@ -88,6 +88,18 @@ default[:kafka][:jvm_performance_opts] = "-server -XX:+UseCompressedOops -XX:+Us
 # :sysv and :upstart.
 default[:kafka][:init_style] = :sysv
 
+#
+# Automatically start kafka service.
+default[:kafka][:automatic_start] = false
+
+#
+# Automatically restart kafka on configuration change.
+# This also implies `automatic_start` even if it's set to `false`.
+# The reason for this is that I can see the need for automatically starting
+# Kafka if it's not running, but not necessarily restart on configuration
+# changes.
+default[:kafka][:automatic_restart] = false
+
 # General configuration
 #
 # Id of the (current) Kafka broker being set up. This must be set to a unique
