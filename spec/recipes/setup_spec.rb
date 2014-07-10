@@ -69,6 +69,27 @@ describe 'kafka::_setup' do
     })
   end
 
+  context 'log dirs for Kafka data' do
+    let :kafka_attrs do
+      {
+        log: {
+          dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
+        }
+      }
+    end
+
+    it 'creates a directory for each path in `log.dirs`' do
+      %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
+        expect(chef_run).to create_directory(path).with({
+          owner: 'kafka',
+          group: 'kafka',
+          mode: '755',
+          recursive: true,
+        })
+      end
+    end
+  end
+
   it 'creates config directory' do
     expect(chef_run).to create_directory('/opt/kafka/config').with({
       owner: 'kafka',
