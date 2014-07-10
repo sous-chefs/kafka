@@ -46,9 +46,10 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
   - name: init-style-sysv
     run_list:
       - recipe[java::default]
@@ -58,9 +59,10 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
   - name: source-init-style-upstart
     run_list:
       - recipe[java::default]
@@ -76,9 +78,10 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
   - name: source-init-style-sysv
     run_list:
       - recipe[java::default]
@@ -89,6 +92,7 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
