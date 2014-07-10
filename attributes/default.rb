@@ -181,6 +181,11 @@ default[:kafka][:socket][:request_max_bytes] = nil
 # The default number of partitions per topic if a partition count isn't given
 # at topic creation time.
 default[:kafka][:num_partitions] = nil
+
+#
+# A list of directory paths in which Kafka data is stored.
+# Each new partition that is created will be placed in the directory which
+# currently has the fewest partitions.
 default[:kafka][:log][:dirs] = []
 
 #
