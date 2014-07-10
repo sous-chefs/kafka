@@ -22,12 +22,10 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
   owner node[:kafka][:user]
   group node[:kafka][:group]
   mode '644'
-  variables({
-    zookeeper_connect: zookeeper_connect_string,
-    log_dirs: kafka_log_dirs_string
-  })
-  helper(:config) { node[:kafka][:broker] }
-  helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
+  helper :config do
+    node[:kafka][:broker].sort_by(&:first)
+  end
+  helpers(Kafka::Configuration)
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
   end
