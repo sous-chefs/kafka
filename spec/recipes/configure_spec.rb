@@ -6,6 +6,7 @@ describe 'kafka::_configure' do
   let :chef_run do
     ChefSpec::Runner.new do |node|
       node.set[:kafka] = kafka_attributes
+      node.set[:kafka][:broker] = broker_attributes
       node.set[:kafka][:version] = kafka_version
     end.converge(described_recipe)
   end
@@ -15,6 +16,10 @@ describe 'kafka::_configure' do
   end
 
   let :kafka_attributes do
+    {}
+  end
+
+  let :broker_attributes do
     {}
   end
 
@@ -338,7 +343,7 @@ describe 'kafka::_configure' do
     end
 
     context 'explicit configuration' do
-      let :kafka_attributes do
+      let :broker_attributes do
         {
           broker_id: 10002,
           message_max_bytes: 1_000_000,
@@ -520,7 +525,7 @@ describe 'kafka::_configure' do
             end
 
             before do
-              kafka_attributes[option] = mappings
+              broker_attributes[option] = mappings
             end
 
             context 'and kafka version is 0.8.0' do
@@ -907,7 +912,7 @@ describe 'kafka::_configure' do
       context 'zookeeper configuration' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
-            node.set[:kafka] = zookeeper_attrs
+            node.set[:kafka][:broker] = zookeeper_attrs
           end.converge(described_recipe)
         end
 

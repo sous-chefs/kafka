@@ -33,8 +33,9 @@ suites:
         scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
   - name: source-init-style-sysv
     run_list:
       - recipe[java::default]
@@ -45,5 +46,6 @@ suites:
         install_method: 'source'
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        zookeeper_connect: ['localhost:2181']
-        zookeeper_connection_timeout_ms: 15_000
+        broker:
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000

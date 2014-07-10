@@ -26,7 +26,7 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
     zookeeper_connect: zookeeper_connect_string,
     log_dirs: kafka_log_dirs_string
   })
-  helper(:config) { node[:kafka] }
+  helper(:config) { node[:kafka][:broker] }
   helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
@@ -56,7 +56,7 @@ template kafka_init_opts[:script_path] do
   mode kafka_init_opts[:permissions]
   variables({
     daemon_name: 'kafka',
-    port: node[:kafka][:port],
+    port: node[:kafka][:broker][:port],
     user: node[:kafka][:user]
   })
   if restart_on_configuration_change?
