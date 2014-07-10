@@ -36,308 +36,96 @@ describe 'kafka::_configure' do
       })
     end
 
+    context 'configuration types' do
+      context 'Array-based option' do
+        before do
+          broker_attributes[:array_option] = %w[topic1 topic2]
+        end
+
+        it 'joins elements using comma' do
+          expect(chef_run).to have_configured(path).with('array.option').as('topic1,topic2')
+        end
+      end
+
+      context 'Hash-based option' do
+        let :mappings do
+          {'topic1' => 12345, 'topic2' => 3000}
+        end
+
+        before do
+          broker_attributes[:hash_option] = mappings
+        end
+
+        it 'transforms it to a CSV string' do
+          expect(chef_run).to have_configured(path).with('hash.option').as('topic1:12345,topic2:3000')
+        end
+      end
+
+      context 'true / false option' do
+        before do
+          broker_attributes[:false_option] = false
+          broker_attributes[:true_option] = true
+        end
+
+        it 'uses the #to_s representation' do
+          expect(chef_run).to have_configured(path).with('false.option').as('false')
+          expect(chef_run).to have_configured(path).with('true.option').as('true')
+        end
+      end
+
+      context 'Fixnum option' do
+        before do
+          broker_attributes[:port] = 12345
+        end
+
+        it 'uses the #to_s representation' do
+          expect(chef_run).to have_configured(path).with('port').as('12345')
+        end
+      end
+
+      context 'string option' do
+        before do
+          broker_attributes[:log_cleanup_policy] = 'compact'
+        end
+
+        it 'uses it as-is' do
+          expect(chef_run).to have_configured(path).with('log.cleanup.policy').as('compact')
+        end
+      end
+
+      context 'symbol option' do
+        before do
+          broker_attributes[:log_cleanup_policy] = :compact
+        end
+
+        it 'uses the #to_s representation' do
+          expect(chef_run).to have_configured(path).with('log.cleanup.policy').as('compact')
+        end
+      end
+    end
+
     context 'default configuration' do
-      context 'general configuration' do
-        it 'sets broker id from node\'s ip address' do
-          expect(chef_run).to have_configured(path).with('broker.id').as('10002')
-        end
-
-        context 'when broker id is larger than 2**31' do
-          let :chef_run do
-            ChefSpec::Runner.new do |node|
-              node.automatic[:ipaddress] = '255.255.255.255'
-            end.converge(described_recipe)
-          end
-
-          it 'mod\'s it by 2**31' do
-            expect(chef_run).to have_configured(path).with('broker.id').as('1852184791')
-          end
-        end
-
-        it 'does not set message.max.bytes' do
-          expect(chef_run).not_to have_configured(path).with('message.max.bytes')
-        end
-
-        it 'does not set number of network threads' do
-          expect(chef_run).not_to have_configured(path).with('num.network.threads')
-        end
-
-        it 'does not set number of io threads' do
-          expect(chef_run).not_to have_configured(path).with('num.io.threads')
-        end
-
-        it 'does not set number of background threads' do
-          expect(chef_run).not_to have_configured(path).with('background.threads')
-        end
-
-        it 'does not set queued max requests' do
-          expect(chef_run).not_to have_configured(path).with('queued.max.requests')
-        end
+      it 'sets broker id from node\'s ip address' do
+        expect(chef_run).to have_configured(path).with('broker.id').as('10002')
       end
 
-      context 'socket server configuration' do
-        it 'sets port' do
-          expect(chef_run).to have_configured(path).with('port').as(6667)
-        end
-
-        it 'does not set host name from node hostname attribute' do
-          expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
-        end
-
-        it 'does not set advertised host.name attribute' do
-          expect(chef_run).not_to have_configured(path).with('advertised.host.name').as('Fauxhai')
-        end
-
-        it 'does not set advertised port attribute' do
-          expect(chef_run).not_to have_configured(path).with('advertised.port')
-        end
-
-        it 'does not set send buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('socket.send.buffer.bytes')
-        end
-
-        it 'does not set receive buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('socket.receive.buffer.bytes')
-        end
-
-        it 'does not set receive request max size' do
-          expect(chef_run).not_to have_configured(path).with('socket.request.max.bytes')
-        end
+      it 'sets port' do
+        expect(chef_run).to have_configured(path).with('port').as(6667)
       end
 
-      context 'log configuration' do
-        it 'does not set number of partitions' do
-          expect(chef_run).not_to have_configured(path).with('num.partitions')
-        end
-
-        it 'does not set log dir(s)' do
-          expect(chef_run).not_to have_configured(path).with('log.dirs')
-        end
-
-        it 'does not set log segment bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.segment.bytes')
-        end
-
-        it 'does not set segment bytes per topic' do
-          expect(chef_run).not_to have_configured(path).with('log.segment.bytes.per.topic')
-        end
-
-        it 'does not set roll hours' do
-          expect(chef_run).not_to have_configured(path).with('log.roll.hours')
-        end
-
-        it 'does not set roll hours per topic' do
-          expect(chef_run).not_to have_configured(path).with('log.roll.hours.per.topic')
-        end
-
-        it 'does not set log retention hours' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.hours')
-        end
-
-        it 'does not set retention hours per topic' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.hours.per.topic')
-        end
-
-        it 'does not set log retention bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.bytes')
-        end
-
-        it 'does not set retention bytes per topic' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.bytes.per.topic')
-        end
-
-        it 'does not set log cleanup interval (minutes)' do
-          expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins')
-        end
-
-        it 'does not set log retention check interval (milliseconds)' do
-          expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms')
-        end
-
-        it 'does not set delete delay ms' do
-          expect(chef_run).not_to have_configured(path).with('log.delete.delay.ms')
-        end
-
-        it 'does not set flush offset checkpoint interval' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.offset.checkpoint.interval.ms')
-        end
-
-        it 'does not set max bytesize of index' do
-          expect(chef_run).not_to have_configured(path).with('log.index.size.max.bytes')
-        end
-
-        it 'does not set index interval bytes' do
-          expect(chef_run).not_to have_configured(path).with('log.index.interval.bytes')
-        end
-
-        it 'does not set log flush interval (messages)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.interval.messages')
-        end
-
-        it 'does not set log flush interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.interval.ms')
-        end
-
-        it 'does not set flush interval (ms) per topic' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.interval.ms.per.topic')
-        end
-
-        it 'does not set log flush scheduler interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('log.flush.scheduler.interval.ms')
-        end
-
-        it 'does not set auto create topics enable' do
-          expect(chef_run).not_to have_configured(path).with('auto.create.topics.enable')
-        end
-
-        it 'does not set cleanup policy' do
-          expect(chef_run).not_to have_configured(path).with('log.cleanup.policy')
-        end
+      it 'sets host.name' do
+        expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
       end
 
-      context 'log cleaner configuration' do
-        it 'does not set cleaner enable' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.enable')
+      context 'when broker id is larger than 2**31' do
+        let :chef_run do
+          ChefSpec::Runner.new do |node|
+            node.automatic[:ipaddress] = '255.255.255.255'
+          end.converge(described_recipe)
         end
 
-        it 'does not set cleaner threads' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.threads')
-        end
-
-        it 'does not set cleaner io max bytes per second' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.max.bytes.per.second')
-        end
-
-        it 'does not set cleaner dedupe buffer size' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.dedupe.buffer.size')
-        end
-
-        it 'does not set cleaner io buffer size' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.size')
-        end
-
-        it 'does not set cleaner io buffer load factor' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.load.factor')
-        end
-
-        it 'does not set cleaner backoff (milliseconds)' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.backoff.ms')
-        end
-
-        it 'does not set cleaner min cleanable ratio' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.min.cleanable.ratio')
-        end
-
-        it 'does not set cleaner delete retention ms' do
-          expect(chef_run).not_to have_configured(path).with('log.cleaner.delete.retention.ms')
-        end
-      end
-
-      context 'replication configuration' do
-        it 'does not set controller socket timeout' do
-          expect(chef_run).not_to have_configured(path).with('controller.socket.timeout.ms')
-        end
-
-        it 'does not set controller message queue size' do
-          expect(chef_run).not_to have_configured(path).with('controller.message.queue.size')
-        end
-
-        it 'does not set default replication factor' do
-          expect(chef_run).not_to have_configured(path).with('default.replication.factor')
-        end
-
-        it 'does not set replica lag time max (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.lag.time.max.ms')
-        end
-
-        it 'does not set replica message lag max' do
-          expect(chef_run).not_to have_configured(path).with('replica.lag.max.messages')
-        end
-
-        it 'does not set replica socket timeout' do
-          expect(chef_run).not_to have_configured(path).with('replica.socket.timeout.ms')
-        end
-
-        it 'does not set replica socket receive buffer bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.socket.receive.buffer.bytes')
-        end
-
-        it 'does not set replica fetch max bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.max.bytes')
-        end
-
-        it 'does not set replica fetch min bytes' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.min.bytes')
-        end
-
-        it 'does not set replica fetch max wait (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.fetch.wait.max.ms')
-        end
-
-        it 'does not set replica fetchers' do
-          expect(chef_run).not_to have_configured(path).with('num.replica.fetchers')
-        end
-
-        it 'does not set replica high watermark checkpoint interval (ms)' do
-          expect(chef_run).not_to have_configured(path).with('replica.high.watermark.checkpoint.interval.ms')
-        end
-
-        it 'does not set fetch purgatory purge interval' do
-          expect(chef_run).not_to have_configured(path).with('fetch.purgatory.purge.interval.requests')
-        end
-
-        it 'does not set producer purgatory purge interval' do
-          expect(chef_run).not_to have_configured(path).with('producer.purgatory.purge.interval.requests')
-        end
-      end
-
-      context 'controlled shutdown configuration' do
-        it 'does not set max retries' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.max.retries')
-        end
-
-        it 'does not set retry backoff (ms)' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.retry.backoff.ms')
-        end
-
-        it 'does not set value for enable' do
-          expect(chef_run).not_to have_configured(path).with('controlled.shutdown.enable')
-        end
-      end
-
-      context 'leader related configuration' do
-        it 'does not set auto leader imbalance enable' do
-          expect(chef_run).not_to have_configured(path).with('auto.leader.rebalance.enable')
-        end
-
-        it 'does not set leader imbalance per broker (percentage)' do
-          expect(chef_run).not_to have_configured(path).with('leader.imbalance.per.broker.percentage')
-        end
-
-        it 'does not set leader imbalance check interval (seconds)' do
-          expect(chef_run).not_to have_configured(path).with('leader.imbalance.check.interval.seconds')
-        end
-
-        it 'does not set offset metadata max (bytes)' do
-          expect(chef_run).not_to have_configured(path).with('offset.metadata.max.bytes')
-        end
-      end
-
-      context 'zookeeper configuration' do
-        it 'does not set zookeeper connect' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.connect')
-        end
-
-        it 'does not set zookeeper connection timeout' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.connection.timeout.ms')
-        end
-
-        it 'does not set zookeeper session timeout' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.session.timeout.ms')
-        end
-
-        it 'does not set zookeeper sync time (ms)' do
-          expect(chef_run).not_to have_configured(path).with('zookeeper.sync.time.ms')
+        it 'mod\'s it by 2**31' do
+          expect(chef_run).to have_configured(path).with('broker.id').as('1852184791')
         end
       end
     end
@@ -384,7 +172,7 @@ describe 'kafka::_configure' do
           log_delete_delay_ms: 1000,
           log_flush_offset_checkpoint_interval_ms: 1000,
           log_cleanup_policy: 'delete',
-          auto_create_topics: true,
+          auto_create_topics_enable: true,
           controller_socket_timeout_ms: 30_000,
           controller_message_queue_size: 10,
           default_replication_factor: 1,
@@ -401,7 +189,7 @@ describe 'kafka::_configure' do
           producer_purgatory_purge_interval_requests: 10_000,
           controlled_shutdown_max_retries: 3,
           controlled_shutdown_retry_backoff_ms: 5000,
-          controlled_shutdown_enabled: false,
+          controlled_shutdown_enable: false,
           auto_leader_rebalance_enable: true,
           leader_imbalance_per_broker_percentage: 0.7,
           leader_imbalance_check_interval_seconds: 3,
@@ -430,16 +218,6 @@ describe 'kafka::_configure' do
           expect(chef_run).to have_configured(path).with('num.io.threads').as(8)
         end
 
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not set background threads' do
-            expect(chef_run).not_to have_configured(path).with('background.threads').as(4)
-          end
-        end
-
         it 'sets number of background threads' do
           expect(chef_run).to have_configured(path).with('background.threads').as(4)
         end
@@ -458,28 +236,12 @@ describe 'kafka::_configure' do
           expect(chef_run).to have_configured(path).with('host.name').as('host-name')
         end
 
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not configure advertised host.name attribute' do
-            expect(chef_run).not_to have_configured(path).with('advertised.host.name').as('advertised-host-name')
-          end
-
-          it 'does not configure advertised port attribute' do
-            expect(chef_run).not_to have_configured(path).with('advertised.port').as(9092)
-          end
+        it 'configures advertised host.name attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.host.name').as('advertised-host-name')
         end
 
-        context 'when kafka > 0.8.0' do
-          it 'configures advertised host.name attribute' do
-            expect(chef_run).to have_configured(path).with('advertised.host.name').as('advertised-host-name')
-          end
-
-          it 'configures advertised port attribute' do
-            expect(chef_run).to have_configured(path).with('advertised.port').as(9092)
-          end
+        it 'configures advertised port attribute' do
+          expect(chef_run).to have_configured(path).with('advertised.port').as(9092)
         end
 
         it 'sets send buffer bytes' do
@@ -496,56 +258,6 @@ describe 'kafka::_configure' do
       end
 
       context 'log configuration' do
-        shared_examples_for 'a hash based option' do
-          let :attribute do
-            option.to_s.gsub('_', '.')
-          end
-
-          context 'by default' do
-            context 'and kafka version is 0.8.0' do
-              let :kafka_version do
-                '0.8.0'
-              end
-
-              it 'configures a commented attribute' do
-                expect(chef_run).to have_configured(path).with(%(##{attribute})).as('')
-              end
-            end
-
-            context 'and kafka version is > 0.8.0' do
-              it 'ignores it' do
-                expect(chef_run).not_to have_configured(path).with(%(##{attribute})).as('')
-              end
-            end
-          end
-
-          context 'with a hash of mappings' do
-            let :mappings do
-              {'topic1' => 12345, 'topic2' => 3000}
-            end
-
-            before do
-              broker_attributes[option] = mappings
-            end
-
-            context 'and kafka version is 0.8.0' do
-              let :kafka_version do
-                '0.8.0'
-              end
-
-              it 'transforms it to a CSV string' do
-                expect(chef_run).to have_configured(path).with(%(#{attribute})).as('topic1:12345,topic2:3000')
-              end
-            end
-
-            context 'and kafka version is > 0.8.0' do
-              it 'ignores it' do
-                expect(chef_run).not_to have_configured(path).with(%(#{attribute}))
-              end
-            end
-          end
-        end
-
         it 'sets number of partitions' do
           expect(chef_run).to have_configured(path).with('num.partitions').as(1)
         end
@@ -558,116 +270,32 @@ describe 'kafka::_configure' do
           expect(chef_run).to have_configured(path).with('log.segment.bytes').as(1 * 1024 * 1024 * 1024)
         end
 
-        context 'log segment bytes per topic' do
-          it_behaves_like 'a hash based option' do
-            let :option do
-              :log_segment_bytes_per_topic
-            end
-          end
-        end
-
         it 'sets roll hours' do
           expect(chef_run).to have_configured(path).with('log.roll.hours').as(24 * 7)
         end
 
-        context 'roll hours per topic' do
-          it_behaves_like 'a hash based option' do
-            let :option do
-              :log_roll_hours_per_topic
-            end
-          end
-        end
-
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'sets log retention hours' do
-            expect(chef_run).to have_configured(path).with('log.retention.hours').as(24 * 7)
-          end
-
-          it 'does not set log retention minutes' do
-            expect(chef_run).not_to have_configured(path).with('log.retention.minutes')
-          end
-        end
-
-        context 'when kafka > 0.8.0' do
-          it 'does not set log retention hours' do
-            expect(chef_run).not_to have_configured(path).with('log.retention.hours')
-          end
-
-          it 'sets log retention minutes' do
-            expect(chef_run).to have_configured(path).with('log.retention.minutes').as(24 * 7 * 60)
-          end
-        end
-
-        context 'log retention hours per topic' do
-          it_behaves_like 'a hash based option' do
-            let :option do
-              :log_retention_hours_per_topic
-            end
-          end
+        it 'sets log retention minutes' do
+          expect(chef_run).to have_configured(path).with('log.retention.minutes').as(24 * 7 * 60)
         end
 
         it 'sets log retention bytes' do
           expect(chef_run).to have_configured(path).with('log.retention.bytes').as(-1)
         end
 
-        context 'log retention bytes per topic' do
-          it_behaves_like 'a hash based option' do
-            let :option do
-              :log_retention_bytes_per_topic
-            end
-          end
+        it 'sets log retention check interval (milliseconds)' do
+          expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
         end
 
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'sets log cleanup interval (minutes)' do
-            expect(chef_run).to have_configured(path).with('log.cleanup.interval.mins').as(10)
-          end
-
-          it 'does not set default log retention check interval (milliseconds)' do
-            expect(chef_run).not_to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-          end
-
-          it 'does not set delete delay ms' do
-            expect(chef_run).not_to have_configured(path).with('log.delete.delay.ms')
-          end
-
-          it 'does not set flush offset checkpoint interval' do
-            expect(chef_run).not_to have_configured(path).with('log.flush.offset.checkpoint.interval.ms')
-          end
-
-          it 'does not set cleanup policy' do
-            expect(chef_run).not_to have_configured(path).with('log.cleanup.policy')
-          end
+        it 'sets delete delay ms' do
+          expect(chef_run).to have_configured(path).with('log.delete.delay.ms').as(1000)
         end
 
-        context 'when kafka 0.8.1' do
-          it 'does not set default log cleanup interval (minutes)' do
-            expect(chef_run).not_to have_configured(path).with('log.cleanup.interval.mins').as(10)
-          end
+        it 'sets flush offset checkpoint interval' do
+          expect(chef_run).to have_configured(path).with('log.flush.offset.checkpoint.interval.ms').as(1000)
+        end
 
-          it 'sets log retention check interval (milliseconds)' do
-            expect(chef_run).to have_configured(path).with('log.retention.check.interval.ms').as(60000)
-          end
-
-          it 'sets delete delay ms' do
-            expect(chef_run).to have_configured(path).with('log.delete.delay.ms').as(1000)
-          end
-
-          it 'sets flush offset checkpoint interval' do
-            expect(chef_run).to have_configured(path).with('log.flush.offset.checkpoint.interval.ms').as(1000)
-          end
-
-          it 'sets cleanup policy' do
-            expect(chef_run).to have_configured(path).with('log.cleanup.policy').as('delete')
-          end
+        it 'sets cleanup policy' do
+          expect(chef_run).to have_configured(path).with('log.cleanup.policy').as('delete')
         end
 
         it 'sets max bytesize of index' do
@@ -686,14 +314,6 @@ describe 'kafka::_configure' do
           expect(chef_run).to have_configured(path).with('log.flush.interval.ms').as(3000)
         end
 
-        context 'log flush interval (ms) per topic' do
-          it_behaves_like 'a hash based option' do
-            let :option do
-              :log_flush_interval_ms_per_topic
-            end
-          end
-        end
-
         it 'sets log flush scheduler interval (ms)' do
           expect(chef_run).to have_configured(path).with('log.flush.scheduler.interval.ms').as(3000)
         end
@@ -704,84 +324,40 @@ describe 'kafka::_configure' do
       end
 
       context 'log cleaner configuration' do
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not set cleaner enable' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.enable')
-          end
-
-          it 'does not set cleaner threads' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.threads')
-          end
-
-          it 'does not set cleaner io max bytes per second' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.max.bytes.per.second')
-          end
-
-          it 'does not set cleaner dedupe buffer size' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.dedupe.buffer.size')
-          end
-
-          it 'does not set cleaner io buffer size' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.size')
-          end
-
-          it 'does not set cleaner io buffer load factor' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.io.buffer.load.factor')
-          end
-
-          it 'does not set cleaner backoff (milliseconds)' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.backoff.ms')
-          end
-
-          it 'does not set cleaner min cleanable ratio' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.min.cleanable.ratio')
-          end
-
-          it 'does not set cleaner delete retention ms' do
-            expect(chef_run).not_to have_configured(path).with('log.cleaner.delete.retention.ms')
-          end
+        it 'sets cleaner enable' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(true)
         end
 
-        context 'when kafka > 0.8.0' do
-          it 'sets cleaner enable' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.enable').as(true)
-          end
+        it 'sets cleaner threads' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.threads').as(8)
+        end
 
-          it 'sets cleaner threads' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.threads').as(8)
-          end
+        it 'sets cleaner io max bytes per second' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.io.max.bytes.per.second').as(10)
+        end
 
-          it 'sets cleaner io max bytes per second' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.io.max.bytes.per.second').as(10)
-          end
+        it 'sets cleaner dedupe buffer size' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.dedupe.buffer.size').as(1000)
+        end
 
-          it 'sets cleaner dedupe buffer size' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.dedupe.buffer.size').as(1000)
-          end
+        it 'sets cleaner io buffer size' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.size').as(50 * 1024)
+        end
 
-          it 'sets cleaner io buffer size' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.size').as(50 * 1024)
-          end
+        it 'sets cleaner io buffer load factor' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.load.factor').as(0.8)
+        end
 
-          it 'sets cleaner io buffer load factor' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.io.buffer.load.factor').as(0.8)
-          end
+        it 'sets cleaner backoff (milliseconds)' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.backoff.ms').as(1500)
+        end
 
-          it 'sets cleaner backoff (milliseconds)' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.backoff.ms').as(1500)
-          end
+        it 'sets cleaner min cleanable ratio' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.min.cleanable.ratio').as(0.1)
+        end
 
-          it 'sets cleaner min cleanable ratio' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.min.cleanable.ratio').as(0.1)
-          end
-
-          it 'sets cleaner delete retention ms' do
-            expect(chef_run).to have_configured(path).with('log.cleaner.delete.retention.ms').as(1250)
-          end
+        it 'sets cleaner delete retention ms' do
+          expect(chef_run).to have_configured(path).with('log.cleaner.delete.retention.ms').as(1250)
         end
       end
 
@@ -858,93 +434,33 @@ describe 'kafka::_configure' do
       end
 
       context 'leader related configuration' do
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not set auto leader imbalance enable' do
-            expect(chef_run).not_to have_configured(path).with('auto.leader.rebalance.enable').as(true)
-          end
-
-          it 'does not set leader imbalance per broker (percentage)' do
-            expect(chef_run).not_to have_configured(path).with('leader.imbalance.per.broker.percentage').as(0.7)
-          end
-
-          it 'does not set leader imbalance check interval (seconds)' do
-            expect(chef_run).not_to have_configured(path).with('leader.imbalance.check.interval.seconds').as(3)
-          end
+        it 'sets auto leader imbalance enable' do
+          expect(chef_run).to have_configured(path).with('auto.leader.rebalance.enable').as(true)
         end
 
-        context 'when kafka > 0.8.0' do
-          it 'sets auto leader imbalance enable' do
-            expect(chef_run).to have_configured(path).with('auto.leader.rebalance.enable').as(true)
-          end
+        it 'sets leader imbalance per broker (percentage)' do
+          expect(chef_run).to have_configured(path).with('leader.imbalance.per.broker.percentage').as(0.7)
+        end
 
-          it 'sets leader imbalance per broker (percentage)' do
-            expect(chef_run).to have_configured(path).with('leader.imbalance.per.broker.percentage').as(0.7)
-          end
-
-          it 'sets leader imbalance check interval (seconds)' do
-            expect(chef_run).to have_configured(path).with('leader.imbalance.check.interval.seconds').as(3)
-          end
+        it 'sets leader imbalance check interval (seconds)' do
+          expect(chef_run).to have_configured(path).with('leader.imbalance.check.interval.seconds').as(3)
         end
       end
 
       context 'consumer offset management configuration' do
-        context 'when kafka 0.8.0' do
-          let :kafka_version do
-            '0.8.0'
-          end
-
-          it 'does not set offset metadata max (bytes)' do
-            expect(chef_run).not_to have_configured(path).with('offset.metadata.max.bytes').as(1000)
-          end
-        end
-
-        context 'when kafka > 0.8.0' do
-          it 'sets offset metadata max (bytes)' do
-            expect(chef_run).to have_configured(path).with('offset.metadata.max.bytes').as(1000)
-          end
+        it 'sets offset metadata max (bytes)' do
+          expect(chef_run).to have_configured(path).with('offset.metadata.max.bytes').as(1000)
         end
       end
 
       context 'zookeeper configuration' do
-        let :chef_run do
-          ChefSpec::Runner.new do |node|
-            node.set[:kafka][:broker] = zookeeper_attrs
-          end.converge(described_recipe)
-        end
-
-        let :zookeeper_attrs do
+        let :broker_attrs do
           {
             zookeeper_connect: %w(127.0.0.1),
             zookeeper_connection_timeout_ms: 6000,
             zookeeper_session_timeout_ms: 6000,
             zookeeper_sync_time_ms: 2000,
           }
-        end
-
-        context 'when zookeeper.path is not set' do
-          it 'just sets hosts' do
-            expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1')
-          end
-        end
-
-        context 'when zookeeper.path is set' do
-          let :zookeeper_attrs do
-            {zookeeper_connect: %w(127.0.0.1 127.0.0.2), zookeeper_path: '/test'}
-          end
-
-          it 'includes the path as well' do
-            expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
-          end
-
-          it 'does not require the path to start with a slash' do
-            zookeeper_attrs[:zookeeper_path].gsub!('/', '')
-
-            expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
-          end
         end
 
         it 'sets zookeeper connection timeout' do
