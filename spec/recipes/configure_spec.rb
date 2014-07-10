@@ -350,75 +350,61 @@ describe 'kafka::_configure' do
           host_name: 'host-name',
           advertised_host_name: 'advertised-host-name',
           advertised_port: 9092,
-          socket: {
-            send_buffer_bytes: 100 * 1024,
-            receive_buffer_bytes: 100 * 1024,
-            request_max_bytes: 100 * 1024 * 1024
-          },
+          socket_send_buffer_bytes: 100 * 1024,
+          socket_receive_buffer_bytes: 100 * 1024,
+          socket_request_max_bytes: 100 * 1024 * 1024,
           num_partitions: 1,
-          log: {
-            dirs: ['/tmp/kafka-logs-1', '/tmp/kafka-logs-2'],
-            segment_bytes: 1024 * 1024 * 1024,
-            roll_hours: 24 * 7,
-            retention_minutes: 24 * 7 * 60,
-            retention_hours: 24 * 7,
-            retention_bytes: -1,
-            retention_check_interval_ms: 60000,
-            cleaner_enable: true,
-            cleaner_threads: 8,
-            cleaner_io_max_bytes_per_second: 10,
-            cleaner_dedupe_buffer_size: 1000,
-            cleaner_io_buffer_size: 50 * 1024,
-            cleaner_io_buffer_load_factor: 0.8,
-            cleaner_backoff_ms: 1500,
-            cleaner_min_cleanable_ratio: 0.1,
-            cleaner_delete_retention_ms: 1250,
-            cleanup_interval_mins: 10,
-            index_size_max_bytes: 10 * 1024 * 1024,
-            index_interval_bytes: 4096,
-            flush_interval_messages: 10_000,
-            flush_interval_ms: 3000,
-            flush_scheduler_interval_ms: 3000,
-            delete_delay_ms: 1000,
-            flush_offset_checkpoint_interval_ms: 1000,
-            cleanup_policy: 'delete',
-          },
+          log_dirs: ['/tmp/kafka-logs-1', '/tmp/kafka-logs-2'],
+          log_segment_bytes: 1024 * 1024 * 1024,
+          log_roll_hours: 24 * 7,
+          log_retention_minutes: 24 * 7 * 60,
+          log_retention_hours: 24 * 7,
+          log_retention_bytes: -1,
+          log_retention_check_interval_ms: 60000,
+          log_cleaner_enable: true,
+          log_cleaner_threads: 8,
+          log_cleaner_io_max_bytes_per_second: 10,
+          log_cleaner_dedupe_buffer_size: 1000,
+          log_cleaner_io_buffer_size: 50 * 1024,
+          log_cleaner_io_buffer_load_factor: 0.8,
+          log_cleaner_backoff_ms: 1500,
+          log_cleaner_min_cleanable_ratio: 0.1,
+          log_cleaner_delete_retention_ms: 1250,
+          log_cleanup_interval_mins: 10,
+          log_index_size_max_bytes: 10 * 1024 * 1024,
+          log_index_interval_bytes: 4096,
+          log_flush_interval_messages: 10_000,
+          log_flush_interval_ms: 3000,
+          log_flush_scheduler_interval_ms: 3000,
+          log_delete_delay_ms: 1000,
+          log_flush_offset_checkpoint_interval_ms: 1000,
+          log_cleanup_policy: 'delete',
           auto_create_topics: true,
-          controller: {
-            socket_timeout_ms: 30_000,
-            message_queue_size: 10,
-          },
+          controller_socket_timeout_ms: 30_000,
+          controller_message_queue_size: 10,
           default_replication_factor: 1,
-          replica: {
-            lag_time_max_ms: 10_000,
-            lag_max_messages: 4000,
-            socket_timeout_ms: 30 * 1000,
-            socket_receive_buffer_bytes: 64 * 1024,
-            fetch_max_bytes: 1024 * 1024,
-            fetch_wait_max_ms: 500,
-            fetch_min_bytes: 1,
-            high_watermark_checkpoint_interval_ms: 5000,
-          },
+          replica_lag_time_max_ms: 10_000,
+          replica_lag_max_messages: 4000,
+          replica_socket_timeout_ms: 30 * 1000,
+          replica_socket_receive_buffer_bytes: 64 * 1024,
+          replica_fetch_max_bytes: 1024 * 1024,
+          replica_fetch_wait_max_ms: 500,
+          replica_fetch_min_bytes: 1,
+          replica_high_watermark_checkpoint_interval_ms: 5000,
           num_replica_fetchers: 1,
           fetch_purgatory_purge_interval_requests: 10_000,
           producer_purgatory_purge_interval_requests: 10_000,
-          controlled_shutdown: {
-            max_retries: 3,
-            retry_backoff_ms: 5000,
-            enabled: false,
-          },
+          controlled_shutdown_max_retries: 3,
+          controlled_shutdown_retry_backoff_ms: 5000,
+          controlled_shutdown_enabled: false,
           auto_leader_rebalance_enable: true,
-          leader: {
-            imbalance_per_broker_percentage: 0.7,
-            imbalance_check_interval_seconds: 3,
-          },
+          leader_imbalance_per_broker_percentage: 0.7,
+          leader_imbalance_check_interval_seconds: 3,
           offset_metadata_max_bytes: 1000,
-          zookeeper: {
-            connect: [],
-            connection_timeout_ms: 6000,
-            session_timeout_ms: 6000,
-            sync_time_ms: 2000,
-          }
+          zookeeper_connect: [],
+          zookeeper_connection_timeout_ms: 6000,
+          zookeeper_session_timeout_ms: 6000,
+          zookeeper_sync_time_ms: 2000,
         }
       end
 
@@ -517,13 +503,13 @@ describe 'kafka::_configure' do
               end
 
               it 'configures a commented attribute' do
-                expect(chef_run).to have_configured(path).with(%(#log.#{attribute})).as('')
+                expect(chef_run).to have_configured(path).with(%(##{attribute})).as('')
               end
             end
 
             context 'and kafka version is > 0.8.0' do
               it 'ignores it' do
-                expect(chef_run).not_to have_configured(path).with(%(#log.#{attribute})).as('')
+                expect(chef_run).not_to have_configured(path).with(%(##{attribute})).as('')
               end
             end
           end
@@ -534,7 +520,7 @@ describe 'kafka::_configure' do
             end
 
             before do
-              kafka_attributes[:log].merge!({option => mappings})
+              kafka_attributes[option] = mappings
             end
 
             context 'and kafka version is 0.8.0' do
@@ -543,13 +529,13 @@ describe 'kafka::_configure' do
               end
 
               it 'transforms it to a CSV string' do
-                expect(chef_run).to have_configured(path).with(%(log.#{attribute})).as('topic1:12345,topic2:3000')
+                expect(chef_run).to have_configured(path).with(%(#{attribute})).as('topic1:12345,topic2:3000')
               end
             end
 
             context 'and kafka version is > 0.8.0' do
               it 'ignores it' do
-                expect(chef_run).not_to have_configured(path).with(%(log.#{attribute}))
+                expect(chef_run).not_to have_configured(path).with(%(#{attribute}))
               end
             end
           end
@@ -567,10 +553,10 @@ describe 'kafka::_configure' do
           expect(chef_run).to have_configured(path).with('log.segment.bytes').as(1 * 1024 * 1024 * 1024)
         end
 
-        context 'segment bytes per topic' do
+        context 'log segment bytes per topic' do
           it_behaves_like 'a hash based option' do
             let :option do
-              :segment_bytes_per_topic
+              :log_segment_bytes_per_topic
             end
           end
         end
@@ -582,7 +568,7 @@ describe 'kafka::_configure' do
         context 'roll hours per topic' do
           it_behaves_like 'a hash based option' do
             let :option do
-              :roll_hours_per_topic
+              :log_roll_hours_per_topic
             end
           end
         end
@@ -614,7 +600,7 @@ describe 'kafka::_configure' do
         context 'log retention hours per topic' do
           it_behaves_like 'a hash based option' do
             let :option do
-              :retention_hours_per_topic
+              :log_retention_hours_per_topic
             end
           end
         end
@@ -626,7 +612,7 @@ describe 'kafka::_configure' do
         context 'log retention bytes per topic' do
           it_behaves_like 'a hash based option' do
             let :option do
-              :retention_bytes_per_topic
+              :log_retention_bytes_per_topic
             end
           end
         end
@@ -698,7 +684,7 @@ describe 'kafka::_configure' do
         context 'log flush interval (ms) per topic' do
           it_behaves_like 'a hash based option' do
             let :option do
-              :flush_interval_ms_per_topic
+              :log_flush_interval_ms_per_topic
             end
           end
         end
@@ -921,16 +907,16 @@ describe 'kafka::_configure' do
       context 'zookeeper configuration' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
-            node.set[:kafka][:zookeeper] = zookeeper_attrs
+            node.set[:kafka] = zookeeper_attrs
           end.converge(described_recipe)
         end
 
         let :zookeeper_attrs do
           {
-            connect: %w(127.0.0.1),
-            connection_timeout_ms: 6000,
-            session_timeout_ms: 6000,
-            sync_time_ms: 2000,
+            zookeeper_connect: %w(127.0.0.1),
+            zookeeper_connection_timeout_ms: 6000,
+            zookeeper_session_timeout_ms: 6000,
+            zookeeper_sync_time_ms: 2000,
           }
         end
 
@@ -942,7 +928,7 @@ describe 'kafka::_configure' do
 
         context 'when zookeeper.path is set' do
           let :zookeeper_attrs do
-            {connect: %w(127.0.0.1 127.0.0.2), path: '/test'}
+            {zookeeper_connect: %w(127.0.0.1 127.0.0.2), zookeeper_path: '/test'}
           end
 
           it 'includes the path as well' do
@@ -950,7 +936,7 @@ describe 'kafka::_configure' do
           end
 
           it 'does not require the path to start with a slash' do
-            zookeeper_attrs[:path].gsub!('/', '')
+            zookeeper_attrs[:zookeeper_path].gsub!('/', '')
 
             expect(chef_run).to have_configured(path).with('zookeeper.connect').as('127.0.0.1,127.0.0.2/test')
           end

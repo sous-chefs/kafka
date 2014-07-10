@@ -71,11 +71,7 @@ describe 'kafka::_setup' do
 
   context 'log dirs for Kafka data' do
     let :kafka_attrs do
-      {
-        log: {
-          dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
-        }
-      }
+      {log_dirs: %w[/mnt/kafka-1 /mnt/kafka-2]}
     end
 
     it 'creates a directory for each path in `log.dirs`' do

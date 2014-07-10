@@ -72,12 +72,12 @@ def kafka_binary_install?
 end
 
 def zookeeper_connect_string
-  if node[:kafka][:zookeeper][:connect] && node[:kafka][:zookeeper][:connect].any?
-    connect_string = node[:kafka][:zookeeper][:connect].join(',')
+  if node[:kafka][:zookeeper_connect] && node[:kafka][:zookeeper_connect].any?
+    connect_string = node[:kafka][:zookeeper_connect].join(',')
 
-    if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
-      connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
-      connect_string << node[:kafka][:zookeeper][:path]
+    if node[:kafka][:zookeeper_path] && !node[:kafka][:zookeeper_path].empty?
+      connect_string << '/' unless node[:kafka][:zookeeper_path].start_with?('/')
+      connect_string << node[:kafka][:zookeeper_path]
     end
 
     connect_string
@@ -85,7 +85,7 @@ def zookeeper_connect_string
 end
 
 def kafka_log_dirs_string
-  node[:kafka][:log][:dirs].join(',')
+  node[:kafka][:log_dirs].join(',')
 end
 
 def kafka_init_opts
