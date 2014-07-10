@@ -36,6 +36,18 @@ shared_examples_for 'a _setup recipe' do
       end
     end
   end
+
+  context 'configured `log.dirs`' do
+    %w[/mnt/kafka-logs-1 /mnt/kafka-logs-2].each do |directory|
+      describe directory do
+        it_behaves_like 'a kafka directory', skip_files: true do
+          let :path do
+            directory
+          end
+        end
+      end
+    end
+  end
 end
 
 shared_examples_for 'a _configure recipe' do
