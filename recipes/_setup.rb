@@ -24,3 +24,12 @@ end
     recursive true
   end
 end
+
+node[:kafka][:log][:dirs].each do |dir|
+  directory dir do
+    owner node[:kafka][:user]
+    group node[:kafka][:group]
+    mode '755'
+    recursive true
+  end
+end

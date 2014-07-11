@@ -46,6 +46,8 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        log:
+          dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
@@ -58,6 +60,8 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        log:
+          dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
@@ -76,6 +80,8 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        log:
+          dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
@@ -89,6 +95,8 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        log:
+          dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
