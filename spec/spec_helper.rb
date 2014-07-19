@@ -2,17 +2,14 @@
 
 require 'chefspec'
 require 'chefspec/berkshelf'
-
 require 'chef/application'
 
-RSpec.configure do |config|
-  # Default platform used
-  config.platform = 'centos'
 
-  # Default platform version
+ChefSpec::Coverage.start!
+
+RSpec.configure do |config|
+  config.platform = 'centos'
   config.version = '6.4'
 end
 
 require 'support/matchers'
-
-at_exit { ChefSpec::Coverage.report! }
