@@ -5,23 +5,33 @@
 
 module Kafka
   module Configuration
+    def render_option(prefix, value)
+      prefix = convert_key(prefix)
+      case value
+      when Hash
+        %(#{prefix}=#{render_hash_value(value).join(',')})
+      when Array
+        %(#{prefix}=#{render_array_value(value)})
+      else
+        %(#{prefix}=#{value})
+      end
+    end
+
+    private
+
     def convert_key(key)
       key.gsub('_', '.')
     end
 
-    def convert_value(value)
-      case value
-      when Array
-        value.join(',')
-      when Hash
-        value.map { |k, v| [k, v].join(':') }.join(',')
-      else
-        value.to_s
+    def render_array_value(values)
+      vvs = values.flat_map do |v|
+        v.is_a?(Hash) ? render_hash_value(v) : v.to_s
       end
+      vvs.join(',')
     end
 
-    def render_option(key, value)
-      [convert_key(key), convert_value(value)].join('=')
+    def render_hash_value(hash)
+      hash.map { |key, value| %(#{key}:#{value}) }
     end
   end
 end
