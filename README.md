@@ -72,15 +72,6 @@ Defaults to installing `v0.8.1.1` of Kafka.
 Downloads and installs Kafka from the official binary releases.
 Defaults to installing `v0.8.1.1` of Kafka.
 
-### zookeeper
-
-Sets up a standalone ZooKeeper server, using the ZooKeeper version that is
-bundled with Kafka.
-
-This should not be used in production (Kafka and ZooKeeper should generally not
-run on the same machine) and is just useful for testing (i.e. in Vagrant or
-other testing environment).
-
 ## Copyright
 
 Copyright :: 2013-2014 Mathias Söderberg and contributors
