@@ -8,9 +8,9 @@ template ::File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
   owner node[:kafka][:user]
   group node[:kafka][:group]
   mode '644'
+  helpers(Kafka::Log4J)
   variables({
-    process: 'kafka',
-    log_dir: node[:kafka][:log_dir]
+    config: node[:kafka][:log4j],
   })
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed

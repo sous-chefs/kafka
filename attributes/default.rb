@@ -501,3 +501,68 @@ default[:kafka][:zookeeper][:sync_time_ms] = nil
 # This is a way to setup multiple Kafka clusters or other applications on the
 # same zookeeper cluster.
 default[:kafka][:zookeeper][:path] = nil
+
+#
+# Root logger configuration
+default[:kafka][:log4j][:root_logger] = 'INFO, stdout'
+
+#
+# Appender definitions for various classes, outlined after what's in the `log4j.properties`
+# file that is bundled with the v0.8.1.1 release.
+default[:kafka][:log4j][:appenders] = {
+  'stdout' => ['org.apache.log4j.ConsoleAppender', {
+    layout: ['org.apache.log4j.PatternLayout', {
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    }],
+  }],
+  'kafkaAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    date_pattern: '"."yyyy-MM-dd-HH',
+    file: %(#{node[:kafka][:log_dir]}/kafka-server.log),
+    layout: ['org.apache.log4j.PatternLayout', {
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    }],
+  }],
+  'stateChangeAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    date_pattern: '"."yyyy-MM-dd-HH',
+    file: %(#{node[:kafka][:log_dir]}/kafka-state-change.log),
+    layout: ['org.apache.log4j.PatternLayout', {
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    }],
+  }],
+  'requestAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    date_pattern: '"."yyyy-MM-dd-HH',
+    file: %(#{node[:kafka][:log_dir]}/kafka-request.log),
+    layout: ['org.apache.log4j.PatternLayout', {
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    }],
+  }],
+  'controllerAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    date_pattern: '"."yyyy-MM-dd-HH',
+    file: %(#{node[:kafka][:log_dir]}/kafka-controller.log),
+    layout: ['org.apache.log4j.PatternLayout', {
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    }],
+  }],
+}
+#
+# Logger definitions, also outlined after the configuration file from
+# the v0.8.1.1 release.
+default[:kafka][:log4j][:loggers] = {
+  'org.IOItec.zkclient.ZkClient' => [%(#{node[:kafka][:log_level]}), {}],
+  'kafka' => [%(#{node[:kafka][:log_level]}, kafkaAppender), {}],
+  'kafka.network.RequestChannel$' => ['WARN, requestAppender', {
+    additivity: false
+  }],
+  'kafka.request.logger' => ['WARN, requestAppender', {
+    additivity: false
+  }],
+  'kafka.controller' => ['TRACE, controllerAppender', {
+    additivity: false
+  }],
+  'kafka.log.LogCleaner' => ['INFO, cleanerAppender', {
+    additivity: false
+  }],
+  'state.change.logger' => ['TRACE, stateChangeAppender', {
+    additivity: false
+  }],
+}
