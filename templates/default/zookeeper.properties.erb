@@ -21,3 +21,18 @@ clientPort=<%= node[:zookeeper][:port] %>
 
 # Disable the per-ip limit on the number of connections since this is a non-production config
 maxClientCnxns=<%= node[:zookeeper][:max_client_connections] %>
+
+# Tick Time for zookeeper servers
+tickTime=2000
+
+# Timeouts ZooKeeper uses to limit the length of time the ZooKeeper servers in quorum have to connect to a leader
+initLimit=10
+
+# How far out of date a server can be from a leader
+syncLimit=5
+
+# Servers participating in zookeeper quorum
+<% require 'ipaddr' %>
+<% node[:zookeeper][:servers].each do |server| %> 
+<%="server.#{IPAddr.new(server).mask("0.0.0.255").to_i}=#{server}:2888:3888" %>
+<% end %>
