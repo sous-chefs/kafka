@@ -77,6 +77,16 @@ describe 'kafka::_configure' do
       end
     end
 
+    shared_examples_for 'when configuration name contains both `_` and `.`' do
+      let :mappings do
+        'contains underscore'
+      end
+
+      it 'does not transform underscores to dots' do
+        expect(chef_run).to have_configured(path).with('possible.future_option').as('contains underscore')
+      end
+    end
+
     context 'configuration using underscore notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
@@ -87,6 +97,12 @@ describe 'kafka::_configure' do
       it_behaves_correctly 'when value is an Hash' do
         let :broker_attributes do
           {hash_option: mappings}
+        end
+      end
+
+      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
+        let :broker_attributes do
+          {:'possible.future_option' => mappings}
         end
       end
     end
@@ -101,6 +117,12 @@ describe 'kafka::_configure' do
       it_behaves_correctly 'when value is an Hash' do
         let :broker_attributes do
           {'hash.option' => mappings}
+        end
+      end
+
+      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
+        let :broker_attributes do
+          {'possible.future_option' => mappings}
         end
       end
     end
