@@ -9,7 +9,10 @@ module Kafka
       prefix = convert_key(prefix)
       case value
       when Hash
-        %(#{prefix}=#{render_hash_value(value).join(',')})
+        lines = value.map do |key, val|
+          render_option(%(#{prefix}.#{key}), val)
+        end
+        lines.join($/)
       when Array
         %(#{prefix}=#{render_array_value(value)})
       else
