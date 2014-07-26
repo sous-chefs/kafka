@@ -67,16 +67,6 @@ describe 'kafka::_configure' do
       end
     end
 
-    shared_examples_for 'when value is an Hash' do
-      let :mappings do
-        {'topic1' => 12345, 'topic2' => 3000}
-      end
-
-      it 'renders it as a CSV string' do
-        expect(chef_run).to have_configured(path).with('hash.option').as('topic1:12345,topic2:3000')
-      end
-    end
-
     shared_examples_for 'when configuration name contains both `_` and `.`' do
       let :mappings do
         'contains underscore'
@@ -94,12 +84,6 @@ describe 'kafka::_configure' do
         end
       end
 
-      it_behaves_correctly 'when value is an Hash' do
-        let :broker_attributes do
-          {hash_option: mappings}
-        end
-      end
-
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
           {:'possible.future_option' => mappings}
@@ -114,15 +98,23 @@ describe 'kafka::_configure' do
         end
       end
 
-      it_behaves_correctly 'when value is an Hash' do
+      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          {'hash.option' => mappings}
+          {'possible.future_option' => mappings}
+        end
+      end
+    end
+
+    context 'configuration using nested Hashes notation' do
+      it_behaves_correctly 'when value is an Array' do
+        let :broker_attributes do
+          { array: { option: mappings } }
         end
       end
 
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          {'possible.future_option' => mappings}
+          { possible: { :'future_option' => mappings } }
         end
       end
     end
