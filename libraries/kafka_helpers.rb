@@ -89,29 +89,25 @@ def kafka_log_dirs_string
 end
 
 def kafka_init_opts
-  @kafka_init_opts ||= kafka_create_init_opts('kafka')
-end
-
-def kafka_create_init_opts(app)
-  Hash.new.tap do |opts|
+  @kafka_init_opts ||= Hash.new.tap do |opts|
     case kafka_init_style
     when :sysv
       opts[:env_path] = value_for_platform_family({
-        'debian' => %(/etc/default/#{app}),
-        'default' => %(/etc/sysconfig/#{app})
+        'debian' => '/etc/default/kafka',
+        'default' => '/etc/sysconfig/kafka',
       })
       opts[:source] = value_for_platform_family({
         'debian' => 'sysv/debian.erb',
-        'default' => 'sysv/default.erb'
+        'default' => 'sysv/default.erb',
       })
-      opts[:script_path] = %(/etc/init.d/#{app})
+      opts[:script_path] = '/etc/init.d/kafka'
       opts[:permissions] = '755'
     when :upstart
-      opts[:env_path] = %(/etc/default/#{app})
+      opts[:env_path] = '/etc/default/kafka'
       opts[:source] = value_for_platform_family({
-        'default' => 'upstart/default.erb'
+        'default' => 'upstart/default.erb',
       })
-      opts[:script_path] = %(/etc/init/#{app}.conf)
+      opts[:script_path] = '/etc/init/kafka.conf'
       opts[:provider] = ::Chef::Provider::Service::Upstart
       opts[:permissions] = '644'
     end
