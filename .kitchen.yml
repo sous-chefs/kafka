@@ -100,12 +100,3 @@ suites:
         zookeeper:
           connect: ['localhost:2181']
           connection_timeout_ms: 15_000
-  - name: zookeeper
-    run_list:
-      - recipe[java::default]
-      - recipe[kafka::zookeeper]
-    attributes:
-      kafka:
-        zookeeper:
-          connect: ['localhost:2181']
-          connection_timeout_ms: 15_000
