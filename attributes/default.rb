@@ -510,28 +510,28 @@ default[:kafka][:log4j][:root_logger] = 'INFO, kafkaAppender'
 # Appender definitions for various classes.
 default[:kafka][:log4j][:appenders] = {
   'kafkaAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
-    date_pattern: '"."yyyy-MM-dd-HH',
+    date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka.log),
     layout: ['org.apache.log4j.PatternLayout', {
       conversion_pattern: '[%d] %p %m (%c)%n',
     }],
   }],
   'stateChangeAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
-    date_pattern: '"."yyyy-MM-dd-HH',
+    date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-state-change.log),
     layout: ['org.apache.log4j.PatternLayout', {
       conversion_pattern: '[%d] %p %m (%c)%n',
     }],
   }],
   'requestAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
-    date_pattern: '"."yyyy-MM-dd-HH',
+    date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-request.log),
     layout: ['org.apache.log4j.PatternLayout', {
       conversion_pattern: '[%d] %p %m (%c)%n',
     }],
   }],
   'controllerAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
-    date_pattern: '"."yyyy-MM-dd-HH',
+    date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-controller.log),
     layout: ['org.apache.log4j.PatternLayout', {
       conversion_pattern: '[%d] %p %m (%c)%n',
