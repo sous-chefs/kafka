@@ -503,21 +503,15 @@ default[:kafka][:zookeeper][:sync_time_ms] = nil
 default[:kafka][:zookeeper][:path] = nil
 
 #
-# Root logger configuration
-default[:kafka][:log4j][:root_logger] = 'INFO, stdout'
+# Root logger configuration.
+default[:kafka][:log4j][:root_logger] = 'INFO, kafkaAppender'
 
 #
-# Appender definitions for various classes, outlined after what's in the `log4j.properties`
-# file that is bundled with the v0.8.1.1 release.
+# Appender definitions for various classes.
 default[:kafka][:log4j][:appenders] = {
-  'stdout' => ['org.apache.log4j.ConsoleAppender', {
-    layout: ['org.apache.log4j.PatternLayout', {
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    }],
-  }],
   'kafkaAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
     date_pattern: '"."yyyy-MM-dd-HH',
-    file: %(#{node[:kafka][:log_dir]}/kafka-server.log),
+    file: %(#{node[:kafka][:log_dir]}/kafka.log),
     layout: ['org.apache.log4j.PatternLayout', {
       conversion_pattern: '[%d] %p %m (%c)%n',
     }],
@@ -545,11 +539,9 @@ default[:kafka][:log4j][:appenders] = {
   }],
 }
 #
-# Logger definitions, also outlined after the configuration file from
-# the v0.8.1.1 release.
+# Logger definitions.
 default[:kafka][:log4j][:loggers] = {
   'org.IOItec.zkclient.ZkClient' => [%(#{node[:kafka][:log_level]}), {}],
-  'kafka' => [%(#{node[:kafka][:log_level]}, kafkaAppender), {}],
   'kafka.network.RequestChannel$' => ['WARN, requestAppender', {
     additivity: false
   }],
