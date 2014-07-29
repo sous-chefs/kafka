@@ -556,13 +556,13 @@ default[:kafka][:log4j][:loggers] = {
   'kafka.request.logger' => ['WARN, requestAppender', {
     additivity: false
   }],
-  'kafka.controller' => ['TRACE, controllerAppender', {
+  'kafka.controller' => ['INFO, controllerAppender', {
     additivity: false
   }],
   'kafka.log.LogCleaner' => ['INFO, cleanerAppender', {
     additivity: false
   }],
-  'state.change.logger' => ['TRACE, stateChangeAppender', {
+  'state.change.logger' => ['INFO, stateChangeAppender', {
     additivity: false
   }],
 }

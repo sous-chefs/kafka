@@ -1001,9 +1001,9 @@ describe 'kafka::_configure' do
       expect(chef_run).to have_configured(path).with('log4j.logger.org.IOItec.zkclient.ZkClient').as('INFO')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.network.RequestChannel$').as('WARN, requestAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.request.logger').as('WARN, requestAppender')
-      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.controller').as('TRACE, controllerAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.controller').as('INFO, controllerAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.log.LogCleaner').as('INFO, cleanerAppender')
-      expect(chef_run).to have_configured(path).with('log4j.logger.state.change.logger').as('TRACE, stateChangeAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.state.change.logger').as('INFO, stateChangeAppender')
     end
 
     it 'configures log path for FileAppenders' do
