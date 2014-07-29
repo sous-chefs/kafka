@@ -551,9 +551,6 @@ default[:kafka][:log4j][:loggers] = {
   'kafka.controller' => ['INFO, controllerAppender', {
     additivity: false
   }],
-  'kafka.log.LogCleaner' => ['INFO, cleanerAppender', {
-    additivity: false
-  }],
   'state.change.logger' => ['INFO, stateChangeAppender', {
     additivity: false
   }],

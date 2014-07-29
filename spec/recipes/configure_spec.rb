@@ -1000,7 +1000,6 @@ describe 'kafka::_configure' do
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.network.RequestChannel$').as('WARN, requestAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.request.logger').as('WARN, requestAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.kafka.controller').as('INFO, controllerAppender')
-      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.log.LogCleaner').as('INFO, cleanerAppender')
       expect(chef_run).to have_configured(path).with('log4j.logger.state.change.logger').as('INFO, stateChangeAppender')
     end
 
