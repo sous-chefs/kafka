@@ -81,7 +81,7 @@ GEM
     hitimes (1.2.1)
     ipaddress (0.8.0)
     json (1.8.1)
-    kitchen-docker (1.4.0)
+    kitchen-docker (1.5.0)
       test-kitchen (>= 1.0.0)
     kitchen-vagrant (0.15.0)
       test-kitchen (~> 1.0)
