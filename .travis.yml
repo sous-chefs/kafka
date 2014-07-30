@@ -25,5 +25,9 @@ matrix:
       gemfile: gemfiles/chef-11.8.2.gemfile
     - rvm: 2.1.0
       gemfile: gemfiles/chef-11.8.2.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/chef-11.10.4.gemfile
+    - rvm: 2.1.0
+      gemfile: gemfiles/chef-11.10.4.gemfile
   allow_failures:
     - gemfile: gemfiles/chef-11.4.4.gemfile
