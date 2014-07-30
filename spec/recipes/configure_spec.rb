@@ -984,20 +984,36 @@ describe 'kafka::_configure' do
       })
     end
 
-    it 'configures log level' do
-      expect(chef_run).to have_configured(path).with('log4j.rootLogger').as('INFO, stdout')
-      expect(chef_run).to have_configured(path).with('log4j.logger.kafka').as('INFO, kafkaAppender')
+    it 'configures root logger' do
+      expect(chef_run).to have_configured(path).with('log4j.rootLogger').as('INFO, kafkaAppender')
     end
 
-    it 'configures actual log path' do
-      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.File').as('/var/log/kafka/kafka-server.log')
+    it 'configures appenders' do
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender=org.apache.log4j.DailyRollingFileAppender')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.DatePattern').as('"."yyyy-MM-dd')
+      expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender=org.apache.log4j.DailyRollingFileAppender')
+      expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender=org.apache.log4j.DailyRollingFileAppender')
+      expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender=org.apache.log4j.DailyRollingFileAppender')
+    end
+
+    it 'configures layouts' do
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.layout').as('org.apache.log4j.PatternLayout')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.layout.ConversionPattern').as('[%d] %p %m (%c)%n')
+    end
+
+    it 'configures loggers' do
+      expect(chef_run).to have_configured(path).with('log4j.logger.org.IOItec.zkclient.ZkClient').as('INFO')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.network.RequestChannel$').as('WARN, requestAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.request.logger').as('WARN, requestAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.kafka.controller').as('INFO, controllerAppender')
+      expect(chef_run).to have_configured(path).with('log4j.logger.state.change.logger').as('INFO, stateChangeAppender')
+    end
+
+    it 'configures log path for FileAppenders' do
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.File').as('/var/log/kafka/kafka.log')
       expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender.File').as('/var/log/kafka/kafka-state-change.log')
       expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender.File').as('/var/log/kafka/kafka-request.log')
       expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender.File').as('/var/log/kafka/kafka-controller.log')
-    end
-
-    it 'configures log level for ZkClient' do
-      expect(chef_run).to have_configured(path).with('log4j.logger.org.IOItec.zkclient.ZkClient').as('INFO')
     end
   end
 
