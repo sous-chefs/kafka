@@ -2,39 +2,43 @@
 
 module Kafka
   module Log4J
-    def render_appender(name, clazz, options)
+    def render_appender(name, options)
       prefix = 'log4j.appender.%s' % name
-      content = ['%s=%s' % [prefix, clazz]]
+      content = []
       options.each do |key, value|
-        if key == 'layout'
-          content += render_layout(prefix, *value)
+        case key.to_sym
+        when :type
+          content.unshift(%(#{prefix}=#{value}))
+        when :layout
+          content += render_layout(prefix, value)
         else
-          content << [%(#{prefix}.#{camelcase(key)}), value].join('=')
+          content << %(#{prefix}.#{camelcase(key)}=#{value})
         end
       end
       content.join($/) << newline
     end
 
-    def render_logger(name, root_str, options)
-      content = []
-      content << [['log4j.logger', name].join('.') << '=' << root_str]
-      options.each do |key, value|
-        if key == 'additivity'
-          content << (['log4j', 'additivity', name].join('.') << '=' << value.to_s)
-        end
+    def render_logger(name, options)
+      level_appender = options.values_at(:level, :appender).compact.join(', ')
+      definition = 'log4j.logger.%s=%s' % [name, level_appender]
+      content = [definition]
+      unless (additivity = options[:additivity]).nil?
+        content << %(log4j.additivity.#{name}=#{additivity})
       end
       content.join($/) << newline
     end
 
     private
 
-    def render_layout(prefix, clazz, options)
+    def render_layout(prefix, options)
       layout_prefix = '%s.layout' % prefix
-      content = ['%s=%s' % [layout_prefix, clazz]]
-      options.each do |key, value|
-        content << [%(#{layout_prefix}.#{camelcase(key)}), value].join('=')
+      options.each_with_object([]) do |(k, v), acc|
+        if k.to_sym == :type
+          acc.unshift(%(#{layout_prefix}=#{v}))
+        else
+          acc << %(#{layout_prefix}.#{camelcase(k)}=#{v})
+        end
       end
-      content
     end
 
     def camelcase(s)

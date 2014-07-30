@@ -509,49 +509,68 @@ default[:kafka][:log4j][:root_logger] = 'INFO, kafkaAppender'
 #
 # Appender definitions for various classes.
 default[:kafka][:log4j][:appenders] = {
-  'kafkaAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+  'kafkaAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka.log),
-    layout: ['org.apache.log4j.PatternLayout', {
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
-    }],
-  }],
-  'stateChangeAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    },
+  },
+  'stateChangeAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-state-change.log),
-    layout: ['org.apache.log4j.PatternLayout', {
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
-    }],
-  }],
-  'requestAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    },
+  },
+  'requestAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-request.log),
-    layout: ['org.apache.log4j.PatternLayout', {
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
-    }],
-  }],
-  'controllerAppender' => ['org.apache.log4j.DailyRollingFileAppender', {
+    },
+  },
+  'controllerAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '"."yyyy-MM-dd',
     file: %(#{node[:kafka][:log_dir]}/kafka-controller.log),
-    layout: ['org.apache.log4j.PatternLayout', {
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
-    }],
-  }],
+    },
+  },
 }
+
 #
 # Logger definitions.
 default[:kafka][:log4j][:loggers] = {
-  'org.IOItec.zkclient.ZkClient' => [%(#{node[:kafka][:log_level]}), {}],
-  'kafka.network.RequestChannel$' => ['WARN, requestAppender', {
+  'org.IOItec.zkclient.ZkClient' => {
+    level: %(#{node[:kafka][:log_level]}),
+  },
+  'kafka.network.RequestChannel$' => {
+    level: 'WARN',
+    appender: 'requestAppender',
     additivity: false
-  }],
-  'kafka.request.logger' => ['WARN, requestAppender', {
-    additivity: false
-  }],
-  'kafka.controller' => ['INFO, controllerAppender', {
-    additivity: false
-  }],
-  'state.change.logger' => ['INFO, stateChangeAppender', {
-    additivity: false
-  }],
+  },
+  'kafka.request.logger' => {
+    level: 'WARN',
+    appender: 'requestAppender',
+    additivity: false,
+  },
+  'kafka.controller' => {
+    level: 'INFO',
+    appender: 'controllerAppender',
+    additivity: false,
+  },
+  'state.change.logger' => {
+    level: 'INFO',
+    appender: 'stateChangeAppender',
+    additivity: false,
+  },
 }

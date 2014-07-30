@@ -990,9 +990,15 @@ describe 'kafka::_configure' do
 
     it 'configures appenders' do
       expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender=org.apache.log4j.DailyRollingFileAppender')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.DatePattern').as('"."yyyy-MM-dd')
       expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender=org.apache.log4j.DailyRollingFileAppender')
       expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender=org.apache.log4j.DailyRollingFileAppender')
       expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender=org.apache.log4j.DailyRollingFileAppender')
+    end
+
+    it 'configures layouts' do
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.layout').as('org.apache.log4j.PatternLayout')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.layout.ConversionPattern').as('[%d] %p %m (%c)%n')
     end
 
     it 'configures loggers' do
