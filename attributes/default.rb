@@ -52,10 +52,6 @@ default.kafka.log_dir = '/var/log/kafka'
 default.kafka.log_level = 'INFO'
 
 #
-# Name of main configuration file for Kafka.
-default.kafka.config = 'server.properties'
-
-#
 # JMX port for Kafka.
 default.kafka.jmx_port = 9999
 
