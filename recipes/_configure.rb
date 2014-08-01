@@ -17,7 +17,7 @@ template ::File.join(node.kafka.config_dir, 'log4j.properties') do
   end
 end
 
-template ::File.join(node.kafka.config_dir, node.kafka.config) do
+template ::File.join(node.kafka.config_dir, 'server.properties') do
   source 'server.properties.erb'
   owner node.kafka.user
   group node.kafka.group
@@ -39,7 +39,6 @@ template kafka_init_opts[:env_path] do
   variables({
     main_class: 'kafka.Kafka',
     jmx_port: node.kafka.jmx_port,
-    config: node.kafka.config
   })
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
