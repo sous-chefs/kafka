@@ -48,10 +48,6 @@ default.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
 default.kafka.log_dir = '/var/log/kafka'
 
 #
-# Name of the Log4J configuration file that Kafka (and ZooKeeper) will use.
-default.kafka.log4j_config = 'log4j.properties'
-
-#
 # Log level for Log4J.
 default.kafka.log_level = 'INFO'
 
