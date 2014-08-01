@@ -60,7 +60,7 @@ This section describes the different recipes that exists, and how to use them.
 ### default
 
 Includes either `source` or `binary` recipe depending on what
-`node[:kafka][:install_method]` is set to (`:source, :binary`).
+`node.kafka.install_method` is set to (`:source, :binary`).
 
 ### source
 

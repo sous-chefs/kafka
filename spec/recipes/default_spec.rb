@@ -25,7 +25,7 @@ describe 'kafka::default' do
     end
   end
 
-  context 'when node[:kafka][:install_method] equals :source' do
+  context 'when node.kafka.install_method equals :source' do
     it_behaves_like 'a valid install method' do
       let :install_method do
         :source
@@ -33,7 +33,7 @@ describe 'kafka::default' do
     end
   end
 
-  context 'when node[:kafka][:install_method] equals \'source\'' do
+  context 'when node.kafka.install_method equals \'source\'' do
     it_behaves_like 'a valid install method' do
       let :install_method do
         'source'
@@ -41,7 +41,7 @@ describe 'kafka::default' do
     end
   end
 
-  context 'when node[:kafka][:install_method] equals :binary' do
+  context 'when node.kafka.install_method equals :binary' do
     it_behaves_like 'a valid install method' do
       let :install_method do
         :binary
@@ -49,7 +49,7 @@ describe 'kafka::default' do
     end
   end
 
-  context 'when node[:kafka][:install_method] equals \'binary\'' do
+  context 'when node.kafka.install_method equals \'binary\'' do
     it_behaves_like 'a valid install method' do
       let :install_method do
         'binary'
@@ -57,7 +57,7 @@ describe 'kafka::default' do
     end
   end
 
-  context 'when node[:kafka][:install_method] is something else' do
+  context 'when node.kafka.install_method is something else' do
     let :install_method do
       :bork
     end
