@@ -71,23 +71,6 @@ def kafka_binary_install?
   kafka_install_method == :binary
 end
 
-def zookeeper_connect_string
-  if node[:kafka][:zookeeper][:connect] && node[:kafka][:zookeeper][:connect].any?
-    connect_string = node[:kafka][:zookeeper][:connect].join(',')
-
-    if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
-      connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
-      connect_string << node[:kafka][:zookeeper][:path]
-    end
-
-    connect_string
-  end
-end
-
-def kafka_log_dirs_string
-  node[:kafka][:log][:dirs].join(',')
-end
-
 def kafka_init_opts
   @kafka_init_opts ||= Hash.new.tap do |opts|
     case kafka_init_style
