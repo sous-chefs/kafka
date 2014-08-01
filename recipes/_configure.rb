@@ -38,7 +38,6 @@ template kafka_init_opts[:env_path] do
   mode '644'
   variables({
     main_class: 'kafka.Kafka',
-    jmx_port: node.kafka.jmx_port,
   })
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
