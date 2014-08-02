@@ -37,21 +37,24 @@ In order to keep the README in some kind of manageable state (and thus in sync
 with attributes), attributes are documented inline (in the `attribute` files
 that is).
 
-All of the configuration parameters defined in the official Kafka documentation
-should be available as attributes (this applies to `v0.8.0`, `v0.8.1` and
-`v0.8.1.1`).
+Attributes concerning configuring of a Kafka broker are to be set under the
+`broker` namespace, and one can choose which ever syntax they prefer the most,
+the following are all valid ways to define broker configuration:
 
-Almost all of the attributes are set to `nil` by default, thus the default
-values defined in Kafka will be used instead, since the Kafka team will most
-likely be better at keeping values up-to-date, and this cookbook won't have to
-be responsible for setting "correct" default values.
+```ruby
+node.default.broker[:log_dirs] = %w[/tmp/kafka-logs]
+node.default.broker['log.dirs'] = %w[/tmp/kafka-logs]
+node.default.broker.log.dirs = %w[/tmp/kafka-logs]
+node.default[:broker][:log][:dirs] = %w[/tmp/kafka-logs]
+```
 
-Configuration attributes that are `nil` will still show up in the rendered
-configuration file, but they will be "commented".
+A warning regarding the "dotted" notation, it doesn't play very well when
+setting attributes like `default.replication.factor` or
+`fetch.purgatory.purge.interval.requests` due to fairly obvious reasons
+(`default` and `fetch` are also methods).
 
-In the case that there's a new release of Kafka and you notice that there are
-configuration parameters that are not included in this cookbook, pull requests
-are welcome.
+Refer to the official documentation for the version of Kafka that you're
+installing.
 
 ## Recipes
 
