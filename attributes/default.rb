@@ -48,10 +48,6 @@ default.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
 default.kafka.log_dir = '/var/log/kafka'
 
 #
-# Log level for Log4J.
-default.kafka.log_level = 'INFO'
-
-#
 # JMX port for Kafka.
 default.kafka.jmx_port = 9999
 
@@ -168,12 +164,12 @@ default.kafka.log4j.appenders = {
 # Logger definitions.
 default.kafka.log4j.loggers = {
   'org.IOItec.zkclient.ZkClient' => {
-    level: %(#{node.kafka.log_level}),
+    level: 'INFO',
   },
   'kafka.network.RequestChannel$' => {
     level: 'WARN',
     appender: 'requestAppender',
-    additivity: false
+    additivity: false,
   },
   'kafka.request.logger' => {
     level: 'WARN',
