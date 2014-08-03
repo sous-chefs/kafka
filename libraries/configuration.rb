@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Libraries:: kafka_configuration
+# Libraries:: configuration
 #
 
 module Kafka

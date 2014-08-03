@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Libraries:: kafka_helpers
+# Libraries:: helpers
 #
 
 def kafka_base
