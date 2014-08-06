@@ -24,8 +24,8 @@ describe 'kafka::binary' do
   it 'extracts downloaded Kafka archive' do
     expect(chef_run).to run_execute('extract-kafka').with({
       cwd: '/opt/kafka/build',
-      user: 'kafka',
-      group: 'kafka'
+      user: 'root',
+      group: 'root'
     })
   end
 
