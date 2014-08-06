@@ -14,10 +14,13 @@ kafka_download local_file_path do
 end
 
 execute 'extract-kafka' do
-  user node.kafka.user
-  group node.kafka.group
+  user 'root'
+  group 'root'
   cwd node.kafka.build_dir
-  command %(tar zxf #{local_file_path})
+  command %(
+  tar zxf #{local_file_path}
+  chown -R #{node.kafka.user}:#{node.kafka.group} #{node.kafka.build_dir}
+  )
   not_if { kafka_installed? }
 end
 
