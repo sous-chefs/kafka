@@ -58,7 +58,7 @@ installing.
 
 ## Recipes
 
-This section describes the different recipes that exists, and how to use them.
+This section describes the different recipes that are available.
 
 ### default
 
