@@ -42,10 +42,10 @@ Attributes concerning configuring of a Kafka broker are to be set under the
 the following are all valid ways to define broker configuration:
 
 ```ruby
-node.default.broker[:log_dirs] = %w[/tmp/kafka-logs]
-node.default.broker['log.dirs'] = %w[/tmp/kafka-logs]
-node.default.broker.log.dirs = %w[/tmp/kafka-logs]
-node.default[:broker][:log][:dirs] = %w[/tmp/kafka-logs]
+node.default.kafka.broker[:log_dirs] = %w[/tmp/kafka-logs]
+node.default.kafka.broker['log.dirs'] = %w[/tmp/kafka-logs]
+node.default.kafka.broker.log.dirs = %w[/tmp/kafka-logs]
+node.default[:kafka][:broker][:log][:dirs] = %w[/tmp/kafka-logs]
 ```
 
 A warning regarding the "dotted" notation, it doesn't play very well when
