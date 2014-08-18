@@ -99,7 +99,6 @@ default.kafka.automatic_restart = false
 # Kafka choking on the value when it tries to start up.
 default.kafka.broker.broker_id = node.ipaddress.gsub('.', '').to_i % 2**31
 
-# Socket server configuration
 #
 # The port on which the server accepts client connections.
 default.kafka.broker.port = 6667
