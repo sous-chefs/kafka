@@ -109,12 +109,6 @@ default.kafka.broker.port = 6667
 default.kafka.broker.host_name = node.hostname
 
 #
-# A list of directory paths in which Kafka data is stored.
-# Each new partition that is created will be placed in the directory which
-# currently has the fewest partitions.
-default.kafka.broker.log_dirs = []
-
-#
 # Root logger configuration.
 default.kafka.log4j.root_logger = 'INFO, kafkaAppender'
 
