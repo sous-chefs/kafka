@@ -25,7 +25,7 @@ end
   end
 end
 
-node.kafka.broker.log_dirs.each do |dir|
+kafka_log_dirs.each do |dir|
   directory dir do
     owner node.kafka.user
     group node.kafka.group

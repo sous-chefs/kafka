@@ -70,23 +70,55 @@ describe 'kafka::_setup' do
   end
 
   context 'log dirs for Kafka data' do
-    let :kafka_attrs do
-      {
-        broker: {
-          log_dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
-        }
-      }
+    shared_examples_for 'construction of log dirs' do
+      it 'creates a directory for each path in `log.dirs`' do
+        %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
+          expect(chef_run).to create_directory(path).with({
+            owner: 'kafka',
+            group: 'kafka',
+            mode: '755',
+            recursive: true,
+          })
+        end
+      end
     end
 
-    it 'creates a directory for each path in `log.dirs`' do
-      %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
-        expect(chef_run).to create_directory(path).with({
-          owner: 'kafka',
-          group: 'kafka',
-          mode: '755',
-          recursive: true,
-        })
+    context 'when using `underscore` notation' do
+      let :kafka_attrs do
+        {
+          broker: {
+            log_dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
+          }
+        }
       end
+
+      include_examples 'construction of log dirs'
+    end
+
+    context 'when using `nested hash` notation' do
+      let :kafka_attrs do
+        {
+          broker: {
+            log: {
+              dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
+            }
+          }
+        }
+      end
+
+      include_examples 'construction of log dirs'
+    end
+
+    context 'when using String keys' do
+      let :kafka_attrs do
+        {
+          broker: {
+            'log.dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
+          }
+        }
+      end
+
+      include_examples 'construction of log dirs'
     end
   end
 

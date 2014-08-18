@@ -119,3 +119,12 @@ def kafka_service_actions
   actions << :start if start_automatically?
   actions
 end
+
+def kafka_log_dirs
+  dirs = []
+  dirs += Array(node.kafka.broker.log_dirs)
+  dirs += Array(node.kafka.broker['log.dirs'])
+  dirs += Array(node.kafka.broker.fetch(:log, {}).fetch(:dirs, []))
+  dirs.uniq!
+  dirs
+end
