@@ -93,20 +93,10 @@ default.kafka.automatic_start = false
 default.kafka.automatic_restart = false
 
 #
-# Id of the (current) Kafka broker being set up. This must be set to a unique
-# integer for each broker.
-# NOTE: mod the broker id by the largest 32 bit unsigned int to avoid
-# Kafka choking on the value when it tries to start up.
-default.kafka.broker.broker_id = node.ipaddress.gsub('.', '').to_i % 2**31
-
-#
-# The port on which the server accepts client connections.
-default.kafka.broker.port = 6667
-
-#
-# Hostname of broker. If this is set, it will only bind to this address.
-# If this is not set, it will bind to all interfaces, and publish one to ZK.
-default.kafka.broker.host_name = node.hostname
+# `broker` namespace for configuration of a broker.
+# Initially set it to an empty Hash to avoid having `fetch(:broker, {})`
+# statements in helper methods and the alike.
+default.kafka.broker = {}
 
 #
 # Root logger configuration.
