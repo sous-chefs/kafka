@@ -1,6 +1,6 @@
 # kafka cookbook
 
-[![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
+[![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.svg?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
 Installs Kafka `v0.8.0`, and probably any newer versions.
 
