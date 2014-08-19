@@ -3,6 +3,9 @@
 # Recipe:: _configure
 #
 
+include_recipe 'kafka::_defaults'
+
+
 template ::File.join(node.kafka.config_dir, 'log4j.properties') do
   source 'log4j.properties.erb'
   owner node.kafka.user
