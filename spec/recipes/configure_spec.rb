@@ -10,6 +10,10 @@ describe 'kafka::_configure' do
     end.converge(described_recipe)
   end
 
+  let :node do
+    chef_run.node
+  end
+
   let :kafka_attributes do
     {}
   end
@@ -139,7 +143,7 @@ describe 'kafka::_configure' do
 
     it 'configures appenders' do
       expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender=org.apache.log4j.DailyRollingFileAppender')
-      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.DatePattern').as('"."yyyy-MM-dd')
+      expect(chef_run).to have_configured(path).with('log4j.appender.kafkaAppender.DatePattern').as('.yyyy-MM-dd')
       expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender=org.apache.log4j.DailyRollingFileAppender')
       expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender=org.apache.log4j.DailyRollingFileAppender')
       expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender=org.apache.log4j.DailyRollingFileAppender')
@@ -163,6 +167,13 @@ describe 'kafka::_configure' do
       expect(chef_run).to have_configured(path).with('log4j.appender.stateChangeAppender.File').as('/var/log/kafka/kafka-state-change.log')
       expect(chef_run).to have_configured(path).with('log4j.appender.requestAppender.File').as('/var/log/kafka/kafka-request.log')
       expect(chef_run).to have_configured(path).with('log4j.appender.controllerAppender.File').as('/var/log/kafka/kafka-controller.log')
+    end
+
+    it 'configures sane date patterns for appenders' do
+      expect(node.kafka.log4j.appenders).to_not be_empty
+      node.kafka.log4j.appenders.each do |_, opts|
+        expect(opts.date_pattern).to eq('.yyyy-MM-dd')
+      end
     end
   end
 
