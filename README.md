@@ -55,6 +55,7 @@ setting attributes like `default.replication.factor` or
 
 Refer to the official documentation for the version of Kafka that you're
 installing.
+Documentation for the latest release can be found [over here](https://kafka.apache.org/documentation.html#brokerconfigs).
 
 ## Recipes
 
