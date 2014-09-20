@@ -182,6 +182,7 @@ describe 'kafka::_configure' do
       ChefSpec::Runner.new(platform_and_version) do |node|
         node.set[:kafka][:scala_version] = '2.8.0'
         node.set[:kafka][:init_style] = init_style
+        node.set[:kafka][:broker] = broker_attributes
       end.converge(described_recipe)
     end
 
@@ -271,6 +272,32 @@ describe 'kafka::_configure' do
         let :source_template do
           'sysv/default.erb'
         end
+
+        context 'controlled shutdown' do
+          let :init_script do
+            r = chef_run.find_resource(:template, init_path)
+            c = ChefSpec::Renderer.new(chef_run, r).content
+            c
+          end
+
+          context 'when it is enabled' do
+            let :broker_attributes do
+              {controlled_shutdown_enable: true}
+            end
+
+            it 'does not force-kill the broker process' do
+              expect(init_script).to include('killproc -p "$PIDFILE" "$NAME" -TERM')
+              expect(init_script).to_not include('killproc -p "$PIDFILE" -d 10 "$NAME"')
+            end
+          end
+
+          context 'when it is disabled' do
+            it 'does force-kill the broker process' do
+              expect(init_script).to include('killproc -p "$PIDFILE" -d 10 "$NAME"')
+              expect(init_script).to_not include('killproc -p "$PIDFILE" "$NAME" -TERM')
+            end
+          end
+        end
       end
 
       context 'and platform is \'ubuntu\'' do
@@ -293,6 +320,32 @@ describe 'kafka::_configure' do
 
           let :source_template do
             'sysv/debian.erb'
+          end
+
+          context 'controlled shutdown' do
+            let :init_script do
+              r = chef_run.find_resource(:template, init_path)
+              c = ChefSpec::Renderer.new(chef_run, r).content
+              c
+            end
+
+            context 'when it is enabled' do
+              let :broker_attributes do
+                {controlled_shutdown_enable: true}
+              end
+
+              it 'does not force-kill the broker process' do
+                expect(init_script).to include('start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"')
+                expect(init_script).to_not include('start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"')
+              end
+            end
+
+            context 'when it is disabled' do
+              it 'does force-kill the broker process' do
+                expect(init_script).to include('start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"')
+                expect(init_script).to_not include('start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"')
+              end
+            end
           end
         end
       end
@@ -317,6 +370,32 @@ describe 'kafka::_configure' do
 
           let :source_template do
             'sysv/debian.erb'
+          end
+
+          context 'controlled shutdown' do
+            let :init_script do
+              r = chef_run.find_resource(:template, init_path)
+              c = ChefSpec::Renderer.new(chef_run, r).content
+              c
+            end
+
+            context 'when it is enabled' do
+              let :broker_attributes do
+                {controlled_shutdown_enable: true}
+              end
+
+              it 'does not force-kill the broker process' do
+                expect(init_script).to include('start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"')
+                expect(init_script).to_not include('start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"')
+              end
+            end
+
+            context 'when it is disabled' do
+              it 'does force-kill the broker process' do
+                expect(init_script).to include('start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"')
+                expect(init_script).to_not include('start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"')
+              end
+            end
           end
         end
       end
