@@ -38,13 +38,12 @@ start() {
 }
 
 stop() {
-  action "Stopping $NAME" killproc -p "$PIDFILE" -d 5 -2
+  <% if controlled_shutdown_enabled? %>
+  action "Stopping $NAME" killproc -p "$PIDFILE" "$NAME" -TERM
+  <% else %>
+  action "Stopping $NAME" killproc -p "$PIDFILE" -d 10 "$NAME"
+  <% end %>
   RETVAL=$?
-
-  if [ ! $RETVAL -eq 0 ]; then
-    killproc -p $PIDFILE -d 5
-    RETVAL=$?
-  fi
 }
 
 case "$1" in

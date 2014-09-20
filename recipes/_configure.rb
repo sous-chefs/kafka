@@ -57,6 +57,9 @@ template kafka_init_opts[:script_path] do
     port: node.kafka.broker.port,
     user: node.kafka.user
   })
+  helper :controlled_shutdown_enabled? do
+    !!broker_attribute?(:controlled, :shutdown, :enable)
+  end
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
   end

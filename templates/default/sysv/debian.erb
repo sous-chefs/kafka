@@ -38,7 +38,11 @@ do_start()
 
 do_stop()
 {
-  start-stop-daemon --stop --quiet --oknodo --retry=INT/10/TERM/5 --pidfile $PIDFILE
+  <% if controlled_shutdown_enabled? %>
+  start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"
+  <% else %>
+  start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"
+  <% end %>
 
   RETVAL="$?"
   [ "$RETVAL" = 2 ] && return 2

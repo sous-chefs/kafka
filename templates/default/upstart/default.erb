@@ -5,7 +5,7 @@ description "<%= @daemon_name %> daemon"
 start on runlevel [2345]
 stop on runlevel [016]
 
-kill signal INT
+kill signal TERM
 kill timeout 10
 
 setuid <%= @user %>

@@ -132,10 +132,10 @@ end
 def broker_attribute?(*parts)
   parts = parts.map(&:to_s)
   broker = node.kafka.broker
-  if (v = broker.fetch(parts.join('.'), nil))
+  unless (v = broker.fetch(parts.join('.'), nil)).nil?
     return v
   end
-  if (v = broker.fetch(parts.join('_'), nil))
+  unless (v = broker.fetch(parts.join('_'), nil)).nil?
     return v
   end
   key = parts.pop
