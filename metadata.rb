@@ -13,6 +13,8 @@ recipe 'kafka::binary', 'Downloads, extracts and installs Kafka from binary rele
 
 suggests 'java', '~> 1.22'
 
-%w(centos fedora debian ubuntu).each do |os|
-  supports os
-end
+supports 'centos'
+supports 'fedora'
+supports 'amazon'
+supports 'debian'
+supports 'ubuntu'

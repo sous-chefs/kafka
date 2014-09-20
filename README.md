@@ -23,6 +23,7 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 
 ### Platform
 
+* Amazon Linux
 * CentOS 6.5
 * Debian 7.4
 * Fedora 20
