@@ -81,6 +81,10 @@ default.kafka.gc_log_opts = %(-Xloggc:#{node.kafka.log_dir}/kafka-gc.log -verbos
 default.kafka.init_style = :sysv
 
 #
+# The ulimit file limit
+default.kafka.ulimit_file = '50000'
+
+#
 # Automatically start kafka service.
 default.kafka.automatic_start = false
 
