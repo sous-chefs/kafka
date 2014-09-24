@@ -82,7 +82,7 @@ default.kafka.init_style = :sysv
 
 #
 # The ulimit file limit
-default.kafka.ulimit_file = '50000'
+default.kafka.ulimit_file = nil
 
 #
 # Automatically start kafka service.
