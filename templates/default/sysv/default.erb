@@ -39,11 +39,28 @@ start() {
 
 stop() {
   <% if controlled_shutdown_enabled? %>
-  action "Stopping $NAME" killproc -p "$PIDFILE" "$NAME" -TERM
+  local pid;
+  if [ -e "$PIDFILE" ]; then pid=$(cat "$PIDFILE"); fi
+  echo -n "Stopping $NAME "
+  if checkpid $pid; then
+    kill -TERM $pid > /dev/null 2>&1;
+    RETVAL=$?
+    if (( $RETVAL == 0 )); then
+      while checkpid $pid; do sleep 1; done
+      success
+    else
+      failure
+    fi
+  else
+    success
+  fi
+  echo
+  rm -f "$PIDFILE"
   <% else %>
   action "Stopping $NAME" killproc -p "$PIDFILE" -d 10 "$NAME"
-  <% end %>
   RETVAL=$?
+  <% end %>
+  return "$RETVAL"
 }
 
 case "$1" in
