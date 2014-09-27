@@ -7,7 +7,7 @@ Installs Kafka `v0.8.0`, and probably any newer versions.
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases (`>= v0.8.0`).
+* supports both source and binary releases.
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
