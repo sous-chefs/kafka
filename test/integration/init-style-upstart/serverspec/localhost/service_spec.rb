@@ -30,6 +30,13 @@ describe 'service for upstart init style' do
         expect(kafka_service).to be_running
       end
 
+      it 'sets configured `ulimit` values' do
+        output = start_command.stdout
+        pid = output.split(' ').last.strip
+        limits = file("/proc/#{pid}/limits").content
+        expect(limits).to match(/Max open files\s+128000\s+128000\s+files/)
+      end
+
       it_behaves_like 'a kafka start command'
     end
 

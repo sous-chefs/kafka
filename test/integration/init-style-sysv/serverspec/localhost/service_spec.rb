@@ -37,6 +37,13 @@ describe 'service for sysv init style' do
         expect(pid_file.content).to_not be_empty
       end
 
+      it 'sets configured `ulimit` values' do
+        backend.run_command 'service kafka start'
+        pid = file('/var/run/kafka.pid').content.strip
+        limits = file("/proc/#{pid}/limits").content
+        expect(limits).to match(/Max open files\s+128000\s+128000\s+files/)
+      end
+
       it_behaves_like 'a kafka start command'
     end
 
