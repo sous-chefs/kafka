@@ -286,7 +286,7 @@ describe 'kafka::_configure' do
             end
 
             it 'does not force-kill the broker process' do
-              expect(init_script).to include('killproc -p "$PIDFILE" "$NAME" -TERM')
+              expect(init_script).to include('kill -TERM $pid')
               expect(init_script).to_not include('killproc -p "$PIDFILE" -d 10 "$NAME"')
             end
           end
@@ -294,7 +294,7 @@ describe 'kafka::_configure' do
           context 'when it is disabled' do
             it 'does force-kill the broker process' do
               expect(init_script).to include('killproc -p "$PIDFILE" -d 10 "$NAME"')
-              expect(init_script).to_not include('killproc -p "$PIDFILE" "$NAME" -TERM')
+              expect(init_script).to_not include('kill -TERM $pid')
             end
           end
         end
