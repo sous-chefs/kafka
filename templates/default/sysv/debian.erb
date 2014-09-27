@@ -40,13 +40,12 @@ do_stop()
 {
   <% if controlled_shutdown_enabled? %>
   start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"
+  RETVAL=$?
+  while pidofproc "$PIDFILE" "$KAFKA"; do sleep 1; done
   <% else %>
   start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"
-  <% end %>
-
   RETVAL="$?"
-  [ "$RETVAL" = 2 ] && return 2
-
+  <% end %>
   rm -f $PIDFILE
   return "$RETVAL"
 }
