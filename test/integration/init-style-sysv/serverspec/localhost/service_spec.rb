@@ -30,6 +30,13 @@ describe 'service for sysv init style' do
         expect(kafka_service).to be_running
       end
 
+      it 'creates a pid file' do
+        backend.run_command 'service kafka start'
+        pid_file = file '/var/run/kafka.pid'
+        expect(pid_file).to be_a_file
+        expect(pid_file.content).to_not be_empty
+      end
+
       it_behaves_like 'a kafka start command'
     end
 
@@ -76,6 +83,12 @@ describe 'service for sysv init style' do
         backend.run_command 'service kafka stop'
 
         expect(kafka_service).not_to be_running
+      end
+
+      it 'removes the pid file' do
+        backend.run_command 'service kafka stop'
+        pid_file = file '/var/run/kafka.pid'
+        expect(pid_file).to_not be_a_file
       end
 
       it_behaves_like 'a kafka stop command'
