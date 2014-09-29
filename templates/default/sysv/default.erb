@@ -32,6 +32,9 @@ ensure_pid() {
 
 start() {
   ensure_pid
+  <% if node.kafka.ulimit_file %>
+  ulimit -n <%= node.kafka.ulimit_file %>
+  <% end %>
   action "Starting $NAME" daemon --user=$USER --pidfile=$PIDFILE "$NOHUP $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 & echo \$! > $PIDFILE"
   RETVAL=$?
   [ $RETVAL -eq 0 ] && check_running
