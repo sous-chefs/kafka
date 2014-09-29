@@ -29,7 +29,6 @@ do_start()
   <% if node.kafka.ulimit_file %>
   ulimit -n <%= node.kafka.ulimit_file %>
   <% end %>
-
   start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
     || return 1
 
