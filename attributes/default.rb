@@ -77,7 +77,7 @@ default.kafka.gc_log_opts = %(-Xloggc:#{node.kafka.log_dir}/kafka-gc.log -verbos
 
 #
 # The type of "init" system to install scripts for. Valid values are currently
-# :sysv and :upstart.
+# :sysv, :systemd and :upstart.
 default.kafka.init_style = :sysv
 
 #

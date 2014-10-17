@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.svg?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
-Installs Kafka `v0.8.0`, and probably any newer versions.
+Installs Kafka `v0.8.1.1`, and probably any newer versions.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
@@ -24,7 +24,7 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 ### Platform
 
 * Amazon Linux
-* CentOS 6.5
+* CentOS 6.5 and 7
 * Debian 7.4
 * Fedora 20
 * Ubuntu 14.04

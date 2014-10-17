@@ -90,6 +90,7 @@ suites:
       - recipe[kafka::default]
     includes:
       - fedora-20
+      - centos-7
     attributes:
       kafka:
         init_style: 'systemd'
@@ -144,6 +145,7 @@ suites:
       - recipe[kafka::default]
     includes:
       - fedora-20
+      - centos-7
     attributes:
       kafka:
         install_method: 'source'
