@@ -5,8 +5,8 @@
 
 action :run do
   execute 'install-kafka' do
-    user  node[:kafka][:user]
-    group node[:kafka][:group]
+    user  node.kafka.user
+    group node.kafka.group
     command %(cp -r #{::File.join(new_resource.from, '*')} #{new_resource.to})
   end
 

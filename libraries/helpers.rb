@@ -1,42 +1,42 @@
 #
 # Cookbook Name:: kafka
-# Libraries:: kafka_helpers
+# Libraries:: helpers
 #
 
 def kafka_base
-  %(kafka_#{node[:kafka][:scala_version]}-#{node[:kafka][:version]})
+  %(kafka_#{node.kafka.scala_version}-#{node.kafka.version})
 end
 
 def kafka_src
-  %(kafka-#{node[:kafka][:version]}-src)
+  %(kafka-#{node.kafka.version}-src)
 end
 
 def kafka_target_path
   if kafka_binary_install?
-    ::File.join(node[:kafka][:build_dir], kafka_base)
+    ::File.join(node.kafka.build_dir, kafka_base)
   else
     if kafka_v0_8_0?
-      ::File.join(node[:kafka][:build_dir], kafka_src, 'target', 'RELEASE', kafka_base)
+      ::File.join(node.kafka.build_dir, kafka_src, 'target', 'RELEASE', kafka_base)
     else
-      ::File.join(node[:kafka][:build_dir], kafka_src, 'core', 'build', 'distributions', kafka_base)
+      ::File.join(node.kafka.build_dir, kafka_src, 'core', 'build', 'distributions', kafka_base)
     end
   end
 end
 
 def kafka_jar_path
   if kafka_v0_8_0?
-    ::File.join(node[:kafka][:install_dir], %(#{kafka_base}.jar))
+    ::File.join(node.kafka.install_dir, %(#{kafka_base}.jar))
   else
-    ::File.join(node[:kafka][:install_dir], 'libs', %(#{kafka_base}.jar))
+    ::File.join(node.kafka.install_dir, 'libs', %(#{kafka_base}.jar))
   end
 end
 
 def kafka_installed?
-  ::File.exists?(node[:kafka][:install_dir]) && ::File.exists?(kafka_jar_path)
+  ::File.exists?(node.kafka.install_dir) && ::File.exists?(kafka_jar_path)
 end
 
 def kafka_download_uri(filename)
-  [node[:kafka][:base_url], node[:kafka][:version], filename].join('/')
+  [node.kafka.base_url, node.kafka.version, filename].join('/')
 end
 
 def kafka_archive_ext
@@ -49,43 +49,26 @@ end
 
 def kafka_build_command
   if kafka_v0_8_0?
-    %(./sbt update && ./sbt "++#{node[:kafka][:scala_version]} release-zip")
+    %(./sbt update && ./sbt "++#{node.kafka.scala_version} release-zip")
   else
-    %(./gradlew -PscalaVersion=#{node[:kafka][:scala_version]} releaseTarGz -x signArchives)
+    %(./gradlew -PscalaVersion=#{node.kafka.scala_version} releaseTarGz -x signArchives)
   end
 end
 
 def kafka_v0_8_0?
-  node[:kafka][:version] == '0.8.0'
+  node.kafka.version == '0.8.0'
 end
 
 def kafka_install_method
-  node[:kafka][:install_method].to_sym
+  node.kafka.install_method.to_sym
 end
 
 def kafka_init_style
-  node[:kafka][:init_style].to_sym
+  node.kafka.init_style.to_sym
 end
 
 def kafka_binary_install?
   kafka_install_method == :binary
-end
-
-def zookeeper_connect_string
-  if node[:kafka][:zookeeper][:connect] && node[:kafka][:zookeeper][:connect].any?
-    connect_string = node[:kafka][:zookeeper][:connect].join(',')
-
-    if node[:kafka][:zookeeper][:path] && !node[:kafka][:zookeeper][:path].empty?
-      connect_string << '/' unless node[:kafka][:zookeeper][:path].start_with?('/')
-      connect_string << node[:kafka][:zookeeper][:path]
-    end
-
-    connect_string
-  end
-end
-
-def kafka_log_dirs_string
-  node[:kafka][:log][:dirs].join(',')
 end
 
 def kafka_init_opts
@@ -124,15 +107,38 @@ def kafka_init_opts
 end
 
 def start_automatically?
-  !!node[:kafka][:automatic_start] || restart_on_configuration_change?
+  !!node.kafka.automatic_start || restart_on_configuration_change?
 end
 
 def restart_on_configuration_change?
-  !!node[:kafka][:automatic_restart]
+  !!node.kafka.automatic_restart
 end
 
 def kafka_service_actions
   actions = [:enable]
   actions << :start if start_automatically?
   actions
+end
+
+def kafka_log_dirs
+  dirs = []
+  dirs += Array(node.kafka.broker['log.dirs'])
+  dirs += Array(node.kafka.broker.fetch(:log_dirs, []))
+  dirs += Array(node.kafka.broker.fetch(:log, {}).fetch(:dirs, []))
+  dirs.uniq!
+  dirs
+end
+
+def broker_attribute?(*parts)
+  parts = parts.map(&:to_s)
+  broker = node.kafka.broker
+  unless (v = broker.fetch(parts.join('.'), nil)).nil?
+    return v
+  end
+  unless (v = broker.fetch(parts.join('_'), nil)).nil?
+    return v
+  end
+  key = parts.pop
+  r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
+  r.fetch(key, nil)
 end

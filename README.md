@@ -1,13 +1,13 @@
 # kafka cookbook
 
-[![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.png?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
+[![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.svg?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 
-Installs Kafka `v0.8.0`, and probably any newer versions.
+Installs Kafka `v0.8.1.1`, and probably any newer versions.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases (`>= v0.8.0`).
+* supports both source and binary releases.
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
@@ -23,7 +23,8 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 
 ### Platform
 
-* CentOS 6.5
+* Amazon Linux
+* CentOS 6.5 and 7
 * Debian 7.4
 * Fedora 20
 * Ubuntu 14.04
@@ -37,30 +38,34 @@ In order to keep the README in some kind of manageable state (and thus in sync
 with attributes), attributes are documented inline (in the `attribute` files
 that is).
 
-All of the configuration parameters defined in the official Kafka documentation
-should be available as attributes (this applies to `v0.8.0`, `v0.8.1` and
-`v0.8.1.1`).
+Attributes concerning configuring of a Kafka broker are to be set under the
+`broker` namespace, and one can choose which ever syntax they prefer the most,
+the following are all valid ways to define broker configuration:
 
-Almost all of the attributes are set to `nil` by default, thus the default
-values defined in Kafka will be used instead, since the Kafka team will most
-likely be better at keeping values up-to-date, and this cookbook won't have to
-be responsible for setting "correct" default values.
+```ruby
+node.default.kafka.broker[:log_dirs] = %w[/tmp/kafka-logs]
+node.default.kafka.broker['log.dirs'] = %w[/tmp/kafka-logs]
+node.default.kafka.broker.log.dirs = %w[/tmp/kafka-logs]
+node.default[:kafka][:broker][:log][:dirs] = %w[/tmp/kafka-logs]
+```
 
-Configuration attributes that are `nil` will still show up in the rendered
-configuration file, but they will be "commented".
+A warning regarding the "dotted" notation, it doesn't play very well when
+setting attributes like `default.replication.factor` or
+`fetch.purgatory.purge.interval.requests` due to fairly obvious reasons
+(`default` and `fetch` are also methods).
 
-In the case that there's a new release of Kafka and you notice that there are
-configuration parameters that are not included in this cookbook, pull requests
-are welcome.
+Refer to the official documentation for the version of Kafka that you're
+installing.
+Documentation for the latest release can be found [over here](https://kafka.apache.org/documentation.html#brokerconfigs).
 
 ## Recipes
 
-This section describes the different recipes that exists, and how to use them.
+This section describes the different recipes that are available.
 
 ### default
 
 Includes either `source` or `binary` recipe depending on what
-`node[:kafka][:install_method]` is set to (`:source, :binary`).
+`node.kafka.install_method` is set to (`:source, :binary`).
 
 ### source
 

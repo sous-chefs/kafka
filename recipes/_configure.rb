@@ -3,31 +3,32 @@
 # Recipe:: _configure
 #
 
-template ::File.join(node[:kafka][:config_dir], node[:kafka][:log4j_config]) do
+include_recipe 'kafka::_defaults'
+
+
+template ::File.join(node.kafka.config_dir, 'log4j.properties') do
   source 'log4j.properties.erb'
-  owner node[:kafka][:user]
-  group node[:kafka][:group]
+  owner node.kafka.user
+  group node.kafka.group
   mode '644'
   helpers(Kafka::Log4J)
   variables({
-    config: node[:kafka][:log4j],
+    config: node.kafka.log4j,
   })
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
   end
 end
 
-template ::File.join(node[:kafka][:config_dir], node[:kafka][:config]) do
+template ::File.join(node.kafka.config_dir, 'server.properties') do
   source 'server.properties.erb'
-  owner node[:kafka][:user]
-  group node[:kafka][:group]
+  owner node.kafka.user
+  group node.kafka.group
   mode '644'
-  variables({
-    zookeeper_connect: zookeeper_connect_string,
-    log_dirs: kafka_log_dirs_string
-  })
-  helper(:config) { node[:kafka] }
-  helper(:kafka_v0_8_0?) { node[:kafka][:version] == '0.8.0' }
+  helper :config do
+    node.kafka.broker.sort_by(&:first)
+  end
+  helpers(Kafka::Configuration)
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
   end
@@ -40,9 +41,6 @@ template kafka_init_opts[:env_path] do
   mode '644'
   variables({
     main_class: 'kafka.Kafka',
-    jmx_port: node[:kafka][:jmx_port],
-    config: node[:kafka][:config],
-    log4j_config: 'log4j.properties'
   })
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
@@ -56,9 +54,12 @@ template kafka_init_opts[:script_path] do
   mode kafka_init_opts[:permissions]
   variables({
     daemon_name: 'kafka',
-    port: node[:kafka][:port],
-    user: node[:kafka][:user]
+    port: node.kafka.broker.port,
+    user: node.kafka.user
   })
+  helper :controlled_shutdown_enabled? do
+    !!broker_attribute?(:controlled, :shutdown, :enable)
+  end
   if restart_on_configuration_change?
     notifies :restart, 'service[kafka]', :delayed
   end

@@ -1,7 +1,0 @@
-<% if @value.nil? %>
-#<%= @key %>=
-<% elsif @value.respond_to?(:empty?) && @value.empty? %>
-#<%= @key %>=
-<% else %>
-<%= [@key, @value].join('=') %>
-<% end %>

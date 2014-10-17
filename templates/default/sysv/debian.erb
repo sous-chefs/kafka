@@ -26,6 +26,9 @@ PIDFILE=/var/run/$NAME.pid
 
 do_start()
 {
+  <% if node.kafka.ulimit_file %>
+  ulimit -n <%= node.kafka.ulimit_file %>
+  <% end %>
   start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
     || return 1
 
@@ -38,11 +41,14 @@ do_start()
 
 do_stop()
 {
-  start-stop-daemon --stop --quiet --oknodo --retry=INT/10/TERM/5 --pidfile $PIDFILE
-
+  <% if controlled_shutdown_enabled? %>
+  start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"
+  RETVAL=$?
+  while pidofproc "$PIDFILE" "$KAFKA"; do sleep 1; done
+  <% else %>
+  start-stop-daemon --stop --quiet --oknodo --retry=TERM/10/KILL/5 --pidfile "$PIDFILE"
   RETVAL="$?"
-  [ "$RETVAL" = 2 ] && return 2
-
+  <% end %>
   rm -f $PIDFILE
   return "$RETVAL"
 }

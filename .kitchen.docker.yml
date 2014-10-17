@@ -31,11 +31,13 @@ suites:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        zookeeper:
-          connect: ['localhost:2181']
-          connection_timeout_ms: 15_000
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', nil) %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', nil) %>
+        broker:
+          controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000
   - name: source-init-style-sysv
     run_list:
       - recipe[java::default]
@@ -44,8 +46,10 @@ suites:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         install_method: 'source'
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        zookeeper:
-          connect: ['localhost:2181']
-          connection_timeout_ms: 15_000
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', nil) %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', nil) %>
+        broker:
+          controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
+          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+          zookeeper_connect: ['localhost:2181']
+          zookeeper_connection_timeout_ms: 15_000

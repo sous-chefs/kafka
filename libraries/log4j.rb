@@ -1,4 +1,7 @@
-# encoding: utf-8
+#
+# Cookbook Name:: kafka
+# Libraries:: log4j
+#
 
 module Kafka
   module Log4J
