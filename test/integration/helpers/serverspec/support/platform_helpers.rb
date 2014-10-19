@@ -17,6 +17,10 @@ module PlatformHelpers
     family == 'fedora'
   end
 
+  def systemd?
+    family == 'fedora' || family == 'redhat7'
+  end
+
   private
 
   def family
