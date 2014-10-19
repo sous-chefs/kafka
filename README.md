@@ -30,7 +30,7 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 * Ubuntu 14.04
 
 Might work on other platforms / versions, but these are the ones that are
-included in `.kitchen.yml`, so YMMV.
+included in `.kitchen.yml` and/or tested in the wild, so YMMV.
 
 ## Attributes
 
