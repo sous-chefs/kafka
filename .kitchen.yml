@@ -58,7 +58,7 @@ suites:
     run_list:
       - recipe[java::default]
       - recipe[kafka::default]
-    exludes:
+    excludes:
       - centos-7.0
     attributes:
       kafka:
@@ -115,6 +115,8 @@ suites:
     run_list:
       - recipe[java::default]
       - recipe[kafka::default]
+    excludes:
+      - centos-7.0
     attributes:
       kafka:
         install_method: 'source'
@@ -133,7 +135,7 @@ suites:
       - recipe[kafka::default]
     includes:
       - fedora-20
-      - centos-7
+      - centos-7.0
     attributes:
       kafka:
         install_method: 'source'
