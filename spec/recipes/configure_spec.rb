@@ -457,7 +457,7 @@ describe 'kafka::_configure' do
 
         it 'restarts kafka when configuration is changed' do
           config_templates.each do |template|
-            expect(template).to notify('service[kafka]').to(:restart)
+            expect(template).to notify('ruby_block[coordinate-kafka-start]').to(:create)
           end
         end
 

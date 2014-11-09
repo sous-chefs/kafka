@@ -16,7 +16,7 @@ template ::File.join(node.kafka.config_dir, 'log4j.properties') do
     config: node.kafka.log4j,
   })
   if restart_on_configuration_change?
-    notifies :restart, 'service[kafka]', :delayed
+    notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
   end
 end
 
@@ -30,7 +30,7 @@ template ::File.join(node.kafka.config_dir, 'server.properties') do
   end
   helpers(Kafka::Configuration)
   if restart_on_configuration_change?
-    notifies :restart, 'service[kafka]', :delayed
+    notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
   end
 end
 
@@ -43,7 +43,7 @@ template kafka_init_opts[:env_path] do
     main_class: 'kafka.Kafka',
   })
   if restart_on_configuration_change?
-    notifies :restart, 'service[kafka]', :delayed
+    notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
   end
 end
 
@@ -61,12 +61,8 @@ template kafka_init_opts[:script_path] do
     !!broker_attribute?(:controlled, :shutdown, :enable)
   end
   if restart_on_configuration_change?
-    notifies :restart, 'service[kafka]', :delayed
+    notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
   end
 end
 
-service 'kafka' do
-  provider kafka_init_opts[:provider]
-  supports start: true, stop: true, restart: true, status: true
-  action kafka_service_actions
-end
+include_recipe node.kafka.start_coordination.recipe

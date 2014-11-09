@@ -97,6 +97,13 @@ default.kafka.automatic_start = false
 default.kafka.automatic_restart = false
 
 #
+# Attribute to set the recipe to used to coordinate Kafka service start
+# if nothing is set the default recipe "coordiante" will be used
+# Refer to issue #58 for details
+#
+default.kafka.start_coordination.recipe = 'kafka::_coordinate'
+
+#
 # `broker` namespace for configuration of a broker.
 # Initially set it to an empty Hash to avoid having `fetch(:broker, {})`
 # statements in helper methods and the alike.
