@@ -4,9 +4,10 @@
 # Function:: Default recipe to start/restart Kafka service
 #            Refer issue #58 for details
 #
-ruby_block "coordinate-kafka-start" do
+
+ruby_block 'coordinate-kafka-start' do
   block do
-    Chef::Log.debug ("Default recipe to coordinate Kafka start is used")
+    Chef::Log.debug 'Default recipe to coordinate Kafka start is used'
   end
   action :nothing
   notifies :restart, 'service[kafka]', :delayed
