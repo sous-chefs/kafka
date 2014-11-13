@@ -469,7 +469,7 @@ describe 'kafka::_configure' do
       context 'by default' do
         it 'does not restart kafka on configuration changes' do
           config_templates.each do |template|
-            expect(template).not_to notify('service[kafka]').to(:restart)
+            expect(template).not_to notify('ruby_block[coordinate-kafka-start]').to(:create)
           end
         end
       end
@@ -506,6 +506,16 @@ describe 'kafka::_configure' do
         it 'starts kafka' do
           expect(chef_run).to start_service('kafka')
         end
+      end
+    end
+
+    context 'coordination recipe' do
+      it 'includes a recipe for coordinating starts / restarts' do
+        expect(chef_run).to include_recipe('kafka::_coordinate')
+      end
+
+      it 'creates a ruby_block that does nothing' do
+        expect(chef_run.ruby_block('coordinate-kafka-start')).to do_nothing
       end
     end
   end
