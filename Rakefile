@@ -1,9 +1,17 @@
 # encoding: utf-8
 
 require 'rspec/core/rake_task'
+require 'foodcritic'
 require 'tmpdir'
 
 RSpec::Core::RakeTask.new(:spec)
+FoodCritic::Rake::LintTask.new
+
+desc 'Run ChefSpec and FoodCritic'
+task :test do
+  Rake::Task['foodcritic'].execute
+  Rake::Task['spec'].execute
+end
 
 desc 'Package the latest version as a .tar.gz archive'
 task :package => :spec do
