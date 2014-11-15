@@ -40,10 +40,6 @@ default.kafka.install_dir = '/opt/kafka'
 default.kafka.build_dir = ::File.join(Chef::Config[:file_cache_path], 'kafka-build')
 
 #
-# Directory where to keep Kafka configuration files.
-default.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
-
-#
 # Directory where to store logs from Kafka.
 default.kafka.log_dir = '/var/log/kafka'
 

@@ -20,3 +20,7 @@ node.default_unless.kafka.gc_log_opts = %W[
   -XX:+PrintGCDateStamps
   -XX:+PrintGCTimeStamps
 ].join(' ')
+
+#
+# Directory where to keep Kafka configuration files.
+node.default_unless.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
