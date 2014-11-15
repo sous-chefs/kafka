@@ -11,8 +11,6 @@ unless broker_attribute?(:port)
   node.default.kafka.broker.port = 6667
 end
 
-#
-# GC log options for Kafka.
 node.default_unless.kafka.gc_log_opts = %W[
   -Xloggc:#{node.kafka.log_dir}/kafka-gc.log
   -verbose:gc
@@ -20,17 +18,8 @@ node.default_unless.kafka.gc_log_opts = %W[
   -XX:+PrintGCDateStamps
   -XX:+PrintGCTimeStamps
 ].join(' ')
-
-#
-# Directory where to keep Kafka configuration files.
 node.default_unless.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
-
-#
-# Root logger configuration.
 node.default_unless.kafka.log4j.root_logger = 'INFO, kafkaAppender'
-
-#
-# Appender definitions for various classes.
 node.default_unless.kafka.log4j.appenders = {
   'kafkaAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
@@ -69,9 +58,6 @@ node.default_unless.kafka.log4j.appenders = {
     },
   },
 }
-
-#
-# Logger definitions.
 node.default_unless.kafka.log4j.loggers = {
   'org.IOItec.zkclient.ZkClient' => {
     level: 'INFO',
