@@ -3,6 +3,8 @@
 # Provider:: install
 #
 
+use_inline_resources
+
 action :run do
   execute 'install-kafka' do
     user  node.kafka.user
@@ -13,4 +15,6 @@ action :run do
   execute 'remove-kafka-build' do
     command %(rm -rf #{new_resource.from})
   end
+
+  new_resource.updated_by_last_action(true)
 end
