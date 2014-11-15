@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
 group :test do
+  gem 'rake'
+  gem 'foodcritic'
   gem 'berkshelf'
   gem 'chef', '= 11.10.4'
   gem 'rspec', '= 2.14.1'
