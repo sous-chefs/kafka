@@ -72,10 +72,6 @@ default.kafka.generic_opts = nil
 default.kafka.jvm_performance_opts = '-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true'
 
 #
-# GC log options for Kafka.
-default.kafka.gc_log_opts = %(-Xloggc:#{node.kafka.log_dir}/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps)
-
-#
 # The type of "init" system to install scripts for. Valid values are currently
 # :sysv, :systemd and :upstart.
 default.kafka.init_style = :sysv
