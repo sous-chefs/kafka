@@ -44,10 +44,6 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(path).with('port').as(6667)
       end
 
-      it 'sets host.name from `node#hostname`' do
-        expect(chef_run).to have_configured(path).with('host.name').as('Fauxhai')
-      end
-
       context 'when broker id is larger than 2**31' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
