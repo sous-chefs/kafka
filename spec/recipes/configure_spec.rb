@@ -7,7 +7,11 @@ describe 'kafka::_configure' do
     ChefSpec::Runner.new do |node|
       node.set[:kafka] = kafka_attributes
       node.set[:kafka][:broker] = broker_attributes
-    end.converge(described_recipe)
+    end.converge(*described_recipes)
+  end
+
+  let :described_recipes do
+    ['kafka::_defaults', described_recipe]
   end
 
   let :node do
@@ -48,7 +52,7 @@ describe 'kafka::_configure' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
             node.automatic[:ipaddress] = '255.255.255.255'
-          end.converge(described_recipe)
+          end.converge(*described_recipes)
         end
 
         it 'mod\'s it by 2**31' do
@@ -179,7 +183,7 @@ describe 'kafka::_configure' do
         node.set[:kafka][:scala_version] = '2.8.0'
         node.set[:kafka][:init_style] = init_style
         node.set[:kafka][:broker] = broker_attributes
-      end.converge(described_recipe)
+      end.converge(*described_recipes)
     end
 
     let :platform_and_version do

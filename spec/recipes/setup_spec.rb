@@ -6,7 +6,7 @@ describe 'kafka::_setup' do
   let :chef_run do
     ChefSpec::Runner.new do |node|
       node.set[:kafka] = kafka_attrs
-    end.converge(described_recipe)
+    end.converge('kafka::_defaults', described_recipe)
   end
 
   let :kafka_attrs do
