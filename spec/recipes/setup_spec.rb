@@ -54,7 +54,7 @@ describe 'kafka::_setup' do
   end
 
   it 'creates build directory' do
-    expect(chef_run).to create_directory('/opt/kafka/build').with({
+    expect(chef_run).to create_directory(%(#{Chef::Config[:file_cache_path]}/kafka-build)).with({
       owner: 'kafka',
       group: 'kafka',
       mode: '755'

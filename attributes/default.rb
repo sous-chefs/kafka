@@ -37,7 +37,7 @@ default.kafka.install_dir = '/opt/kafka'
 #
 # Directory where the downloaded archive will be extracted to, and possibly
 # compiled in.
-default.kafka.build_dir = ::File.join(node.kafka.install_dir, 'build')
+default.kafka.build_dir = ::File.join(Chef::Config[:file_cache_path], 'kafka-build')
 
 #
 # Directory where to keep Kafka configuration files.
