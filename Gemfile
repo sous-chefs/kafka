@@ -11,4 +11,5 @@ group :test do
   gem 'kitchen-vagrant'
   gem 'kitchen-docker'
   gem 'busser-serverspec'
+  gem 'foodcritic'
 end
