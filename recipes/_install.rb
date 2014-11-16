@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: kafka
-# Recipe:: binary
+# Recipe:: _install
 #
 
 kafka_tar_gz = [kafka_base, kafka_archive_ext].join('.')

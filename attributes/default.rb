@@ -27,10 +27,6 @@ default.kafka.md5_checksum = '7541ed160f1b3aa1a5334d4e782ba4d3'
 default.kafka.scala_version = '2.9.2'
 
 #
-# Decides how to install Kafka, valid values are currently :binary and :source.
-default.kafka.install_method = :binary
-
-#
 # Directory where to install Kafka.
 default.kafka.install_dir = '/opt/kafka'
 

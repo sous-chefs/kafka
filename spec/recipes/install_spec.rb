@@ -2,11 +2,10 @@
 
 require 'spec_helper'
 
-describe 'kafka::binary' do
+describe 'kafka::_install' do
   let :chef_run do
-    ChefSpec::Runner.new(step_into: %w(kafka_download kafka_install)) do |node|
-      node.set[:kafka][:install_method] = :binary
-    end.converge(described_recipe)
+    r = ChefSpec::Runner.new(step_into: %w(kafka_download kafka_install))
+    r.converge(described_recipe)
   end
 
   it 'downloads remote binary release of Kafka' do
