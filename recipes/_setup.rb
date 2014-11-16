@@ -7,8 +7,8 @@ group node.kafka.group
 
 user node.kafka.user do
   gid node.kafka.group
+  home node.kafka.install_dir
   shell '/sbin/nologin'
-  supports(manage_home: false)
 end
 
 [
