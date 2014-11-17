@@ -13,6 +13,18 @@ kafka_download local_file_path do
   not_if { kafka_installed? }
 end
 
+directory "#{node.kafka.install_dir}/libs" do
+  recursive true
+  action :delete
+  not_if { kafka_installed? }
+end
+
+directory "#{node.kafka.install_dir}/bin" do
+  recursive true
+  action :delete
+  not_if { kafka_installed? }
+end
+
 execute 'compile-kafka' do
   cwd node.kafka.build_dir
   command <<-EOH.gsub(/^\s+/, '')
