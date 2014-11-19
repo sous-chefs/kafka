@@ -22,7 +22,7 @@ execute 'extract-kafka' do
   not_if { kafka_installed? }
 end
 
-kafka_install node.kafka.install_dir do
+kafka_install node.kafka.version_install_dir do
   from kafka_target_path
   not_if { kafka_installed? }
 end

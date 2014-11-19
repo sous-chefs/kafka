@@ -31,6 +31,11 @@ default.kafka.scala_version = '2.9.2'
 default.kafka.install_dir = '/opt/kafka'
 
 #
+# Directory where to install *this* version of Kafka.
+# For actual default value see `_defaults` recipe.
+default.kafka.version_install_dir = nil
+
+#
 # Directory where the downloaded archive will be extracted to, and possibly
 # compiled in.
 default.kafka.build_dir = ::File.join(Chef::Config[:file_cache_path], 'kafka-build')

@@ -22,3 +22,7 @@ end
 unless node.kafka.config_dir
   node.default.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
 end
+
+unless node.kafka.version_install_dir
+  node.default.kafka.version_install_dir = %(#{node.kafka.install_dir}-#{node.kafka.version})
+end

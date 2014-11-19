@@ -3,6 +3,13 @@
 # Recipe:: _configure
 #
 
+directory node.kafka.config_dir do
+  owner node.kafka.user
+  group node.kafka.group
+  mode '755'
+  recursive true
+end
+
 template ::File.join(node.kafka.config_dir, 'log4j.properties') do
   source 'log4j.properties.erb'
   owner node.kafka.user
