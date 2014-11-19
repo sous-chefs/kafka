@@ -7,7 +7,6 @@ Installs Kafka `v0.8.1.1`, and probably any newer versions.
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:
 
-* supports both source and binary releases.
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
@@ -63,16 +62,6 @@ Documentation for the latest release can be found [over here](https://kafka.apac
 This section describes the different recipes that are available.
 
 ### default
-
-Includes either `source` or `binary` recipe depending on what
-`node.kafka.install_method` is set to (`:source, :binary`).
-
-### source
-
-Downloads, compiles and installs Kafka from the official source releases.
-Defaults to installing `v0.8.1.1` of Kafka.
-
-### binary
 
 Downloads and installs Kafka from the official binary releases.
 Defaults to installing `v0.8.1.1` of Kafka.
