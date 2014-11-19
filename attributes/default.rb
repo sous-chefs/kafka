@@ -37,11 +37,7 @@ default.kafka.install_dir = '/opt/kafka'
 #
 # Directory where the downloaded archive will be extracted to, and possibly
 # compiled in.
-default.kafka.build_dir = ::File.join(node.kafka.install_dir, 'build')
-
-#
-# Directory where to keep Kafka configuration files.
-default.kafka.config_dir = ::File.join(node.kafka.install_dir, 'config')
+default.kafka.build_dir = ::File.join(Chef::Config[:file_cache_path], 'kafka-build')
 
 #
 # Directory where to store logs from Kafka.
@@ -70,10 +66,6 @@ default.kafka.generic_opts = nil
 #
 # JVM Performance options for Kafka.
 default.kafka.jvm_performance_opts = '-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true'
-
-#
-# GC log options for Kafka.
-default.kafka.gc_log_opts = %(-Xloggc:#{node.kafka.log_dir}/kafka-gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps)
 
 #
 # The type of "init" system to install scripts for. Valid values are currently
@@ -108,76 +100,3 @@ default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 # Initially set it to an empty Hash to avoid having `fetch(:broker, {})`
 # statements in helper methods and the alike.
 default.kafka.broker = {}
-
-#
-# Root logger configuration.
-default.kafka.log4j.root_logger = 'INFO, kafkaAppender'
-
-#
-# Appender definitions for various classes.
-default.kafka.log4j.appenders = {
-  'kafkaAppender' => {
-    type: 'org.apache.log4j.DailyRollingFileAppender',
-    date_pattern: '.yyyy-MM-dd',
-    file: %(#{node.kafka.log_dir}/kafka.log),
-    layout: {
-      type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
-  },
-  'stateChangeAppender' => {
-    type: 'org.apache.log4j.DailyRollingFileAppender',
-    date_pattern: '.yyyy-MM-dd',
-    file: %(#{node.kafka.log_dir}/kafka-state-change.log),
-    layout: {
-      type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
-  },
-  'requestAppender' => {
-    type: 'org.apache.log4j.DailyRollingFileAppender',
-    date_pattern: '.yyyy-MM-dd',
-    file: %(#{node.kafka.log_dir}/kafka-request.log),
-    layout: {
-      type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
-  },
-  'controllerAppender' => {
-    type: 'org.apache.log4j.DailyRollingFileAppender',
-    date_pattern: '.yyyy-MM-dd',
-    file: %(#{node.kafka.log_dir}/kafka-controller.log),
-    layout: {
-      type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
-  },
-}
-
-#
-# Logger definitions.
-default.kafka.log4j.loggers = {
-  'org.IOItec.zkclient.ZkClient' => {
-    level: 'INFO',
-  },
-  'kafka.network.RequestChannel$' => {
-    level: 'WARN',
-    appender: 'requestAppender',
-    additivity: false,
-  },
-  'kafka.request.logger' => {
-    level: 'WARN',
-    appender: 'requestAppender',
-    additivity: false,
-  },
-  'kafka.controller' => {
-    level: 'INFO',
-    appender: 'controllerAppender',
-    additivity: false,
-  },
-  'state.change.logger' => {
-    level: 'INFO',
-    appender: 'stateChangeAppender',
-    additivity: false,
-  },
-}

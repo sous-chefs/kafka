@@ -6,7 +6,7 @@ describe 'kafka::_setup' do
   let :chef_run do
     ChefSpec::Runner.new do |node|
       node.set[:kafka] = kafka_attrs
-    end.converge(described_recipe)
+    end.converge('kafka::_defaults', described_recipe)
   end
 
   let :kafka_attrs do
@@ -54,7 +54,7 @@ describe 'kafka::_setup' do
   end
 
   it 'creates build directory' do
-    expect(chef_run).to create_directory('/opt/kafka/build').with({
+    expect(chef_run).to create_directory(%(#{Chef::Config[:file_cache_path]}/kafka-build)).with({
       owner: 'kafka',
       group: 'kafka',
       mode: '755'

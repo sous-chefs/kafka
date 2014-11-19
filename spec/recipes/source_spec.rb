@@ -43,7 +43,7 @@ describe 'kafka::source' do
       end
 
       it 'runs execute block' do
-        expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+        expect(chef_run).to run_execute('compile-kafka').with_cwd(%(#{Chef::Config[:file_cache_path]}/kafka-build))
       end
 
       it 'uses sbt' do
@@ -62,7 +62,7 @@ describe 'kafka::source' do
       end
 
       it 'runs execute block' do
-        expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+        expect(chef_run).to run_execute('compile-kafka').with_cwd(%(#{Chef::Config[:file_cache_path]}/kafka-build))
       end
 
       it 'uses gradle' do
@@ -76,7 +76,7 @@ describe 'kafka::source' do
       end
 
       it 'runs execute block' do
-        expect(chef_run).to run_execute('compile-kafka').with_cwd('/opt/kafka/build')
+        expect(chef_run).to run_execute('compile-kafka').with_cwd(%(#{Chef::Config[:file_cache_path]}/kafka-build))
       end
 
       it 'uses gradle' do
