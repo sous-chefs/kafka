@@ -121,7 +121,7 @@ describe 'service for systemd init style' do
   describe 'service kafka status' do
     context 'when kafka is running' do
       before do
-        backend.run_command 'systemctl restart kafka.service 2> /dev/null || true'
+        backend.run_command 'sleep 10 && systemctl restart kafka.service 2> /dev/null || true'
       end
 
       it 'exits with status 0' do
