@@ -14,8 +14,6 @@ kafka_download local_file_path do
 end
 
 execute 'extract-kafka' do
-  user 'root'
-  group 'root'
   cwd node.kafka.build_dir
   command <<-EOH.gsub(/^\s+/, '')
     tar zxf #{local_file_path} && \
