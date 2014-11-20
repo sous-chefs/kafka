@@ -432,7 +432,7 @@ describe 'kafka::_configure' do
         end
 
         let :init_path do
-          '/etc/systemd/system/kafka.service'
+          '/usr/lib/systemd/system/kafka.service'
         end
 
         let :env_path do
