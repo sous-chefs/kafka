@@ -446,6 +446,34 @@ describe 'kafka::_configure' do
         let :source_template do
           'systemd/default.erb'
         end
+
+        context 'and platform is \'debian\'' do
+          it_behaves_like 'an init style' do
+            let :platform_and_version do
+              {platform: 'debian', version: '7.2'}
+            end
+
+            let :init_style do
+              'systemd'
+            end
+
+            let :init_path do
+              '/usr/lib/systemd/system/kafka.service'
+            end
+
+            let :env_path do
+              '/etc/default/kafka'
+            end
+
+            let :script_permissions do
+              '644'
+            end
+
+            let :source_template do
+              'systemd/default.erb'
+            end
+          end
+        end
       end
     end
   end
