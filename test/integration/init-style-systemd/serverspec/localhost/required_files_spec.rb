@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'required files for systemd init style' do
+describe 'required files for upstart init style' do
   describe 'environment file' do
     let :env_file do
       file '/etc/sysconfig/kafka'
@@ -27,7 +27,7 @@ describe 'required files for systemd init style' do
 
   describe 'init configuration' do
     let :init_file do
-      file '/usr/lib/systemd/system/kafka.service'
+      file '/etc/systemd/system/kafka.service'
     end
 
     it 'exists' do
