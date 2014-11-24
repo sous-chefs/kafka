@@ -3,7 +3,7 @@ Description=<%= @daemon_name %> daemon
 
 [Service]
 User=<%= @user %>
-EnvironmentFile=/etc/sysconfig/<%= @daemon_name %>
+EnvironmentFile=<%= @env_path %>
 ExecStart=/bin/bash $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
 TimeoutSec=10
 

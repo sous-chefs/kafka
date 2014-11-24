@@ -52,7 +52,8 @@ template kafka_init_opts[:script_path] do
   variables({
     daemon_name: 'kafka',
     port: node.kafka.broker.port,
-    user: node.kafka.user
+    user: node.kafka.user,
+    env_path: kafka_init_opts[:env_path],
   })
   helper :controlled_shutdown_enabled? do
     !!broker_attribute?(:controlled, :shutdown, :enable)
