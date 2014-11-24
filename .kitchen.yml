@@ -84,6 +84,7 @@ suites:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
         md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        ulimit_file: 128000
         broker:
           controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
           log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
