@@ -6,8 +6,8 @@ User=<%= @user %>
 EnvironmentFile=<%= @env_path %>
 ExecStart=/bin/bash $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
 TimeoutSec=10
-<%= if node.kafka.ulimit_file %>
-LimitNOFILE=<%= node.kafka.ulimit_file %>
+<% if node.kafka.ulimit_file %>
+LimitNOFILE=<%= node.kafka.ulimit_file -%>
 <% end %>
 
 [Install]
