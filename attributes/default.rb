@@ -71,7 +71,16 @@ default.kafka.gc_log_opts = nil
 
 #
 # JVM Performance options for Kafka.
-default.kafka.jvm_performance_opts = '-server -XX:+UseCompressedOops -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSScavengeBeforeRemark -XX:+DisableExplicitGC -Djava.awt.headless=true'
+default.kafka.jvm_performance_opts = %w[
+  -server
+  -XX:+UseCompressedOops
+  -XX:+UseParNewGC
+  -XX:+UseConcMarkSweepGC
+  -XX:+CMSClassUnloadingEnabled
+  -XX:+CMSScavengeBeforeRemark
+  -XX:+DisableExplicitGC
+  -Djava.awt.headless=true
+].join(' ')
 
 #
 # The type of "init" system to install scripts for. Valid values are currently
