@@ -15,7 +15,11 @@ module Kafka
         when :layout
           content += render_layout(prefix, value)
         else
-          content << %(#{prefix}.#{camelcase(key)}=#{value})
+          if value.respond_to?(:call)
+            content << %(#{prefix}.#{camelcase(key)}=#{value.call})
+          else
+            content << %(#{prefix}.#{camelcase(key)}=#{value})
+          end
         end
       end
       content.join($/) << newline

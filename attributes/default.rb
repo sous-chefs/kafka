@@ -40,6 +40,11 @@ default.kafka.build_dir = ::File.join(Chef::Config[:file_cache_path], 'kafka-bui
 default.kafka.log_dir = '/var/log/kafka'
 
 #
+# Directory where to keep Kafka configuration files. For the
+# actual default value see `_defaults` recipe.
+default.kafka.config_dir = nil
+
+#
 # JMX port for Kafka.
 default.kafka.jmx_port = 9999
 
@@ -58,6 +63,11 @@ default.kafka.heap_opts = '-Xmx1G -Xms1G'
 #
 # Generic JVM options for Kafka.
 default.kafka.generic_opts = nil
+
+#
+# GC log options for Kafka. For the actual default value
+# see `_defaults` recipe.
+default.kafka.gc_log_opts = nil
 
 #
 # JVM Performance options for Kafka.
@@ -96,3 +106,76 @@ default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 # Initially set it to an empty Hash to avoid having `fetch(:broker, {})`
 # statements in helper methods and the alike.
 default.kafka.broker = {}
+
+#
+# Root logger level and appender.
+default.kafka.log4j.root_logger = 'INFO, kafkaAppender'
+
+#
+# Appender definitions for various Kafka classes.
+default.kafka.log4j.appenders = {
+  'kafkaAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
+    date_pattern: '.yyyy-MM-dd',
+    file: lazy { %(#{node.kafka.log_dir}/kafka.log) },
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    },
+  },
+  'stateChangeAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
+    date_pattern: '.yyyy-MM-dd',
+    file: lazy { %(#{node.kafka.log_dir}/kafka-state-change.log) },
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    },
+  },
+  'requestAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
+    date_pattern: '.yyyy-MM-dd',
+    file: lazy { %(#{node.kafka.log_dir}/kafka-request.log) },
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    },
+  },
+  'controllerAppender' => {
+    type: 'org.apache.log4j.DailyRollingFileAppender',
+    date_pattern: '.yyyy-MM-dd',
+    file: lazy { %(#{node.kafka.log_dir}/kafka-controller.log) },
+    layout: {
+      type: 'org.apache.log4j.PatternLayout',
+      conversion_pattern: '[%d] %p %m (%c)%n',
+    },
+  },
+}
+
+#
+# Logger definitions.
+default.kafka.log4j.loggers = {
+  'org.IOItec.zkclient.ZkClient' => {
+    level: 'INFO',
+  },
+  'kafka.network.RequestChannel$' => {
+    level: 'WARN',
+    appender: 'requestAppender',
+    additivity: false,
+  },
+  'kafka.request.logger' => {
+    level: 'WARN',
+    appender: 'requestAppender',
+    additivity: false,
+  },
+  'kafka.controller' => {
+    level: 'INFO',
+    appender: 'controllerAppender',
+    additivity: false,
+  },
+  'state.change.logger' => {
+    level: 'INFO',
+    appender: 'stateChangeAppender',
+    additivity: false,
+  },
+}
