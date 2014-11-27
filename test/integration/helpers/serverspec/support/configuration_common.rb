@@ -11,7 +11,7 @@ shared_examples_for 'a _setup recipe' do
     it { should exist }
     it { should belong_to_group('kafka') }
     it { should have_login_shell('/sbin/nologin') }
-    it { should have_home_directory('/opt/kafka') }
+    it { should have_home_directory('/var/empty/kafka') }
   end
 
   describe file('/home/kafka') do
@@ -19,10 +19,14 @@ shared_examples_for 'a _setup recipe' do
     it { should_not be_a_directory }
   end
 
-  describe '/opt/kafka' do
+  describe file('/opt/kafka') do
+    it { should be_linked_to('/opt/kafka-0.8.1.1') }
+  end
+
+  describe '/opt/kafka-0.8.1.1' do
     it_behaves_like 'a kafka directory', skip_files: true do
       let :path do
-        '/opt/kafka'
+        '/opt/kafka-0.8.1.1'
       end
     end
   end

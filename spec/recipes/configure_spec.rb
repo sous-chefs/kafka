@@ -26,6 +26,14 @@ describe 'kafka::_configure' do
     {}
   end
 
+  it 'creates config directory' do
+    expect(chef_run).to create_directory('/opt/kafka/config').with({
+      owner: 'kafka',
+      group: 'kafka',
+      mode: '755'
+    })
+  end
+
   describe 'broker configuration file' do
     let :path do
       '/opt/kafka/config/server.properties'

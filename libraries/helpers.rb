@@ -7,6 +7,14 @@ def kafka_base
   %(kafka_#{node.kafka.scala_version}-#{node.kafka.version})
 end
 
+def kafka_tar_gz
+  [kafka_base, kafka_archive_ext].join('.')
+end
+
+def kafka_local_download_path
+  ::File.join(Chef::Config.file_cache_path, kafka_tar_gz)
+end
+
 def kafka_target_path
   ::File.join(node.kafka.build_dir, kafka_base)
 end

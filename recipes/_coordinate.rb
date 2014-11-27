@@ -1,8 +1,6 @@
 #
 # Cookbook Name:: kafka
 # Recipe:: _coordinate
-# Function:: Default recipe to start/restart Kafka service
-#            Refer issue #58 for details
 #
 
 ruby_block 'coordinate-kafka-start' do
