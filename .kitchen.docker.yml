@@ -1,8 +1,7 @@
 ---
 driver:
   name: docker
-  socket: tcp://localhost:4243
-  require_chef_omnibus: true
+  require_chef_omnibus: '11.16.4'
   memory: '512m'
 
 provisioner:
@@ -10,6 +9,8 @@ provisioner:
 
 platforms:
   - name: centos-6.4
+    driver_config:
+      provision_command: yum install -y tar
     attributes:
       java:
         jdk_version: 7
@@ -31,8 +32,9 @@ suites:
       kafka:
         version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
         scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', nil) %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', nil) %>
+        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+        ulimit_file: 128000
         broker:
           controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
           log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
