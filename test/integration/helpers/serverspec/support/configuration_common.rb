@@ -20,15 +20,7 @@ shared_examples_for 'a _setup recipe' do
   end
 
   describe file('/opt/kafka') do
-    it { should be_linked_to('/opt/kafka-0.8.1.1') }
-  end
-
-  describe '/opt/kafka-0.8.1.1' do
-    it_behaves_like 'a kafka directory', skip_files: true do
-      let :path do
-        '/opt/kafka-0.8.1.1'
-      end
-    end
+    it { should be_a_directory }
   end
 
   describe '/opt/kafka/config' do

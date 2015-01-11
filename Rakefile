@@ -50,19 +50,22 @@ end
 desc 'Test all v0.8.x versions'
 namespace :test do
   task :docker do
-    docker_vm_running = %x{boot2docker status} && $?.success?
+    docker_status = %x{boot2docker status}.strip
 
-    unless docker_vm_running
+    if docker_status != 'running'
+      %x{boot2docker poweroff}
       %x{boot2docker up}
     end
 
-    versions = %w[0.8.0 0.8.1 0.8.1.1]
+    versions = %w[0.8.0 0.8.1 0.8.1.1 0.8.2-beta]
     versions.each do |version|
+      puts '>>> Start testing version %s' % version
       envs = []
-      envs << %(KITCHEN_LOCAL_YAML=.kitchen.docker.yml)
+      envs << %(KITCHEN_LOCAL_YAML='.kitchen.docker.yml')
       envs << %(KAFKA_VERSION=#{version})
       envs << %(SCALA_VERSION=2.8.0) if version == '0.8.0'
       envs = envs.join(' ')
+      output = []
 
       rd, wr = IO.pipe
       pid = Process.fork do
@@ -72,10 +75,16 @@ namespace :test do
       end
       wr.close
       rd.each do |line|
-        puts line
+        output << line
       end
       _, status = Process.waitpid2(pid)
-      break unless status.success?
+      if status.success?
+        puts '>>> Done testing version %s' % version
+      else
+        puts output
+        puts '>>> Run failed, see output above ^'
+        break
+      end
     end
   end
 end
