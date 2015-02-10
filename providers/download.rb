@@ -8,11 +8,12 @@ use_inline_resources
 action :create do
   local_file_path = new_resource.name
   known_md5 = new_resource.md5_checksum
+  sha256 = new_resource.checksum
 
   remote_file local_file_path do
     source   new_resource.source
     mode     new_resource.mode
-    checksum new_resource.checksum
+    checksum sha256 if sha256 && !sha256.empty?
     notifies :create, 'ruby_block[kafka-validate-download]', :immediately
   end
 
