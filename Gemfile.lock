@@ -180,7 +180,7 @@ GEM
       dep_selector (~> 1.0)
       semverse (~> 1.1)
     systemu (2.5.2)
-    test-kitchen (1.3.0)
+    test-kitchen (1.3.1)
       mixlib-shellout (>= 1.2, < 3.0)
       net-scp (~> 1.1)
       net-ssh (~> 2.7)
