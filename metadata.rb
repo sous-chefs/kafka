@@ -8,7 +8,7 @@ description      'Installs and configures a Kafka broker'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.7.1'
 
-recipe 'kafka::default', 'Downloads, compiles and installs Kafka from binary releases'
+recipe 'kafka::default', 'Downloads and installs Kafka from binary releases'
 
 suggests 'java', '~> 1.22'
 
