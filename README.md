@@ -138,6 +138,51 @@ end
 
 Please refer to [issue #58](https://github.com/mthssdrbrg/kafka-cookbook/issues/58) for background of this feature.
 
+## FAQ
+
+### Kafka dies for no apparent reason (ulimit)
+
+Depending on your system / infrastructure setup you might run into issues with
+Kafka just sporadically dying for no obvious reason.
+One thing you might want to look into is the file handle limit as Kafka tend to
+keep a lot file handles open due to socket connections (depends on the number of
+brokers, producers and consumers) and the actual data log files (depends on
+the number of partitions and log segment and/or log roll settings).
+
+It's possible to set a specific `ulimit` for Kafka using the `node.kafka.ulimit_file`
+attribute.
+If this value is not set, Kafka will use whatever the system default is, which
+as stated previously might not be enough, so it might be wise to set a higher
+limit.
+
+### How do I get started locally? (minimal required setup)
+
+If you want to hit the ground running and just setup a single broker (or a
+cluster for that matter) locally, these are the necessary `broker` attributes
+that needs to be set (assumes that you have ZooKeeper running on port 2181
+locally):
+
+```ruby
+node.default.kafka.broker.zookeeper.connect = 'localhost:2181'
+# This shouldn't normally be necessary, but might need to be set explicitly
+# if you're having trouble connecting to the brokers.
+node.default.kafka.broker.hostname = '127.0.0.1' # or perhaps 'localhost'
+```
+
+If you plan on running a cluster locally you will want to set separate
+values for the following configuration options:
+
+```ruby
+node.default.kafka.broker.broker.id = <id>
+node.default.kafka.broker.port = <port>
+node.default.kafka.broker.log.dirs = <dir path>
+```
+
+Other than that things should work as expected, though depending on what
+platform you're running on, you might want to change the install and config
+directories as well. See `attributes/default.rb` and `recipes/_defaults.rb` for
+the default path regarding directories that Kafka will use.
+
 ## Copyright
 
 Copyright :: 2013-2015 Mathias Söderberg and contributors
