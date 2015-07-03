@@ -53,6 +53,11 @@ node.default.kafka.broker.log.dirs = %w[/tmp/kafka-logs]
 node.default[:kafka][:broker][:log][:dirs] = %w[/tmp/kafka-logs]
 ```
 
+The attribute names match the configuration names that Kafka uses to make it
+easier to support new and old versions of Kafka simultaneously, by avoiding
+"hardcoded" attribute names for configuration options, so please refer to the
+official documentation for the release at your hand.
+
 A warning regarding the "dotted" notation, it doesn't play very well when
 setting attributes like `default.replication.factor` or
 `fetch.purgatory.purge.interval.requests` due to fairly obvious reasons
