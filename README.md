@@ -28,8 +28,9 @@ Ruby 1.9.3+ and Chef 11.6.0+.
 * Fedora 20
 * Ubuntu 14.04
 
-Might work on other platforms / versions, but these are the ones that are
-included in `.kitchen.yml` and/or tested in the wild, so YMMV.
+The platforms / versions listed above are the ones that are included in
+`.kitchen.yml` and/or tested in the wild, so it might work on other platforms as
+well, YMMV.
 
 ## Attributes
 
@@ -37,7 +38,7 @@ In order to keep the README in some kind of manageable state (and thus in sync
 with attributes), attributes are documented inline (in the `attribute` files
 that is).
 
-Attributes concerning configuring of a Kafka broker are to be set under the
+Attributes concerning configuration of a Kafka broker are to be set under the
 `broker` namespace, and one can choose which ever syntax they prefer the most,
 the following are all valid ways to define broker configuration:
 
