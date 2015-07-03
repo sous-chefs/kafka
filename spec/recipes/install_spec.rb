@@ -13,20 +13,20 @@ describe 'kafka::_install' do
   end
 
   it 'downloads remote binary release of Kafka' do
-    expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
-    expect(chef_run).to create_remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
+    expect(chef_run).to create_kafka_download(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.1.1.tgz))
+    expect(chef_run).to create_remote_file(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.1.1.tgz))
   end
 
   it 'validates download' do
     expect(chef_run).not_to run_ruby_block('kafka-validate-download')
 
-    remote_file = chef_run.remote_file(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
+    remote_file = chef_run.remote_file(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.1.1.tgz))
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
   it 'extracts downloaded Kafka archive' do
     expect(chef_run).to run_execute('extract-kafka').with({
-      cwd: %(#{Chef::Config[:file_cache_path]}/kafka-build),
+      cwd: %(#{Chef::Config.file_cache_path}/kafka-build),
     })
   end
 
@@ -52,7 +52,7 @@ describe 'kafka::_install' do
       end
 
       it 'uses .tar.gz' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.0.tar.gz))
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.0.tar.gz))
       end
 
       it 'installs kafka' do
@@ -66,7 +66,7 @@ describe 'kafka::_install' do
       end
 
       it 'uses .tgz' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.tgz))
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.1.tgz))
       end
 
       it 'installs kafka' do
@@ -80,7 +80,7 @@ describe 'kafka::_install' do
       end
 
       it 'uses .tgz' do
-        expect(chef_run).to create_kafka_download(%(#{Chef::Config[:file_cache_path]}/kafka_2.9.2-0.8.1.1.tgz))
+        expect(chef_run).to create_kafka_download(%(#{Chef::Config.file_cache_path}/kafka_2.9.2-0.8.1.1.tgz))
       end
 
       it 'installs kafka' do
