@@ -92,7 +92,12 @@ default.kafka.jvm_performance_opts = %w[
 default.kafka.init_style = :sysv
 
 #
-# The ulimit file limit
+# The ulimit file limit.
+# If this value is not set, Kafka will use whatever the system default is.
+# Depending on your system setup you might want to set this to a rather high
+# value, or you will most likely run into issues with Kafka simply dying for no
+# particular reason as it needs to keep a lot of file handles for socket
+# connections and log files for all partitions.
 default.kafka.ulimit_file = nil
 
 #
