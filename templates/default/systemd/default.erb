@@ -6,6 +6,7 @@ User=<%= @user %>
 EnvironmentFile=<%= @env_path %>
 ExecStart=/bin/bash $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
 TimeoutSec=10
+TimeoutStopSec=<%= node.kafka.hard_stop_delay %>
 <% if node.kafka.ulimit_file %>
 LimitNOFILE=<%= node.kafka.ulimit_file %>
 <% end %>

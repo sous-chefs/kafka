@@ -119,6 +119,11 @@ default.kafka.automatic_restart = false
 default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 
 #
+# Attribute to set the timeout in seconds when stopping the broker
+# before trying a hard stop
+default.kafka.hard_stop_delay = 10
+
+#
 # `broker` namespace for configuration of a broker.
 # Initially set to an empty Hash to avoid having `fetch(:broker, {})`
 # statements in helper methods and the alike.
