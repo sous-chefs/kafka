@@ -10,7 +10,6 @@ notable differences:
 * does not depend on runit cookbook.
 * does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* only tested on Vagrant boxes.
 * intended to be used by wrapper cookbooks.
 
 ## Requirements
