@@ -53,6 +53,14 @@ default.kafka.config_dir = nil
 default.kafka.jmx_port = 9999
 
 #
+# JMX configuration options for Kafka.
+default.kafka.jmx_opts = %w[
+  -Dcom.sun.management.jmxremote
+  -Dcom.sun.management.jmxremote.authenticate=false
+  -Dcom.sun.management.jmxremote.ssl=false
+].join(' ')
+
+#
 # User for directories, configuration files and running Kafka.
 default.kafka.user = 'kafka'
 

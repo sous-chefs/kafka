@@ -228,6 +228,10 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(env_path).with('(export |)JMX_PORT').as('"9999"')
       end
 
+      it 'sets KAFKA_JMX_OPTS' do
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_JMX_OPTS').as('"-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"')
+      end
+
       it 'sets KAFKA_LOG4J_OPTS' do
         expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_LOG4J_OPTS').as('"-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties"')
       end
