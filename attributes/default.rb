@@ -128,8 +128,8 @@ default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 
 #
 # Attribute to set the timeout in seconds when stopping the broker
-# before trying a hard stop
-default.kafka.hard_stop_delay = 10
+# before sending SIGKILL (or equivalent).
+default.kafka.kill_timeout = 10
 
 #
 # `broker` namespace for configuration of a broker.

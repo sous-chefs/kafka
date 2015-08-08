@@ -60,7 +60,7 @@ stop() {
   echo
   rm -f "$PIDFILE"
   <% else %>
-  action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= node.kafka.hard_stop_delay %> "$NAME"
+  action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= node.kafka.kill_timeout %> "$NAME"
   RETVAL=$?
   <% end %>
   return "$RETVAL"
