@@ -3,6 +3,7 @@ driver:
   name: docker
   require_chef_omnibus: '11.16.4'
   memory: '512m'
+  cpu: 4
 
 provisioner:
   name: chef_solo
@@ -44,4 +45,3 @@ suites:
           log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
           zookeeper_connect: ['localhost:2181']
           zookeeper_connection_timeout_ms: 15_000
-
