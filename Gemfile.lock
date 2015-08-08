@@ -91,7 +91,7 @@ GEM
     hitimes (1.2.1)
     ipaddress (0.8.0)
     json (1.8.1)
-    kitchen-docker (1.7.0)
+    kitchen-docker (2.3.0)
       test-kitchen (>= 1.0.0)
     kitchen-vagrant (0.15.0)
       test-kitchen (~> 1.0)
@@ -180,10 +180,10 @@ GEM
       dep_selector (~> 1.0)
       semverse (~> 1.1)
     systemu (2.5.2)
-    test-kitchen (1.4.1)
+    test-kitchen (1.4.2)
       mixlib-shellout (>= 1.2, < 3.0)
       net-scp (~> 1.1)
-      net-ssh (~> 2.7)
+      net-ssh (~> 2.7, < 2.10)
       safe_yaml (~> 1.0)
       thor (~> 0.18)
     thor (0.19.1)
@@ -208,3 +208,6 @@ DEPENDENCIES
   kitchen-vagrant
   rake
   test-kitchen
+
+BUNDLED WITH
+   1.10.6
