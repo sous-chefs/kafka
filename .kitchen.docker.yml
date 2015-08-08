@@ -7,6 +7,21 @@ driver:
 
 provisioner:
   name: chef_solo
+  attributes:
+    kafka:
+      log4j:
+        appenders:
+          zookeeperAppender:
+            type: 'org.apache.log4j.FileAppender'
+            file: '/var/log/kafka/zookeeper.log'
+            layout:
+              type: 'org.apache.log4j.PatternLayout'
+              conversion_pattern: '[%d] %p %m (%c)%n'
+        loggers:
+          org.apache.zookeeper:
+            level: 'INFO'
+            appender: 'zookeeperAppender'
+            additivity: false
 
 platforms:
   - name: centos-6.4

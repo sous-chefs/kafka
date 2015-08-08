@@ -16,6 +16,14 @@ shared_context 'service setup' do
   let :status_command do
     command 'service kafka status'
   end
+
+  before :all do
+    backend.run_command %(su kafka -c '/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties')
+  end
+
+  after :all do
+    backend.run_command 'ps ax | grep -i "zookeeper" | grep -v grep | awk "{print $1}" | xargs kill -SIGKILL'
+  end
 end
 
 shared_examples_for 'a kafka start command' do
@@ -45,11 +53,11 @@ shared_examples_for 'a kafka start command' do
 end
 
 shared_examples_for 'a kafka stop command' do
-  let :log_file do
-    file '/var/log/kafka/kafka.log'
-  end
-
   describe '/var/log/kafka/kafka.log' do
+    let :log_file do
+      file '/var/log/kafka/kafka.log'
+    end
+
     it 'exists' do
       expect(log_file).to be_a_file
     end
