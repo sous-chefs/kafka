@@ -5,8 +5,8 @@ cache:
   - bundler
 rvm:
   - 1.9.3
-  - 2.0.0
-  - 2.1.0
+  - 2.0
+  - 2.1
 gemfile:
   - Gemfile
   - gemfiles/chef-11.4.4.gemfile
@@ -16,21 +16,21 @@ gemfile:
 matrix:
   fast_finish: true
   exclude:
-    - rvm: 2.0.0
+    - rvm: 2.0
       gemfile: gemfiles/chef-11.4.4.gemfile
-    - rvm: 2.1.0
+    - rvm: 2.1
       gemfile: gemfiles/chef-11.4.4.gemfile
-    - rvm: 2.0.0
+    - rvm: 2.0
       gemfile: gemfiles/chef-11.6.2.gemfile
-    - rvm: 2.1.0
+    - rvm: 2.1
       gemfile: gemfiles/chef-11.6.2.gemfile
-    - rvm: 2.0.0
+    - rvm: 2.0
       gemfile: gemfiles/chef-11.8.2.gemfile
-    - rvm: 2.1.0
+    - rvm: 2.1
       gemfile: gemfiles/chef-11.8.2.gemfile
-    - rvm: 2.0.0
+    - rvm: 2.0
       gemfile: gemfiles/chef-11.10.4.gemfile
-    - rvm: 2.1.0
+    - rvm: 2.1
       gemfile: gemfiles/chef-11.10.4.gemfile
   allow_failures:
     - gemfile: gemfiles/chef-11.4.4.gemfile
