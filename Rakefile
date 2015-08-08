@@ -57,7 +57,7 @@ namespace :test do
       %x{boot2docker up}
     end
 
-    versions = %w[0.8.0 0.8.1 0.8.1.1 0.8.2-beta]
+    versions = %w[0.8.0 0.8.1 0.8.1.1 0.8.2.0 0.8.2.1]
     versions.each do |version|
       puts '>>> Start testing version %s' % version
       envs = []
