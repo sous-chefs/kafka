@@ -47,22 +47,20 @@ task :package => :spec do
   end
 end
 
-class DockerTask
-
+class KitchenTask
   attr_reader :output, :duration
 
   def initialize(version)
-    @version = version
     @output = []
-    @env = {}
-    @concurrency = ENV.fetch('concurrency', 3).to_i
+    @env = {
+      'KAFKA_VERSION' => version,
+      'CHEF_VERSION' => ENV['CHEF_VERSION'],
+    }
+    @env['SCALA_VERSION'] = '2.8.0' if version == '0.8.0'
   end
 
   def run
     start_timestamp = Time.now
-    @env['KITCHEN_LOCAL_YAML'] = '.kitchen.docker.yml'
-    @env['KAFKA_VERSION'] = @version
-    @env['SCALA_VERSION'] = '2.8.0' if @version == '0.8.0'
     rd, wr = IO.pipe
     pid = Process.fork do
       $stdout.reopen(wr)
@@ -79,39 +77,51 @@ class DockerTask
   end
 end
 
+class DockerTask < KitchenTask
+  def initialize(version)
+    super(version)
+    @env['KITCHEN_YAML'] = '.kitchen.docker.yml'
+    @concurrency = ENV.fetch('concurrency', 3).to_i
+  end
+end
+
+class VagrantTask < KitchenTask
+  def initialize(version)
+    super(version)
+    @env['KITCHEN_YAML'] = '.kitchen.yml'
+    @concurrency = ENV.fetch('concurrency', 1).to_i
+  end
+end
+
 namespace :test do
   default_versions = %w[0.8.0 0.8.1 0.8.1.1 0.8.2.0 0.8.2.1]
 
-  def run_tests_for(versions)
+  def run_tests_for(versions, task_class)
     puts '>>> Running tests for versions: %s' % [versions.join(', ')]
-    failed_versions = []
-    versions.each do |version|
-      puts '>>> Starting tests for v%s' % version
-      task = DockerTask.new(version)
-      if task.run.success?
-        puts '>>> Done testing v%s, run took %d seconds' % [version, task.duration]
-      else
-        puts task.output
-        puts '>>> v%s failed, run took %d seconds, see output above ^' % [version, task.duration]
-        print '>>> Continue with the remaining versions? [Y/n]: '
-        answer = $stdin.gets.strip.downcase
-        if answer.empty? || answer == 'y'
-          failed_versions << version
-          next
+    failed_versions, done = [], false
+    until done do
+      versions.each do |version|
+        puts '>>> Starting tests for v%s' % version
+        task = task_class.new(version)
+        if task.run.success?
+          puts '>>> Done testing v%s, run took %d seconds' % [version, task.duration]
         else
-          break
+          puts task.output
+          puts '>>> v%s failed, run took %d seconds, see output above ^' % [version, task.duration]
+          if ENV.key?('yes')
+            answer = ''
+          else
+            print '>>> Continue with the remaining versions? [Y/n]: '
+            answer = $stdin.gets.strip.downcase
+          end
+          if answer.empty? || answer == 'y'
+            failed_versions << version
+            next
+          else
+            break
+          end
         end
       end
-    end
-    failed_versions
-  end
-
-  desc 'Run test-kitchen with kitchen-docker'
-  task :docker => 'docker:running' do
-    versions = ENV.fetch('versions', default_versions.join(',')).split(',')
-    done = false
-    until done do
-      failed_versions = run_tests_for(versions)
       if failed_versions.any?
         print '>>> The following versions failed: %s, would you like to retry them? [Y/n]: ' % [failed_versions.join(', ')]
         answer = $stdin.gets.strip.downcase
@@ -125,6 +135,12 @@ namespace :test do
         done = true
       end
     end
+  end
+
+  desc 'Run test-kitchen with kitchen-docker'
+  task :docker => 'docker:running' do
+    versions = ENV.fetch('versions', default_versions.join(',')).split(',')
+    run_tests_for(versions, DockerTask)
   end
 
   namespace :docker do
@@ -145,5 +161,11 @@ namespace :test do
         end
       end
     end
+  end
+
+  desc 'Run test-kitchen with kitchen-vagrant'
+  task :vagrant do
+    versions = ENV.fetch('versions', default_versions.join(',')).split(',')
+    run_tests_for(versions, VagrantTask)
   end
 end
