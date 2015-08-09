@@ -14,10 +14,8 @@ driver:
     natdnsproxy1: 'on'
     nictype1: 'virtio'
     nictype2: 'virtio'
-
 verifier:
   root_path: '/tmp/vagrant-cache/busser'
-
 provisioner:
   name: 'chef_solo'
   require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
@@ -25,7 +23,18 @@ provisioner:
   solo_rb:
     file_cache_path: '/tmp/vagrant-cache/chef'
   attributes:
+    java:
+      jdk_version: 7
     kafka:
+      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
+      scala_version:  <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
+      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
+      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+      ulimit_file: 128000
+      broker:
+        controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', false) %>
+        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+        zookeeper_connect: ['localhost:2181']
       log4j:
         appenders:
           zookeeperAppender:
@@ -39,85 +48,39 @@ provisioner:
             level: 'INFO'
             appender: 'zookeeperAppender'
             additivity: false
-
 platforms:
   - name: centos-6.5
-    attributes:
-      java:
-        jdk_version: 7
   - name: centos-7.0
-    attributes:
-      java:
-        jdk_version: 7
   - name: debian-7.4
     run_list:
       - recipe[apt]
-    attributes:
-      java:
-        jdk_version: 7
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
-    attributes:
-      java:
-        jdk_version: 7
   - name: fedora-20
-    attributes:
-      java:
-        jdk_version: 7
-
 suites:
   - name: init-style-upstart
     run_list:
-      - recipe[java::default]
-      - recipe[kafka::default]
+      - recipe[java]
+      - recipe[kafka]
     includes:
       - ubuntu-14.04
     attributes:
       kafka:
         init_style: 'upstart'
-        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        ulimit_file: 128000
-        broker:
-          controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
-          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-          zookeeper_connect: ['localhost:2181']
-          zookeeper_connection_timeout_ms: 15_000
   - name: init-style-sysv
     run_list:
-      - recipe[java::default]
-      - recipe[kafka::default]
+      - recipe[java]
+      - recipe[kafka]
     excludes:
       - centos-7.0
-    attributes:
-      kafka:
-        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        ulimit_file: 128000
-        broker:
-          controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
-          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-          zookeeper_connect: ['localhost:2181']
-          zookeeper_connection_timeout_ms: 15_000
   - name: init-style-systemd
     run_list:
-      - recipe[java::default]
-      - recipe[kafka::default]
+      - recipe[java]
+      - recipe[kafka]
     includes:
       - fedora-20
       - centos-7.0
     attributes:
       kafka:
         init_style: 'systemd'
-        version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-        checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-        md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
-        ulimit_file: 128000
-        broker:
-          controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
-          log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-          zookeeper_connect: ['localhost:2181']
-          zookeeper_connection_timeout_ms: 15_000
