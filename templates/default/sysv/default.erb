@@ -32,8 +32,8 @@ ensure_pid() {
 
 start() {
   ensure_pid
-  <% if node.kafka.ulimit_file %>
-  ulimit -n <%= node.kafka.ulimit_file %>
+  <% if @ulimit %>
+  ulimit -n <%= @ulimit %>
   <% end %>
   action "Starting $NAME" daemon --user=$USER --pidfile=$PIDFILE "$NOHUP $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 & echo \$! > $PIDFILE"
   RETVAL=$?
@@ -60,7 +60,7 @@ stop() {
   echo
   rm -f "$PIDFILE"
   <% else %>
-  action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= node.kafka.kill_timeout %> "$NAME"
+  action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= @kill_timeout %> "$NAME"
   RETVAL=$?
   <% end %>
   return "$RETVAL"

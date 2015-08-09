@@ -6,9 +6,9 @@ start on runlevel [2345]
 stop on runlevel [016]
 
 kill signal TERM
-kill timeout <%= node.kafka.kill_timeout %>
-<% if node.kafka.ulimit_file %>
-limit nofile <%= node.kafka.ulimit_file %> <%= node.kafka.ulimit_file %>
+kill timeout <%= @kill_timeout %>
+<% if @ulimit %>
+limit nofile <%= @ulimit %> <%= @ulimit %>
 <% end %>
 setuid <%= @user %>
 
