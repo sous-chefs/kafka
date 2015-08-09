@@ -26,7 +26,7 @@ describe 'kafka::_install' do
 
   it 'extracts downloaded Kafka archive' do
     expect(chef_run).to run_execute('extract-kafka').with({
-      cwd: %(#{Chef::Config.file_cache_path}/kafka-build),
+      cwd: %(#{Dir.tmpdir}/kafka-build),
     })
   end
 

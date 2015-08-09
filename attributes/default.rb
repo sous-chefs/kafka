@@ -37,7 +37,7 @@ default.kafka.version_install_dir = nil
 
 #
 # Directory where the downloaded archive will be extracted to.
-default.kafka.build_dir = ::File.join(Chef::Config.file_cache_path, 'kafka-build')
+default.kafka.build_dir = ::File.join(Dir.tmpdir, 'kafka-build')
 
 #
 # Directory where to store logs from Kafka.

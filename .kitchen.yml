@@ -1,13 +1,29 @@
 ---
 driver:
   name: vagrant
+  vagrantfiles:
+    - 'vagrantfiles/cachier.rb'
+  box_check_update: false
+  network:
+    - ['private_network', {type: 'dhcp', nictype: 'virtio'}]
   customize:
     memory: 1024
     cpus: 2
     ioapic: 'on'
+    natdnshostresolver1: 'on'
+    natdnsproxy1: 'on'
+    nictype1: 'virtio'
+    nictype2: 'virtio'
+
+verifier:
+  root_path: '/tmp/vagrant-cache/busser'
 
 provisioner:
-  name: chef_solo
+  name: 'chef_solo'
+  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
+  chef_omnibus_install_options: '-d /tmp/vagrant-cache/omnibus'
+  solo_rb:
+    file_cache_path: '/tmp/vagrant-cache/chef'
   attributes:
     kafka:
       log4j:
