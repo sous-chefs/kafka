@@ -1,12 +1,11 @@
 ---
 driver:
-  name: docker
-  require_chef_omnibus: '11.16.4'
-  memory: '512m'
+  name: 'docker'
+  memory: '1024m'
   cpu: 4
-
 provisioner:
-  name: chef_solo
+  name: 'chef_solo'
+  require_chef_omnibus: false
   attributes:
     kafka:
       log4j:
@@ -22,31 +21,26 @@ provisioner:
             level: 'INFO'
             appender: 'zookeeperAppender'
             additivity: false
-
 platforms:
   - name: centos-6.4
     driver_config:
-      provision_command: yum install -y tar
-    attributes:
-      java:
-        jdk_version: 7
+      provision_command:
+        - yum install -y tar java-1.7.0-openjdk java-1.7.0-openjdk-devel
+        - curl -L https://www.getchef.com/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
   - name: debian-7.4
-    run_list:
-      - recipe[apt]
-    attributes:
-      java:
-        jdk_version: 7
+    driver_config:
+      provision_command:
+        - apt-get install -y openjdk-7-jre-headless
+        - apt-get install -y net-tools
+        - curl -L https://www.getchef.com/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
   - name: ubuntu-14.04
-    run_list:
-      - recipe[apt]
-    attributes:
-      java:
-        jdk_version: 7
-
+    driver_config:
+      provision_command:
+        - apt-get install -y openjdk-7-jre-headless
+        - curl -L https://www.getchef.com/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
 suites:
   - name: init-style-sysv
     run_list:
-      - recipe[java::default]
       - recipe[kafka::default]
     attributes:
       kafka:
