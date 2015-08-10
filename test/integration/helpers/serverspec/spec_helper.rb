@@ -3,13 +3,12 @@
 require 'serverspec'
 require 'pathname'
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
-
 require 'support/platform_helpers'
+require 'support/await_helper'
 
 RSpec.configure do |config|
-  config.os = backend.check_os
+  config.backend = :exec
+  config.order = :random
   config.include(PlatformHelpers)
   config.extend(PlatformHelpers)
 end

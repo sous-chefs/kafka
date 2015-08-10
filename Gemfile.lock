@@ -29,7 +29,7 @@ GEM
       buff-ruby_engine (~> 0.1.0)
     busser (0.6.0)
       thor
-    busser-serverspec (0.2.6)
+    busser-serverspec (0.5.7)
       busser
     celluloid (0.16.0.pre2)
       timers (~> 3.0.0)

@@ -6,27 +6,34 @@ shared_context 'service setup' do
   end
 
   let :start_command do
-    command 'service kafka start'
+    run_command start_command_string
   end
 
   let :stop_command do
-    command 'service kafka stop'
+    run_command stop_command_string
   end
 
   let :status_command do
-    command 'service kafka status'
+    run_command status_command_string
   end
 
   before :all do
-    backend.run_command %(su kafka -c '/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties')
+    run_command %(su -s /bin/bash kafka -c '/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties')
   end
 
   after :all do
-    backend.run_command 'ps ax | grep -i "zookeeper" | grep -v grep | awk "{print $1}" | xargs kill -SIGKILL'
+    run_command %(ps ax | grep -i 'zookeeper' | grep -v grep | awk '{print $1}' | xargs kill -SIGKILL)
+  end
+
+  after do
+    run_command stop_command_string
+    Dir['/var/log/kafka/kafka*'].each do |path|
+      FileUtils.remove_entry_secure(path)
+    end
   end
 end
 
-shared_examples_for 'a kafka start command' do
+shared_examples_for 'a Kafka start command' do
   describe '/var/log/kafka/kafka.log' do
     let :log_file do
       file '/var/log/kafka/kafka.log'
@@ -37,7 +44,7 @@ shared_examples_for 'a kafka start command' do
     end
 
     it 'contains a log message about start up' do
-      expect(log_file.content).to match /Kafka Server .+ Starting/i
+      expect(log_file.content).to match /Kafka Server .+ starting/i
     end
   end
 
@@ -52,7 +59,7 @@ shared_examples_for 'a kafka start command' do
   end
 end
 
-shared_examples_for 'a kafka stop command' do
+shared_examples_for 'a Kafka stop command' do
   describe '/var/log/kafka/kafka.log' do
     let :log_file do
       file '/var/log/kafka/kafka.log'

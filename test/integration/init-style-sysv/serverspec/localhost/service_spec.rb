@@ -6,160 +6,172 @@ require 'support/service_common'
 describe 'service for sysv init style' do
   include_context 'service setup'
 
+  let :start_command_string do
+    'service kafka start'
+  end
+
+  let :stop_command_string do
+    'service kafka stop'
+  end
+
+  let :status_command_string do
+    'service kafka status'
+  end
+
+  let :pidfile do
+    file '/var/run/kafka.pid'
+  end
+
   describe 'service kafka start' do
-    context 'when kafka is not already running' do
+    context 'when Kafka isn\'t already running' do
       before do
-        backend.run_command 'service kafka stop 2> /dev/null || true'
+        stop_command
+        start_command
       end
 
-      it 'is not actually running' do
-        expect(kafka_service).not_to be_running
+      it 'prints a message about starting Kafka' do
+        expect(start_command.stdout).to match /starting.+kafka/i
+        expect(start_command.stderr).to be_empty
       end
 
-      it 'prints a message about starting kafka' do
-        expect(start_command).to return_stdout /starting.+kafka/i
+      it 'exists with status 0' do
+        expect(start_command.exit_status).to be_zero
       end
 
-      it 'exits with status 0' do
-        expect(start_command).to return_exit_status 0
-      end
-
-      it 'actually starts kafka' do
-        backend.run_command 'service kafka start'
-
+      it 'starts Kafka' do
         expect(kafka_service).to be_running
       end
 
       it 'creates a pid file' do
-        backend.run_command 'service kafka start'
-        pid_file = file '/var/run/kafka.pid'
+        pid_file = file('/var/run/kafka.pid')
         expect(pid_file).to be_a_file
         expect(pid_file.content).to_not be_empty
       end
 
-      it 'sets configured `ulimit` values' do
-        backend.run_command 'service kafka start'
+      it 'sets configured `ulimit` value' do
         pid = file('/var/run/kafka.pid').content.strip
         limits = file("/proc/#{pid}/limits").content
         expect(limits).to match(/Max open files\s+128000\s+128000\s+files/)
       end
 
-      it_behaves_like 'a kafka start command'
+      include_examples 'a Kafka start command'
     end
 
-    context 'when kafka is already running' do
+    context 'when Kafka is already running' do
       before do
-        backend.run_command 'service kafka start 2> /dev/null || true'
+        run_command start_command_string
       end
 
       it 'is actually running' do
         expect(kafka_service).to be_running
       end
 
-      it 'prints a message about starting kafka' do
-        expect(start_command).to return_stdout /starting.+kafka/i
+      it 'prints a message about starting Kafka' do
+        expect(start_command.stdout).to match /starting.+kafka/i
+        expect(start_command.stderr).to be_empty
       end
 
       it 'exits with status 0' do
-        expect(start_command).to return_exit_status 0
+        expect(start_command.exit_status).to be_zero
       end
 
-      it_behaves_like 'a kafka start command'
+      it 'does not start a new process' do
+        first_pid = file('/var/run/kafka.pid').content.strip
+        start_command
+        new_pid = file('/var/run/kafka.pid').content.strip
+        expect(first_pid).to eq(new_pid)
+      end
     end
   end
 
   describe 'service kafka stop' do
-    context 'when kafka is running' do
+    context 'when Kafka is running' do
       before do
-        backend.run_command 'service kafka start 2> /dev/null || true'
+        start_command
+        stop_command
       end
 
-      it 'is actually running' do
-        expect(kafka_service).to be_running
-      end
-
-      it 'prints a message about stopping kafka' do
-        expect(stop_command).to return_stdout /stopping.+kafka/i
+      it 'prints a message about stopping Kafka' do
+        expect(stop_command.stdout).to match /stopping.+kafka/i
+        expect(stop_command.stderr).to be_empty
       end
 
       it 'exits with status 0' do
-        expect(stop_command).to return_exit_status 0
+        expect(stop_command.exit_status).to be_zero
       end
 
-      it 'stops kafka' do
-        backend.run_command 'service kafka stop'
-
+      it 'stops Kafka' do
         expect(kafka_service).not_to be_running
       end
 
       it 'removes the pid file' do
-        backend.run_command 'service kafka stop'
-        pid_file = file '/var/run/kafka.pid'
-        expect(pid_file).to_not be_a_file
+        expect(pidfile).to_not be_a_file
       end
 
-      it_behaves_like 'a kafka stop command'
+      include_examples 'a Kafka stop command'
     end
 
-    context 'when kafka is not running' do
+    context 'when Kafka is not running' do
       before do
-        backend.run_command 'service kafka stop 2> /dev/null || true'
-      end
-
-      it 'is actually not running' do
-        expect(kafka_service).not_to be_running
+        run_command stop_command_string
+        stop_command
       end
 
       it 'prints a message about stopping kafka' do
-        expect(stop_command).to return_stdout /stopping.+kafka/i
+        expect(stop_command.stdout).to match /stopping.+kafka/i
+        expect(stop_command.stderr).to be_empty
       end
 
       it 'exits with status 0' do
-        expect(stop_command).to return_exit_status 0
+        expect(stop_command.exit_status).to be_zero
       end
-
-      it_behaves_like 'a kafka stop command'
     end
   end
 
   describe 'service kafka status' do
-    context 'when kafka is running' do
+    let :message do
+      status_command.stdout
+    end
+
+    context 'when Kafka is running' do
       before do
-        backend.run_command 'service kafka start 2> /dev/null || true'
+        start_command
       end
 
       it 'exits with status 0' do
-        expect(status_command).to return_exit_status 0
+        expect(status_command.exit_status).to be_zero
       end
 
-      it 'prints a message that kafka is running' do
+      it 'prints a message that Kafka is running' do
         if fedora?
-          expect(status_command).to return_stdout /Active: active \(running\)/
-          expect(status_command).to return_stdout /Started SYSV: kafka daemon/
+          expect(message).to match /Active: active \(running\)/
+          expect(message).to match /Started SYSV: kafka daemon/
         else
-          expect(status_command).to return_stdout /kafka.+running/i
+          expect(message).to match /kafka.+running/i
         end
+        expect(status_command.stderr).to be_empty
       end
     end
 
-    context 'when kafka is not running' do
+    context 'when Kafka isn\'t running' do
       before do
-        backend.run_command 'service kafka stop 2> /dev/null || true'
+        stop_command
       end
 
       it 'exits with status 3' do
-        expect(status_command).to return_exit_status 3
+        expect(status_command.exit_status).to eq 3
       end
 
-      it 'prints a message that kafka is not running / stopped' do
+      it 'prints a message that Kafka is not running / stopped' do
         if debian? || ubuntu?
-          expect(status_command).to return_stdout /kafka is not running/
+          expect(message).to match /kafka is not running/i
         elsif fedora?
-          expect(status_command).to return_stdout /Active: failed/
-          expect(status_command).to return_stdout /Stopped SYSV: kafka daemon/
+          expect(message).to match /Active: failed/i
+          expect(message).to match /Stopped SYSV: kafka daemon/i
         else
-          expect(status_command).to return_stdout /kafka is stopped/
+          expect(message).to match /kafka is stopped/i
         end
+        expect(status_command.stderr).to be_empty
       end
     end
   end

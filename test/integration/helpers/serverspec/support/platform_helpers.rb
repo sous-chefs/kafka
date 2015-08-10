@@ -21,13 +21,17 @@ module PlatformHelpers
     family == 'fedora' || family == 'redhat7'
   end
 
+  def run_command(cmd)
+    Specinfra.backend.run_command(cmd)
+  end
+
   private
 
   def family
-    RSpec.configuration.os[:family].downcase
+    os[:family]
   end
 
   def release
-    RSpec.configuration.os[:release]
+    os[:release]
   end
 end

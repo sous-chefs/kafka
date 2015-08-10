@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 source 'https://rubygems.org'
 
-gem 'serverspec', '= 1.16.0'
+gem 'serverspec', '~> 2', '< 3'
