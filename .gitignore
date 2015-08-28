@@ -3,6 +3,7 @@
 .kitchen
 .kitchen.local.yml
 .vagrant
+.ruby-gemset
 Berksfile.lock
 kafka-cookbook-*.tar.gz
 /vendor
