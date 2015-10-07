@@ -27,6 +27,23 @@ describe 'kafka::_setup' do
       end
     end
 
+    context 'when disabled' do
+      let :kafka_attrs do
+        {manage_user: false, manage_group: false}
+      end
+
+      it 'does not create a kafka group' do
+        expect(chef_run).not_to create_group('kafka')
+      end
+
+      it 'does not create a kafka user' do
+        expect(chef_run).not_to create_user('kafka').with({
+          shell: '/sbin/nologin',
+          gid: 'kafka'
+        })
+      end
+    end
+
     context 'when overridden' do
       let :kafka_attrs do
         {user: 'spec', group: 'spec'}
