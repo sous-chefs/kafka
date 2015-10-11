@@ -9,28 +9,28 @@ rvm:
   - 2.1
 gemfile:
   - Gemfile
-  - gemfiles/chef-11.4.4.gemfile
-  - gemfiles/chef-11.6.2.gemfile
-  - gemfiles/chef-11.8.2.gemfile
-  - gemfiles/chef-11.10.4.gemfile
+  - gemfiles/chef-11.4.4/Gemfile
+  - gemfiles/chef-11.6.2/Gemfile
+  - gemfiles/chef-11.8.2/Gemfile
+  - gemfiles/chef-11.10.4/Gemfile
 matrix:
   fast_finish: true
   exclude:
     - rvm: 2.0
-      gemfile: gemfiles/chef-11.4.4.gemfile
+      gemfile: gemfiles/chef-11.4.4/Gemfile
     - rvm: 2.1
-      gemfile: gemfiles/chef-11.4.4.gemfile
+      gemfile: gemfiles/chef-11.4.4/Gemfile
     - rvm: 2.0
-      gemfile: gemfiles/chef-11.6.2.gemfile
+      gemfile: gemfiles/chef-11.6.2/Gemfile
     - rvm: 2.1
-      gemfile: gemfiles/chef-11.6.2.gemfile
+      gemfile: gemfiles/chef-11.6.2/Gemfile
     - rvm: 2.0
-      gemfile: gemfiles/chef-11.8.2.gemfile
+      gemfile: gemfiles/chef-11.8.2/Gemfile
     - rvm: 2.1
-      gemfile: gemfiles/chef-11.8.2.gemfile
+      gemfile: gemfiles/chef-11.8.2/Gemfile
     - rvm: 2.0
-      gemfile: gemfiles/chef-11.10.4.gemfile
+      gemfile: gemfiles/chef-11.10.4/Gemfile
     - rvm: 2.1
-      gemfile: gemfiles/chef-11.10.4.gemfile
+      gemfile: gemfiles/chef-11.10.4/Gemfile
   allow_failures:
-    - gemfile: gemfiles/chef-11.4.4.gemfile
+    - gemfile: gemfiles/chef-11.4.4/Gemfile

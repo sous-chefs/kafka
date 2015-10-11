@@ -6,6 +6,6 @@
 .ruby-gemset
 Berksfile.lock
 kafka-cookbook-*.tar.gz
-/vendor
+/**/vendor/**/bundle/
 /pkg
 TODO.md
