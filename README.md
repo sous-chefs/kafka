@@ -163,7 +163,7 @@ that needs to be set (assumes that you have ZooKeeper running on port 2181
 locally):
 
 ```ruby
-node.default.kafka.broker.zookeeper.connect = 'localhost:2181'
+node.default.kafka.broker.zookeeper_connect = 'localhost:2181'
 # This shouldn't normally be necessary, but might need to be set explicitly
 # if you're having trouble connecting to the brokers.
 node.default.kafka.broker.hostname = '127.0.0.1' # or perhaps 'localhost'
