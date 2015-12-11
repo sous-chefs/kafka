@@ -44,7 +44,7 @@ shared_examples_for 'a Kafka start command' do
     end
 
     it 'contains a log message about start up' do
-      expect(log_file.content).to match /Kafka Server .+ starting/i
+      expect(log_file.content).to match /(Kafka Server .+ starting|starting .+KafkaServer)/i
     end
   end
 
@@ -70,7 +70,7 @@ shared_examples_for 'a Kafka stop command' do
     end
 
     it 'logs that shut down is completed' do
-      expect(log_file.content).to match /Kafka Server .+ Shut down completed/i
+      expect(log_file.content).to match /Kafka Server .+ (Shut down completed|shutting down)/i
     end
   end
 end

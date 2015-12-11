@@ -18,7 +18,7 @@ verifier:
   root_path: '/tmp/vagrant-cache/busser'
 provisioner:
   name: 'chef_solo'
-  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
+  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '11.16.4').inspect %>
   chef_omnibus_install_options: '-d /tmp/vagrant-cache/omnibus'
   solo_rb:
     file_cache_path: '/tmp/vagrant-cache/chef'
@@ -26,10 +26,11 @@ provisioner:
     java:
       jdk_version: 7
     kafka:
-      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-      scala_version:  <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
-      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+      broker_id: 1
+      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1').inspect %>
+      scala_version:  <%= ENV.fetch('SCALA_VERSION', '2.9.2').inspect %>
+      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
+      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
       ulimit_file: 128000
       broker:
         controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', false) %>

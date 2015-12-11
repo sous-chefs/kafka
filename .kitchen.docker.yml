@@ -8,13 +8,14 @@ provisioner:
   require_chef_omnibus: false
   attributes:
     kafka:
-      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1') %>
-      scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2') %>
-      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '""') %>
-      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '""') %>
+      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1').inspect %>
+      scala_version: <%= ENV.fetch('SCALA_VERSION', '2.9.2').inspect %>
+      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
+      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
       ulimit_file: 128000
       broker:
-        controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', nil) %>
+        broker_id: 1
+        controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', false) %>
         log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
         zookeeper_connect: ['localhost:2181']
       log4j:
