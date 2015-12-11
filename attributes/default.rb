@@ -65,16 +65,12 @@ default.kafka.jmx_opts = %w[
 default.kafka.user = 'kafka'
 
 #
-# Shall the cookbook create the node.kafka.user
+# Should node.kafka.user and node.kafka.group be created?
 default.kafka.manage_user = true
 
 #
 # Group for directories, configuration files and running Kafka.
 default.kafka.group = 'kafka'
-
-#
-# Shall the cookbook create the node.kafka.group
-default.kafka.manage_group = true
 
 #
 # JVM heap options for Kafka.

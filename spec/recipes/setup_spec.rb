@@ -29,7 +29,7 @@ describe 'kafka::_setup' do
 
     context 'when disabled' do
       let :kafka_attrs do
-        {manage_user: false, manage_group: false}
+        {manage_user: false}
       end
 
       it 'does not create a kafka group' do

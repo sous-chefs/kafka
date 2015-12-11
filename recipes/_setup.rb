@@ -4,7 +4,7 @@
 #
 
 group node.kafka.group do
-  only_if { node.kafka.manage_group }
+  only_if { node.kafka.manage_user }
 end
 
 user node.kafka.user do
