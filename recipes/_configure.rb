@@ -58,7 +58,6 @@ template kafka_init_opts[:script_path] do
   mode kafka_init_opts[:permissions]
   variables({
     daemon_name: 'kafka',
-    port: node.kafka.broker.port,
     user: node.kafka.user,
     env_path: kafka_init_opts[:env_path],
     ulimit: node.kafka.ulimit_file,
