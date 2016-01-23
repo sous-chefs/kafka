@@ -22,7 +22,7 @@ PIDFILE=/var/run/$NAME.pid
 # Load additional configuration
 [ -f /etc/default/$NAME ] && . /etc/default/$NAME
 
-<%= render 'partials/check_running.erb', variables: {port: @port} -%>
+<%= render 'partials/check_running.erb', variables: {user: @user} -%>
 
 do_start()
 {
@@ -35,8 +35,9 @@ do_start()
   start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG \
     || return 2
 
+  check_running
   RETVAL=$?
-  check_running && return "$RETVAL"
+  return $RETVAL
 }
 
 do_stop()
@@ -47,10 +48,10 @@ do_stop()
   while pidofproc "$PIDFILE" "$KAFKA"; do sleep 1; done
   <% else %>
   start-stop-daemon --stop --quiet --oknodo --retry=TERM/<%= @kill_timeout %>/KILL/5 --pidfile "$PIDFILE"
-  RETVAL="$?"
+  RETVAL=$?
   <% end %>
   rm -f $PIDFILE
-  return "$RETVAL"
+  return $RETVAL
 }
 
 case "$1" in
@@ -81,3 +82,5 @@ case "$1" in
     exit 3
     ;;
 esac
+
+exit $RETVAL
