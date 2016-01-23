@@ -29,9 +29,7 @@ describe 'service for systemd init style' do
   describe 'service kafka start' do
     context 'when Kafka isn\'t already running' do
       before do
-        stop_command
         start_command
-        await { TCPSocket.new('localhost', 6667) rescue false }
       end
 
       it 'does not print anything' do
@@ -58,8 +56,7 @@ describe 'service for systemd init style' do
 
     context 'when Kafka is already running' do
       before do
-        run_command start_command_string
-        await { TCPSocket.new('localhost', 6667) rescue false }
+        start_kafka(true)
       end
 
       it 'is actually running' do
@@ -77,7 +74,7 @@ describe 'service for systemd init style' do
 
       it 'does not start a new process' do
         first_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
-        start_command
+        start_kafka
         new_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
         expect(first_pid).to eq(new_pid)
       end
@@ -87,8 +84,7 @@ describe 'service for systemd init style' do
   describe 'service kafka stop' do
     context 'when Kafka is running' do
       before do
-        run_command start_command_string
-        await { TCPSocket.new('localhost', 6667) rescue false }
+        start_command
         stop_command
       end
 
@@ -110,17 +106,17 @@ describe 'service for systemd init style' do
 
     context 'when Kafka is not running' do
       before do
-        run_command stop_command_string
-        stop_command
+        stop_kafka
       end
 
       it 'prints nothing' do
-        expect(stop_command.stdout).to be_empty
-        expect(stop_command.stderr).to be_empty
+        command = stop_kafka
+        expect(command.stdout).to be_empty
+        expect(command.stderr).to be_empty
       end
 
       it 'exits with status 0' do
-        expect(stop_command.exit_status).to be_zero
+        expect(stop_kafka.exit_status).to be_zero
       end
     end
   end
@@ -129,7 +125,6 @@ describe 'service for systemd init style' do
     context 'when Kafka is running' do
       before do
         start_command
-        await { TCPSocket.new('localhost', 6667) rescue false }
       end
 
       it 'exits with status 0' do
@@ -144,7 +139,7 @@ describe 'service for systemd init style' do
 
     context 'when Kafka is not running' do
       before do
-        stop_command
+        stop_kafka
       end
 
       it 'exits with status 3' do

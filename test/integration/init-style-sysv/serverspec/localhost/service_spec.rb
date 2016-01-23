@@ -25,7 +25,6 @@ describe 'service for sysv init style' do
   describe 'service kafka start' do
     context 'when Kafka isn\'t already running' do
       before do
-        stop_command
         start_command
       end
 
@@ -59,7 +58,7 @@ describe 'service for sysv init style' do
 
     context 'when Kafka is already running' do
       before do
-        run_command start_command_string
+        start_kafka(true)
       end
 
       it 'is actually running' do
@@ -77,7 +76,7 @@ describe 'service for sysv init style' do
 
       it 'does not start a new process' do
         first_pid = file('/var/run/kafka.pid').content.strip
-        start_command
+        start_kafka
         new_pid = file('/var/run/kafka.pid').content.strip
         expect(first_pid).to eq(new_pid)
       end
@@ -101,7 +100,7 @@ describe 'service for sysv init style' do
       end
 
       it 'stops Kafka' do
-        expect(kafka_service).not_to be_running
+        expect(kafka_service).to_not be_running
       end
 
       it 'removes the pid file' do
@@ -113,17 +112,17 @@ describe 'service for sysv init style' do
 
     context 'when Kafka is not running' do
       before do
-        run_command stop_command_string
-        stop_command
+        stop_kafka
       end
 
       it 'prints a message about stopping kafka' do
-        expect(stop_command.stdout).to match /stopping.+kafka/i
-        expect(stop_command.stderr).to be_empty
+        command = stop_kafka
+        expect(command.stdout).to match /stopping.+kafka/i
+        expect(command.stderr).to be_empty
       end
 
       it 'exits with status 0' do
-        expect(stop_command.exit_status).to be_zero
+        expect(stop_kafka.exit_status).to be_zero
       end
     end
   end
@@ -155,7 +154,7 @@ describe 'service for sysv init style' do
 
     context 'when Kafka isn\'t running' do
       before do
-        stop_command
+        stop_kafka
       end
 
       it 'exits with status 3' do

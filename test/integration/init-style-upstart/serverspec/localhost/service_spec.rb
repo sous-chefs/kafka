@@ -25,7 +25,6 @@ describe 'service for upstart init style' do
   describe 'service kafka start' do
     context 'when Kafka isn\'t already running' do
       before do
-        stop_command
         start_command
       end
 
@@ -53,7 +52,7 @@ describe 'service for upstart init style' do
 
     context 'when Kafka is already running' do
       before do
-        run_command start_command_string
+        start_kafka(true)
       end
 
       it 'prints a message that Kafka is already running' do
@@ -91,25 +90,22 @@ describe 'service for upstart init style' do
       end
 
       it 'stops Kafka' do
-        expect(status_command.stdout).to match /kafka stop\/waiting/i
+        expect(kafka_service).to_not be_running
+        # expect(status_command.stdout).to match /kafka stop\/waiting/i
       end
 
       include_examples 'a Kafka stop command'
     end
 
     context 'when Kafka is not running' do
-      before do
-        run_command stop_command_string
-        stop_command
-      end
-
       it 'prints a message that Kafka is stopped' do
-        expect(stop_command.stderr).to match /stop: Unknown instance:/i
-        expect(stop_command.stdout).to be_empty
+        command = stop_kafka
+        expect(command.stderr).to match /stop: Unknown instance:/i
+        expect(command.stdout).to be_empty
       end
 
       it 'exits with status 1' do
-        expect(stop_command.exit_status).to eq 1
+        expect(stop_kafka.exit_status).to eq 1
       end
     end
   end
@@ -131,10 +127,6 @@ describe 'service for upstart init style' do
     end
 
     context 'when Kafka is not running' do
-      before do
-        stop_command
-      end
-
       it 'exits with status 0' do
         expect(status_command.exit_status).to be_zero
       end
