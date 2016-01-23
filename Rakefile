@@ -56,7 +56,6 @@ class KitchenTask
       'KAFKA_VERSION' => version,
       'CHEF_VERSION' => ENV['CHEF_VERSION'],
     }
-    @env['SCALA_VERSION'] = '2.8.0' if version == '0.8.0'
   end
 
   def run
@@ -112,7 +111,7 @@ class VagrantTask < KitchenTask
 end
 
 namespace :test do
-  default_versions = %w[0.8.0 0.8.1.1 0.8.2.2 0.9.0.1]
+  default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1]
 
   def run_tests_for(versions, task_class)
     puts '>>> Running tests for versions: %s' % [versions.join(', ')]
