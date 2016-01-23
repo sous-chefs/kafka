@@ -8,6 +8,7 @@ require 'support/await_helper'
 
 RSpec.configure do |config|
   config.backend = :exec
+  config.fail_fast = true
   config.order = :random
   config.include(PlatformHelpers)
   config.extend(PlatformHelpers)
