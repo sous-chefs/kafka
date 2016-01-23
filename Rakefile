@@ -62,18 +62,30 @@ class KitchenTask
 
   def run
     start_timestamp = Time.now
+    run_and_wait(sprintf('bundle exec kitchen converge --concurrency=%d', @concurrency))
+    status = run_and_wait(sprintf('bundle exec kitchen verify'))
+    run_and_wait(sprintf('bundle exec kitchen destroy --concurrency=%d', @concurrency))
+    @duration = Time.now - start_timestamp
+    status
+  end
+
+  private
+
+  def run_and_wait(command)
+    start_time = Time.now
     rd, wr = IO.pipe
     pid = Process.fork do
       $stdout.reopen(wr)
       rd.close
-      exec(@env, 'bundle exec kitchen test --concurrency=%d' % [@concurrency])
+      exec(@env, command)
     end
     wr.close
     rd.each do |line|
       @output << line
     end
     _, status = Process.waitpid2(pid)
-    @duration = Time.now - start_timestamp
+    duration = Time.now - start_time
+    puts '>>> Ran %p, in %d seconds' % [command, duration]
     status
   end
 end
@@ -90,7 +102,7 @@ class VagrantTask < KitchenTask
   def initialize(version)
     super(version)
     @env['KITCHEN_YAML'] = '.kitchen.yml'
-    @concurrency = ENV.fetch('concurrency', 1).to_i
+    @concurrency = ENV.fetch('concurrency', 4).to_i
   end
 end
 
