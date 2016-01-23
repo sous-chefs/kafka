@@ -65,7 +65,7 @@ template kafka_init_opts[:script_path] do
     kill_timeout: node.kafka.kill_timeout,
   })
   helper :controlled_shutdown_enabled? do
-    !!broker_attribute?(:controlled, :shutdown, :enable)
+    !!fetch_broker_attribute(:controlled, :shutdown, :enable)
   end
   if restart_on_configuration_change?
     notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
