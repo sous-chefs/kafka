@@ -65,6 +65,10 @@ default.kafka.jmx_opts = %w[
 default.kafka.user = 'kafka'
 
 #
+# Should node.kafka.user and node.kafka.group be created?
+default.kafka.manage_user = true
+
+#
 # Group for directories, configuration files and running Kafka.
 default.kafka.group = 'kafka'
 
