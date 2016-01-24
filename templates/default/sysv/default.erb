@@ -24,7 +24,7 @@ RETVAL=0
 # Check that networking is up
 [ "$NETWORKING" = "no" ] && exit $RETVAL
 
-<%= render 'partials/check_running.erb', variables: {port: @port} -%>
+<%= render 'partials/check_running.erb', variables: {user: @user} -%>
 
 ensure_pid() {
   [ ! -e "$PIDFILE" ] && touch $PIDFILE && chown $USER $PIDFILE
@@ -37,7 +37,11 @@ start() {
   <% end %>
   action "Starting $NAME" daemon --user=$USER --pidfile=$PIDFILE "$NOHUP $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 & echo \$! > $PIDFILE"
   RETVAL=$?
-  [ $RETVAL -eq 0 ] && check_running
+  if [ $RETVAL -eq 0 ]; then
+    check_running
+    RETVAL=$?
+  fi
+  return $RETVAL
 }
 
 stop() {
@@ -63,7 +67,7 @@ stop() {
   action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= @kill_timeout %> "$NAME"
   RETVAL=$?
   <% end %>
-  return "$RETVAL"
+  return $RETVAL
 }
 
 case "$1" in

@@ -18,9 +18,17 @@ script
 end script
 
 post-start script
-  tries=0
-  while [ ! `netstat --listen | grep -qE '<%= @port %>|ircd'` ] && [ $tries -lt 3 ]; do
-    sleep 1
-    tries=$((tries + 1))
-  done
+  tries=0 max_tries=5 sh="$(which sh)"
+  pid="$(status <%= @daemon_name %> | head -1)"
+  pid=${pid##* }
+  if [ -n "$pid" ]; then
+    while [ $tries -le $max_tries ]; do
+      if netstat --numeric --listen --programs --tcp 2> /dev/null | grep -q "$pid/java"; then
+        exit 0
+      fi
+      tries=$((tries + 1))
+      sleep 1
+    done
+  fi
+  exit 1
 end script
