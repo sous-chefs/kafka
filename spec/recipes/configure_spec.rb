@@ -52,10 +52,6 @@ describe 'kafka::_configure' do
         expect(chef_run).to have_configured(path).with('broker.id').as('10002')
       end
 
-      it 'sets port' do
-        expect(chef_run).to have_configured(path).with('port').as(6667)
-      end
-
       context 'when broker id is larger than 2**31' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
