@@ -67,20 +67,6 @@ describe 'kafka::_configure' do
       end
     end
 
-    context 'configuration using underscore notation' do
-      it_behaves_correctly 'when value is an Array' do
-        let :broker_attributes do
-          { 'array_option' => mappings }
-        end
-      end
-
-      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
-        let :broker_attributes do
-          { 'possible.future_option' => mappings }
-        end
-      end
-    end
-
     context 'configuration using dotted String notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
@@ -91,20 +77,6 @@ describe 'kafka::_configure' do
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
           { 'possible.future_option' => mappings }
-        end
-      end
-    end
-
-    context 'configuration using nested Hashes notation' do
-      it_behaves_correctly 'when value is an Array' do
-        let :broker_attributes do
-          { 'array' => { 'option' => mappings } }
-        end
-      end
-
-      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
-        let :broker_attributes do
-          { 'possible' => { 'future_option' => mappings } }
         end
       end
     end

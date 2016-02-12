@@ -18,26 +18,15 @@ module Kafka
       end
     end
 
-    def render_option(prefix, value)
-      prefix = convert_key(prefix)
-      case value
-      when Hash
-        lines = value.map do |key, val|
-          render_option(%(#{prefix}.#{key}), val)
-        end
-        lines.join($/)
-      when Array
-        %(#{prefix}=#{render_array_value(value)})
+    def render_option(key, value)
+      if value.is_a?(Array)
+        %(#{key}=#{render_array_value(value)})
       else
-        %(#{prefix}=#{value})
+        %(#{key}=#{value})
       end
     end
 
     private
-
-    def convert_key(key)
-      key.include?('.') ? key : key.tr('_', '.')
-    end
 
     def render_array_value(values)
       vvs = values.flat_map do |v|
