@@ -115,13 +115,27 @@ end
 def broker_attribute?(*parts)
   parts = parts.map(&:to_s)
   broker = node.kafka.broker
-  unless (v = broker.fetch(parts.join('.'), nil)).nil?
-    return v
+  if broker.attribute?(parts.join('.'))
+    return true
   end
-  unless (v = broker.fetch(parts.join('_'), nil)).nil?
-    return v
+  if broker.attribute?(parts.join('_'))
+    return true
   end
   key = parts.pop
   r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
   r.fetch(key, nil)
+end
+
+def fetch_broker_attribute(*parts)
+  parts = parts.map(&:to_s)
+  broker = node.kafka.broker
+  if broker.attribute?(parts.join('.'))
+    return broker[parts.join('.')]
+  end
+  if broker.attribute?(parts.join('_'))
+    return broker[parts.join('_')]
+  end
+  key = parts.pop
+  r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
+  r[key]
 end
