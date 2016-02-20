@@ -57,7 +57,6 @@ class KitchenTask
       'CHEF_VERSION' => ENV['CHEF_VERSION'],
     }
     @env['SCALA_VERSION'] = '2.8.0' if version == '0.8.0'
-    @env['SCALA_VERSION'] = '2.10' if version == '0.9.0.0'
   end
 
   def run
