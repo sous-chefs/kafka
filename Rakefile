@@ -61,11 +61,15 @@ class KitchenTask
 
   def run
     start_timestamp = Time.now
-    status = run_and_wait(sprintf('bundle exec kitchen setup --concurrency=%d', @concurrency))
-    if status.success?
-      status = run_and_wait('bundle exec kitchen verify')
+    if @concurrency > 1
+      status = run_and_wait(sprintf('bundle exec kitchen setup --concurrency=%d', @concurrency))
+      if status.success?
+        status = run_and_wait('bundle exec kitchen verify')
+      end
+      run_and_wait(sprintf('bundle exec kitchen destroy --concurrency=%d', @concurrency))
+    else
+      status = run_and_wait('bundle exec kitchen test')
     end
-    run_and_wait(sprintf('bundle exec kitchen destroy --concurrency=%d', @concurrency))
     @duration = Time.now - start_timestamp
     status
   end
