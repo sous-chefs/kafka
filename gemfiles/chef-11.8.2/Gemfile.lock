@@ -51,6 +51,9 @@ GEM
       puma (~> 1.6)
       rest-client (>= 1.0.4, < 1.7.0)
       yajl-ruby (~> 1.1)
+    chef-api (0.5.0)
+      logify (~> 0.1)
+      mime-types
     chef-zero (1.7.3)
       hashie (~> 2.0)
       json
@@ -89,6 +92,7 @@ GEM
     hitimes (1.2.1)
     ipaddress (0.8.0)
     json (1.7.7)
+    logify (0.2.0)
     method_source (0.8.2)
     mime-types (1.25.1)
     mini_portile (0.6.1)
@@ -168,6 +172,9 @@ GEM
     solve (1.2.0)
       dep_selector (~> 1.0)
       semverse (~> 1.1)
+    stove (3.2.8)
+      chef-api (~> 0.5)
+      logify (~> 0.2)
     systemu (2.5.2)
     thor (0.19.1)
     timers (3.0.1)
@@ -189,6 +196,7 @@ DEPENDENCIES
   foodcritic (< 5)
   rake
   rspec (= 2.14.1)
+  stove
 
 BUNDLED WITH
    1.10.6
