@@ -195,7 +195,7 @@ a sufficiently high value.
 
 ## Copyright
 
-Copyright :: 2013-2015 Mathias Söderberg and contributors
+Copyright :: 2013-2016 Mathias Söderberg and contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
