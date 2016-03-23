@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.svg?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 [![GitHub Release](https://img.shields.io/github/release/mthssdrbrg/kafka-cookbook.svg)]()
 
-Installs and configures Kafka `>= v0.8.0`.
+Installs and configures Kafka `>= v0.8.1`.
 
 Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
 notable differences:

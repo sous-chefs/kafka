@@ -16,4 +16,3 @@ service 'kafka' do
   supports start: true, stop: true, restart: true, status: true
   action kafka_service_actions
 end
-
