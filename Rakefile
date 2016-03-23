@@ -3,6 +3,7 @@
 require 'rspec/core/rake_task'
 require 'foodcritic'
 require 'stove'
+require 'stove/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
 FoodCritic::Rake::LintTask.new
@@ -30,6 +31,11 @@ task :package => :test do
     end
     puts %(Created archive of #{version} as #{archive_path})
   end
+end
+
+Stove::RakeTask.new do |t|
+  t.stove_opts = %w[--no-git]
+  t.log_level = :debug
 end
 
 class KitchenTask
