@@ -2,7 +2,7 @@
 
 require 'rspec/core/rake_task'
 require 'foodcritic'
-require 'tmpdir'
+require 'stove'
 
 RSpec::Core::RakeTask.new(:spec)
 FoodCritic::Rake::LintTask.new
@@ -15,35 +15,20 @@ end
 
 desc 'Package the latest version as a .tar.gz archive'
 task :package => :test do
-  contents = Dir.glob('*')
-  contents.reject! { |path| path.start_with?('.') }
-  contents.reject! { |path| %w[test spec gemfiles pkg vendor vagrantfiles].include?(path) }
-  contents.select! { |path| File.directory?(path) }
-  contents << 'metadata.rb'
-  contents << 'README.md'
-
-  version = %x(git tag -l | tail -1).strip
+  cookbook = Stove::Cookbook.new(Dir.pwd)
+  version = cookbook.tag_version
   release_name = %(kafka-cookbook-#{version})
-  archive = %(#{release_name}.tar.gz)
-  current_directory = File.expand_path('..', __FILE__)
+  archive_path = ::File.join('pkg', sprintf('kafka-cookbook-%s.tar.gz', version))
 
-  unless File.exist?(archive)
-    Dir.mktmpdir do |sandbox_path|
-      File.join(sandbox_path, release_name).tap do |cbk|
-        Dir.mkdir(cbk)
-        FileUtils.cp_r(contents, cbk)
-      end
-
-      Dir.chdir(sandbox_path) do
-        %x(tar -czf #{archive} #{release_name})
-        FileUtils.mv(archive, current_directory)
-      end
-    end
-
-    puts %(Created archive of #{version} as #{archive})
-  else
-    puts %(#{archive} already exist, exiting...)
+  if File.exist?(archive_path)
+    puts %(#{archive_path} already exist, exiting...)
     exit(1)
+  else
+    packager = Stove::Packager.new(cookbook, false)
+    File.open(archive_path, 'wb') do |f|
+      f.write(packager.tarball)
+    end
+    puts %(Created archive of #{version} as #{archive_path})
   end
 end
 
