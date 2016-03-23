@@ -14,7 +14,7 @@ task :test do
 end
 
 desc 'Package the latest version as a .tar.gz archive'
-task :package => :spec do
+task :package => :test do
   contents = Dir.glob('*')
   contents.reject! { |path| path.start_with?('.') }
   contents.reject! { |path| %w[test spec gemfiles pkg vendor vagrantfiles].include?(path) }
