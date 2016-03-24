@@ -3,9 +3,12 @@
 [![Build Status](https://travis-ci.org/mthssdrbrg/kafka-cookbook.svg?branch=master)](https://travis-ci.org/mthssdrbrg/kafka-cookbook)
 [![GitHub Release](https://img.shields.io/github/release/mthssdrbrg/kafka-cookbook.svg)]()
 
+> Note: if you're reading this on Supermarket, version `< 2` refers to [Webtrends/kafka](https://github.com/Webtrends/kafka)
+> cookbook while version `>= 2` refers to [mthssdrbrg/kafka-cookbook](https://github.com/mthssdrbrg/kafka-cookbook).
+
 Installs and configures Kafka `>= v0.8.1`.
 
-Based on the Kafka cookbook released by WebTrends (thanks!), but with a few
+Initially based on the Kafka cookbook released by Webtrends (thanks!), but with a few
 notable differences:
 
 * does not depend on runit cookbook.
