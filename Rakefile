@@ -27,7 +27,7 @@ task :package => :test do
   else
     packager = Stove::Packager.new(cookbook, false)
     File.open(archive_path, 'wb') do |f|
-      f.write(packager.tarball)
+      f.write(packager.tarball.read)
     end
     puts %(Created archive of #{version} as #{archive_path})
   end
