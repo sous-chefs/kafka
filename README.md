@@ -4,7 +4,7 @@
 [![GitHub Release](https://img.shields.io/github/release/mthssdrbrg/kafka-cookbook.svg)]()
 
 > Note: if you're reading this on Supermarket, version `< 2` refers to [Webtrends/kafka](https://github.com/Webtrends/kafka)
-> cookbook while version `>= 2` refers to [mthssdrbrg/kafka-cookbook](https://github.com/mthssdrbrg/kafka-cookbook).
+> while version `>= 2` refers to [mthssdrbrg/kafka-cookbook](https://github.com/mthssdrbrg/kafka-cookbook).
 
 Installs and configures Kafka `>= v0.8.1`.
 
