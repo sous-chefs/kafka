@@ -3,9 +3,9 @@
 
 log4j.rootLogger=<%= @config.root_logger %>
 
-<% @config.fetch(:appenders, []).sort.each do |key, opts| %>
-<%= render_appender(key, opts) %>
+<% Array(@config[:appenders]).sort.each do |key, opts| %>
+<%=  render_appender(key, opts) %>
 <% end %>
-<% @config.fetch(:loggers, []).sort.each do |key, opts| %>
-<%= render_logger(key, opts) %>
+<% Array(@config[:loggers]).sort.each do |key, opts| %>
+<%=  render_logger(key, opts) %>
 <% end %>
