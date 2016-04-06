@@ -20,7 +20,7 @@ PIDFILE=/var/run/$NAME.pid
 [ -f /lib/lsb/init-functions ] && . /lib/lsb/init-functions
 
 # Load additional configuration
-[ -f /etc/default/$NAME ] && . /etc/default/$NAME
+[ -f <%= @env_path %> ] && . <%= @env_path %>
 
 <%= render 'partials/check_running.erb', variables: {user: @user} -%>
 

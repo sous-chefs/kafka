@@ -13,7 +13,7 @@ limit nofile <%= @ulimit %> <%= @ulimit %>
 setuid <%= @user %>
 
 script
-  [ -f /etc/default/<%= @daemon_name %> ] && . /etc/default/<%= @daemon_name %>
+  [ -f <%= @env_path %> ] && . <%= @env_path %>
   exec $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
 end script
 
