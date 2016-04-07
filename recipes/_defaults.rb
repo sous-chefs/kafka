@@ -4,10 +4,12 @@
 #
 
 unless broker_attribute?(:broker, :id)
+  Chef::Log.warn('Default value for `broker.id` is deprecated and will be removed in the next major version')
   node.default['kafka']['broker']['broker_id'] = node['ipaddress'].delete('.').to_i % 2**31
 end
 
 unless broker_attribute?(:port)
+  Chef::Log.warn('Default value for `port` is deprecated and will be removed in the next major version')
   node.default['kafka']['broker']['port'] = 6667
 end
 
