@@ -6,7 +6,11 @@ require 'stove'
 require 'stove/rake_task'
 
 RSpec::Core::RakeTask.new(:spec)
-FoodCritic::Rake::LintTask.new
+FoodCritic::Rake::LintTask.new do |t|
+  t.options = {
+    fail_tags: %w[any],
+  }
+end
 
 desc 'Run FoodCritic and ChefSpec'
 task :test do
