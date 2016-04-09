@@ -26,3 +26,7 @@ end
 unless node.kafka.version_install_dir
   node.default.kafka.version_install_dir = %(#{node.kafka.install_dir}-#{node.kafka.version})
 end
+
+if node.kafka.kill_timeout
+  Chef::Log.warn('`kill_timeout` is deprecated and will be removed in the next major version. It is currently a no-op.')
+end

@@ -5,8 +5,8 @@ Description=<%= @daemon_name %> daemon
 User=<%= @user %>
 EnvironmentFile=<%= @env_path %>
 ExecStart=/bin/bash $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG
-TimeoutSec=10
-TimeoutStopSec=<%= @kill_timeout %>
+ExecStartPost=<%= ::File.join(@scripts_dir, 'post-start') %> --pid=$MAINPID
+ExecStop=<%= ::File.join(@scripts_dir, 'stop') %> --pid=$MAINPID
 <% if @ulimit %>
 LimitNOFILE=<%= @ulimit %>
 <% end %>

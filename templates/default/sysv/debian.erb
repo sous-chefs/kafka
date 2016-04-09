@@ -9,6 +9,7 @@
 
 NAME=<%= @daemon_name %>
 USER=<%= @user %>
+SCRIPTS_DIR=<%= @scripts_dir %>
 PIDFILE=/var/run/$NAME.pid
 
 # Load the VERBOSE setting and other rcS variables
@@ -22,35 +23,30 @@ PIDFILE=/var/run/$NAME.pid
 # Load additional configuration
 [ -f <%= @env_path %> ] && . <%= @env_path %>
 
-<%= render 'partials/check_running.erb', variables: {user: @user} -%>
-
 do_start()
 {
   <% if @ulimit %>
   ulimit -n <%= @ulimit %>
   <% end %>
-  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG > /dev/null \
+  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas "$KAFKA_RUN" -- "$KAFKA_ARGS" "$KAFKA_CONFIG" > /dev/null \
     || return 1
 
-  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec $KAFKA_RUN -- $KAFKA_ARGS $KAFKA_CONFIG \
+  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec "$KAFKA_RUN" -- "$KAFKA_ARGS" "$KAFKA_CONFIG" \
     || return 2
 
-  check_running
+  sync # force pidfile to be flushed to disk
+  $SCRIPTS_DIR/post-start --pid="$(cat "$PIDFILE")"
   RETVAL=$?
   return $RETVAL
 }
 
 do_stop()
 {
-  <% if controlled_shutdown_enabled? %>
-  start-stop-daemon --stop --quiet --oknodo --signal=TERM --pidfile "$PIDFILE"
-  RETVAL=$?
-  while pidofproc "$PIDFILE" "$KAFKA"; do sleep 1; done
-  <% else %>
-  start-stop-daemon --stop --quiet --oknodo --retry=TERM/<%= @kill_timeout %>/KILL/5 --pidfile "$PIDFILE"
-  RETVAL=$?
-  <% end %>
-  rm -f $PIDFILE
+  if [ -e "$PIDFILE" ]; then
+    $SCRIPTS_DIR/stop --pid="$(cat "$PIDFILE")"
+    RETVAL=$?
+    rm -f "$PIDFILE"
+  fi
   return $RETVAL
 }
 
@@ -72,7 +68,8 @@ case "$1" in
     esac
     ;;
   restart)
-    $0 stop && sleep 2 && $0 start
+    $0 stop
+    $0 start
     ;;
   status)
     status_of_proc -p $PIDFILE "$KAFKA_RUN" "$NAME" && exit 0 || exit $?

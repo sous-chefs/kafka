@@ -186,16 +186,6 @@ platform you're running on, you might want to change the install and config
 directories as well. See `attributes/default.rb` and `recipes/_defaults.rb` for
 the default path regarding directories that Kafka will use.
 
-### Kafka killed prematurely (kill timeout)
-
-When using `controlled shutdown` and either `systemd` or `upstart` as init
-system you might run into issues with Kafka being killed before it has managed
-to shutdown completely, resulting in long recovery times.
-
-Not sure if it's possible to configure either `systemd` or `upstart` to not
-automatically kill processes, but a workaround is to set `kafka.kill_timeout` to
-a sufficiently high value.
-
 ## Copyright
 
 Copyright :: 2013-2016 Mathias Söderberg and contributors

@@ -6,7 +6,6 @@ start on runlevel [2345]
 stop on runlevel [016]
 
 kill signal TERM
-kill timeout <%= @kill_timeout %>
 <% if @ulimit %>
 limit nofile <%= @ulimit %> <%= @ulimit %>
 <% end %>
@@ -18,17 +17,13 @@ script
 end script
 
 post-start script
-  tries=0 max_tries=5 sh="$(which sh)"
   pid="$(status <%= @daemon_name %> | head -1)"
   pid=${pid##* }
-  if [ -n "$pid" ]; then
-    while [ $tries -le $max_tries ]; do
-      if netstat --numeric --listen --programs --tcp 2> /dev/null | grep -q "$pid/java"; then
-        exit 0
-      fi
-      tries=$((tries + 1))
-      sleep 1
-    done
-  fi
-  exit 1
+  <%= ::File.join(@scripts_dir, 'post-start') %> --pid=$pid
+end script
+
+pre-stop script
+  pid="$(status <%= @daemon_name %> | head -1)"
+  pid=${pid##* }
+  <%= ::File.join(@scripts_dir, 'stop') %> --pid=$pid
 end script

@@ -86,6 +86,16 @@ describe 'kafka::_setup' do
     })
   end
 
+  it 'creates scripts directory' do
+    expect(chef_run).to create_directory('/usr/libexec/kafka').with(mode: '755')
+  end
+
+  it 'creates utility scripts' do
+    %w[post-start stop].each do |script|
+      expect(chef_run).to create_cookbook_file(::File.join('/usr/libexec/kafka', script)).with(mode: '755')
+    end
+  end
+
   context 'log dirs for Kafka data' do
     shared_examples_for 'construction of log dirs' do
       it 'creates a directory for each path in `log.dirs`' do

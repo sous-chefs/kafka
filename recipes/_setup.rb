@@ -27,6 +27,18 @@ end
   end
 end
 
+directory node.kafka.scripts_dir do
+  mode '755'
+  recursive true
+end
+
+%w[post-start stop].each do |script|
+  cookbook_file ::File.join(node.kafka.scripts_dir, script) do
+    source sprintf('%s.bash', script)
+    mode '755'
+  end
+end
+
 kafka_log_dirs.each do |dir|
   directory dir do
     owner node.kafka.user

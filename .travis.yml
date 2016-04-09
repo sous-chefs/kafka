@@ -1,8 +1,14 @@
 language: ruby
-script: bundle exec rake test
 sudo: false
 cache:
   - bundler
+addons:
+  apt:
+    sources:
+      - debian-sid
+    packages:
+      - shellcheck
+script: bundle exec rake test
 rvm:
   - 1.9.3
   - 2.0

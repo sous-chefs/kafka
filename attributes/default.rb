@@ -44,6 +44,10 @@ default.kafka.build_dir = ::File.join(Dir.tmpdir, 'kafka-build')
 default.kafka.log_dir = '/var/log/kafka'
 
 #
+# Directory where to store utility scripts for Kafka.
+default.kafka.scripts_dir = '/usr/libexec/kafka'
+
+#
 # Directory where to keep Kafka configuration files. For the
 # actual default value see `_defaults` recipe.
 default.kafka.config_dir = nil
@@ -132,8 +136,8 @@ default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 
 #
 # Attribute to set the timeout in seconds when stopping the broker
-# before sending SIGKILL (or equivalent).
-default.kafka.kill_timeout = 10
+# before sending SIGKILL (or equivalent). Deprecated.
+default.kafka.kill_timeout = nil
 
 #
 # `broker` namespace for configuration of a broker.

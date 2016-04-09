@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Init file for <%= @daemon_name.capitalize %>
 #
@@ -8,6 +8,7 @@
 
 NAME=<%= @daemon_name %>
 USER=<%= @user %>
+SCRIPTS_DIR=<%= @scripts_dir %>
 PIDFILE=/var/run/$NAME.pid
 NOHUP=$(which nohup)
 RETVAL=0
@@ -24,49 +25,38 @@ RETVAL=0
 # Check that networking is up
 [ "$NETWORKING" = "no" ] && exit $RETVAL
 
-<%= render 'partials/check_running.erb', variables: {user: @user} -%>
-
-ensure_pid() {
-  [ ! -e "$PIDFILE" ] && touch $PIDFILE && chown $USER $PIDFILE
+success_or_failure() {
+  if [ "$1" -eq 0 ]; then
+    success
+  else
+    failure
+  fi
 }
 
 start() {
-  ensure_pid
+  [ ! -e "$PIDFILE" ] && touch "$PIDFILE" && chown "$USER" "$PIDFILE"
   <% if @ulimit %>
   ulimit -n <%= @ulimit %>
   <% end %>
-  action "Starting $NAME" daemon --user=$USER --pidfile=$PIDFILE "$NOHUP $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 & echo \$! > $PIDFILE"
+  echo -n "Starting $NAME"
+  daemon --user="$USER" --pidfile="$PIDFILE" "$NOHUP $KAFKA_RUN $KAFKA_ARGS $KAFKA_CONFIG > /dev/null 2>&1 & echo \$! > $PIDFILE"
   RETVAL=$?
-  if [ $RETVAL -eq 0 ]; then
-    check_running
+  if [ "$RETVAL" -eq 0 ]; then
+    $SCRIPTS_DIR/post-start --pid="$(cat "$PIDFILE")"
     RETVAL=$?
   fi
+  success_or_failure "$RETVAL"
   return $RETVAL
 }
 
 stop() {
-  <% if controlled_shutdown_enabled? %>
-  local pid;
-  if [ -e "$PIDFILE" ]; then pid=$(cat "$PIDFILE"); fi
-  echo -n "Stopping $NAME "
-  if checkpid $pid; then
-    kill -TERM $pid > /dev/null 2>&1;
+  echo -n "Stopping $NAME"
+  if [ -e "$PIDFILE" ]; then
+    $SCRIPTS_DIR/stop --pid="$(cat "$PIDFILE")"
     RETVAL=$?
-    if (( $RETVAL == 0 )); then
-      while checkpid $pid; do sleep 1; done
-      success
-    else
-      failure
-    fi
-  else
-    success
+    rm -f "$PIDFILE"
   fi
-  echo
-  rm -f "$PIDFILE"
-  <% else %>
-  action "Stopping $NAME" killproc -p "$PIDFILE" -d <%= @kill_timeout %> "$NAME"
-  RETVAL=$?
-  <% end %>
+  success_or_failure "$RETVAL"
   return $RETVAL
 }
 
@@ -82,7 +72,7 @@ case "$1" in
     start
     ;;
   status)
-    status -p $PIDFILE $NAME
+    status -p "$PIDFILE" "$NAME"
     RETVAL=$?
     ;;
   *)
