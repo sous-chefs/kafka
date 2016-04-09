@@ -13,7 +13,7 @@ end
 
 unless node.kafka.gc_log_opts
   node.default.kafka.gc_log_opts = %W[
-    -Xloggc:#{node.kafka.log_dir}/kafka-gc.log
+    -Xloggc:#{::File.join(node.kafka.log_dir, 'kafka-gc.log')}
     -XX:+PrintGCDateStamps
     -XX:+PrintGCTimeStamps
   ].join(' ')

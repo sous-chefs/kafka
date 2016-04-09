@@ -151,7 +151,7 @@ default.kafka.log4j.appenders = {
   'kafkaAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '.yyyy-MM-dd',
-    file: lazy { %(#{node.kafka.log_dir}/kafka.log) },
+    file: lazy { ::File.join(node.kafka.log_dir, 'kafka.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
@@ -160,7 +160,7 @@ default.kafka.log4j.appenders = {
   'stateChangeAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '.yyyy-MM-dd',
-    file: lazy { %(#{node.kafka.log_dir}/kafka-state-change.log) },
+    file: lazy { ::File.join(node.kafka.log_dir, 'kafka-state-change.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
@@ -169,7 +169,7 @@ default.kafka.log4j.appenders = {
   'requestAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '.yyyy-MM-dd',
-    file: lazy { %(#{node.kafka.log_dir}/kafka-request.log) },
+    file: lazy { ::File.join(node.kafka.log_dir, 'kafka-request.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
@@ -178,7 +178,7 @@ default.kafka.log4j.appenders = {
   'controllerAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
     date_pattern: '.yyyy-MM-dd',
-    file: lazy { %(#{node.kafka.log_dir}/kafka-controller.log) },
+    file: lazy { ::File.join(node.kafka.log_dir, 'kafka-controller.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
       conversion_pattern: '[%d] %p %m (%c)%n',
