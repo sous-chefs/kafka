@@ -126,7 +126,7 @@ default.kafka.automatic_restart = false
 
 #
 # Attribute to set the recipe to used to coordinate Kafka service start
-# if nothing is set the default recipe "_coordiante" will be used
+# if nothing is set the default recipe "_coordinate" will be used
 # Refer to issue #58 for details.
 default.kafka.start_coordination.recipe = 'kafka::_coordinate'
 
