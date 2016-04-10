@@ -62,7 +62,6 @@ def kafka_init_opts
         'debian' => '/etc/default/kafka',
         'default' => '/etc/sysconfig/kafka',
       })
-      opts[:env_template] = 'systemd/kafka.env.erb'
       opts[:source] = value_for_platform_family({
         'default' => 'systemd/default.erb'
       })

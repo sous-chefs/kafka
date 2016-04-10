@@ -19,7 +19,7 @@ RETVAL=0
 [ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
 
 # Load additional configuration
-[ -f /etc/sysconfig/$NAME ] && . /etc/sysconfig/$NAME
+[ -f <%= @env_path %> ] && . <%= @env_path %>
 
 # Check that networking is up
 [ "$NETWORKING" = "no" ] && exit $RETVAL
