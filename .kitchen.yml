@@ -4,16 +4,9 @@ driver:
   vagrantfiles:
     - 'vagrantfiles/cachier.rb'
   box_check_update: false
-  network:
-    - ['private_network', {type: 'dhcp', nictype: 'virtio'}]
   customize:
     memory: 1024
     cpus: 2
-    ioapic: 'on'
-    natdnshostresolver1: 'on'
-    natdnsproxy1: 'on'
-    nictype1: 'virtio'
-    nictype2: 'virtio'
 verifier:
   root_path: '/tmp/vagrant-cache/busser'
 provisioner:
@@ -50,15 +43,18 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.5
-  - name: centos-7.0
-  - name: debian-7.4
+  - name: centos-6.7
+  - name: centos-7.2
+  - name: debian-7.8
     run_list:
       - recipe[apt]
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
-  - name: fedora-20
+  - name: fedora-21
+    attributes:
+      java:
+        jdk_version: 8
 suites:
   - name: init-style-upstart
     run_list:
@@ -74,14 +70,14 @@ suites:
       - recipe[java]
       - recipe[kafka]
     excludes:
-      - centos-7.0
+      - centos-7.2
   - name: init-style-systemd
     run_list:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - fedora-20
-      - centos-7.0
+      - fedora-21
+      - centos-7.2
     attributes:
       kafka:
         init_style: 'systemd'
