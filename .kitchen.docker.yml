@@ -14,10 +14,10 @@ provisioner:
       md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
       ulimit_file: 128000
       broker:
-        broker_id: 1
-        controlled_shutdown_enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', false) %>
-        log_dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper_connect: ['localhost:2181']
+        broker.id: 1
+        controlled.shutdown.enable: <%= ENV.fetch('KAFKA_CTRL_SHUTDOWN', false) %>
+        log.dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
+        zookeeper.connect: ['localhost:2181']
       log4j:
         appenders:
           zookeeperAppender:
