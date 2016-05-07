@@ -46,7 +46,6 @@ start() {
     RETVAL=$?
   fi
   success_or_failure "$RETVAL"
-  return $RETVAL
 }
 
 stop() {
@@ -57,7 +56,6 @@ stop() {
     rm -f "$PIDFILE"
   fi
   success_or_failure "$RETVAL"
-  return $RETVAL
 }
 
 case "$1" in

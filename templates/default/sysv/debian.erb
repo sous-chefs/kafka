@@ -11,6 +11,7 @@ NAME=<%= @daemon_name %>
 USER=<%= @user %>
 SCRIPTS_DIR=<%= @scripts_dir %>
 PIDFILE=/var/run/$NAME.pid
+RETVAL=0
 
 # Load the VERBOSE setting and other rcS variables
 [ -f /lib/init/vars.sh ] && . /lib/init/vars.sh
@@ -28,16 +29,13 @@ do_start()
   <% if @ulimit %>
   ulimit -n <%= @ulimit %>
   <% end %>
-  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --test --startas "$KAFKA_RUN" -- "$KAFKA_ARGS" "$KAFKA_CONFIG" > /dev/null \
-    || return 1
-
-  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec "$KAFKA_RUN" -- "$KAFKA_ARGS" "$KAFKA_CONFIG" \
-    || return 2
-
-  sync # force pidfile to be flushed to disk
-  $SCRIPTS_DIR/post-start --pid="$(cat "$PIDFILE")"
+  start-stop-daemon --start --quiet --chuid $USER --pidfile $PIDFILE --make-pidfile --background --exec "$KAFKA_RUN" -- "$KAFKA_ARGS" "$KAFKA_CONFIG"
   RETVAL=$?
-  return $RETVAL
+  if [ $RETVAL -eq 0 ]; then
+    sync # force pidfile to be flushed to disk
+    $SCRIPTS_DIR/post-start --pid="$(cat "$PIDFILE")"
+    RETVAL=$?
+  fi
 }
 
 do_stop()
@@ -47,14 +45,13 @@ do_stop()
     RETVAL=$?
     rm -f "$PIDFILE"
   fi
-  return $RETVAL
 }
 
 case "$1" in
   start)
     log_daemon_msg "Starting" "$NAME"
     do_start
-    case "$?" in
+    case "$RETVAL" in
       0|1) log_end_msg 0 ;;
       2)   log_end_msg 1 ;;
     esac
@@ -62,7 +59,7 @@ case "$1" in
   stop)
     log_daemon_msg "Stopping" "$NAME"
     do_stop
-    case "$?" in
+    case "$RETVAL" in
       0|1) log_end_msg 0 ;;
       2)   log_end_msg 1 ;;
     esac
