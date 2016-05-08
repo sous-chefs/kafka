@@ -2,7 +2,7 @@
 # Local modifications will be overwritten.
 
 <% @config.each do |key, value| %>
-<%   unless value.nil? %>
+<%   if render_option?(value) %>
 <%=    render_option(key, value) %>
 <%   end %>
 <% end %>

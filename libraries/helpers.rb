@@ -106,7 +106,7 @@ def broker_attribute?(*parts)
   end
   key = parts.pop
   r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
-  r.fetch(key, nil)
+  r.attribute?(key)
 end
 
 def fetch_broker_attribute(*parts)
