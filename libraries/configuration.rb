@@ -5,6 +5,19 @@
 
 module Kafka
   module Configuration
+    def render_option?(value)
+      case value
+      when Hash
+        value.values.all? do |v|
+          render_option?(v)
+        end
+      when Array
+        !value.empty?
+      else
+        !value.nil?
+      end
+    end
+
     def render_option(prefix, value)
       prefix = convert_key(prefix)
       case value

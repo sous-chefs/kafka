@@ -63,11 +63,11 @@ describe 'kafka::_defaults' do
 
     context 'when set to `nil`' do
       let :broker_attributes do
-        {broker_id: nil}
+        {broker: {id: nil}}
       end
 
       it 'does not override it' do
-        expect(node.kafka.broker.broker_id).to be_nil
+        expect(node.kafka.broker['broker']['id']).to be_nil
       end
     end
 
