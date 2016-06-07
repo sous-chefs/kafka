@@ -6,6 +6,7 @@ driver:
 provisioner:
   name: 'chef_solo'
   require_chef_omnibus: false
+  chef_omnibus_root: '/opt/chef'
   attributes:
     kafka:
       version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1').inspect %>
