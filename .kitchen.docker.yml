@@ -3,6 +3,7 @@ driver:
   name: 'docker'
   memory: '1024m'
   cpu: 4
+  use_sudo: false
 provisioner:
   name: 'chef_solo'
   require_chef_omnibus: false
