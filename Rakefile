@@ -106,7 +106,7 @@ class VagrantTask < KitchenTask
 end
 
 namespace :test do
-  default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1]
+  default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1 0.10.0.0]
 
   def run_tests_for(versions, task_class)
     puts '>>> Running tests for versions: %s' % [versions.join(', ')]
