@@ -82,7 +82,7 @@ Defaults to installing `v0.8.1.1` of Kafka.
 ## Controlling restart of Kafka brokers in a cluster
 
 Any changes made to the broker configuration could result in a restart of the
-Kafka broker, depending on configuration of this cookbook.
+Kafka broker, if the `kafka.automatic_restart` attribute is set to `true`.
 If Chef runs as a daemon on all of the nodes this could result in all of the Kafka
 brokers being brought down at the same time, resulting in unavailability of
 service.
@@ -102,7 +102,7 @@ If custom logic needs to be implemented, this recipe can be replaced with
 another recipe, but don't forget to update the `kafka.start_coordination.recipe`
 attribute.
 
-The only requrirement is that the new recipe has a `ruby_block` resource with
+The only requirement is that the new recipe has a `ruby_block` resource with
 `'coordinate-kafka-start'` as ID.
 The following is a sample recipe that shows roughly what one can do with this
 feature.
@@ -112,7 +112,7 @@ ruby_block 'coordinate-kafka-start' do
   block do
     Chef::Log.info 'Custom recipe to coordinate Kafka start/restart'
   end
-  action :create
+  action :nothing
   notifies :create, 'ruby_block[restart-coordination]', :delayed
 end
 
