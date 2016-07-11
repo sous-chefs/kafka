@@ -63,7 +63,13 @@ platforms:
       java:
         jdk_version: 8
 suites:
-  - name: init-style-upstart
+  - name: sysv
+    run_list:
+      - recipe[java]
+      - recipe[kafka]
+    excludes:
+      - centos-7.2
+  - name: upstart
     run_list:
       - recipe[java]
       - recipe[kafka]
@@ -72,13 +78,7 @@ suites:
     attributes:
       kafka:
         init_style: 'upstart'
-  - name: init-style-sysv
-    run_list:
-      - recipe[java]
-      - recipe[kafka]
-    excludes:
-      - centos-7.2
-  - name: init-style-systemd
+  - name: systemd
     run_list:
       - recipe[java]
       - recipe[kafka]
