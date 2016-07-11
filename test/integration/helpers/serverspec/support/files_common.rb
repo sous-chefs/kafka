@@ -23,7 +23,7 @@ shared_examples_for 'an executable kafka file' do
     file(path)
   end
 
-  it_behaves_like 'a kafka file'
+  include_examples 'a kafka file'
 
   it 'is executable by kafka' do
     expect(kafka_file).to be_executable.by_user('kafka')

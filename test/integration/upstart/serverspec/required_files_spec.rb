@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+
 describe 'required files for upstart init style' do
   describe 'environment file' do
     let :env_file do

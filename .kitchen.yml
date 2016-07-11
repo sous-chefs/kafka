@@ -63,6 +63,13 @@ platforms:
       java:
         jdk_version: 8
 suites:
+  - name: default
+    run_list:
+      - recipe[java]
+      - recipe[kafka]
+    attributes:
+      kafka:
+        init_style: false
   - name: sysv
     run_list:
       - recipe[java]

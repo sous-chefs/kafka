@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+
 describe 'service for systemd init style' do
   include_context 'service setup'
 
@@ -23,6 +24,10 @@ describe 'service for systemd init style' do
 
   before do
     run_command 'systemctl reset-failed kafka.service'
+  end
+
+  describe service('kafka'), pending: centos? && systemd? do
+    it { should be_enabled }
   end
 
   describe 'service kafka start' do

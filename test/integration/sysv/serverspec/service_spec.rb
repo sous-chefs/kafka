@@ -2,6 +2,7 @@
 
 require 'spec_helper'
 
+
 describe 'service for sysv init style' do
   include_context 'service setup'
 
@@ -19,6 +20,10 @@ describe 'service for sysv init style' do
 
   let :pidfile do
     file '/var/run/kafka.pid'
+  end
+
+  describe service('kafka'), pending: centos? && systemd? do
+    it { should be_enabled }
   end
 
   describe 'service kafka start' do

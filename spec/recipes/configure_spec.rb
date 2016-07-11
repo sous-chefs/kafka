@@ -11,7 +11,7 @@ describe 'kafka::_configure' do
   end
 
   let :described_recipes do
-    ['kafka::_defaults', described_recipe]
+    ['kafka::_defaults', described_recipe, 'kafka::_service']
   end
 
   let :node do
