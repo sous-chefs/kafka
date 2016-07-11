@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 require 'spec_helper'
-require 'support/service_common'
 
 describe 'service for upstart init style' do
   include_context 'service setup'

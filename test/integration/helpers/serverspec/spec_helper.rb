@@ -2,8 +2,12 @@
 
 require 'serverspec'
 
-require 'support/platform_helpers'
 require 'support/await_helper'
+require 'support/configuration_common'
+require 'support/files_common'
+require 'support/install_common'
+require 'support/platform_helpers'
+require 'support/service_common'
 
 RSpec.configure do |config|
   config.backend = :exec
