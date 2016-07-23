@@ -70,6 +70,10 @@ class KitchenTask
 
   private
 
+  def log(message)
+    puts sprintf('%s :: %s', Time.now.strftime('%Y-%m-%d %H:%M:%S'), message)
+  end
+
   def run_and_wait(command)
     start_time = Time.now
     rd, wr = IO.pipe
@@ -84,7 +88,7 @@ class KitchenTask
     end
     _, status = Process.waitpid2(pid)
     duration = Time.now - start_time
-    puts '>>> Ran %p, in %d seconds' % [command, duration]
+    log('Ran %p, in %d seconds' % [command, duration])
     status
   end
 end
@@ -109,17 +113,17 @@ namespace :test do
   default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1 0.10.0.0]
 
   def run_tests_for(versions, task_class)
-    puts '>>> Running tests for versions: %s' % [versions.join(', ')]
+    log('Running tests for versions: %s' % [versions.join(', ')])
     failed_versions, done = [], false
     until done do
       versions.each do |version|
-        puts '>>> Starting tests for v%s' % version
+        log('Starting tests for v%s' % version)
         task = task_class.new(version)
         if task.run.success?
-          puts '>>> Done testing v%s, run took %d seconds' % [version, task.duration]
+          log('Done testing v%s, run took %d seconds' % [version, task.duration])
         else
-          puts task.output
-          puts '>>> v%s failed, run took %d seconds, see output above ^' % [version, task.duration]
+          log(task.output)
+          log('v%s failed, run took %d seconds, see output above ^' % [version, task.duration])
           if ENV.key?('yes')
             answer = ''
           else
