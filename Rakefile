@@ -4,6 +4,12 @@ require 'rspec/core/rake_task'
 require 'foodcritic'
 require 'stove'
 require 'stove/rake_task'
+require 'logger'
+
+$logger = Logger.new($stdout)
+$logger.formatter = proc do |_, datetime, _, message|
+  sprintf(%(%s :: %s\n), datetime.strftime('%Y-%m-%d %H:%M:%S'), message)
+end
 
 RSpec::Core::RakeTask.new(:spec)
 FoodCritic::Rake::LintTask.new do |t|
@@ -70,10 +76,6 @@ class KitchenTask
 
   private
 
-  def log(message)
-    puts sprintf('%s :: %s', Time.now.strftime('%Y-%m-%d %H:%M:%S'), message)
-  end
-
   def run_and_wait(command)
     start_time = Time.now
     rd, wr = IO.pipe
@@ -88,7 +90,7 @@ class KitchenTask
     end
     _, status = Process.waitpid2(pid)
     duration = Time.now - start_time
-    log('Ran %p, in %d seconds' % [command, duration])
+    $logger.info('Ran %p, in %d seconds' % [command, duration])
     status
   end
 end
@@ -113,21 +115,21 @@ namespace :test do
   default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1 0.10.0.0]
 
   def run_tests_for(versions, task_class)
-    log('Running tests for versions: %s' % [versions.join(', ')])
+    $logger.info(sprintf('Running tests for versions: %s' ,versions.join(', ')))
     failed_versions, done = [], false
     until done do
       versions.each do |version|
-        log('Starting tests for v%s' % version)
+        $logger.info('Starting tests for v%s' % version)
         task = task_class.new(version)
         if task.run.success?
-          log('Done testing v%s, run took %d seconds' % [version, task.duration])
+          $logger.info('Done testing v%s, run took %d seconds' % [version, task.duration])
         else
-          log(task.output)
-          log('v%s failed, run took %d seconds, see output above ^' % [version, task.duration])
+          $logger.info(task.output)
+          $logger.info('v%s failed, run took %d seconds, see output above ^' % [version, task.duration])
           if ENV.key?('yes')
             answer = ''
           else
-            print '>>> Continue with the remaining versions? [Y/n]: '
+            print sprintf('%s :: Continue with the remaining versions? [Y/n]: ', Time.now.strftime('%Y-%m-%d %H:%M:%S'))
             answer = $stdin.gets.strip.downcase
           end
           if answer.empty? || answer == 'y'
@@ -139,7 +141,7 @@ namespace :test do
         end
       end
       if failed_versions.any?
-        print '>>> The following versions failed: %s, would you like to retry them? [Y/n]: ' % [failed_versions.join(', ')]
+        print sprintf('%s :: The following versions failed: %s, would you like to retry them? [Y/n]: ', Time.now.strftime('%Y-%m-%d %H:%M:%S'), failed_versions.join(', '))
         answer = $stdin.gets.strip.downcase
         if answer.empty? || answer == 'y'
           versions = failed_versions
@@ -185,3 +187,5 @@ namespace :test do
     run_tests_for(versions, VagrantTask)
   end
 end
+
+at_exit { $logger.close if $logger }
