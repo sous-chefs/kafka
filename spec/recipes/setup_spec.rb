@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'kafka::_setup' do
   let :chef_run do
     ChefSpec::Runner.new do |node|
-      node.set[:kafka] = kafka_attrs
+      node.set['kafka'] = kafka_attrs
     end.converge('kafka::_defaults', described_recipe)
   end
 
@@ -29,7 +29,7 @@ describe 'kafka::_setup' do
 
     context 'when disabled' do
       let :kafka_attrs do
-        {manage_user: false}
+        {'manage_user' => false}
       end
 
       it 'does not create a kafka group' do
@@ -46,7 +46,7 @@ describe 'kafka::_setup' do
 
     context 'when overridden' do
       let :kafka_attrs do
-        {user: 'spec', group: 'spec'}
+        {'user' => 'spec', 'group' => 'spec'}
       end
 
       it 'creates a group with set name' do
@@ -103,8 +103,8 @@ describe 'kafka::_setup' do
     context 'when using `underscore` notation' do
       let :kafka_attrs do
         {
-          broker: {
-            log_dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
+          'broker' => {
+            'log_dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
           }
         }
       end
@@ -115,9 +115,9 @@ describe 'kafka::_setup' do
     context 'when using `nested hash` notation' do
       let :kafka_attrs do
         {
-          broker: {
-            log: {
-              dirs: %w[/mnt/kafka-1 /mnt/kafka-2]
+          'broker' => {
+            'log' => {
+              'dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
             }
           }
         }
@@ -129,7 +129,7 @@ describe 'kafka::_setup' do
     context 'when using String keys' do
       let :kafka_attrs do
         {
-          broker: {
+          'broker' => {
             'log.dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
           }
         }
