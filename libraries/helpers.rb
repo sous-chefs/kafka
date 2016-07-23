@@ -4,7 +4,7 @@
 #
 
 def kafka_base
-  %(kafka_#{node.kafka.scala_version}-#{node.kafka.version})
+  %(kafka_#{node['kafka']['scala_version']}-#{node['kafka']['version']})
 end
 
 def kafka_tar_gz
@@ -16,23 +16,23 @@ def kafka_local_download_path
 end
 
 def kafka_target_path
-  ::File.join(node.kafka.build_dir, kafka_base)
+  ::File.join(node['kafka']['build_dir'], kafka_base)
 end
 
 def kafka_jar_path
-  ::File.join(node.kafka.install_dir, 'libs', %(#{kafka_base}.jar))
+  ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_base}.jar))
 end
 
 def kafka_installed?
-  ::File.exists?(node.kafka.install_dir) && ::File.exists?(kafka_jar_path)
+  ::File.exists?(node['kafka']['install_dir']) && ::File.exists?(kafka_jar_path)
 end
 
 def kafka_download_uri(filename)
-  [node.kafka.base_url, node.kafka.version, filename].join('/')
+  [node['kafka']['base_url'], node['kafka']['version'], filename].join('/')
 end
 
 def kafka_init_style
-  node.kafka.init_style.to_sym
+  node['kafka']['init_style'].to_sym
 end
 
 def kafka_init_opts
@@ -73,11 +73,11 @@ def kafka_init_opts
 end
 
 def start_automatically?
-  !!node.kafka.automatic_start || restart_on_configuration_change?
+  !!node['kafka']['automatic_start'] || restart_on_configuration_change?
 end
 
 def restart_on_configuration_change?
-  !!node.kafka.automatic_restart
+  !!node['kafka']['automatic_restart']
 end
 
 def kafka_service_actions
@@ -88,16 +88,16 @@ end
 
 def kafka_log_dirs
   dirs = []
-  dirs += Array(node.kafka.broker['log.dirs'])
-  dirs += Array(node.kafka.broker.fetch(:log_dirs, []))
-  dirs += Array(node.kafka.broker.fetch(:log, {}).fetch(:dirs, []))
+  dirs += Array(node['kafka']['broker']['log.dirs'])
+  dirs += Array(node['kafka']['broker'].fetch(:log_dirs, []))
+  dirs += Array(node['kafka']['broker'].fetch(:log, {}).fetch(:dirs, []))
   dirs.uniq!
   dirs
 end
 
 def broker_attribute?(*parts)
   parts = parts.map(&:to_s)
-  broker = node.kafka.broker
+  broker = node['kafka']['broker']
   if broker.attribute?(parts.join('.'))
     return true
   end
@@ -111,7 +111,7 @@ end
 
 def fetch_broker_attribute(*parts)
   parts = parts.map(&:to_s)
-  broker = node.kafka.broker
+  broker = node['kafka']['broker']
   if broker.attribute?(parts.join('.'))
     return broker[parts.join('.')]
   end
