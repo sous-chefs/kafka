@@ -5,8 +5,8 @@ require 'spec_helper'
 describe 'kafka::_configure' do
   let :chef_run do
     ChefSpec::Runner.new do |node|
-      node.set[:kafka] = kafka_attributes
-      node.set[:kafka][:broker] = broker_attributes
+      node.set['kafka'] = kafka_attributes
+      node.set['kafka']['broker'] = broker_attributes
     end.converge(*described_recipes)
   end
 
@@ -59,7 +59,7 @@ describe 'kafka::_configure' do
       context 'when broker id is larger than 2**31' do
         let :chef_run do
           ChefSpec::Runner.new do |node|
-            node.automatic[:ipaddress] = '255.255.255.255'
+            node.automatic['ipaddress'] = '255.255.255.255'
           end.converge(*described_recipes)
         end
 
@@ -92,13 +92,13 @@ describe 'kafka::_configure' do
     context 'configuration using underscore notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
-          {array_option: mappings}
+          {'array_option' => mappings}
         end
       end
 
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          {:'possible.future_option' => mappings}
+          {'possible.future_option' => mappings}
         end
       end
     end
@@ -120,13 +120,13 @@ describe 'kafka::_configure' do
     context 'configuration using nested Hashes notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
-          { array: { option: mappings } }
+          { 'array' => { 'option' => mappings } }
         end
       end
 
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          { possible: { :'future_option' => mappings } }
+          { 'possible' => { 'future_option' => mappings } }
         end
       end
     end
@@ -178,9 +178,9 @@ describe 'kafka::_configure' do
     end
 
     it 'configures sane date patterns for appenders' do
-      expect(node.kafka.log4j.appenders).to_not be_empty
-      node.kafka.log4j.appenders.each do |_, opts|
-        expect(opts.date_pattern).to eq('.yyyy-MM-dd')
+      expect(node['kafka']['log4j']['appenders']).to_not be_empty
+      node['kafka']['log4j']['appenders'].each do |_, opts|
+        expect(opts['date_pattern']).to eq('.yyyy-MM-dd')
       end
     end
   end
@@ -188,9 +188,9 @@ describe 'kafka::_configure' do
   shared_examples_for 'an init style' do
     let :chef_run do
       ChefSpec::Runner.new(platform_and_version) do |node|
-        node.set[:kafka][:scala_version] = '2.8.0'
-        node.set[:kafka][:init_style] = init_style
-        node.set[:kafka][:broker] = broker_attributes
+        node.set['kafka']['scala_version'] = '2.8.0'
+        node.set['kafka']['init_style'] = init_style
+        node.set['kafka']['broker'] = broker_attributes
       end.converge(*described_recipes)
     end
 
@@ -516,7 +516,7 @@ describe 'kafka::_configure' do
 
       context 'when set to true' do
         let :kafka_attributes do
-          {automatic_restart: true}
+          {'automatic_restart' => true}
         end
 
         it 'restarts kafka when configuration is changed' do
@@ -540,7 +540,7 @@ describe 'kafka::_configure' do
 
       context 'when set to true' do
         let :kafka_attributes do
-          {automatic_start: true}
+          {'automatic_start' => true}
         end
 
         it 'starts kafka' do

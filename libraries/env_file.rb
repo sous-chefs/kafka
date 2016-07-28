@@ -11,7 +11,7 @@ module Kafka
     end
 
     def export?
-      node.kafka.init_style.to_sym != :systemd
+      node['kafka']['init_style'].to_sym != :systemd
     end
   end
 end

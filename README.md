@@ -152,7 +152,7 @@ keep a lot file handles open due to socket connections (depends on the number of
 brokers, producers and consumers) and the actual data log files (depends on
 the number of partitions and log segment and/or log roll settings).
 
-It's possible to set a specific `ulimit` for Kafka using the `node.kafka.ulimit_file`
+It's possible to set a specific `ulimit` for Kafka using the `node['kafka']['ulimit_file']`
 attribute.
 If this value is not set, Kafka will use whatever the system default is, which
 as stated previously might not be enough, so it might be wise to set a higher
@@ -166,19 +166,19 @@ that needs to be set (assumes that you have ZooKeeper running on port 2181
 locally):
 
 ```ruby
-node.default.kafka.broker.zookeeper.connect = 'localhost:2181'
+node.default['kafka']['broker]['zookeeper.connect'] = 'localhost:2181'
 # This shouldn't normally be necessary, but might need to be set explicitly
 # if you're having trouble connecting to the brokers.
-node.default.kafka.broker.hostname = '127.0.0.1' # or perhaps 'localhost'
+node.default['kafka']['broker']['hostname'] = '127.0.0.1' # or perhaps 'localhost'
 ```
 
 If you plan on running a cluster locally you will want to set separate
 values for the following configuration options:
 
 ```ruby
-node.default.kafka.broker.broker.id = <id>
-node.default.kafka.broker.port = <port>
-node.default.kafka.broker.log.dirs = <dir path>
+node.default['kafka']['broker']['broker.id'] = <id>
+node.default['kafka']['broker']['port'] = <port>
+node.default['kafka']['broker']['log.dirs'] = <dir path>
 ```
 
 Other than that things should work as expected, though depending on what
