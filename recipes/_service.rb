@@ -21,11 +21,11 @@ template kafka_init_opts[:script_path] do
   mode kafka_init_opts[:permissions]
   variables({
     daemon_name: 'kafka',
-    port: node.kafka.broker.port,
-    user: node.kafka.user,
+    port: node['kafka']['broker']['port'],
+    user: node['kafka']['user'],
     env_path: kafka_init_opts[:env_path],
-    ulimit: node.kafka.ulimit_file,
-    kill_timeout: node.kafka.kill_timeout,
+    ulimit: node['kafka']['ulimit_file'],
+    kill_timeout: node['kafka']['kill_timeout'],
   })
   helper :controlled_shutdown_enabled? do
     !!fetch_broker_attribute(:controlled, :shutdown, :enable)
@@ -35,4 +35,4 @@ template kafka_init_opts[:script_path] do
   end
 end
 
-include_recipe node.kafka.start_coordination.recipe
+include_recipe node['kafka']['start_coordination']['recipe']
