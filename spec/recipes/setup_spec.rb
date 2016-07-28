@@ -21,15 +21,14 @@ describe 'kafka::_setup' do
 
       it 'creates a kafka user' do
         expect(chef_run).to create_user('kafka').with({
-          shell: '/sbin/nologin',
-          gid: 'kafka'
+          shell: '/sbin/nologin'
         })
       end
     end
 
-    context 'when uid' do
+    context 'when uid and gid' do
       let :kafka_attrs do
-        {uid: 1234}
+        {uid: 1234, gid: 5678}
       end
 
       it 'creates a kafka group' do
@@ -39,7 +38,7 @@ describe 'kafka::_setup' do
       it 'creates a kafka user' do
         expect(chef_run).to create_user('kafka').with({
           shell: '/sbin/nologin',
-          gid: 'kafka',
+          gid: 5678,
           uid: 1234
         })
       end
@@ -73,8 +72,7 @@ describe 'kafka::_setup' do
 
       it 'creates a user with set name' do
         expect(chef_run).to create_user('spec').with({
-          shell: '/sbin/nologin',
-          gid: 'spec'
+          shell: '/sbin/nologin'
         })
       end
     end

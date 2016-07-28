@@ -77,6 +77,10 @@ default['kafka']['uid'] = nil
 default['kafka']['group'] = 'kafka'
 
 #
+# Override GID for Group for directories, configuration files and running Kafka.
+default['kafka']['gid'] = nil
+
+#
 # JVM heap options for Kafka.
 default['kafka']['heap_opts'] = '-Xmx1G -Xms1G'
 
