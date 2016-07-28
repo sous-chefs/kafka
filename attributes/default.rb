@@ -69,6 +69,10 @@ default['kafka']['user'] = 'kafka'
 default['kafka']['manage_user'] = true
 
 #
+# Override UID for User for directories, configuration files and running Kafka.
+default['kafka']['uid'] = nil
+
+#
 # Group for directories, configuration files and running Kafka.
 default['kafka']['group'] = 'kafka'
 

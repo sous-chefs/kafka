@@ -27,6 +27,24 @@ describe 'kafka::_setup' do
       end
     end
 
+    context 'when uid' do
+      let :kafka_attrs do
+        {uid: 1234}
+      end
+
+      it 'creates a kafka group' do
+        expect(chef_run).to create_group('kafka')
+      end
+
+      it 'creates a kafka user' do
+        expect(chef_run).to create_user('kafka').with({
+          shell: '/sbin/nologin',
+          gid: 'kafka',
+          uid: 1234
+        })
+      end
+    end
+
     context 'when disabled' do
       let :kafka_attrs do
         {'manage_user' => false}

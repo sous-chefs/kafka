@@ -9,6 +9,7 @@ end
 
 user node['kafka']['user'] do
   gid node['kafka']['group']
+  uid node['kafka']['uid'] if node['kafka']['uid']
   home '/var/empty/kafka'
   shell '/sbin/nologin'
   only_if { node['kafka']['manage_user'] }
