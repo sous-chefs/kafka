@@ -5,10 +5,12 @@ require 'support/files_common'
 shared_examples_for 'a _setup recipe' do
   describe group('kafka') do
     it { should exist }
+    it { should have_gid(5678) }
   end
 
   describe user('kafka') do
     it { should exist }
+    it { should have_uid(1234) }
     it { should belong_to_group('kafka') }
     it { should have_login_shell('/sbin/nologin') }
     it { should have_home_directory('/var/empty/kafka') }
