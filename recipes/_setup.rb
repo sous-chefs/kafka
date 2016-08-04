@@ -4,11 +4,13 @@
 #
 
 group node['kafka']['group'] do
+  gid node['kafka']['gid'] if node['kafka']['gid']
   only_if { node['kafka']['manage_user'] }
 end
 
 user node['kafka']['user'] do
-  gid node['kafka']['group']
+  uid node['kafka']['uid'] if node['kafka']['uid']
+  group node['kafka']['group']
   home '/var/empty/kafka'
   shell '/sbin/nologin'
   only_if { node['kafka']['manage_user'] }

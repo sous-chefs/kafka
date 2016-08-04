@@ -223,6 +223,3 @@ DEPENDENCIES
   rake
   stove
   test-kitchen
-
-BUNDLED WITH
-   1.10.6

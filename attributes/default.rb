@@ -69,8 +69,16 @@ default['kafka']['user'] = 'kafka'
 default['kafka']['manage_user'] = true
 
 #
+# Override ID for user used for directories, configuration files and running Kafka.
+default['kafka']['uid'] = nil
+
+#
 # Group for directories, configuration files and running Kafka.
 default['kafka']['group'] = 'kafka'
+
+#
+# Override ID for group used for directories, configuration files and running Kafka.
+default['kafka']['gid'] = nil
 
 #
 # JVM heap options for Kafka.
