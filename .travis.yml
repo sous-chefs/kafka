@@ -10,4 +10,4 @@ matrix:
   include:
     - rvm: 1.9
       gemfile: gemfiles/chef-11/Gemfile
-      script: travis_retry travis_wait bundle exec rspec spec
+      script: bundle exec rspec spec
