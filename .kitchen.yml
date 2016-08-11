@@ -58,6 +58,9 @@ platforms:
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
+  - name: debian-8.5
+    run_list:
+      - recipe[apt]
   - name: fedora-21
     attributes:
       java:
@@ -65,7 +68,6 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[java]
       - recipe[kafka]
     attributes:
       kafka:
@@ -74,8 +76,9 @@ suites:
     run_list:
       - recipe[java]
       - recipe[kafka]
-    excludes:
-      - centos-7.2
+    includes:
+      - centos-6.7
+      - debian-7.8
   - name: upstart
     run_list:
       - recipe[java]
@@ -90,8 +93,9 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - fedora-21
       - centos-7.2
+      - debian-8.5
+      - fedora-21
     attributes:
       kafka:
         init_style: 'systemd'

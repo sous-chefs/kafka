@@ -6,7 +6,7 @@ require 'spec_helper'
 describe 'required files for systemd init style' do
   describe 'environment file' do
     let :env_file do
-      file '/etc/sysconfig/kafka'
+      file(debian? ? '/etc/default/kafka' : '/etc/sysconfig/kafka')
     end
 
     it 'exists' do
