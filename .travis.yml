@@ -1,10 +1,11 @@
 language: ruby
-script: bundle exec rake test
 sudo: false
 cache:
   - bundler
 rvm:
   - 2.1
+install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
+script: bundle exec rake test
 matrix:
   fast_finish: true
   include:
@@ -17,4 +18,3 @@ matrix:
         - docker
       env: CHEF_VERSION=12 KITCHEN_YAML=.kitchen.docker.yml
       script: bundle exec kitchen test --destroy=always
-      install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
