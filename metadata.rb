@@ -10,10 +10,13 @@ version          '2.0.2'
 
 recipe 'kafka::default', 'Downloads and installs Kafka from binary releases'
 
-suggests 'java', '~> 1.22'
+suggests 'java', '~> 1.22' # ~FC052
 
 supports 'centos'
 supports 'fedora'
 supports 'amazon'
 supports 'debian'
 supports 'ubuntu'
+
+source_url 'https://github.com/mthssdrbrg/kafka-cookbook' if respond_to?(:source_url)
+issues_url 'https://github.com/mthssdrbrg/kafka-cookbook/issues' if respond_to?(:issues_url)
