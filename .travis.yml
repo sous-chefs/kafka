@@ -11,3 +11,10 @@ matrix:
     - rvm: 1.9
       gemfile: gemfiles/chef-11/Gemfile
       script: bundle exec rspec spec
+    - rvm: 2.1
+      sudo: required
+      services:
+        - docker
+      env: CHEF_VERSION=12 KITCHEN_YAML=.kitchen.docker.yml
+      script: bundle exec kitchen test --destroy=always
+      install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
