@@ -5,7 +5,7 @@ require 'spec_helper'
 
 describe 'kafka::_defaults' do
   let :chef_run do
-    r = ChefSpec::Runner.new do |node|
+    r = ChefSpec::SoloRunner.new do |node|
       node.set['kafka']['broker'] = broker_attributes
     end
     r.converge(described_recipe)
