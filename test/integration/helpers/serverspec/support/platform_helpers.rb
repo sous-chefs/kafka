@@ -35,3 +35,8 @@ module PlatformHelpers
     os[:release]
   end
 end
+
+RSpec.configure do |config|
+  config.include(PlatformHelpers)
+  config.extend(PlatformHelpers)
+end

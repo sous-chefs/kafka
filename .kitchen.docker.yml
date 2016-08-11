@@ -56,6 +56,12 @@ platforms:
         - apt-get install -y openjdk-7-jre-headless
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
 suites:
-  - name: init-style-sysv
+  - name: default
+    run_list:
+      - recipe[kafka]
+    attributes:
+      kafka:
+        init_style: false
+  - name: sysv
     run_list:
       - recipe[kafka]

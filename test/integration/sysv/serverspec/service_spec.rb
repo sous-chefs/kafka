@@ -1,29 +1,29 @@
 # encoding: utf-8
 
 require 'spec_helper'
-require 'support/service_common'
 
-describe 'service for systemd init style' do
+
+describe 'service for sysv init style' do
   include_context 'service setup'
 
   let :start_command_string do
-    'systemctl start kafka.service'
+    'service kafka start'
   end
 
   let :stop_command_string do
-    'systemctl stop kafka.service'
+    'service kafka stop'
   end
 
   let :status_command_string do
-    'systemctl status kafka.service'
+    'service kafka status'
   end
 
-  before :all do
-    run_command 'systemctl daemon-reload'
+  let :pidfile do
+    file '/var/run/kafka.pid'
   end
 
-  before do
-    run_command 'systemctl reset-failed kafka.service'
+  describe service('kafka'), pending: centos? && systemd? do
+    it { should be_enabled }
   end
 
   describe 'service kafka start' do
@@ -32,12 +32,12 @@ describe 'service for systemd init style' do
         start_command
       end
 
-      it 'does not print anything' do
-        expect(start_command.stdout).to be_empty
+      it 'prints a message about starting Kafka' do
+        expect(start_command.stdout).to match /starting.+kafka/i
         expect(start_command.stderr).to be_empty
       end
 
-      it 'exits with status 0' do
+      it 'exists with status 0' do
         expect(start_command.exit_status).to be_zero
       end
 
@@ -45,10 +45,16 @@ describe 'service for systemd init style' do
         expect(kafka_service).to be_running
       end
 
-      it 'sets configured `ulimit` values' do
-        pid = status_command.stdout[/Main PID: (\d+)/, 1].strip
+      it 'creates a pid file' do
+        pid_file = file('/var/run/kafka.pid')
+        expect(pid_file).to be_a_file
+        expect(pid_file.content).to_not be_empty
+      end
+
+      it 'sets configured `ulimit` value' do
+        pid = file('/var/run/kafka.pid').content.strip
         limits = file("/proc/#{pid}/limits").content
-        expect(limits).to match /Max open files\s+128000\s+128000\s+files/i
+        expect(limits).to match(/Max open files\s+128000\s+128000\s+files/)
       end
 
       include_examples 'a Kafka start command'
@@ -63,8 +69,8 @@ describe 'service for systemd init style' do
         expect(kafka_service).to be_running
       end
 
-      it 'does not print anything' do
-        expect(start_command.stdout).to be_empty
+      it 'prints a message about starting Kafka' do
+        expect(start_command.stdout).to match /starting.+kafka/i
         expect(start_command.stderr).to be_empty
       end
 
@@ -73,9 +79,9 @@ describe 'service for systemd init style' do
       end
 
       it 'does not start a new process' do
-        first_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
+        first_pid = file('/var/run/kafka.pid').content.strip
         start_kafka
-        new_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
+        new_pid = file('/var/run/kafka.pid').content.strip
         expect(first_pid).to eq(new_pid)
       end
     end
@@ -88,8 +94,8 @@ describe 'service for systemd init style' do
         stop_command
       end
 
-      it 'does not print anything' do
-        expect(stop_command.stdout).to be_empty
+      it 'prints a message about stopping Kafka' do
+        expect(stop_command.stdout).to match /stopping.+kafka/i
         expect(stop_command.stderr).to be_empty
       end
 
@@ -98,7 +104,11 @@ describe 'service for systemd init style' do
       end
 
       it 'stops Kafka' do
-        expect(kafka_service).not_to be_running
+        expect(kafka_service).to_not be_running
+      end
+
+      it 'removes the pid file' do
+        expect(pidfile).to_not be_a_file
       end
 
       include_examples 'a Kafka stop command'
@@ -109,9 +119,9 @@ describe 'service for systemd init style' do
         stop_kafka
       end
 
-      it 'prints nothing' do
+      it 'prints a message about stopping kafka' do
         command = stop_kafka
-        expect(command.stdout).to be_empty
+        expect(command.stdout).to match /stopping.+kafka/i
         expect(command.stderr).to be_empty
       end
 
@@ -122,6 +132,10 @@ describe 'service for systemd init style' do
   end
 
   describe 'service kafka status' do
+    let :message do
+      status_command.stdout
+    end
+
     context 'when Kafka is running' do
       before do
         start_command
@@ -132,12 +146,17 @@ describe 'service for systemd init style' do
       end
 
       it 'prints a message that Kafka is running' do
-        expect(status_command.stdout).to match /Active: active \(running\)/i
+        if fedora?
+          expect(message).to match /Active: active \(running\)/
+          expect(message).to match /Started SYSV: kafka daemon/
+        else
+          expect(message).to match /kafka.+running/i
+        end
         expect(status_command.stderr).to be_empty
       end
     end
 
-    context 'when Kafka is not running' do
+    context 'when Kafka isn\'t running' do
       before do
         stop_kafka
       end
@@ -146,8 +165,15 @@ describe 'service for systemd init style' do
         expect(status_command.exit_status).to eq 3
       end
 
-      it 'prints a message that Kafka is stopped' do
-        expect(status_command.stdout).to match /Active: inactive \(dead\)/i
+      it 'prints a message that Kafka is not running / stopped' do
+        if debian? || ubuntu?
+          expect(message).to match /kafka is not running/i
+        elsif fedora?
+          expect(message).to match /Active: failed/i
+          expect(message).to match /Stopped SYSV: kafka daemon/i
+        else
+          expect(message).to match /kafka is stopped/i
+        end
         expect(status_command.stderr).to be_empty
       end
     end

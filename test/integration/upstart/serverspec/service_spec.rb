@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'spec_helper'
-require 'support/service_common'
+
 
 describe 'service for upstart init style' do
   include_context 'service setup'
@@ -20,6 +20,10 @@ describe 'service for upstart init style' do
 
   let :pidfile do
     file '/var/run/kafka.pid'
+  end
+
+  describe service('kafka'), pending: centos? && systemd? do
+    it { should be_enabled }
   end
 
   describe 'service kafka start' do

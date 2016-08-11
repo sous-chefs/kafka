@@ -2,18 +2,11 @@
 
 require 'spec_helper'
 
-describe 'required files for sysv init style' do
+
+describe 'required files for systemd init style' do
   describe 'environment file' do
     let :env_file do
-      file path
-    end
-
-    let :path do
-      if debian? || ubuntu?
-        '/etc/default/kafka'
-      else
-        '/etc/sysconfig/kafka'
-      end
+      file(debian? ? '/etc/default/kafka' : '/etc/sysconfig/kafka')
     end
 
     it 'exists' do
@@ -33,9 +26,9 @@ describe 'required files for sysv init style' do
     end
   end
 
-  describe 'init script' do
+  describe 'init configuration' do
     let :init_file do
-      file '/etc/init.d/kafka'
+      file '/etc/systemd/system/kafka.service'
     end
 
     it 'exists' do
@@ -50,8 +43,8 @@ describe 'required files for sysv init style' do
       expect(init_file).to be_grouped_into 'root'
     end
 
-    it 'has 755 permissions' do
-      expect(init_file).to be_mode 755
+    it 'has 644 permissions' do
+      expect(init_file).to be_mode 644
     end
   end
 end
