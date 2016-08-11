@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::default' do
   let :chef_run do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   it 'includes kafka::_defaults' do

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::_configure' do
   let :chef_run do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set['kafka'] = kafka_attributes
       node.set['kafka']['broker'] = broker_attributes
     end.converge(*described_recipes)
@@ -58,7 +58,7 @@ describe 'kafka::_configure' do
 
       context 'when broker id is larger than 2**31' do
         let :chef_run do
-          ChefSpec::Runner.new do |node|
+          ChefSpec::SoloRunner.new do |node|
             node.automatic['ipaddress'] = '255.255.255.255'
           end.converge(*described_recipes)
         end
@@ -187,7 +187,7 @@ describe 'kafka::_configure' do
 
   shared_examples_for 'an init style' do
     let :chef_run do
-      ChefSpec::Runner.new(platform_and_version) do |node|
+      ChefSpec::SoloRunner.new(platform_and_version) do |node|
         node.set['kafka']['scala_version'] = '2.8.0'
         node.set['kafka']['init_style'] = init_style
         node.set['kafka']['broker'] = broker_attributes
