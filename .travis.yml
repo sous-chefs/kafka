@@ -17,4 +17,4 @@ matrix:
       services:
         - docker
       env: CHEF_VERSION=12 KITCHEN_YAML=.kitchen.docker.yml
-      script: bundle exec kitchen test --destroy=always
+      script: bundle exec kitchen test --concurrency=3 --destroy=always
