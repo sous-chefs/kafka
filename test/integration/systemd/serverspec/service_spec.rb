@@ -18,10 +18,6 @@ describe 'service for systemd init style' do
     'systemctl status kafka.service'
   end
 
-  before :all do
-    run_command 'systemctl daemon-reload'
-  end
-
   before do
     run_command 'systemctl reset-failed kafka.service'
   end

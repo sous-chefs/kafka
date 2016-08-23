@@ -459,6 +459,11 @@ describe 'kafka::_configure' do
           'systemd/default.erb'
         end
 
+        it 'reloads unit files' do
+          expect(chef_run.execute('kafka systemctl daemon-reload')).to do_nothing
+          expect(chef_run.template(init_path)).to notify('execute[kafka systemctl daemon-reload]').to(:run).immediately
+        end
+
         context 'and platform is \'debian\'' do
           it_behaves_like 'an init style' do
             let :platform_and_version do
