@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 
-
 describe 'kafka::_defaults' do
   let :chef_run do
     r = ChefSpec::SoloRunner.new do |node|
@@ -18,7 +17,7 @@ describe 'kafka::_defaults' do
   context 'broker id' do
     context 'when set using Property string notation' do
       let :broker_attributes do
-        {'broker.id' => 'set'}
+        { 'broker.id' => 'set' }
       end
 
       it 'does not override it' do
@@ -33,7 +32,7 @@ describe 'kafka::_defaults' do
 
     context 'when set using nested hash notation' do
       let :broker_attributes do
-        {'broker' => {'id' => 'set'}}
+        { 'broker' => { 'id' => 'set' } }
       end
 
       it 'does not override it' do
@@ -48,7 +47,7 @@ describe 'kafka::_defaults' do
 
     context 'when set using underscore notation' do
       let :broker_attributes do
-        {'broker_id' => 'set'}
+        { 'broker_id' => 'set' }
       end
 
       it 'does not override it' do
@@ -63,7 +62,7 @@ describe 'kafka::_defaults' do
 
     context 'when set to `nil`' do
       let :broker_attributes do
-        {'broker' => {'id' => nil}}
+        { 'broker' => { 'id' => nil } }
       end
 
       it 'does not override it' do
@@ -85,7 +84,7 @@ describe 'kafka::_defaults' do
   context 'port' do
     context 'when set' do
       let :broker_attributes do
-        {'port' => 9093}
+        { 'port' => 9093 }
       end
 
       it 'does not override it' do
@@ -95,7 +94,7 @@ describe 'kafka::_defaults' do
 
     context 'when set to `nil`' do
       let :broker_attributes do
-        {'port' => nil}
+        { 'port' => nil }
       end
 
       it 'does not override it' do

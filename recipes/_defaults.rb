@@ -4,7 +4,7 @@
 #
 
 unless broker_attribute?(:broker, :id)
-  node.default['kafka']['broker']['broker_id'] = node['ipaddress'].gsub('.', '').to_i % 2**31
+  node.default['kafka']['broker']['broker_id'] = node['ipaddress'].delete('.').to_i % 2**31
 end
 
 unless broker_attribute?(:port)
@@ -12,11 +12,11 @@ unless broker_attribute?(:port)
 end
 
 unless node['kafka']['gc_log_opts']
-  node.default['kafka']['gc_log_opts'] = %W[
+  node.default['kafka']['gc_log_opts'] = %W(
     -Xloggc:#{::File.join(node['kafka']['log_dir'], 'kafka-gc.log')}
     -XX:+PrintGCDateStamps
     -XX:+PrintGCTimeStamps
-  ].join(' ')
+  ).join(' ')
 end
 
 unless node['kafka']['config_dir']

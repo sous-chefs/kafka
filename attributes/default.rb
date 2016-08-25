@@ -54,11 +54,11 @@ default['kafka']['jmx_port'] = 9999
 
 #
 # JMX configuration options for Kafka.
-default['kafka']['jmx_opts'] = %w[
+default['kafka']['jmx_opts'] = %w(
   -Dcom.sun.management.jmxremote
   -Dcom.sun.management.jmxremote.authenticate=false
   -Dcom.sun.management.jmxremote.ssl=false
-].join(' ')
+).join(' ')
 
 #
 # User for directories, configuration files and running Kafka.
@@ -95,7 +95,7 @@ default['kafka']['gc_log_opts'] = nil
 
 #
 # JVM Performance options for Kafka.
-default['kafka']['jvm_performance_opts'] = %w[
+default['kafka']['jvm_performance_opts'] = %w(
   -server
   -XX:+UseCompressedOops
   -XX:+UseParNewGC
@@ -104,7 +104,7 @@ default['kafka']['jvm_performance_opts'] = %w[
   -XX:+CMSScavengeBeforeRemark
   -XX:+DisableExplicitGC
   -Djava.awt.headless=true
-].join(' ')
+).join(' ')
 
 #
 # The type of "init" system to install scripts for. Valid values are currently
@@ -162,8 +162,8 @@ default['kafka']['log4j']['appenders'] = {
     file: lazy { ::File.join(node['kafka']['log_dir'], 'kafka.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
+      conversion_pattern: '[%d] %p %m (%c)%n'
+    }
   },
   'stateChangeAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
@@ -171,8 +171,8 @@ default['kafka']['log4j']['appenders'] = {
     file: lazy { ::File.join(node['kafka']['log_dir'], 'kafka-state-change.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
+      conversion_pattern: '[%d] %p %m (%c)%n'
+    }
   },
   'requestAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
@@ -180,8 +180,8 @@ default['kafka']['log4j']['appenders'] = {
     file: lazy { ::File.join(node['kafka']['log_dir'], 'kafka-request.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
+      conversion_pattern: '[%d] %p %m (%c)%n'
+    }
   },
   'controllerAppender' => {
     type: 'org.apache.log4j.DailyRollingFileAppender',
@@ -189,35 +189,35 @@ default['kafka']['log4j']['appenders'] = {
     file: lazy { ::File.join(node['kafka']['log_dir'], 'kafka-controller.log') },
     layout: {
       type: 'org.apache.log4j.PatternLayout',
-      conversion_pattern: '[%d] %p %m (%c)%n',
-    },
-  },
+      conversion_pattern: '[%d] %p %m (%c)%n'
+    }
+  }
 }
 
 #
 # Logger definitions.
 default['kafka']['log4j']['loggers'] = {
   'org.IOItec.zkclient.ZkClient' => {
-    level: 'INFO',
+    level: 'INFO'
   },
   'kafka.network.RequestChannel$' => {
     level: 'WARN',
     appender: 'requestAppender',
-    additivity: false,
+    additivity: false
   },
   'kafka.request.logger' => {
     level: 'WARN',
     appender: 'requestAppender',
-    additivity: false,
+    additivity: false
   },
   'kafka.controller' => {
     level: 'INFO',
     appender: 'controllerAppender',
-    additivity: false,
+    additivity: false
   },
   'state.change.logger' => {
     level: 'INFO',
     appender: 'stateChangeAppender',
-    additivity: false,
-  },
+    additivity: false
+  }
 }

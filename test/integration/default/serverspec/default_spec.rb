@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 
-
 describe 'kafka::default' do
   describe group('kafka') do
     it { should exist }
@@ -43,7 +42,7 @@ describe 'kafka::default' do
   end
 
   context 'configured `log.dirs`' do
-    %w[/mnt/kafka-logs-1 /mnt/kafka-logs-2].each do |directory|
+    %w(/mnt/kafka-logs-1 /mnt/kafka-logs-2).each do |directory|
       describe directory do
         include_examples 'a kafka directory', skip_files: true do
           let :path do
