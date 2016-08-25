@@ -1,0 +1,54 @@
+AllCops:
+  DisplayCopNames: true
+  TargetRubyVersion: 2.1
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Performance/RedundantBlockCall:
+  Exclude:
+    - 'test/integration/helpers/serverspec/support/await_helper.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Exclude:
+    - 'libraries/helpers.rb'
+    - 'recipes/_service.rb'
+
+Style/GlobalVars:
+  Exclude:
+    - 'Rakefile'
+
+Style/IfUnlessModifier:
+  Exclude:
+    - 'Rakefile'
+    - 'libraries/helpers.rb'
+    - 'recipes/_defaults.rb'
+
+Style/RegexpLiteral:
+  AllowInnerSlashes: true
+
+Style/SingleLineBlockParams:
+  Exclude:
+    - 'libraries/helpers.rb'
+    - 'libraries/log4j.rb'
+
+Style/SpecialGlobalVars:
+  EnforcedStyle: use_perl_names

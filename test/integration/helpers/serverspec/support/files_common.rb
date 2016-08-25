@@ -46,7 +46,7 @@ shared_examples_for 'a non-executable kafka file' do
   end
 end
 
-shared_examples_for 'a kafka directory' do |opts={}|
+shared_examples_for 'a kafka directory' do |opts = {}|
   let :kafka_directory do
     file(path)
   end

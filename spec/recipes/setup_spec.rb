@@ -20,16 +20,16 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a kafka user' do
-        expect(chef_run).to create_user('kafka').with({
+        expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
-          group: 'kafka',
-        })
+          group: 'kafka'
+        )
       end
     end
 
     context 'when uid and gid are set' do
       let :kafka_attrs do
-        {uid: 1234, gid: 5678}
+        { uid: 1234, gid: 5678 }
       end
 
       it 'creates a kafka group with the specified ID' do
@@ -37,17 +37,17 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a kafka user with the specified ID' do
-        expect(chef_run).to create_user('kafka').with({
+        expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
           group: 'kafka',
-          uid: 1234,
-        })
+          uid: 1234
+        )
       end
     end
 
     context 'when disabled' do
       let :kafka_attrs do
-        {'manage_user' => false}
+        { 'manage_user' => false }
       end
 
       it 'does not create a kafka group' do
@@ -55,16 +55,16 @@ describe 'kafka::_setup' do
       end
 
       it 'does not create a kafka user' do
-        expect(chef_run).not_to create_user('kafka').with({
+        expect(chef_run).not_to create_user('kafka').with(
           shell: '/sbin/nologin',
           gid: 'kafka'
-        })
+        )
       end
     end
 
     context 'when overridden' do
       let :kafka_attrs do
-        {'user' => 'spec', 'group' => 'spec'}
+        { 'user' => 'spec', 'group' => 'spec' }
       end
 
       it 'creates a group with set name' do
@@ -72,47 +72,47 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a user with set name' do
-        expect(chef_run).to create_user('spec').with({
+        expect(chef_run).to create_user('spec').with(
           shell: '/sbin/nologin'
-        })
+        )
       end
     end
   end
 
   it 'creates installation directory' do
-    expect(chef_run).to create_directory('/opt/kafka-0.8.1.1').with({
+    expect(chef_run).to create_directory('/opt/kafka-0.8.1.1').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '755'
-    })
+    )
   end
 
   it 'creates build directory' do
-    expect(chef_run).to create_directory(%(#{Dir.tmpdir}/kafka-build)).with({
+    expect(chef_run).to create_directory(%(#{Dir.tmpdir}/kafka-build)).with(
       owner: 'kafka',
       group: 'kafka',
       mode: '755'
-    })
+    )
   end
 
   it 'creates log directory' do
-    expect(chef_run).to create_directory('/var/log/kafka').with({
+    expect(chef_run).to create_directory('/var/log/kafka').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '755'
-    })
+    )
   end
 
   context 'log dirs for Kafka data' do
     shared_examples_for 'construction of log dirs' do
       it 'creates a directory for each path in `log.dirs`' do
-        %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
-          expect(chef_run).to create_directory(path).with({
+        %w(/mnt/kafka-1 /mnt/kafka-2).each do |path|
+          expect(chef_run).to create_directory(path).with(
             owner: 'kafka',
             group: 'kafka',
             mode: '755',
-            recursive: true,
-          })
+            recursive: true
+          )
         end
       end
     end
@@ -121,7 +121,7 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log_dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
+            'log_dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
           }
         }
       end
@@ -134,7 +134,7 @@ describe 'kafka::_setup' do
         {
           'broker' => {
             'log' => {
-              'dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
+              'dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
             }
           }
         }
@@ -147,7 +147,7 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log.dirs' => %w[/mnt/kafka-1 /mnt/kafka-2]
+            'log.dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
           }
         }
       end

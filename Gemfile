@@ -14,4 +14,5 @@ group :test do
   gem 'kitchen-docker'
   gem 'busser-serverspec'
   gem 'foodcritic'
+  gem 'rubocop'
 end
