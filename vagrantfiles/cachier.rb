@@ -8,7 +8,7 @@ Vagrant.configure('2') do |c|
     v.customize [
       'storagectl', :id,
       '--name', 'SATA Controller',
-      '--hostiocache', 'on'
+      '--hostiocache', 'on',
     ]
   end
 end

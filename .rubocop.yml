@@ -45,6 +45,10 @@ Style/IfUnlessModifier:
 Style/RegexpLiteral:
   AllowInnerSlashes: true
 
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+
 Style/SingleLineBlockParams:
   Exclude:
     - 'libraries/helpers.rb'
