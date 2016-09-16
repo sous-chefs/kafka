@@ -42,6 +42,11 @@ Style/IfUnlessModifier:
     - 'libraries/helpers.rb'
     - 'recipes/_defaults.rb'
 
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': '[]'
+    '%W': '[]'
+
 Style/RegexpLiteral:
   AllowInnerSlashes: true
 

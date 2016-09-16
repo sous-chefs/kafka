@@ -71,7 +71,7 @@ describe 'kafka::_configure' do
 
     shared_examples_for 'when value is an Array' do
       let :mappings do
-        %w(topic1 topic2)
+        %w[topic1 topic2]
       end
 
       it 'joins elements using #to_s and a comma' do
@@ -502,7 +502,7 @@ describe 'kafka::_configure' do
 
     context 'automatic_restart attribute' do
       let :config_paths do
-        %w(/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties /etc/sysconfig/kafka /etc/init.d/kafka)
+        %w[/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties /etc/sysconfig/kafka /etc/init.d/kafka]
       end
 
       let :config_templates do
