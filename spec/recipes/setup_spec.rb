@@ -106,7 +106,7 @@ describe 'kafka::_setup' do
   context 'log dirs for Kafka data' do
     shared_examples_for 'construction of log dirs' do
       it 'creates a directory for each path in `log.dirs`' do
-        %w(/mnt/kafka-1 /mnt/kafka-2).each do |path|
+        %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
           expect(chef_run).to create_directory(path).with(
             owner: 'kafka',
             group: 'kafka',
@@ -121,7 +121,7 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log_dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+            'log_dirs' => %w[/mnt/kafka-1 /mnt/kafka-2],
           },
         }
       end
@@ -134,7 +134,7 @@ describe 'kafka::_setup' do
         {
           'broker' => {
             'log' => {
-              'dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+              'dirs' => %w[/mnt/kafka-1 /mnt/kafka-2],
             },
           },
         }
@@ -147,7 +147,7 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log.dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+            'log.dirs' => %w[/mnt/kafka-1 /mnt/kafka-2],
           },
         }
       end

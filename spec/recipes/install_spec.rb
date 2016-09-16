@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'kafka::_install' do
   let :chef_run do
-    r = ChefSpec::SoloRunner.new(step_into: %w(kafka_download kafka_install))
+    r = ChefSpec::SoloRunner.new(step_into: %w[kafka_download kafka_install])
     r.converge(*described_recipes)
   end
 

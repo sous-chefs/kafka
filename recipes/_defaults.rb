@@ -12,11 +12,11 @@ unless broker_attribute?(:port)
 end
 
 unless node['kafka']['gc_log_opts']
-  node.default['kafka']['gc_log_opts'] = %W(
+  node.default['kafka']['gc_log_opts'] = %W[
     -Xloggc:#{::File.join(node['kafka']['log_dir'], 'kafka-gc.log')}
     -XX:+PrintGCDateStamps
     -XX:+PrintGCTimeStamps
-  ).join(' ')
+  ].join(' ')
 end
 
 unless node['kafka']['config_dir']

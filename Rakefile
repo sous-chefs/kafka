@@ -15,7 +15,7 @@ end
 RSpec::Core::RakeTask.new(:spec)
 FoodCritic::Rake::LintTask.new do |t|
   t.options = {
-    fail_tags: %w(any),
+    fail_tags: %w[any],
   }
 end
 
@@ -48,7 +48,7 @@ task package: :test do
 end
 
 Stove::RakeTask.new do |t|
-  t.stove_opts = %w(--no-git)
+  t.stove_opts = %w[--no-git]
   t.log_level = :debug
 end
 
@@ -116,7 +116,7 @@ class VagrantTask < KitchenTask
 end
 
 namespace :test do
-  default_versions = %w(0.8.1.1 0.8.2.2 0.9.0.1 0.10.0.1)
+  default_versions = %w[0.8.1.1 0.8.2.2 0.9.0.1 0.10.0.1]
 
   def run_tests_for(versions, task_class)
     $logger.info(format('Running tests for versions: %s', versions.join(', ')))
