@@ -15,7 +15,7 @@ end
 RSpec::Core::RakeTask.new(:spec)
 FoodCritic::Rake::LintTask.new do |t|
   t.options = {
-    fail_tags: %w(any)
+    fail_tags: %w(any),
   }
 end
 
@@ -59,7 +59,7 @@ class KitchenTask
     @output = []
     @env = {
       'KAFKA_VERSION' => version,
-      'CHEF_VERSION' => ENV['CHEF_VERSION']
+      'CHEF_VERSION' => ENV['CHEF_VERSION'],
     }
   end
 

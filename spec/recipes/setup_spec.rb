@@ -121,8 +121,8 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log_dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
-          }
+            'log_dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+          },
         }
       end
 
@@ -134,9 +134,9 @@ describe 'kafka::_setup' do
         {
           'broker' => {
             'log' => {
-              'dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
-            }
-          }
+              'dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+            },
+          },
         }
       end
 
@@ -147,8 +147,8 @@ describe 'kafka::_setup' do
       let :kafka_attrs do
         {
           'broker' => {
-            'log.dirs' => %w(/mnt/kafka-1 /mnt/kafka-2)
-          }
+            'log.dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
+          },
         }
       end
 
