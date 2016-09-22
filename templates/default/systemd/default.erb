@@ -1,5 +1,7 @@
 [Unit]
 Description=<%= @daemon_name %> daemon
+Wants=network-online.target
+After=network-online.target
 
 [Service]
 User=<%= @user %>
