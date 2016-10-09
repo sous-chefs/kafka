@@ -33,7 +33,7 @@ task package: :test do
   cookbook = Stove::Cookbook.new(Dir.pwd)
   version = cookbook.tag_version
   release_name = %(kafka-cookbook-#{version})
-  archive_path = ::File.join('pkg', "#{release_name}.tar.gz")
+  archive_path = ::File.join('pkg', format('%s.tar.gz', release_name))
 
   if File.exist?(archive_path)
     puts %(#{archive_path} already exist, exiting...)
