@@ -27,11 +27,11 @@ describe 'kafka::_configure' do
   end
 
   it 'creates config directory' do
-    expect(chef_run).to create_directory('/opt/kafka/config').with({
+    expect(chef_run).to create_directory('/opt/kafka/config').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '755'
-    })
+    )
   end
 
   describe 'broker configuration file' do
@@ -40,11 +40,11 @@ describe 'kafka::_configure' do
     end
 
     it 'creates the configuration file' do
-      expect(chef_run).to create_template(path).with({
+      expect(chef_run).to create_template(path).with(
         owner: 'kafka',
         group: 'kafka',
         mode: '644'
-      })
+      )
     end
 
     context 'default configuration' do
@@ -69,7 +69,7 @@ describe 'kafka::_configure' do
       end
     end
 
-    shared_examples_for 'when value is an Array' do |attr_key|
+    shared_examples_for 'when value is an Array' do
       let :mappings do
         %w[topic1 topic2]
       end
@@ -92,13 +92,13 @@ describe 'kafka::_configure' do
     context 'configuration using underscore notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
-          {'array_option' => mappings}
+          { 'array_option' => mappings }
         end
       end
 
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          {'possible.future_option' => mappings}
+          { 'possible.future_option' => mappings }
         end
       end
     end
@@ -106,13 +106,13 @@ describe 'kafka::_configure' do
     context 'configuration using dotted String notation' do
       it_behaves_correctly 'when value is an Array' do
         let :broker_attributes do
-          {'array.option' => mappings}
+          { 'array.option' => mappings }
         end
       end
 
       it_behaves_correctly 'when configuration name contains both `_` and `.`' do
         let :broker_attributes do
-          {'possible.future_option' => mappings}
+          { 'possible.future_option' => mappings }
         end
       end
     end
@@ -138,11 +138,11 @@ describe 'kafka::_configure' do
     end
 
     it 'creates the configuration file' do
-      expect(chef_run).to create_template(path).with({
+      expect(chef_run).to create_template(path).with(
         owner: 'kafka',
         group: 'kafka',
         mode: '644'
-      })
+      )
     end
 
     it 'configures root logger' do
@@ -203,21 +203,21 @@ describe 'kafka::_configure' do
     end
 
     it 'creates a script at the appropriate location' do
-      expect(chef_run).to create_template(init_path).with({
+      expect(chef_run).to create_template(init_path).with(
         owner: 'root',
         group: 'root',
         mode: script_permissions,
-        source: source_template,
-      })
+        source: source_template
+      )
     end
 
     context 'environment variables' do
       it 'creates a file for setting necessary environment variables' do
-        expect(chef_run).to create_template(env_path).with({
+        expect(chef_run).to create_template(env_path).with(
           owner: 'root',
           group: 'root',
           mode: '644'
-        })
+        )
       end
 
       it 'sets SCALA_VERSION' do
@@ -294,7 +294,7 @@ describe 'kafka::_configure' do
 
           context 'when it is enabled' do
             let :broker_attributes do
-              {controlled_shutdown_enable: true}
+              { controlled_shutdown_enable: true }
             end
 
             it 'does not force-kill the broker process' do
@@ -315,7 +315,7 @@ describe 'kafka::_configure' do
       context 'and platform is \'ubuntu\'' do
         it_behaves_like 'an init style' do
           let :platform_and_version do
-            {platform: 'ubuntu', version: '13.10'}
+            { platform: 'ubuntu', version: '13.10' }
           end
 
           let :init_style do
@@ -343,7 +343,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                {controlled_shutdown_enable: true}
+                { controlled_shutdown_enable: true }
               end
 
               it 'does not force-kill the broker process' do
@@ -365,7 +365,7 @@ describe 'kafka::_configure' do
       context 'and platform is \'debian\'' do
         it_behaves_like 'an init style' do
           let :platform_and_version do
-            {platform: 'debian', version: '7.2'}
+            { platform: 'debian', version: '7.2' }
           end
 
           let :init_style do
@@ -393,7 +393,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                {controlled_shutdown_enable: true}
+                { controlled_shutdown_enable: true }
               end
 
               it 'does not force-kill the broker process' do
@@ -467,7 +467,7 @@ describe 'kafka::_configure' do
         context 'and platform is \'debian\'' do
           it_behaves_like 'an init style' do
             let :platform_and_version do
-              {platform: 'debian', version: '7.2'}
+              { platform: 'debian', version: '7.2' }
             end
 
             let :init_style do
@@ -521,7 +521,7 @@ describe 'kafka::_configure' do
 
       context 'when set to true' do
         let :kafka_attributes do
-          {'automatic_restart' => true}
+          { 'automatic_restart' => true }
         end
 
         it 'restarts kafka when configuration is changed' do
@@ -545,7 +545,7 @@ describe 'kafka::_configure' do
 
       context 'when set to true' do
         let :kafka_attributes do
-          {'automatic_start' => true}
+          { 'automatic_start' => true }
         end
 
         it 'starts kafka' do

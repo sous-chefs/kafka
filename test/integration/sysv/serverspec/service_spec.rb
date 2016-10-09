@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 
-
 describe 'service for sysv init style' do
   include_context 'service setup'
 
@@ -33,7 +32,7 @@ describe 'service for sysv init style' do
       end
 
       it 'prints a message about starting Kafka' do
-        expect(start_command.stdout).to match /starting.+kafka/i
+        expect(start_command.stdout).to match(/starting.+kafka/i)
         expect(start_command.stderr).to be_empty
       end
 
@@ -70,7 +69,7 @@ describe 'service for sysv init style' do
       end
 
       it 'prints a message about starting Kafka' do
-        expect(start_command.stdout).to match /starting.+kafka/i
+        expect(start_command.stdout).to match(/starting.+kafka/i)
         expect(start_command.stderr).to be_empty
       end
 
@@ -95,7 +94,7 @@ describe 'service for sysv init style' do
       end
 
       it 'prints a message about stopping Kafka' do
-        expect(stop_command.stdout).to match /stopping.+kafka/i
+        expect(stop_command.stdout).to match(/stopping.+kafka/i)
         expect(stop_command.stderr).to be_empty
       end
 
@@ -121,7 +120,7 @@ describe 'service for sysv init style' do
 
       it 'prints a message about stopping kafka' do
         command = stop_kafka
-        expect(command.stdout).to match /stopping.+kafka/i
+        expect(command.stdout).to match(/stopping.+kafka/i)
         expect(command.stderr).to be_empty
       end
 
@@ -147,10 +146,10 @@ describe 'service for sysv init style' do
 
       it 'prints a message that Kafka is running' do
         if fedora?
-          expect(message).to match /Active: active \(running\)/
-          expect(message).to match /Started SYSV: kafka daemon/
+          expect(message).to match(/Active: active \(running\)/)
+          expect(message).to match(/Started SYSV: kafka daemon/)
         else
-          expect(message).to match /kafka.+running/i
+          expect(message).to match(/kafka.+running/i)
         end
         expect(status_command.stderr).to be_empty
       end
@@ -167,12 +166,12 @@ describe 'service for sysv init style' do
 
       it 'prints a message that Kafka is not running / stopped' do
         if debian? || ubuntu?
-          expect(message).to match /kafka is not running/i
+          expect(message).to match(/kafka is not running/i)
         elsif fedora?
-          expect(message).to match /Active: failed/i
-          expect(message).to match /Stopped SYSV: kafka daemon/i
+          expect(message).to match(/Active: failed/i)
+          expect(message).to match(/Stopped SYSV: kafka daemon/i)
         else
-          expect(message).to match /kafka is stopped/i
+          expect(message).to match(/kafka is stopped/i)
         end
         expect(status_command.stderr).to be_empty
       end

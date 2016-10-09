@@ -4,7 +4,7 @@
 #
 
 unless broker_attribute?(:broker, :id)
-  node.default['kafka']['broker']['broker_id'] = node['ipaddress'].gsub('.', '').to_i % 2**31
+  node.default['kafka']['broker']['broker_id'] = node['ipaddress'].delete('.').to_i % 2**31
 end
 
 unless broker_attribute?(:port)

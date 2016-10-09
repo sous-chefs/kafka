@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 
-
 describe 'required files for systemd init style' do
   describe 'environment file' do
     let :env_file do

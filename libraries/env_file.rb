@@ -5,9 +5,9 @@
 
 module Kafka
   module EnvFile
-    def render_variable(key, value, export=false)
-      variable = sprintf('%s=%p', key, value.to_s)
-      export ? sprintf('export %s', variable) : variable
+    def render_variable(key, value, export = false)
+      variable = format('%s=%p', key, value.to_s)
+      export ? format('export %s', variable) : variable
     end
 
     def export?

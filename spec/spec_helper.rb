@@ -4,7 +4,6 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 require 'chef/application'
 
-
 ChefSpec::Coverage.start!
 
 RSpec.configure do |config|
