@@ -2,7 +2,6 @@
 
 require 'spec_helper'
 
-
 describe 'service for systemd init style' do
   include_context 'service setup'
 
@@ -48,7 +47,7 @@ describe 'service for systemd init style' do
       it 'sets configured `ulimit` values' do
         pid = status_command.stdout[/Main PID: (\d+)/, 1].strip
         limits = file("/proc/#{pid}/limits").content
-        expect(limits).to match /Max open files\s+128000\s+128000\s+files/i
+        expect(limits).to match(/Max open files\s+128000\s+128000\s+files/i)
       end
 
       include_examples 'a Kafka start command'
@@ -73,9 +72,9 @@ describe 'service for systemd init style' do
       end
 
       it 'does not start a new process' do
-        first_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
+        first_pid = run_command(status_command_string).stdout.split("\n").grep(/Main PID/)
         start_kafka
-        new_pid = run_command(status_command_string).stdout.split("\n").grep /Main PID/
+        new_pid = run_command(status_command_string).stdout.split("\n").grep(/Main PID/)
         expect(first_pid).to eq(new_pid)
       end
     end
@@ -132,7 +131,7 @@ describe 'service for systemd init style' do
       end
 
       it 'prints a message that Kafka is running' do
-        expect(status_command.stdout).to match /Active: active \(running\)/i
+        expect(status_command.stdout).to match(/Active: active \(running\)/i)
         expect(status_command.stderr).to be_empty
       end
     end
@@ -147,7 +146,7 @@ describe 'service for systemd init style' do
       end
 
       it 'prints a message that Kafka is stopped' do
-        expect(status_command.stdout).to match /Active: inactive \(dead\)/i
+        expect(status_command.stdout).to match(/Active: inactive \(dead\)/i)
         expect(status_command.stderr).to be_empty
       end
     end

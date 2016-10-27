@@ -51,20 +51,20 @@ shared_context 'service setup' do
     end
   end
 
-  def start_kafka(wait=false)
+  def start_kafka(wait = false)
     result = run_command(start_command_string)
     if wait && result.exit_status.zero?
       await(10) do
-        File.exists?(log_file_path) && File.read(log_file_path).match(start_regexp)
+        File.exist?(log_file_path) && File.read(log_file_path).match(start_regexp)
       end
     end
     result
   end
 
-  def stop_kafka(wait=false)
+  def stop_kafka(wait = false)
     result = run_command(stop_command_string)
     if wait && result.exit_status.zero?
-      await(10) { File.exists?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
+      await(10) { File.exist?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
     end
     result
   end
@@ -72,7 +72,7 @@ end
 
 shared_examples_for 'a Kafka start command' do
   describe '/var/log/kafka/kafka.log' do
-    it 'exists' do
+    it 'exist' do
       expect(log_file).to be_a_file
     end
 
@@ -86,7 +86,7 @@ shared_examples_for 'a Kafka start command' do
       file '/var/log/kafka/kafka-gc.log'
     end
 
-    it 'exists' do
+    it 'exist' do
       expect(gc_log_file).to be_a_file
     end
   end
@@ -94,7 +94,7 @@ end
 
 shared_examples_for 'a Kafka stop command' do
   describe '/var/log/kafka/kafka.log' do
-    it 'exists' do
+    it 'exist' do
       expect(log_file).to be_a_file
     end
 

@@ -36,7 +36,7 @@ module Kafka
     private
 
     def convert_key(key)
-      key.include?('.') ? key : key.gsub('_', '.')
+      key.include?('.') ? key : key.tr('_', '.')
     end
 
     def render_array_value(values)
