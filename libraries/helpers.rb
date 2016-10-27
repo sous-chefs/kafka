@@ -41,18 +41,18 @@ def kafka_init_opts
     when :sysv
       opts[:env_path] = value_for_platform_family(
         'debian' => '/etc/default/kafka',
-        'default' => '/etc/sysconfig/kafka'
+        'default' => '/etc/sysconfig/kafka',
       )
       opts[:source] = value_for_platform_family(
         'debian' => 'sysv/debian.erb',
-        'default' => 'sysv/default.erb'
+        'default' => 'sysv/default.erb',
       )
       opts[:script_path] = '/etc/init.d/kafka'
       opts[:permissions] = '755'
     when :upstart
       opts[:env_path] = '/etc/default/kafka'
       opts[:source] = value_for_platform_family(
-        'default' => 'upstart/default.erb'
+        'default' => 'upstart/default.erb',
       )
       opts[:script_path] = '/etc/init/kafka.conf'
       opts[:provider] = ::Chef::Provider::Service::Upstart
@@ -60,10 +60,10 @@ def kafka_init_opts
     when :systemd
       opts[:env_path] = value_for_platform_family(
         'debian' => '/etc/default/kafka',
-        'default' => '/etc/sysconfig/kafka'
+        'default' => '/etc/sysconfig/kafka',
       )
       opts[:source] = value_for_platform_family(
-        'default' => 'systemd/default.erb'
+        'default' => 'systemd/default.erb',
       )
       opts[:script_path] = '/etc/systemd/system/kafka.service'
       opts[:provider] = ::Chef::Provider::Service::Systemd

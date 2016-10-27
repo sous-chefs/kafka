@@ -30,7 +30,7 @@ describe 'kafka::_configure' do
     expect(chef_run).to create_directory('/opt/kafka/config').with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755'
+      mode: '755',
     )
   end
 
@@ -43,7 +43,7 @@ describe 'kafka::_configure' do
       expect(chef_run).to create_template(path).with(
         owner: 'kafka',
         group: 'kafka',
-        mode: '644'
+        mode: '644',
       )
     end
 
@@ -141,7 +141,7 @@ describe 'kafka::_configure' do
       expect(chef_run).to create_template(path).with(
         owner: 'kafka',
         group: 'kafka',
-        mode: '644'
+        mode: '644',
       )
     end
 
@@ -207,7 +207,7 @@ describe 'kafka::_configure' do
         owner: 'root',
         group: 'root',
         mode: script_permissions,
-        source: source_template
+        source: source_template,
       )
     end
 
@@ -216,7 +216,7 @@ describe 'kafka::_configure' do
         expect(chef_run).to create_template(env_path).with(
           owner: 'root',
           group: 'root',
-          mode: '644'
+          mode: '644',
         )
       end
 

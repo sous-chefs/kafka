@@ -25,7 +25,7 @@ template kafka_init_opts[:script_path] do
     user: node['kafka']['user'],
     env_path: kafka_init_opts[:env_path],
     ulimit: node['kafka']['ulimit_file'],
-    kill_timeout: node['kafka']['kill_timeout']
+    kill_timeout: node['kafka']['kill_timeout'],
   )
   helper :controlled_shutdown_enabled? do
     !!fetch_broker_attribute(:controlled, :shutdown, :enable)

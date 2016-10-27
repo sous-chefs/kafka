@@ -22,7 +22,7 @@ describe 'kafka::_setup' do
       it 'creates a kafka user' do
         expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
-          group: 'kafka'
+          group: 'kafka',
         )
       end
     end
@@ -40,7 +40,7 @@ describe 'kafka::_setup' do
         expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
           group: 'kafka',
-          uid: 1234
+          uid: 1234,
         )
       end
     end
@@ -57,7 +57,7 @@ describe 'kafka::_setup' do
       it 'does not create a kafka user' do
         expect(chef_run).not_to create_user('kafka').with(
           shell: '/sbin/nologin',
-          gid: 'kafka'
+          gid: 'kafka',
         )
       end
     end
@@ -72,9 +72,7 @@ describe 'kafka::_setup' do
       end
 
       it 'creates a user with set name' do
-        expect(chef_run).to create_user('spec').with(
-          shell: '/sbin/nologin'
-        )
+        expect(chef_run).to create_user('spec').with_shell('/sbin/nologin')
       end
     end
   end
@@ -83,7 +81,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory('/opt/kafka-0.8.1.1').with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755'
+      mode: '755',
     )
   end
 
@@ -91,7 +89,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory(%(#{Dir.tmpdir}/kafka-build)).with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755'
+      mode: '755',
     )
   end
 
@@ -99,7 +97,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory('/var/log/kafka').with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755'
+      mode: '755',
     )
   end
 
@@ -111,7 +109,7 @@ describe 'kafka::_setup' do
             owner: 'kafka',
             group: 'kafka',
             mode: '755',
-            recursive: true
+            recursive: true,
           )
         end
       end

@@ -58,6 +58,9 @@ Style/PercentLiteralDelimiters:
 Style/RegexpLiteral:
   AllowInnerSlashes: true
 
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
