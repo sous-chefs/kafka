@@ -1,6 +1,6 @@
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.3
   Exclude:
     - vendor/**/*
     - gemfiles/**/*
@@ -39,6 +39,9 @@ Style/DoubleNegation:
   Exclude:
     - 'libraries/helpers.rb'
     - 'recipes/_service.rb'
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
 
 Style/GlobalVars:
   Exclude:
