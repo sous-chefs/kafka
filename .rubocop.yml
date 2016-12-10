@@ -23,10 +23,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
-Performance/RedundantBlockCall:
-  Exclude:
-    - 'test/integration/helpers/serverspec/support/await_helper.rb'
-
 Style/ConditionalAssignment:
   EnforcedStyle: assign_inside_condition
   Exclude:
