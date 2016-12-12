@@ -49,7 +49,7 @@ module Kafka
     end
 
     def camelcase(s)
-      s.split('_').reduce('') { |acc, p| acc << p.capitalize }
+      s.split('_').reduce('') { |a, e| a << e.capitalize }
     end
 
     def newline
