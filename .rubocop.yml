@@ -46,7 +46,6 @@ Style/GlobalVars:
 Style/IfUnlessModifier:
   Exclude:
     - 'Rakefile'
-    - 'libraries/helpers.rb'
     - 'recipes/_defaults.rb'
 
 Style/PercentLiteralDelimiters:
