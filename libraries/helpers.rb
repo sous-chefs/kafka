@@ -102,7 +102,7 @@ def broker_attribute?(*parts)
     true
   else
     key = parts.pop
-    r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
+    r = parts.reduce(broker) { |a, e| a.fetch(e, a) }
     r.attribute?(key)
   end
 end
@@ -116,7 +116,7 @@ def fetch_broker_attribute(*parts)
     broker[parts.join('_')]
   else
     key = parts.pop
-    r = parts.reduce(broker) { |b, p| b.fetch(p, b) }
+    r = parts.reduce(broker) { |a, e| a.fetch(e, a) }
     r[key]
   end
 end

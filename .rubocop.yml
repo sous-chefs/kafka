@@ -56,10 +56,5 @@ Style/TrailingCommaInArguments:
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: consistent_comma
 
-Style/SingleLineBlockParams:
-  Exclude:
-    - 'libraries/helpers.rb'
-    - 'libraries/log4j.rb'
-
 Style/SpecialGlobalVars:
   EnforcedStyle: use_perl_names
