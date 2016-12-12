@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - vendor/**/*
     - gemfiles/**/*
+    - Rakefile
 
 Metrics/AbcSize:
   Enabled: false
@@ -25,8 +26,6 @@ Metrics/PerceivedComplexity:
 
 Style/ConditionalAssignment:
   EnforcedStyle: assign_inside_condition
-  Exclude:
-    - 'Rakefile'
 
 Style/Documentation:
   Enabled: false
@@ -39,13 +38,8 @@ Style/DoubleNegation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Style/GlobalVars:
-  Exclude:
-    - 'Rakefile'
-
 Style/IfUnlessModifier:
   Exclude:
-    - 'Rakefile'
     - 'recipes/_defaults.rb'
 
 Style/PercentLiteralDelimiters:
