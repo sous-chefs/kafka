@@ -50,6 +50,18 @@ describe 'service for upstart init style' do
         expect(limits).to match(/Max open files\s+128000\s+128000\s+files/)
       end
 
+      it 'runs as the configured user' do
+        pid = start_command.stdout.split(' ').last.strip
+        user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
+        expect(user).to eq('kafka')
+      end
+
+      it 'runs as the configured group' do
+        pid = start_command.stdout.split(' ').last.strip
+        group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
+        expect(group).to eq('kafka')
+      end
+
       include_examples 'a Kafka start command'
     end
 
