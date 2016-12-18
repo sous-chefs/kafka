@@ -24,9 +24,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Enabled: false
 
-Style/ConditionalAssignment:
-  EnforcedStyle: assign_inside_condition
-
 Style/Documentation:
   Enabled: false
 
