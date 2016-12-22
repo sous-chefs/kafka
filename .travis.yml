@@ -10,8 +10,8 @@ env:
   global:
     - KITCHEN_YAML=.kitchen.docker.yml
   matrix:
-    - CHEF_VERSION=11
-    - CHEF_VERSION=12
+    - CHEF_VERSION=11 KAFKA_VERSION=0.8.1.1
+    - CHEF_VERSION=12 KAFKA_VERSION=0.10.1.1
 install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
 script: bundle exec kitchen test --concurrency=3 --destroy=always
 matrix:
