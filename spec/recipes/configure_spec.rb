@@ -11,7 +11,7 @@ describe 'kafka::_configure' do
   end
 
   let :described_recipes do
-    ['kafka::_defaults', described_recipe, 'kafka::_service']
+    ['kafka::_defaults', described_recipe, 'kafka::_service', 'kafka::_coordinate']
   end
 
   let :node do
@@ -213,7 +213,7 @@ describe 'kafka::_configure' do
 
     context 'environment variables' do
       it 'creates a file for setting necessary environment variables' do
-        expect(chef_run).to create_template(env_path).with(
+        expect(chef_run).to create_file(env_path).with(
           owner: 'root',
           group: 'root',
           mode: '644',
@@ -253,15 +253,15 @@ describe 'kafka::_configure' do
       end
 
       it 'sets KAFKA_RUN' do
-        expect(chef_run).to have_configured(env_path).with('KAFKA_RUN').as('"/opt/kafka/bin/kafka-run-class.sh"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_RUN').as('"/opt/kafka/bin/kafka-run-class.sh"')
       end
 
       it 'sets KAFKA_ARGS' do
-        expect(chef_run).to have_configured(env_path).with('KAFKA_ARGS').as('"kafka.Kafka"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_ARGS').as('"kafka.Kafka"')
       end
 
       it 'sets KAFKA_CONFIG' do
-        expect(chef_run).to have_configured(env_path).with('KAFKA_CONFIG').as('"/opt/kafka/config/server.properties"')
+        expect(chef_run).to have_configured(env_path).with('(export |)KAFKA_CONFIG').as('"/opt/kafka/config/server.properties"')
       end
     end
   end
@@ -491,76 +491,6 @@ describe 'kafka::_configure' do
             end
           end
         end
-      end
-    end
-  end
-
-  context 'kafka service' do
-    it 'enables a \'kafka\' service' do
-      expect(chef_run).to enable_service('kafka')
-    end
-
-    context 'automatic_restart attribute' do
-      let :config_paths do
-        %w[/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties /etc/sysconfig/kafka /etc/init.d/kafka]
-      end
-
-      let :config_templates do
-        config_paths.map do |config_path|
-          chef_run.template(config_path)
-        end
-      end
-
-      context 'by default' do
-        it 'does not restart kafka on configuration changes' do
-          config_templates.each do |template|
-            expect(template).not_to notify('ruby_block[coordinate-kafka-start]').to(:create)
-          end
-        end
-      end
-
-      context 'when set to true' do
-        let :kafka_attributes do
-          { 'automatic_restart' => true }
-        end
-
-        it 'restarts kafka when configuration is changed' do
-          config_templates.each do |template|
-            expect(template).to notify('ruby_block[coordinate-kafka-start]').to(:create)
-          end
-        end
-
-        it 'starts kafka' do
-          expect(chef_run).to start_service('kafka')
-        end
-      end
-    end
-
-    context 'automatic_start attribute' do
-      context 'by default' do
-        it 'does not start kafka' do
-          expect(chef_run).to_not start_service('kafka')
-        end
-      end
-
-      context 'when set to true' do
-        let :kafka_attributes do
-          { 'automatic_start' => true }
-        end
-
-        it 'starts kafka' do
-          expect(chef_run).to start_service('kafka')
-        end
-      end
-    end
-
-    context 'coordination recipe' do
-      it 'includes a recipe for coordinating starts / restarts' do
-        expect(chef_run).to include_recipe('kafka::_coordinate')
-      end
-
-      it 'creates a ruby_block that does nothing' do
-        expect(chef_run.ruby_block('coordinate-kafka-start')).to do_nothing
       end
     end
   end

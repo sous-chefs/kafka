@@ -32,7 +32,7 @@ def kafka_download_uri(filename)
 end
 
 def kafka_init_style
-  node['kafka']['init_style'].to_sym
+  (style = node['kafka']['init_style']) && style.to_sym
 end
 
 def kafka_init_opts
@@ -119,4 +119,20 @@ def fetch_broker_attribute(*parts)
     r = parts.reduce(broker) { |a, e| a.fetch(e, a) }
     r[key]
   end
+end
+
+def kafka_service_resource
+  kafka_runit? ? 'runit_service[kafka]' : 'service[kafka]'
+end
+
+def kafka_runit?
+  kafka_init_style == :runit
+end
+
+def kafka_systemd?
+  kafka_init_style == :systemd
+end
+
+def kafka_env
+  Kafka::Env.new(node['kafka'].to_hash)
 end

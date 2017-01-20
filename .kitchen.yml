@@ -99,3 +99,13 @@ suites:
     attributes:
       kafka:
         init_style: 'systemd'
+  - name: runit
+    run_list:
+      - recipe[java]
+      - recipe[runit]
+      - recipe[kafka]
+    excludes:
+      - centos-7.2
+    attributes:
+      kafka:
+        init_style: 'runit'

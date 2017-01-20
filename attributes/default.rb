@@ -150,6 +150,10 @@ default['kafka']['kill_timeout'] = 10
 default['kafka']['broker'] = {}
 
 #
+# Default log4j options.
+default['kafka']['log4j_opts'] = lazy { format('-Dlog4j.configuration=file:%s', ::File.join(node['kafka']['config_dir'], 'log4j.properties')) }
+
+#
 # Root logger level and appender.
 default['kafka']['log4j']['root_logger'] = 'INFO, kafkaAppender'
 

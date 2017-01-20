@@ -3,12 +3,11 @@
 # Recipe:: _service
 #
 
-template kafka_init_opts[:env_path] do
-  source 'env.erb'
+file kafka_init_opts[:env_path] do
   owner 'root'
   group 'root'
   mode '644'
-  helpers(Kafka::EnvFile)
+  content kafka_env.to_file_content(!kafka_systemd?)
   if restart_on_configuration_change?
     notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
   end
@@ -30,7 +29,7 @@ template kafka_init_opts[:script_path] do
   helper :controlled_shutdown_enabled? do
     !!fetch_broker_attribute(:controlled, :shutdown, :enable)
   end
-  if kafka_init_style == :systemd
+  if kafka_systemd?
     notifies :run, 'execute[kafka systemctl daemon-reload]', :immediately
   end
   if restart_on_configuration_change?
@@ -41,6 +40,4 @@ end
 execute 'kafka systemctl daemon-reload' do
   command 'systemctl daemon-reload'
   action :nothing
-end if kafka_init_style == :systemd
-
-include_recipe node['kafka']['start_coordination']['recipe']
+end if kafka_systemd?
