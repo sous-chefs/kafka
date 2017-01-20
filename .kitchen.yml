@@ -5,7 +5,7 @@ driver:
     - 'vagrantfiles/cachier.rb'
   box_check_update: false
   customize:
-    memory: 1024
+    memory: 512
     cpus: 2
 verifier:
   root_path: '/tmp/vagrant-cache/busser'

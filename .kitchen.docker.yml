@@ -1,8 +1,8 @@
 ---
 driver:
   name: 'docker'
-  memory: '1024m'
-  cpu: 4
+  memory: '512m'
+  cpu: 2
   use_sudo: false
 provisioner:
   name: 'chef_solo'
