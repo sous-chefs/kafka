@@ -4,6 +4,8 @@ driver:
   memory: '512m'
   cpu: 2
   use_sudo: false
+  privileged: <%= ENV['TRAVIS'] ? false : true %>
+  add_host: <%= ENV['TRAVIS'] ? [] : [['localhost.localdomain', '127.0.0.1']] %>
 provisioner:
   name: 'chef_solo'
   require_chef_omnibus: false
