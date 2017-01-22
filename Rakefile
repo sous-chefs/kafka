@@ -94,7 +94,7 @@ class KitchenTask
     end
     _, status = Process.waitpid2(pid)
     duration = Time.now - start_time
-    $logger.info('Ran %p, in %d seconds', command, duration)
+    $logger.info(format('Ran %p, in %d seconds', command, duration))
     status
   end
 end
@@ -124,13 +124,13 @@ namespace :test do
     done = false
     until done
       versions.each do |version|
-        $logger.info('Starting tests for v%s', version)
+        $logger.info(format('Starting tests for v%s', version))
         task = task_class.new(version)
         if task.run.success?
-          $logger.info('Done testing v%s, run took %d seconds', version, task.duration)
+          $logger.info(format('Done testing v%s, run took %d seconds', version, task.duration))
         else
-          $logger.info(task.output)
-          $logger.info('v%s failed, run took %d seconds, see output above ^', version, task.duration)
+          puts task.output
+          $logger.info(format('v%s failed, run took %d seconds, see output above ^', version, task.duration))
           if ENV.key?('yes')
             answer = ''
           else
