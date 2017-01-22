@@ -54,7 +54,7 @@ shared_context 'service setup' do
   def start_kafka(wait = false)
     result = run_command(start_command_string)
     if wait && result.exit_status.zero?
-      await(10) do
+      await do
         File.exist?(log_file_path) && File.read(log_file_path).match(start_regexp)
       end
     end
@@ -64,7 +64,7 @@ shared_context 'service setup' do
   def stop_kafka(wait = false)
     result = run_command(stop_command_string)
     if wait && result.exit_status.zero?
-      await(10) { File.exist?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
+      await { File.exist?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
     end
     result
   end
