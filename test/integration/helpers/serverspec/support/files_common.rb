@@ -41,8 +41,8 @@ shared_examples_for 'a non-executable kafka file' do
 
   it_behaves_like 'a kafka file'
 
-  it 'has 644 permissions' do
-    expect(kafka_file).to be_mode 644
+  it 'has expected permissions' do
+    expect(kafka_file).to be_mode(644).or be_mode(600)
   end
 end
 
