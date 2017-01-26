@@ -43,7 +43,7 @@ describe 'kafka::_configure' do
       expect(chef_run).to create_template(path).with(
         owner: 'kafka',
         group: 'kafka',
-        mode: '644',
+        mode: '600',
       )
     end
 
