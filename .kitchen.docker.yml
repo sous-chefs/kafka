@@ -50,7 +50,7 @@ platforms:
   - name: debian-7.4
     driver_config:
       provision_command:
-        - apt-get install -y openjdk-7-jre-headless net-tools
+        - apt-get install -y default-jre-headless net-tools
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '11.16.4') %>
   - name: ubuntu-14.04
     driver_config:
