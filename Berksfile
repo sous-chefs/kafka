@@ -8,6 +8,7 @@ group :test do
 end
 
 group :runit do
+  cookbook 'yum', '< 5'
   cookbook 'yum-epel', '~> 1.0'
   cookbook 'runit', '~> 2.0'
 end
