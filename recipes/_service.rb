@@ -43,4 +43,10 @@ execute 'kafka systemctl daemon-reload' do
   action :nothing
 end if kafka_init_style == :systemd
 
+service 'kafka' do
+  provider kafka_init_opts[:provider]
+  supports start: true, stop: true, restart: true, status: true
+  action kafka_service_actions
+end
+
 include_recipe node['kafka']['start_coordination']['recipe']
