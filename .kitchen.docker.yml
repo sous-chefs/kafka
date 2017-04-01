@@ -67,3 +67,17 @@ suites:
   - name: sysv
     run_list:
       - recipe[kafka]
+    attributes:
+      kafka:
+        init_style: 'sysv'
+  - name: runit
+    driver_config:
+      run_command: /sbin/init
+    run_list:
+      - recipe[runit]
+      - recipe[kafka]
+    excludes:
+      - ubuntu-14.04
+    attributes:
+      kafka:
+        init_style: 'runit'

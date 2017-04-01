@@ -11,6 +11,7 @@ version          '2.2.1'
 recipe 'kafka::default', 'Downloads and installs Kafka from binary releases'
 
 suggests 'java', '~> 1.22' # ~FC052
+suggests 'runit', '~> 2.0' # ~FC052
 
 supports 'centos'
 supports 'fedora'

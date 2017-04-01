@@ -7,4 +7,7 @@ include_recipe 'kafka::_defaults'
 include_recipe 'kafka::_setup'
 include_recipe 'kafka::_install'
 include_recipe 'kafka::_configure'
-include_recipe 'kafka::_service' if node['kafka']['init_style']
+if kafka_init_style
+  include_recipe 'kafka::_service' unless kafka_runit?
+  include_recipe node['kafka']['start_coordination']['recipe']
+end
