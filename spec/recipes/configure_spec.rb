@@ -47,28 +47,6 @@ describe 'kafka::_configure' do
       )
     end
 
-    context 'default configuration' do
-      it 'sets broker id from node\'s ip address' do
-        expect(chef_run).to have_configured(path).with('broker.id').as('10002')
-      end
-
-      it 'sets port' do
-        expect(chef_run).to have_configured(path).with('port').as(6667)
-      end
-
-      context 'when broker id is larger than 2**31' do
-        let :chef_run do
-          ChefSpec::SoloRunner.new do |node|
-            node.automatic['ipaddress'] = '255.255.255.255'
-          end.converge(*described_recipes)
-        end
-
-        it 'mod\'s it by 2**31' do
-          expect(chef_run).to have_configured(path).with('broker.id').as('1852184791')
-        end
-      end
-    end
-
     shared_examples_for 'when value is an Array' do
       let :mappings do
         %w[topic1 topic2]
