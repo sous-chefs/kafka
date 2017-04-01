@@ -251,7 +251,7 @@ describe 'kafka::_configure' do
       context 'and platform is \'ubuntu\'' do
         it_behaves_like 'an init style' do
           let :platform_and_version do
-            { platform: 'ubuntu', version: '13.10' }
+            { platform: 'ubuntu', version: '14.04' }
           end
 
           let :init_style do
