@@ -118,12 +118,6 @@ ruby_block 'restart-coordination' do
   notifies :create, 'ruby_block[restart-coordination-cleanup]', :delayed
 end
 
-service 'kafka' do
-  provider kafka_init_opts[:provider]
-  supports start: true, stop: true, restart: true, status: true
-  action kafka_service_actions
-end
-
 ruby_block 'restart-coordination-cleanup' do
   block do
     Chef::Log.info 'Implement any cleanup logic required after restart like releasing locks'
