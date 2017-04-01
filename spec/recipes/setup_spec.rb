@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'kafka::_setup' do
   let :chef_run do
     ChefSpec::SoloRunner.new do |node|
-      node.set['kafka'] = kafka_attrs
+      node.override['kafka'] = kafka_attrs
     end.converge('kafka::_defaults', described_recipe)
   end
 
