@@ -49,7 +49,9 @@ Attributes concerning configuration of a Kafka broker are to be set under the
 `broker` namespace, as such:
 
 ```ruby
-node.default.kafka.broker['log.dirs'] = %w[/tmp/kafka-logs]
+node.default['kafka']['broker']['log.dirs'] = %w[/tmp/kafka-logs]
+node.default['kafka']['broker']['num.io.threads'] = 4
+node.default['kafka']['broker']['zookeeper.connect'] = %w[localhost:2181]
 ```
 
 The attribute names match the configuration names that Kafka uses to make it
