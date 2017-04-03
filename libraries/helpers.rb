@@ -87,12 +87,7 @@ def kafka_service_actions
 end
 
 def kafka_log_dirs
-  dirs = []
-  dirs += Array(node['kafka']['broker']['log.dirs'])
-  dirs += Array(node['kafka']['broker'].fetch(:log_dirs, []))
-  dirs += Array(node['kafka']['broker'].fetch(:log, {}).fetch(:dirs, []))
-  dirs.uniq!
-  dirs
+  Array(node['kafka']['broker']['log.dirs'])
 end
 
 def broker_attribute?(*parts)
