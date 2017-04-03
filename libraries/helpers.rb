@@ -96,27 +96,9 @@ def kafka_log_dirs
 end
 
 def broker_attribute?(*parts)
-  parts = parts.map(&:to_s)
-  broker = node['kafka']['broker']
-  if broker.attribute?(parts.join('.')) || broker.attribute?(parts.join('_'))
-    true
-  else
-    key = parts.pop
-    r = parts.reduce(broker) { |a, e| a.fetch(e, a) }
-    r.attribute?(key)
-  end
+  node['kafka']['broker'].attribute?(parts.map(&:to_s).join('.'))
 end
 
 def fetch_broker_attribute(*parts)
-  parts = parts.map(&:to_s)
-  broker = node['kafka']['broker']
-  if broker.attribute?(parts.join('.'))
-    broker[parts.join('.')]
-  elsif broker.attribute?(parts.join('_'))
-    broker[parts.join('_')]
-  else
-    key = parts.pop
-    r = parts.reduce(broker) { |a, e| a.fetch(e, a) }
-    r[key]
-  end
+  node['kafka']['broker'][parts.map(&:to_s).join('.')]
 end

@@ -244,7 +244,7 @@ describe 'kafka::_configure' do
 
           context 'when it is enabled' do
             let :broker_attributes do
-              { controlled_shutdown_enable: true }
+              { 'controlled.shutdown.enable' => true }
             end
 
             it 'does not force-kill the broker process' do
@@ -293,7 +293,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                { controlled_shutdown_enable: true }
+                { 'controlled.shutdown.enable' => true }
               end
 
               it 'does not force-kill the broker process' do
@@ -343,7 +343,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                { controlled_shutdown_enable: true }
+                { 'controlled.shutdown.enable' => true }
               end
 
               it 'does not force-kill the broker process' do
