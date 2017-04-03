@@ -47,9 +47,9 @@ describe 'kafka::_configure' do
       )
     end
 
-    shared_examples_for 'when value is an Array' do
-      let :mappings do
-        %w[topic1 topic2]
+    context 'when the value of a configuration option is an Array' do
+      let :broker_attributes do
+        { 'array.option' => %w[topic1 topic2] }
       end
 
       it 'joins elements using #to_s and a comma' do
@@ -57,27 +57,13 @@ describe 'kafka::_configure' do
       end
     end
 
-    shared_examples_for 'when configuration name contains both `_` and `.`' do
-      let :mappings do
-        'contains underscore'
+    context 'when the value of a configuration option is a Hash' do
+      let :broker_attributes do
+        { 'hash.option' => { key_one: :value_one, key_two: :value_two } }
       end
 
-      it 'does not transform underscores to dots' do
-        expect(chef_run).to have_configured(path).with('possible.future_option').as('contains underscore')
-      end
-    end
-
-    context 'configuration using dotted String notation' do
-      it_behaves_correctly 'when value is an Array' do
-        let :broker_attributes do
-          { 'array.option' => mappings }
-        end
-      end
-
-      it_behaves_correctly 'when configuration name contains both `_` and `.`' do
-        let :broker_attributes do
-          { 'possible.future_option' => mappings }
-        end
+      it 'separates key-value pairs with colons and commas' do
+        expect(chef_run).to have_configured(path).with('hash.option').as('key_one:value_one,key_two:value_two')
       end
     end
   end
@@ -244,7 +230,7 @@ describe 'kafka::_configure' do
 
           context 'when it is enabled' do
             let :broker_attributes do
-              { controlled_shutdown_enable: true }
+              { 'controlled.shutdown.enable' => true }
             end
 
             it 'does not force-kill the broker process' do
@@ -293,7 +279,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                { controlled_shutdown_enable: true }
+                { 'controlled.shutdown.enable' => true }
               end
 
               it 'does not force-kill the broker process' do
@@ -343,7 +329,7 @@ describe 'kafka::_configure' do
 
             context 'when it is enabled' do
               let :broker_attributes do
-                { controlled_shutdown_enable: true }
+                { 'controlled.shutdown.enable' => true }
               end
 
               it 'does not force-kill the broker process' do

@@ -6,13 +6,12 @@
 module Kafka
   module Configuration
     def render_option?(value)
-      case value
-      when Hash
+      if value.is_a?(Array)
+        !value.empty?
+      elsif value.is_a?(Hash)
         value.values.all? do |v|
           render_option?(v)
         end
-      when Array
-        !value.empty?
       else
         !value.nil?
       end
@@ -21,6 +20,8 @@ module Kafka
     def render_option(key, value)
       if value.is_a?(Array)
         %(#{key}=#{render_array_value(value)})
+      elsif value.is_a?(Hash)
+        %(#{key}=#{render_hash_value(value).join(',')})
       else
         %(#{key}=#{value})
       end
