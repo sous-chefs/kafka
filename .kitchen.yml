@@ -11,7 +11,7 @@ verifier:
   root_path: '/tmp/vagrant-cache/busser'
 provisioner:
   name: 'chef_solo'
-  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '11.16.4').inspect %>
+  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '12').inspect %>
   chef_omnibus_install_options: '-d /tmp/vagrant-cache/omnibus'
   solo_rb:
     file_cache_path: '/tmp/vagrant-cache/chef'

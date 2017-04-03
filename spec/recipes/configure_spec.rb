@@ -5,8 +5,8 @@ require 'spec_helper'
 describe 'kafka::_configure' do
   let :chef_run do
     ChefSpec::SoloRunner.new do |node|
-      node.set['kafka'] = kafka_attributes
-      node.set['kafka']['broker'] = broker_attributes
+      node.override['kafka'] = kafka_attributes
+      node.override['kafka']['broker'] = broker_attributes
     end.converge(*described_recipes)
   end
 
@@ -124,9 +124,9 @@ describe 'kafka::_configure' do
   shared_examples_for 'an init style' do
     let :chef_run do
       ChefSpec::SoloRunner.new(platform_and_version) do |node|
-        node.set['kafka']['scala_version'] = '2.8.0'
-        node.set['kafka']['init_style'] = init_style
-        node.set['kafka']['broker'] = broker_attributes
+        node.override['kafka']['scala_version'] = '2.8.0'
+        node.override['kafka']['init_style'] = init_style
+        node.override['kafka']['broker'] = broker_attributes
       end.converge(*described_recipes)
     end
 
@@ -251,7 +251,7 @@ describe 'kafka::_configure' do
       context 'and platform is \'ubuntu\'' do
         it_behaves_like 'an init style' do
           let :platform_and_version do
-            { platform: 'ubuntu', version: '13.10' }
+            { platform: 'ubuntu', version: '14.04' }
           end
 
           let :init_style do
