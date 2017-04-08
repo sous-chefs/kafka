@@ -19,6 +19,8 @@ install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUN
 script: bundle exec kitchen test --destroy=always
 matrix:
   fast_finish: true
+  allow_failures:
+    - env: CHEF_VERSION=13 CHEF_CHANNEL=current KAFKA_VERSION=0.10.2.0 SCALA_VERSION=2.11
   include:
     - sudo: false
       env: []
