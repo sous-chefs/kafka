@@ -22,10 +22,10 @@ module Kafka
     end
 
     def render_logger(name, options)
-      level_appender = options.values_at(:level, :appender).compact.join(', ')
+      level_appender = [options['level'], options['appender']].compact.join(', ')
       definition = format('log4j.logger.%s=%s', name, level_appender)
       content = [definition]
-      unless (additivity = options[:additivity]).nil?
+      unless (additivity = options['additivity']).nil?
         content << %(log4j.additivity.#{name}=#{additivity})
       end
       content.join($/) << newline
