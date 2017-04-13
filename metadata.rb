@@ -6,7 +6,7 @@ maintainer_email 'mths@sdrbrg.se'
 license          'Apache 2.0'
 description      'Installs and configures a Kafka broker'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '2.2.1'
+version          '2.2.2'
 
 recipe 'kafka::default', 'Downloads and installs Kafka from binary releases'
 
