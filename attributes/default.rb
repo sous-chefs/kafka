@@ -94,6 +94,10 @@ default['kafka']['generic_opts'] = nil
 default['kafka']['gc_log_opts'] = nil
 
 #
+# Log4j options for Kafka.
+default['kafka']['log4j_opts'] = lazy { format('-Dlog4j.configuration=file:%s', ::File.join(node['kafka']['config_dir'], 'log4j.properties')) }
+
+#
 # JVM Performance options for Kafka.
 default['kafka']['jvm_performance_opts'] = %w[
   -server
