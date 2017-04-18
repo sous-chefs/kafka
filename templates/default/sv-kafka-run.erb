@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+envdir="$PWD/env"
+binary=$(cat "$envdir/KAFKA_RUN")
+args=$(cat "$envdir/KAFKA_ARGS")
+config=$(cat "$envdir/KAFKA_CONFIG")
+chpst_args="-e $envdir"
+
+if [[ -e $envdir/KAFKA_USER ]]; then
+  chpst_args="$chpst_args -u $(cat "$envdir/KAFKA_USER")"
+fi
+
+if [[ -e $envdir/KAFKA_LIMITS ]]; then
+  ulimit -n "$(cat "$envdir/KAFKA_LIMITS")"
+fi
+
+exec chpst $chpst_args "$binary" "$args" "$config"
