@@ -10,7 +10,6 @@ env:
   global:
     - KITCHEN_YAML=.kitchen.docker.yml
   matrix:
-    - CHEF_VERSION=11 KAFKA_VERSION=0.8.1.1
     - CHEF_VERSION=12 KAFKA_VERSION=0.8.1.1 KAFKA_CTRL_SHUTDOWN=true
     - CHEF_VERSION=12 KAFKA_VERSION=0.10.2.0 SCALA_VERSION=2.11
     - CHEF_VERSION=13 KAFKA_VERSION=0.10.2.0 SCALA_VERSION=2.11
@@ -26,8 +25,3 @@ matrix:
       env: []
       rvm: 2.3
       script: bundle exec rake test
-    - sudo: false
-      env: []
-      rvm: 1.9
-      gemfile: gemfiles/chef-11/Gemfile
-      script: bundle exec rspec spec
