@@ -9,3 +9,4 @@ kafka-cookbook-*.tar.gz
 /**/vendor/**/bundle/
 /pkg
 TODO.md
+**/.DS_Store
