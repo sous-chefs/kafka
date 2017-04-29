@@ -25,7 +25,8 @@ Furthermore, Kafka requires ZooKeeper for coordination, and this cookbook does
 not install or manage ZooKeeper to any extent.
 A general recommendation is to not run Kafka and ZooKeeper on the same hardware.
 
-Ruby 1.9.3+ and Chef 11.6.0+.
+- Chef 12.1.0+.
+- Java installed (you must do this via wrapper or Java cookbook)
 
 ### Platform
 
