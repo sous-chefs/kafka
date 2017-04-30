@@ -18,7 +18,7 @@ supports 'amazon'
 supports 'debian'
 supports 'ubuntu'
 
-chef_version '>= 11' if respond_to?(:chef_version)
+chef_version '>= 12.1' if respond_to?(:chef_version)
 
 source_url 'https://github.com/mthssdrbrg/kafka-cookbook' if respond_to?(:source_url)
 issues_url 'https://github.com/mthssdrbrg/kafka-cookbook/issues' if respond_to?(:issues_url)
