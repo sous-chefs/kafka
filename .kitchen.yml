@@ -26,6 +26,7 @@ provisioner:
       scala_version: <%= ENV.fetch('SCALA_VERSION', '2.10').inspect %>
       checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
       md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
+      heap_opts: '-Xmx256M -Xms256M'
       ulimit_file: 128000
       broker:
         broker.id: 1
