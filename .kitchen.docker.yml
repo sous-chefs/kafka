@@ -38,12 +38,12 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.4
+  - name: centos-6
     driver_config:
       provision_command:
         - yum install -y tar java-1.7.0-openjdk
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
-  - name: debian-7.4
+  - name: debian-7
     driver_config:
       provision_command:
         - apt-get install -y default-jre-headless net-tools

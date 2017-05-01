@@ -46,8 +46,8 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.7
-  - name: centos-7.2
+  - name: centos-6.8
+  - name: centos-7.3
   - name: debian-7.8
     run_list:
       - recipe[apt]
@@ -73,7 +73,7 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - centos-6.7
+      - centos-6.8
       - debian-7.8
   - name: upstart
     run_list:
@@ -89,7 +89,7 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - centos-7.2
+      - centos-7.3
       - debian-8.5
       - fedora-21
     attributes:
