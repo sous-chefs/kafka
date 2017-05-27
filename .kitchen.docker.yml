@@ -47,12 +47,12 @@ platforms:
   - name: debian-7
     driver_config:
       provision_command:
-        - apt-get install -y default-jre-headless net-tools
+        - apt-get install -y default-jre-headless net-tools --no-install-recommends
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
   - name: ubuntu-14.04
     driver_config:
       provision_command:
-        - apt-get install -y default-jre-headless
+        - apt-get install -y default-jre-headless --no-install-recommends
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
 suites:
   - name: default
