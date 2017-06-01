@@ -26,6 +26,7 @@ provisioner:
       scala_version: <%= ENV.fetch('SCALA_VERSION', '2.10').inspect %>
       checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
       md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
+      heap_opts: '-Xmx256M -Xms256M'
       ulimit_file: 128000
       broker:
         broker.id: 1
@@ -46,12 +47,12 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.7
-  - name: centos-7.2
-  - name: debian-7.8
+  - name: centos-6.8
+  - name: centos-7.3
+  - name: debian-7.11
     run_list:
       - recipe[apt]
-  - name: debian-8.5
+  - name: debian-8.7
     run_list:
       - recipe[apt]
   - name: ubuntu-14.04
@@ -73,8 +74,8 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - centos-6.7
-      - debian-7.8
+      - centos-6.8
+      - debian-7.11
   - name: upstart
     run_list:
       - recipe[java]
@@ -89,8 +90,8 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - centos-7.2
-      - debian-8.5
+      - centos-7.3
+      - debian-8.7
       - fedora-21
     attributes:
       kafka:

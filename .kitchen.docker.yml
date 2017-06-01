@@ -18,6 +18,7 @@ provisioner:
       scala_version: <%= ENV.fetch('SCALA_VERSION', '2.10').inspect %>
       checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
       md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
+      heap_opts: '-Xmx256M -Xms256M'
       ulimit_file: 128000
       broker:
         broker.id: 1
@@ -38,20 +39,20 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.4
+  - name: centos-6
     driver_config:
       provision_command:
-        - yum install -y tar java-1.7.0-openjdk
+        - yum install -y tar java-1.8.0-openjdk-headless
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
-  - name: debian-7.4
+  - name: debian-7
     driver_config:
       provision_command:
-        - apt-get install -y default-jre-headless net-tools
+        - apt-get install -y default-jre-headless net-tools --no-install-recommends
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
   - name: ubuntu-14.04
     driver_config:
       provision_command:
-        - apt-get install -y default-jre-headless
+        - apt-get install -y default-jre-headless --no-install-recommends
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
 suites:
   - name: default
