@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 name             'kafka'
-maintainer       'Mathias Söderberg'
+maintainer       'Mathias'
 maintainer_email 'mths@sdrbrg.se'
 license          'Apache 2.0'
 description      'Installs and configures a Kafka broker'
