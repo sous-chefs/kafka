@@ -9,3 +9,7 @@ kafka-cookbook-*.tar.gz
 /**/vendor/**/bundle/
 /pkg
 TODO.md
+terraform.tfstate**
+.envrc
+.aws.json
+*.plan

@@ -35,7 +35,16 @@ shared_context 'service setup' do
 
   before :all do
     @pid = Process.fork do
-      exec('su -s /bin/bash kafka -c "/opt/kafka/bin/zookeeper-server-start.sh /opt/kafka/config/zookeeper.properties"')
+      env = ENV.to_hash.merge(
+        'KAFKA_LOG4J_OPTS' => '-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties',
+        'KAFKA_HEAP_OPTS' => '-Xmx192M -Xms192M',
+      )
+      command = [
+        '/opt/kafka/bin/kafka-run-class.sh',
+        'org.apache.zookeeper.server.quorum.QuorumPeerMain',
+        '/opt/kafka/config/zookeeper.properties',
+      ]
+      exec(env, format('su -s /bin/bash kafka -c "%s"', command.join(' ')))
     end
   end
 
