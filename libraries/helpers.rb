@@ -90,10 +90,6 @@ def kafka_log_dirs
   Array(node['kafka']['broker']['log.dirs'])
 end
 
-def broker_attribute?(*parts)
-  node['kafka']['broker'].attribute?(parts.map(&:to_s).join('.'))
-end
-
 def fetch_broker_attribute(*parts)
   node['kafka']['broker'][parts.map(&:to_s).join('.')]
 end
