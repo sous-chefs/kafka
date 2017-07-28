@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+declare pid
+pid=$(cat supervise/pid)
+
+if [[ -n "$pid" ]]; then
+  kill -TERM "$pid"
+  until ps -p "$pid" -o stat= | grep 'Z' &> /dev/null; do
+    sleep 1
+  done
+fi
+
+exit 0
