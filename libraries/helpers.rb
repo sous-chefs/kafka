@@ -7,28 +7,12 @@ def kafka_base
   %(kafka_#{node['kafka']['scala_version']}-#{node['kafka']['version']})
 end
 
-def kafka_tar_gz
-  [kafka_base, 'tgz'].join('.')
-end
-
-def kafka_local_download_path
-  ::File.join(Chef::Config.file_cache_path, kafka_tar_gz)
-end
-
-def kafka_target_path
-  ::File.join(node['kafka']['build_dir'], kafka_base)
-end
-
 def kafka_jar_path
   ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_base}.jar))
 end
 
 def kafka_installed?
   ::File.exist?(node['kafka']['install_dir']) && ::File.exist?(kafka_jar_path)
-end
-
-def kafka_download_uri(filename)
-  [node['kafka']['base_url'], node['kafka']['version'], filename].join('/')
 end
 
 def kafka_init_style
