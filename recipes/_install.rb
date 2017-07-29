@@ -25,25 +25,16 @@ ruby_block 'kafka-validate-download' do
     end
   end
   action :nothing
-  not_if { kafka_installed? }
 end
 
-execute 'extract-kafka' do
+execute 'kafka-install' do
   cwd node['kafka']['build_dir']
   command <<-EOH.gsub(/^\s+/, '')
     tar zxf #{kafka_local_download_path} && \
-    chown -R #{node['kafka']['user']}:#{node['kafka']['group']} #{node['kafka']['build_dir']}
+    chown -R #{node['kafka']['user']}:#{node['kafka']['group']} #{node['kafka']['build_dir']} && \
+    cp -rp #{::File.join(kafka_target_path, '*')} #{node['kafka']['version_install_dir']} && \
+    rm -rf #{kafka_target_path}
   EOH
-  not_if { kafka_installed? }
-end
-
-execute 'install-kafka' do
-  command %(cp -rp #{::File.join(kafka_target_path, '*')} #{node['kafka']['version_install_dir']})
-  not_if { kafka_installed? }
-end
-
-execute 'remove-kafka-build' do
-  command %(rm -rf #{kafka_target_path})
   not_if { kafka_installed? }
 end
 

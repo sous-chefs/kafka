@@ -26,13 +26,8 @@ describe 'kafka::_install' do
     expect(remote_file).to notify('ruby_block[kafka-validate-download]').immediately
   end
 
-  it 'extracts downloaded Kafka archive' do
-    expect(chef_run).to run_execute('extract-kafka').with_cwd(File.join(Dir.tmpdir, 'kafka-build'))
-  end
-
   it 'installs extracted Kafka archive' do
-    expect(chef_run).to run_execute('install-kafka')
-    expect(chef_run).to run_execute('remove-kafka-build')
+    expect(chef_run).to run_execute('kafka-install')
     link = chef_run.link('/opt/kafka')
     expect(link).to link_to('/opt/kafka-0.8.1.1')
   end
