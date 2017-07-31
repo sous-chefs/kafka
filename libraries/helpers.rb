@@ -3,12 +3,12 @@
 # Libraries:: helpers
 #
 
-def kafka_base
+def kafka_version_name
   %(kafka_#{node['kafka']['scala_version']}-#{node['kafka']['version']})
 end
 
 def kafka_jar_path
-  ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_base}.jar))
+  ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_version_name}.jar))
 end
 
 def kafka_installed?

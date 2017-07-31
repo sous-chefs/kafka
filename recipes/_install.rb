@@ -3,9 +3,9 @@
 # Recipe:: _install
 #
 
-tar_gz = [kafka_base, 'tgz'].join('.')
+tar_gz = [kafka_version_name, 'tgz'].join('.')
 local_download_path = ::File.join(Chef::Config.file_cache_path, tar_gz)
-build_path = ::File.join(node['kafka']['build_dir'], kafka_base)
+build_path = ::File.join(node['kafka']['build_dir'], kafka_version_name)
 remote_path = [node['kafka']['base_url'], node['kafka']['version'], tar_gz].join('/')
 md5 = node['kafka']['md5_checksum']
 sha256 = node['kafka']['checksum']
