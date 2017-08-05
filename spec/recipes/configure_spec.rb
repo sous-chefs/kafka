@@ -301,7 +301,7 @@ describe 'kafka::_configure' do
       context 'and platform is \'debian\'' do
         it_behaves_like 'an init style' do
           let :platform_and_version do
-            { platform: 'debian', version: '7.2' }
+            { platform: 'debian', version: '7.11' }
           end
 
           let :init_style do
@@ -403,7 +403,7 @@ describe 'kafka::_configure' do
         context 'and platform is \'debian\'' do
           it_behaves_like 'an init style' do
             let :platform_and_version do
-              { platform: 'debian', version: '7.2' }
+              { platform: 'debian', version: '7.11' }
             end
 
             let :init_style do
