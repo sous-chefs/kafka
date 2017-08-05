@@ -47,18 +47,18 @@ provisioner:
             appender: 'zookeeperAppender'
             additivity: false
 platforms:
-  - name: centos-6.8
+  - name: centos-6.9
   - name: centos-7.3
   - name: debian-7.11
     run_list:
       - recipe[apt]
-  - name: debian-8.7
+  - name: debian-8.8
     run_list:
       - recipe[apt]
   - name: ubuntu-14.04
     run_list:
       - recipe[apt]
-  - name: fedora-21
+  - name: fedora-25
     attributes:
       java:
         jdk_version: 8
@@ -74,7 +74,7 @@ suites:
       - recipe[java]
       - recipe[kafka]
     includes:
-      - centos-6.8
+      - centos-6.9
       - debian-7.11
   - name: upstart
     run_list:
@@ -91,8 +91,8 @@ suites:
       - recipe[kafka]
     includes:
       - centos-7.3
-      - debian-8.7
-      - fedora-21
+      - debian-8.8
+      - fedora-25
     attributes:
       kafka:
         init_style: 'systemd'
@@ -102,7 +102,7 @@ suites:
       - recipe[runit]
       - recipe[kafka]
     excludes:
-      - centos-7.2
+      - centos-7.3
     attributes:
       kafka:
         init_style: 'runit'
