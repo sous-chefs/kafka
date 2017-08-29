@@ -399,32 +399,32 @@ describe 'kafka::_configure' do
           expect(chef_run.execute('kafka systemctl daemon-reload')).to do_nothing
           expect(chef_run.template(init_path)).to notify('execute[kafka systemctl daemon-reload]').to(:run).immediately
         end
+      end
 
-        context 'and platform is \'debian\'' do
-          it_behaves_like 'an init style' do
-            let :platform_and_version do
-              { platform: 'debian', version: '7.11' }
-            end
+      context 'and platform is \'debian\'' do
+        it_behaves_like 'an init style' do
+          let :platform_and_version do
+            { platform: 'debian', version: '7.11' }
+          end
 
-            let :init_style do
-              'systemd'
-            end
+          let :init_style do
+            'systemd'
+          end
 
-            let :init_path do
-              '/etc/systemd/system/kafka.service'
-            end
+          let :init_path do
+            '/etc/systemd/system/kafka.service'
+          end
 
-            let :env_path do
-              '/etc/default/kafka'
-            end
+          let :env_path do
+            '/etc/default/kafka'
+          end
 
-            let :script_permissions do
-              '644'
-            end
+          let :script_permissions do
+            '644'
+          end
 
-            let :source_template do
-              'systemd/default.erb'
-            end
+          let :source_template do
+            'systemd/default.erb'
           end
         end
       end
