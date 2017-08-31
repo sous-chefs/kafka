@@ -1,20 +1,14 @@
 ---
 driver:
   name: vagrant
-  vagrantfiles:
-    - 'vagrantfiles/cachier.rb'
   box_check_update: false
   customize:
     memory: 512
     cpus: 2
-verifier:
-  root_path: '/tmp/vagrant-cache/busser'
 provisioner:
   name: 'chef_solo'
   require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '12').inspect %>
-  chef_omnibus_install_options: '-d /tmp/vagrant-cache/omnibus'
   solo_rb:
-    file_cache_path: '/tmp/vagrant-cache/chef'
     ssl_verify_mode: :verify_peer
   attributes:
     java:
