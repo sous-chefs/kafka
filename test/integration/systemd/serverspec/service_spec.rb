@@ -17,6 +17,10 @@ describe 'service for systemd init style' do
     'systemctl status kafka.service'
   end
 
+  let :pid_command_string do
+    'systemctl show --property=MainPID kafka.service | cut -d= -f2'
+  end
+
   before do
     run_command 'systemctl reset-failed kafka.service'
   end
@@ -45,19 +49,19 @@ describe 'service for systemd init style' do
       end
 
       it 'sets configured `ulimit` values' do
-        pid = status_command.stdout[/Main PID: (\d+)/, 1].strip
+        pid = run_command(pid_command_string).stdout.strip
         limits = file("/proc/#{pid}/limits").content
         expect(limits).to match(/Max open files\s+128000\s+128000\s+files/i)
       end
 
       it 'runs as the configured user' do
-        pid = status_command.stdout[/Main PID: (\d+)/, 1].strip
+        pid = run_command(pid_command_string).stdout.strip
         user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
         expect(user).to eq('kafka')
       end
 
       it 'runs as the configured group' do
-        pid = status_command.stdout[/Main PID: (\d+)/, 1].strip
+        pid = run_command(pid_command_string).stdout.strip
         group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
         expect(group).to eq('kafka')
       end
@@ -84,9 +88,9 @@ describe 'service for systemd init style' do
       end
 
       it 'does not start a new process' do
-        first_pid = run_command(status_command_string).stdout.split("\n").grep(/Main PID/)
+        first_pid = run_command(pid_command_string).stdout.strip
         start_kafka
-        new_pid = run_command(status_command_string).stdout.split("\n").grep(/Main PID/)
+        new_pid = run_command(pid_command_string).stdout.strip
         expect(first_pid).to eq(new_pid)
       end
     end

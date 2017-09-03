@@ -3,7 +3,7 @@
 name             'kafka'
 maintainer       'Mathias Söderberg'
 maintainer_email 'mths@sdrbrg.se'
-license          'Apache 2.0'
+license          'Apache-2.0'
 description      'Installs and configures a Kafka broker'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '2.2.1'
@@ -18,5 +18,5 @@ supports 'ubuntu'
 
 chef_version '>= 12.1' if respond_to?(:chef_version)
 
-source_url 'https://github.com/mthssdrbrg/kafka-cookbook' if respond_to?(:source_url)
-issues_url 'https://github.com/mthssdrbrg/kafka-cookbook/issues' if respond_to?(:issues_url)
+source_url 'https://github.com/mthssdrbrg/kafka-cookbook'
+issues_url 'https://github.com/mthssdrbrg/kafka-cookbook/issues'
