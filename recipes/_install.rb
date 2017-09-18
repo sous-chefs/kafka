@@ -17,7 +17,7 @@ end
 ruby_block 'kafka-validate-download' do
   block do
     if md5 && !md5.empty?
-      unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == md5.downcase
+      unless (checksum = Digest::MD5.file(kafka_local_download_path).hexdigest) == md5.downcase
         Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5}))
       end
     else
