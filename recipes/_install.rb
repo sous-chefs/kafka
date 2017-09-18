@@ -10,21 +10,19 @@ remote_file kafka_local_download_path do
   source kafka_download_uri(kafka_tar_gz)
   mode '644'
   checksum sha256 if sha256 && !sha256.empty?
-  notifies :create, 'ruby_block[kafka-validate-download]', :immediately
   not_if { kafka_installed? }
 end
 
 ruby_block 'kafka-validate-download' do
   block do
     if md5 && !md5.empty?
-      unless (checksum = Digest::MD5.file(local_file_path).hexdigest) == md5.downcase
+      unless (checksum = Digest::MD5.file(kafka_local_download_path).hexdigest) == md5.downcase
         Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5}))
       end
     else
       Chef::Log.debug 'No MD5 checksum set, not validating downloaded archive'
     end
   end
-  action :nothing
   not_if { kafka_installed? }
 end
 
