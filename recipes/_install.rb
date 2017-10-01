@@ -3,11 +3,15 @@
 # Recipe:: _install
 #
 
+tar_gz = [kafka_version_name, 'tgz'].join('.')
+local_download_path = ::File.join(Chef::Config.file_cache_path, tar_gz)
+build_path = ::File.join(node['kafka']['build_dir'], kafka_version_name)
+remote_path = [node['kafka']['base_url'], node['kafka']['version'], tar_gz].join('/')
 md5 = node['kafka']['md5_checksum']
 sha256 = node['kafka']['checksum']
 
-remote_file kafka_local_download_path do
-  source kafka_download_uri(kafka_tar_gz)
+remote_file local_download_path do
+  source remote_path
   mode '644'
   checksum sha256 if sha256 && !sha256.empty?
   notifies :create, 'ruby_block[kafka-validate-download]', :immediately
@@ -17,7 +21,7 @@ end
 ruby_block 'kafka-validate-download' do
   block do
     if md5 && !md5.empty?
-      unless (checksum = Digest::MD5.file(kafka_local_download_path).hexdigest) == md5.downcase
+      unless (checksum = Digest::MD5.file(local_download_path).hexdigest) == md5.downcase
         Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5}))
       end
     else
@@ -25,25 +29,16 @@ ruby_block 'kafka-validate-download' do
     end
   end
   action :nothing
-  not_if { kafka_installed? }
 end
 
-execute 'extract-kafka' do
+execute 'kafka-install' do
   cwd node['kafka']['build_dir']
   command <<-EOH.gsub(/^\s+/, '')
-    tar zxf #{kafka_local_download_path} && \
-    chown -R #{node['kafka']['user']}:#{node['kafka']['group']} #{node['kafka']['build_dir']}
+    tar zxf #{local_download_path} && \
+    chown -R #{node['kafka']['user']}:#{node['kafka']['group']} #{build_path} && \
+    cp -rp #{::File.join(build_path, '*')} #{node['kafka']['version_install_dir']} && \
+    rm -rf #{build_path}
   EOH
-  not_if { kafka_installed? }
-end
-
-execute 'install-kafka' do
-  command %(cp -rp #{::File.join(kafka_target_path, '*')} #{node['kafka']['version_install_dir']})
-  not_if { kafka_installed? }
-end
-
-execute 'remove-kafka-build' do
-  command %(rm -rf #{kafka_target_path})
   not_if { kafka_installed? }
 end
 

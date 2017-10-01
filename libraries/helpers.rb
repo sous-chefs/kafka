@@ -3,32 +3,16 @@
 # Libraries:: helpers
 #
 
-def kafka_base
+def kafka_version_name
   %(kafka_#{node['kafka']['scala_version']}-#{node['kafka']['version']})
 end
 
-def kafka_tar_gz
-  [kafka_base, 'tgz'].join('.')
-end
-
-def kafka_local_download_path
-  ::File.join(Chef::Config.file_cache_path, kafka_tar_gz)
-end
-
-def kafka_target_path
-  ::File.join(node['kafka']['build_dir'], kafka_base)
-end
-
 def kafka_jar_path
-  ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_base}.jar))
+  ::File.join(node['kafka']['install_dir'], 'libs', %(#{kafka_version_name}.jar))
 end
 
 def kafka_installed?
   ::File.exist?(node['kafka']['install_dir']) && ::File.exist?(kafka_jar_path)
-end
-
-def kafka_download_uri(filename)
-  [node['kafka']['base_url'], node['kafka']['version'], filename].join('/')
 end
 
 def kafka_init_style
@@ -88,10 +72,6 @@ end
 
 def kafka_log_dirs
   Array(node['kafka']['broker']['log.dirs'])
-end
-
-def broker_attribute?(*parts)
-  node['kafka']['broker'].attribute?(parts.map(&:to_s).join('.'))
 end
 
 def fetch_broker_attribute(*parts)
