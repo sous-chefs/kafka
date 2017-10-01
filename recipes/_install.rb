@@ -10,7 +10,6 @@ remote_file kafka_local_download_path do
   source kafka_download_uri(kafka_tar_gz)
   mode '644'
   checksum sha256 if sha256 && !sha256.empty?
-  notifies :create, 'ruby_block[kafka-validate-download]', :immediately
   not_if { kafka_installed? }
 end
 
@@ -24,7 +23,6 @@ ruby_block 'kafka-validate-download' do
       Chef::Log.debug 'No MD5 checksum set, not validating downloaded archive'
     end
   end
-  action :nothing
   not_if { kafka_installed? }
 end
 
