@@ -11,15 +11,15 @@ env:
     - KITCHEN_YAML=.kitchen.docker.yml
   matrix:
     - CHEF_VERSION=12 KAFKA_VERSION=0.8.1.1  SCALA_VERSION=2.10 KAFKA_CTRL_SHUTDOWN=true
-    - CHEF_VERSION=12 KAFKA_VERSION=0.11.0.0 SCALA_VERSION=2.11
-    - CHEF_VERSION=13 KAFKA_VERSION=0.11.0.0 SCALA_VERSION=2.11
-    - CHEF_VERSION=13 KAFKA_VERSION=0.11.0.0 SCALA_VERSION=2.11 CHEF_CHANNEL=current
+    - CHEF_VERSION=12 KAFKA_VERSION=0.11.0.1 SCALA_VERSION=2.11
+    - CHEF_VERSION=13 KAFKA_VERSION=0.11.0.1 SCALA_VERSION=2.11
+    - CHEF_VERSION=13 KAFKA_VERSION=0.11.0.1 SCALA_VERSION=2.11 CHEF_CHANNEL=current
 install: travis_wait bundle install --jobs=3 --retry=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
 script: bundle exec kitchen test --destroy=always
 matrix:
   fast_finish: true
   allow_failures:
-    - env: CHEF_VERSION=13 KAFKA_VERSION=0.11.0.0 SCALA_VERSION=2.11 CHEF_CHANNEL=current
+    - env: CHEF_VERSION=13 KAFKA_VERSION=0.11.0.1 SCALA_VERSION=2.11 CHEF_CHANNEL=current
   include:
     - sudo: false
       env: []
