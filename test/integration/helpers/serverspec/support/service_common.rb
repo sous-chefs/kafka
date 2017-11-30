@@ -26,11 +26,11 @@ shared_context 'service setup' do
   end
 
   let :start_regexp do
-    /kafka server .+ started/i
+    /kafka\s*server .+ started/i
   end
 
   let :stop_regexp do
-    /kafka server .+ shut down completed/i
+    /kafka\s*server .+ shut down completed/i
   end
 
   before :all do
