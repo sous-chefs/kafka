@@ -16,8 +16,8 @@ provisioner:
     kafka:
       uid: 1234
       gid: 5678
-      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.1.1').inspect %>
-      scala_version: <%= ENV.fetch('SCALA_VERSION', '2.10').inspect %>
+      version: <%= ENV.fetch('KAFKA_VERSION', '0.8.2.2').inspect %>
+      scala_version: <%= ENV.fetch('SCALA_VERSION', '2.11').inspect %>
       checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
       md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
       heap_opts: '-Xmx256M -Xms256M'
