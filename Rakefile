@@ -66,9 +66,9 @@ class KitchenTask
   def run
     start_timestamp = Time.now
     if @concurrency > 1
-      status = run_and_wait(format('bundle exec kitchen setup --concurrency=%d', @concurrency))
+      status = with_retries(format('bundle exec kitchen converge --concurrency=%d', @concurrency))
       if status.success?
-        status = run_and_wait('bundle exec kitchen verify')
+        status = with_retries(format('bundle exec kitchen verify --concurrency=%d', @concurrency))
       end
       run_and_wait(format('bundle exec kitchen destroy --concurrency=%d', @concurrency))
     else
@@ -79,6 +79,20 @@ class KitchenTask
   end
 
   private
+
+  def with_retries(command)
+    attempts = 0
+    while attempts < 3 do
+      status = run_and_wait(command)
+      if status.success?
+        break
+      else
+        $logger.warn(format('%p failed, attempt=%d', command, attempts))
+        attempts += 1
+      end
+    end
+    status
+  end
 
   def run_and_wait(command)
     start_time = Time.now
@@ -112,6 +126,14 @@ class VagrantTask < KitchenTask
     super(version)
     @env['KITCHEN_YAML'] = '.kitchen.yml'
     @concurrency = ENV.fetch('concurrency', 4).to_i
+  end
+end
+
+class Ec2Task < KitchenTask
+  def initialize(version)
+    super(version)
+    @env['KITCHEN_YAML'] = '.kitchen.ec2.yml'
+    @concurrency = ENV.fetch('concurrency', 12).to_i
   end
 end
 
@@ -187,6 +209,12 @@ namespace :test do
   task :vagrant do
     versions = ENV.fetch('versions', default_versions.join(',')).split(',')
     run_tests_for(versions, VagrantTask)
+  end
+
+  desc 'Run test-kitchen with kitchen-ec2'
+  task :ec2 do
+    versions = ENV.fetch('versions', default_versions.join(',')).split(',')
+    run_tests_for(versions, Ec2Task)
   end
 end
 
