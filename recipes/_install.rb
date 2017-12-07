@@ -9,6 +9,7 @@ build_path = ::File.join(node['kafka']['build_dir'], kafka_version_name)
 remote_path = [node['kafka']['base_url'], node['kafka']['version'], tar_gz].join('/')
 md5 = node['kafka']['md5_checksum']
 sha256 = node['kafka']['checksum']
+sha512 = node['kafka']['sha512_checksum']
 
 remote_file local_download_path do
   source remote_path
@@ -24,8 +25,12 @@ ruby_block 'kafka-validate-download' do
       unless (checksum = Digest::MD5.file(local_download_path).hexdigest) == md5.downcase
         Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5}))
       end
+    elsif sha512 && !sha512.empty?
+      unless (checksum = Digest::SHA512.file(local_download_path).hexdigest) == sha512.downcase
+        Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{sha512}))
+      end
     else
-      Chef::Log.debug 'No MD5 checksum set, not validating downloaded archive'
+      Chef::Log.debug 'No MD5 or SHA512 checksum set, not validating downloaded archive'
     end
   end
   action :nothing

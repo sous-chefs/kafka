@@ -78,7 +78,7 @@ describe 'kafka::_setup' do
   end
 
   it 'creates installation directory' do
-    expect(chef_run).to create_directory('/opt/kafka-0.8.1.1').with(
+    expect(chef_run).to create_directory('/opt/kafka-1.0.0').with(
       owner: 'kafka',
       group: 'kafka',
       mode: '755',
