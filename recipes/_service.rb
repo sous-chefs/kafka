@@ -53,9 +53,6 @@ runit_service 'kafka' do
   start_down true unless start_automatically?
   sv_timeout node['kafka']['kill_timeout'] if node['kafka']['kill_timeout']
   control %w[t] if fetch_broker_attribute(:controlled, :shutdown, :enable)
-  if restart_on_configuration_change?
-    notifies :create, 'ruby_block[coordinate-kafka-start]', :immediately
-  end
   action kafka_service_actions
 end if kafka_runit?
 
