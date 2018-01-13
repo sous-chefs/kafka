@@ -12,6 +12,9 @@ Metrics/AbcSize:
 Metrics/BlockNesting:
   Enabled: false
 
+Metrics/BlockLength:
+  Enabled: false
+
 Metrics/CyclomaticComplexity:
   Enabled: false
 
@@ -25,6 +28,9 @@ Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/Documentation:
+  Enabled: false
+
+Style/MultilineIfModifier:
   Enabled: false
 
 Style/DoubleNegation:
