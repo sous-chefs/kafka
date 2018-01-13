@@ -114,7 +114,9 @@ ruby_block 'restart-coordination' do
     Chef::Log.info 'Implement the process to coordinate the restart, like using ZK'
   end
   action :nothing
-  notifies :restart, 'service[kafka]', :delayed
+  # `kafka_service_resource` is a helper method that will return the correct
+  # resource name depending on whether you're using `runit` or not.
+  notifies :restart, kafka_service_resource, :delayed
   notifies :create, 'ruby_block[restart-coordination-cleanup]', :delayed
 end
 
