@@ -50,7 +50,7 @@ runit_service 'kafka' do
   )
   sv_bin format('sleep 5 && %s', node['runit']['sv_bin'])
   restart_on_update false
-  start_down true
+  start_down true unless start_automatically?
   sv_timeout node['kafka']['kill_timeout'] if node['kafka']['kill_timeout']
   control %w[t] if fetch_broker_attribute(:controlled, :shutdown, :enable)
   if restart_on_configuration_change?
