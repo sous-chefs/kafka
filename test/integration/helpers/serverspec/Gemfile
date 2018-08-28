@@ -2,4 +2,6 @@
 
 source 'https://rubygems.org'
 
+gem 'net-ssh', '< 2.10'
+gem 'net-telnet', '< 0.2.0'
 gem 'serverspec', '~> 2', '< 3'

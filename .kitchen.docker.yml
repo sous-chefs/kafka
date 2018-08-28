@@ -47,16 +47,28 @@ platforms:
       provision_command:
         - yum install -y tar java-1.7.0-openjdk
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
+        <% if ENV['CHEF_VERSION'] == '11' %>
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install rake --version '< 2.0' --no-rdoc --no-ri --bindir /tmp/verifier/bin --no-user-install
+        - chown -R kitchen:kitchen /tmp/verifier
+        <% end %>
   - name: debian-7.4
     driver_config:
       provision_command:
         - apt-get install -y default-jre-headless net-tools
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
+        <% if ENV['CHEF_VERSION'] == '11' %>
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install rake --version '< 2.0' --no-rdoc --no-ri --bindir /tmp/verifier/bin --no-user-install
+        - chown -R kitchen:kitchen /tmp/verifier
+        <% end %>
   - name: ubuntu-14.04
     driver_config:
       provision_command:
         - apt-get install -y default-jre-headless
         - curl -L https://chef.io/chef/install.sh | bash -s -- -v <%= ENV.fetch('CHEF_VERSION', '12') %> -c <%= ENV.fetch('CHEF_CHANNEL', 'stable') %>
+        <% if ENV['CHEF_VERSION'] == '11' %>
+        - env GEM_HOME=/tmp/verifier/gems GEM_PATH=/tmp/verifier/gems GEM_CACHE=/tmp/verifier/gems/cache /opt/chef/embedded/bin/gem install rake --version '< 2.0' --no-rdoc --no-ri --bindir /tmp/verifier/bin --no-user-install
+        - chown -R kitchen:kitchen /tmp/verifier
+        <% end %>
 suites:
   - name: default
     run_list:
