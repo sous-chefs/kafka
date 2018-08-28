@@ -14,6 +14,7 @@ group :test do
   gem 'kitchen-docker'
   gem 'kitchen-ec2'
   gem 'kitchen-vagrant'
+  gem 'nokogiri', '~> 1.8.2'
   gem 'rubocop', '~> 0.49.0'
   gem 'test-kitchen'
 end
