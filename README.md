@@ -70,7 +70,7 @@ This section describes the different recipes that are available.
 ### default
 
 Downloads and installs Kafka from the official binary releases.
-Defaults to installing `v1.0.0` of Kafka.
+Defaults to installing `v1.1.1` of Kafka.
 
 ## Controlling restart of Kafka brokers in a cluster
 

@@ -13,7 +13,7 @@ describe 'kafka::_install' do
   end
 
   let :download_path do
-    File.join(Chef::Config.file_cache_path, 'kafka_2.12-1.0.0.tgz')
+    File.join(Chef::Config.file_cache_path, 'kafka_2.11-1.1.1.tgz')
   end
 
   it 'downloads remote binary release of Kafka' do
@@ -29,6 +29,6 @@ describe 'kafka::_install' do
   it 'installs extracted Kafka archive' do
     expect(chef_run).to run_execute('kafka-install')
     link = chef_run.link('/opt/kafka')
-    expect(link).to link_to('/opt/kafka-1.0.0')
+    expect(link).to link_to('/opt/kafka-1.1.1')
   end
 end
