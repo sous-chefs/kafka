@@ -138,7 +138,7 @@ class Ec2Task < KitchenTask
 end
 
 namespace :test do
-  default_versions = %w[0.8.2.2 0.9.0.1 0.10.0.1 0.10.1.1 0.10.2.1 0.11.0.1 1.0.0, 1.1.1]
+  default_versions = %w[0.8.2.2 0.9.0.1 0.10.0.1 0.10.1.1 0.10.2.1 0.11.0.1 1.0.0 1.1.1 2.0.0]
 
   def run_tests_for(versions, task_class)
     $logger.info(format('Running tests for versions: %s', versions.join(', ')))
