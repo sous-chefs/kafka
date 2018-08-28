@@ -15,7 +15,7 @@ remote_file local_download_path do
   source remote_path
   mode '644'
   checksum sha256 if sha256 && !sha256.empty?
-  notifies :create, 'ruby_block[kafka-validate-download]', :immediately
+  notifies :run, 'ruby_block[kafka-validate-download]', :immediately
   not_if { kafka_installed? }
 end
 

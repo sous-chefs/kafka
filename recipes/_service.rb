@@ -9,7 +9,7 @@ file kafka_init_opts[:env_path] do
   mode '644'
   content kafka_env.to_file_content(!kafka_systemd?)
   if restart_on_configuration_change?
-    notifies :create, 'ruby_block[coordinate-kafka-start]', :delayed
+    notifies :run, 'ruby_block[coordinate-kafka-start]', :delayed
   end
 end unless kafka_runit?
 
@@ -33,7 +33,7 @@ template kafka_init_opts[:script_path] do
     notifies :run, 'execute[kafka systemctl daemon-reload]', :immediately
   end
   if restart_on_configuration_change?
-    notifies :create, 'ruby_block[coordinate-kafka-start]', :delayed
+    notifies :run, 'ruby_block[coordinate-kafka-start]', :delayed
   end
 end unless kafka_runit?
 

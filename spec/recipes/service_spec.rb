@@ -45,7 +45,7 @@ describe 'kafka service' do
       context 'by default' do
         it 'does not restart kafka on configuration changes' do
           config_templates.each do |template|
-            expect(template).not_to notify('ruby_block[coordinate-kafka-start]').to(:create)
+            expect(template).not_to notify('ruby_block[coordinate-kafka-start]').to(:run)
           end
         end
       end
@@ -57,7 +57,7 @@ describe 'kafka service' do
 
         it 'restarts kafka when configuration is changed' do
           config_templates.each do |template|
-            expect(template).to notify('ruby_block[coordinate-kafka-start]').to(:create)
+            expect(template).to notify('ruby_block[coordinate-kafka-start]').to(:run)
           end
         end
 
