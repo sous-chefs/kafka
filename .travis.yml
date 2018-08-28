@@ -5,7 +5,7 @@ services:
 cache:
   - bundler
 rvm:
-  - 2.3
+  - 2.5
 env:
   global:
     - KITCHEN_YAML=.kitchen.docker.yml
@@ -23,5 +23,5 @@ matrix:
   include:
     - sudo: false
       env: []
-      rvm: 2.3
+      rvm: 2.5
       script: bundle exec rake test
