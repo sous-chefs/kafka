@@ -22,7 +22,7 @@ describe 'kafka::_setup' do
       it 'creates a kafka user' do
         expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
-          group: 'kafka',
+          group: 'kafka'
         )
       end
     end
@@ -40,7 +40,7 @@ describe 'kafka::_setup' do
         expect(chef_run).to create_user('kafka').with(
           shell: '/sbin/nologin',
           group: 'kafka',
-          uid: 1234,
+          uid: 1234
         )
       end
     end
@@ -57,7 +57,7 @@ describe 'kafka::_setup' do
       it 'does not create a kafka user' do
         expect(chef_run).not_to create_user('kafka').with(
           shell: '/sbin/nologin',
-          gid: 'kafka',
+          gid: 'kafka'
         )
       end
     end
@@ -81,7 +81,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory('/opt/kafka-1.1.1').with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755',
+      mode: '755'
     )
   end
 
@@ -89,7 +89,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory(File.join(Dir.tmpdir, 'kafka-build')).with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755',
+      mode: '755'
     )
   end
 
@@ -97,7 +97,7 @@ describe 'kafka::_setup' do
     expect(chef_run).to create_directory('/var/log/kafka').with(
       owner: 'kafka',
       group: 'kafka',
-      mode: '755',
+      mode: '755'
     )
   end
 
@@ -105,18 +105,18 @@ describe 'kafka::_setup' do
     let :kafka_attrs do
       {
         'broker' => {
-          'log.dirs' => %w[/mnt/kafka-1 /mnt/kafka-2],
+          'log.dirs' => %w(/mnt/kafka-1 /mnt/kafka-2),
         },
       }
     end
 
     it 'creates a directory for each path in `log.dirs`' do
-      %w[/mnt/kafka-1 /mnt/kafka-2].each do |path|
+      %w(/mnt/kafka-1 /mnt/kafka-2).each do |path|
         expect(chef_run).to create_directory(path).with(
           owner: 'kafka',
           group: 'kafka',
           mode: '755',
-          recursive: true,
+          recursive: true
         )
       end
     end

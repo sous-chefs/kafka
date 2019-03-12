@@ -32,7 +32,7 @@ describe 'service for upstart init style' do
       end
 
       it 'prints a message about starting Kafka' do
-        expect(start_command.stdout).to match(/kafka start\/running, process \d+/i)
+        expect(start_command.stdout).to match(%r{kafka start/running, process})
         expect(start_command.stderr).to be_empty
       end
 
@@ -96,7 +96,7 @@ describe 'service for upstart init style' do
       end
 
       it 'prints a message about stopping Kafka' do
-        expect(stop_command.stdout).to match(/kafka stop\/waiting/i)
+        expect(stop_command.stdout).to match(%r{/kafka stop/waiting})
         expect(stop_command.stderr).to be_empty
       end
 
@@ -136,7 +136,7 @@ describe 'service for upstart init style' do
       end
 
       it 'prints a message that Kafka is running' do
-        expect(status_command.stdout).to match(/kafka start\/running, process \d+/i)
+        expect(status_command.stdout).to match(%r{kafka start/running, process})
         expect(status_command.stderr).to be_empty
       end
     end
@@ -147,7 +147,7 @@ describe 'service for upstart init style' do
       end
 
       it 'prints a message that Kafka is stopped' do
-        expect(status_command.stdout).to match(/kafka stop\/waiting/i)
+        expect(status_command.stdout).to match(%r{kafka stop/waiting})
         expect(status_command.stderr).to be_empty
       end
     end

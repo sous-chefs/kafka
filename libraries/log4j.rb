@@ -18,7 +18,7 @@ module Kafka
           content << %(#{prefix}.#{camelcase(key)}=#{value.respond_to?(:call) ? value.call : value})
         end
       end
-      content.join($/) << newline
+      content.join($INPUT_RECORD_SEPARATOR) << newline
     end
 
     def render_logger(name, options)
@@ -28,7 +28,7 @@ module Kafka
       unless (additivity = options['additivity']).nil?
         content << %(log4j.additivity.#{name}=#{additivity})
       end
-      content.join($/) << newline
+      content.join($INPUT_RECORD_SEPARATOR) << newline
     end
 
     private
@@ -45,10 +45,10 @@ module Kafka
     end
 
     def camelcase(s)
-      s.split('_').reduce('') { |a, e| a << e.capitalize }
+      s.split('_').reduce('') { |acc, elem| acc << elem.capitalize }
     end
 
-    def newline
+    def newlinew
       @newline ||= "\n".freeze
     end
   end

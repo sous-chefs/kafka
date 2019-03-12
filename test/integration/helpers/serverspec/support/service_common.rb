@@ -37,7 +37,7 @@ shared_context 'service setup' do
     @pid = Process.fork do
       env = ENV.to_hash.merge(
         'KAFKA_LOG4J_OPTS' => '-Dlog4j.configuration=file:/opt/kafka/config/log4j.properties',
-        'KAFKA_HEAP_OPTS' => '-Xmx192M -Xms192M',
+        'KAFKA_HEAP_OPTS' => '-Xmx192M -Xms192M'
       )
       command = [
         '/opt/kafka/bin/kafka-run-class.sh',
@@ -62,7 +62,7 @@ shared_context 'service setup' do
 
   def start_kafka(wait = false)
     result = run_command(start_command_string)
-    if wait && result.exit_status.zero?
+    if wait && result.exit_status == 0
       await do
         File.exist?(log_file_path) && File.read(log_file_path).match(start_regexp)
       end
@@ -72,7 +72,7 @@ shared_context 'service setup' do
 
   def stop_kafka(wait = false)
     result = run_command(stop_command_string)
-    if wait && result.exit_status.zero?
+    if wait && result.exit_status == 0
       await { File.exist?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
     end
     result

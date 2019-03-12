@@ -59,11 +59,11 @@ default['kafka']['jmx_port'] = 9999
 
 #
 # JMX configuration options for Kafka.
-default['kafka']['jmx_opts'] = %w[
+default['kafka']['jmx_opts'] = %w(
   -Dcom.sun.management.jmxremote
   -Dcom.sun.management.jmxremote.authenticate=false
   -Dcom.sun.management.jmxremote.ssl=false
-].join(' ')
+).join(' ')
 
 #
 # User for directories, configuration files and running Kafka.
@@ -104,7 +104,7 @@ default['kafka']['log4j_opts'] = lazy { format('-Dlog4j.configuration=file:%s', 
 
 #
 # JVM Performance options for Kafka.
-default['kafka']['jvm_performance_opts'] = %w[
+default['kafka']['jvm_performance_opts'] = %w(
   -server
   -XX:+UseCompressedOops
   -XX:+UseParNewGC
@@ -113,7 +113,7 @@ default['kafka']['jvm_performance_opts'] = %w[
   -XX:+CMSScavengeBeforeRemark
   -XX:+DisableExplicitGC
   -Djava.awt.headless=true
-].join(' ')
+).join(' ')
 
 #
 # The type of "init" system to install scripts for. Valid values are currently

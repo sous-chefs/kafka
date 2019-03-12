@@ -10,7 +10,7 @@ module PlatformHelpers
   end
 
   def centos?
-    family == 'redhat' && %w[5.9 6.4 6.5].include?(release)
+    family == 'redhat' && %w(5.9 6.4 6.5).include?(release)
   end
 
   def fedora?

@@ -28,7 +28,7 @@ describe 'kafka service' do
 
     context 'automatic_restart attribute' do
       let :config_paths do
-        paths = %w[/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties]
+        paths = %w(/opt/kafka/config/server.properties /opt/kafka/config/log4j.properties)
         if init_style != :runit
           paths << '/etc/sysconfig/kafka'
           paths << '/etc/init.d/kafka'

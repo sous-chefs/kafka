@@ -7,9 +7,6 @@ driver:
     cpus: 2
 provisioner:
   name: 'chef_solo'
-  require_chef_omnibus: <%= ENV.fetch('CHEF_VERSION', '12').inspect %>
-  solo_rb:
-    ssl_verify_mode: :verify_peer
   attributes:
     java:
       jdk_version: 7
