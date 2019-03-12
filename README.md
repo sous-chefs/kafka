@@ -11,10 +11,10 @@ Installs and configures Kafka `>= v0.8.1`.
 Initially based on the Kafka cookbook released by Webtrends (thanks!), but with a few
 notable differences:
 
-* does not depend on runit cookbook.
-* does not depend on zookeeper cookbook, thus it will not search for nodes with
+- does not depend on runit cookbook.
+- does not depend on zookeeper cookbook, thus it will not search for nodes with
   a specific role or such, that is left up to you to decide.
-* intended to be used by wrapper cookbooks.
+- intended to be used by wrapper cookbooks.
 
 ## Requirements
 
@@ -29,11 +29,11 @@ Chef 12.1.0+.
 
 ### Platform
 
-* Amazon Linux
-* CentOS 6 and 7
-* Debian 7 and 8
-* Fedora 21
-* Ubuntu 14.04
+- Amazon Linux
+- CentOS 6 and 7
+- Debian 7 and 8
+- Fedora 21
+- Ubuntu 14.04
 
 The platforms / versions listed above are the ones that are included in
 `.kitchen.yml` and/or tested in the wild, so it might work on other platforms as
@@ -185,26 +185,10 @@ Not sure if it's possible to configure either `systemd` or `upstart` to not
 automatically kill processes, but a workaround is to set `kafka.kill_timeout` to
 a sufficiently high value.
 
-## Copyright
-
-Copyright :: 2013-2017 Mathias Söderberg and contributors
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
 ## Contributing
 
-1. Fork the repository on Github
-2. Create a named feature branch (like `add-component-x`)
-3. Write your change
-4. Check that your change works, for example with Vagrant
-5. Submit a Pull Request using Github
+- Fork the repository on Github
+- Create a named feature branch (like `add-component-x`)
+- Write your change
+- Check that your change works, for example with Vagrant
+- Submit a Pull Request using Github
