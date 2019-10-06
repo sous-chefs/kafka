@@ -1,6 +1,6 @@
-# haproxy Cookbook CHANGELOG
+# kafka Cookbook CHANGELOG
 
-This file is used to list changes made in each version of the haproxy cookbook.
+This file is used to list changes made in each version of the kafka cookbook.
 
 ## 3.0.0
 
