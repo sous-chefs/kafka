@@ -58,13 +58,13 @@ describe 'service for sysv init style' do
 
       it 'runs as the configured user' do
         pid = file('/var/run/kafka.pid').content.strip
-        user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
+        user = shell_out!(format('ps -p %s -o user --no-header', pid)).stdout.strip
         expect(user).to eq('kafka')
       end
 
       it 'runs as the configured group' do
         pid = file('/var/run/kafka.pid').content.strip
-        group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
+        group = shell_out!(format('ps -p %s -o group --no-header', pid)).stdout.strip
         expect(group).to eq('kafka')
       end
 

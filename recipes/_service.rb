@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: kafka
+# Cookbook:: kafka
 # Recipe:: _service
 #
 

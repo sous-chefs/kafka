@@ -18,7 +18,7 @@ describe 'service for runit init style' do
   end
 
   def fetch_pid
-    run_command('cat /etc/sv/kafka/supervise/pid')
+    shell_out!('cat /etc/sv/kafka/supervise/pid')
   end
 
   describe 'service kafka start' do
@@ -48,13 +48,13 @@ describe 'service for runit init style' do
 
       it 'runs as the configured user' do
         pid = fetch_pid.stdout.strip
-        user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
+        user = shell_out!(format('ps -p %s -o user --no-header', pid)).stdout.strip
         expect(user).to eq('kafka')
       end
 
       it 'runs as the configured group' do
         pid = fetch_pid.stdout.strip
-        group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
+        group = shell_out!(format('ps -p %s -o group --no-header', pid)).stdout.strip
         expect(group).to eq('kafka')
       end
 
