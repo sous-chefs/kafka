@@ -28,84 +28,44 @@ workflows:
       - kitchen/delivery:
           name: delivery
       - kitchen/dokken-single:
-          name: default-centos-69
-          suite: default-centos-69
+          name: default-centos-7
+          suite: default-centos-7
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: default-centos-73
-          suite: default-centos-73
+          name: default-debian-9
+          suite: default-debian-9
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: default-debian-711
-          suite: default-debian-711
+          name: default-ubuntu-1604
+          suite: default-ubuntu-1604
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: default-debian-88
-          suite: default-debian-88
+          name: default-ubuntu-1804
+          suite: default-ubuntu-1804
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: default-ubuntu-1404
-          suite: default-ubuntu-1404
+          name: systemd-centos-7
+          suite: systemd-centos-7
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: default-fedora-26
-          suite: default-fedora-26
+          name: systemd-debian-9
+          suite: systemd-debian-9
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: sysv-centos-69
-          suite: sysv-centos-69
+          name: systemd-ubuntu-1604
+          suite: systemd-ubuntu-1604
           requires: *lint_and_unit
       - kitchen/dokken-single:
-          name: sysv-debian-711
-          suite: sysv-debian-711
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: upstart-ubuntu-1404
-          suite: upstart-ubuntu-1404
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: systemd-centos-73
-          suite: systemd-centos-73
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: systemd-debian-88
-          suite: systemd-debian-88
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: systemd-fedora-26
-          suite: systemd-fedora-26
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: runit-centos-69
-          suite: runit-centos-69
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: runit-debian-711
-          suite: runit-debian-711
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: runit-debian-88
-          suite: runit-debian-88
-          requires: *lint_and_unit
-      - kitchen/dokken-single:
-          name: runit-ubuntu-1404
-          suite: runit-ubuntu-1404
+          name: systemd-ubuntu-1804
+          suite: systemd-ubuntu-1804
           requires: *lint_and_unit
       - final:
           requires:
-            - default-centos-69
-            - default-centos-73
-            - default-debian-711
-            - default-debian-88
-            - default-ubuntu-1404
-            - default-fedora-26
-            - sysv-centos-69
-            - sysv-debian-711
-            - upstart-ubuntu-1404
-            - systemd-centos-73
-            - systemd-debian-88
-            - systemd-fedora-26
-            - runit-centos-69
-            - runit-debian-711
-            - runit-debian-88
-            - runit-ubuntu-1404
+            - default-centos-7
+            - default-debian-9
+            - default-ubuntu-1604
+            - default-ubuntu-1804
+            - systemd-centos-7
+            - systemd-debian-9
+            - systemd-ubuntu-1604
+            - systemd-ubuntu-1804
