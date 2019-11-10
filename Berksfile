@@ -1,4 +1,4 @@
-source 'https://api.berkshelf.com'
+source 'https://supermarket.chef.io'
 
 metadata
 
@@ -11,6 +11,6 @@ end
 group :test do
   cookbook 'windows', '~> 3.0'
   cookbook 'homebrew', '~> 4.0'
-  cookbook 'java', '~> 1.0'
+  cookbook 'java', '~> 4.3.0'
   cookbook 'apt', '~> 6.0'
 end

@@ -52,13 +52,13 @@ describe 'service for upstart init style' do
 
       it 'runs as the configured user' do
         pid = start_command.stdout.split(' ').last.strip
-        user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
+        user = shell_out!(format('ps -p %s -o user --no-header', pid)).stdout.strip
         expect(user).to eq('kafka')
       end
 
       it 'runs as the configured group' do
         pid = start_command.stdout.split(' ').last.strip
-        group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
+        group = shell_out!(format('ps -p %s -o group --no-header', pid)).stdout.strip
         expect(group).to eq('kafka')
       end
 
@@ -80,9 +80,9 @@ describe 'service for upstart init style' do
       end
 
       it 'does not start a new process' do
-        first_pid = run_command(status_command_string).stdout.split(' ').last.strip
+        first_pid = shell_out!(status_command_string).stdout.split(' ').last.strip
         start_command
-        new_pid = run_command(status_command_string).stdout.split(' ').last.strip
+        new_pid = shell_out!(status_command_string).stdout.split(' ').last.strip
         expect(first_pid).to eq(new_pid)
       end
     end
