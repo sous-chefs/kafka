@@ -1,19 +1,23 @@
 ---
+jobs:
+  final:
+    docker:
+      - image: bash:latest
+    steps:
+      - run:
+          name: Finish cooking
+          command: echo "Finished cooking"
 lint_and_unit: &lint_and_unit
   - delivery
   - danger
   - lint-yaml
   - lint-markdown
-
 version: 2.1
-
 orbs:
-  kitchen: sous-chefs/kitchen@1.1.1
-
+  kitchen: sous-chefs/kitchen@2
 workflows:
   kitchen:
     jobs:
-      # Lint and Unit Test
       - kitchen/yamllint:
           name: lint-yaml
       - kitchen/mdlint:
@@ -23,3 +27,45 @@ workflows:
           context: Danger
       - kitchen/delivery:
           name: delivery
+      - kitchen/dokken-single:
+          name: default-centos-7
+          suite: default-centos-7
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: default-debian-9
+          suite: default-debian-9
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: default-ubuntu-1604
+          suite: default-ubuntu-1604
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: default-ubuntu-1804
+          suite: default-ubuntu-1804
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: systemd-centos-7
+          suite: systemd-centos-7
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: systemd-debian-9
+          suite: systemd-debian-9
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: systemd-ubuntu-1604
+          suite: systemd-ubuntu-1604
+          requires: *lint_and_unit
+      - kitchen/dokken-single:
+          name: systemd-ubuntu-1804
+          suite: systemd-ubuntu-1804
+          requires: *lint_and_unit
+      - final:
+          requires:
+            - default-centos-7
+            - default-debian-9
+            - default-ubuntu-1604
+            - default-ubuntu-1804
+            - systemd-centos-7
+            - systemd-debian-9
+            - systemd-ubuntu-1604
+            - systemd-ubuntu-1804

@@ -48,7 +48,7 @@ module Kafka
       s.split('_').reduce('') { |acc, elem| acc << elem.capitalize }
     end
 
-    def newlinew
+    def newline
       @newline ||= "\n".freeze
     end
   end
