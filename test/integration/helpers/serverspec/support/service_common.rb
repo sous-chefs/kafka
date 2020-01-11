@@ -22,7 +22,7 @@ shared_context 'service setup' do
   end
 
   let :status_command do
-    run_command status_command_string
+    shell_out! status_command_string
   end
 
   let :start_regexp do
@@ -49,7 +49,7 @@ shared_context 'service setup' do
   end
 
   after :all do
-    run_command %(ps ax | grep -i 'zookeeper' | grep -v grep | awk '{print $1}' | xargs kill -SIGKILL)
+    shell_out! %(ps ax | grep -i 'zookeeper' | grep -v grep | awk '{print $1}' | xargs kill -SIGKILL)
     Process.wait(@pid)
   end
 
@@ -61,7 +61,7 @@ shared_context 'service setup' do
   end
 
   def start_kafka(wait = false)
-    result = run_command(start_command_string)
+    result = shell_out!(start_command_string)
     if wait && result.exit_status == 0
       await do
         File.exist?(log_file_path) && File.read(log_file_path).match(start_regexp)
@@ -71,7 +71,7 @@ shared_context 'service setup' do
   end
 
   def stop_kafka(wait = false)
-    result = run_command(stop_command_string)
+    result = shell_out!(stop_command_string)
     if wait && result.exit_status == 0
       await { File.exist?(log_file_path) && File.read(log_file_path).match(stop_regexp) }
     end
