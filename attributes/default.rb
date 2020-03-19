@@ -74,6 +74,9 @@ default['kafka']['user'] = 'kafka'
 default['kafka']['manage_user'] = true
 
 #
+# Hide kafka configuration changes if it contains sensitive information
+default['kafka']['sensitive_config'] = false
+
 # Override ID for user used for directories, configuration files and running Kafka.
 default['kafka']['uid'] = nil
 

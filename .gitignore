@@ -13,3 +13,4 @@ terraform.tfstate**
 .envrc
 .aws.json
 *.plan
+*.swp

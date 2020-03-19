@@ -27,7 +27,7 @@ template ::File.join(node['kafka']['config_dir'], 'server.properties') do
   owner node['kafka']['user']
   group node['kafka']['group']
   mode '600'
-  sensitive true
+  sensitive node['kafka']['senstive_config']
   helpers(Kafka::Configuration)
   variables(config: node['kafka']['broker'].sort_by(&:first))
   if restart_on_configuration_change?
