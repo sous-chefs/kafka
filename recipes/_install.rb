@@ -23,11 +23,11 @@ ruby_block 'kafka-validate-download' do
   block do
     if md5 && !md5.empty?
       unless (checksum = Digest::MD5.file(local_download_path).hexdigest) == md5.downcase
-        Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5}))
+        raise(%(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{md5})))
       end
     elsif sha512 && !sha512.empty?
       unless (checksum = Digest::SHA512.file(local_download_path).hexdigest) == sha512.downcase
-        Chef::Application.fatal! %(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{sha512}))
+        raise(%(Downloaded tarball checksum (#{checksum}) does not match provided checksum (#{sha512})))
       end
     else
       Chef::Log.debug 'No MD5 or SHA512 checksum set, not validating downloaded archive'
