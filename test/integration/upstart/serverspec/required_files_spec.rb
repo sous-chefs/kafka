@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'spec_helper'
 
 describe 'required files for upstart init style' do
