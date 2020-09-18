@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 module AwaitHelpers
   def await(max_time = 30)
     started_at = Time.now

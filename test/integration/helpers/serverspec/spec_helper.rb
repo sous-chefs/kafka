@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 require 'serverspec'
 
 require 'support/await_helper'

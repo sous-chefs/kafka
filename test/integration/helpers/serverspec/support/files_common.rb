@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 shared_examples_for 'a kafka file' do
   let :kafka_file do
     file(path)
