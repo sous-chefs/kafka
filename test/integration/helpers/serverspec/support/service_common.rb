@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 shared_context 'service setup' do
   let :kafka_service do
     service 'kafka'
