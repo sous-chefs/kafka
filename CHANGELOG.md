@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - resolved cookstyle error: test/integration/sysv/serverspec/service_spec.rb:1:1 convention: `Style/Encoding`
 - resolved cookstyle error: test/integration/upstart/serverspec/required_files_spec.rb:1:1 convention: `Style/Encoding`
 - resolved cookstyle error: test/integration/upstart/serverspec/service_spec.rb:1:1 convention: `Style/Encoding`
+- resolved missing newlines from log4j.properties and kafka env file
 
 ## 3.1.0
 
