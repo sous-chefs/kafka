@@ -57,6 +57,9 @@ describe 'kafka::default' do
         '/opt/kafka/config/log4j.properties'
       end
     end
+    it 'has > 1 line' do
+      expect(File.open('/opt/kafka/config/log4j.properties', 'r').readlines.size).to be > 1
+    end
   end
 
   describe '/opt/kafka/config/server.properties' do

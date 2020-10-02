@@ -21,6 +21,10 @@ describe 'required files for systemd init style' do
     it 'has 644 permissions' do
       expect(env_file).to be_mode 644
     end
+
+    it 'has > 1 line' do
+      expect(File.open(env_file, 'r').readlines.size).to be > 1
+    end
   end
 
   describe 'init configuration' do
