@@ -28,7 +28,7 @@ module Kafka
         variable = export ? format('export %s', variable) : variable
         variable
       end
-      variables.join($INPUT_RECORD_SEPARATOR)
+      variables.join("#{$INPUT_RECORD_SEPARATOR}\n")
     end
 
     ATTR_ENV_MAPPINGS ||= {
