@@ -57,6 +57,10 @@ describe 'kafka::default' do
         '/opt/kafka/config/log4j.properties'
       end
     end
+    describe file('/opt/kafka/config/log4j.properties') do
+      let(:path) { '/sbin:/usr/local/sbin:$PATH' }
+      its('content') { should match %r{log4j.appender.kafkaAppender.File=/var/log/kafka/kafka.log\nlog4j.appender.kafkaAppender.layout=org.apache.log4j.PatternLayout} }
+    end
   end
 
   describe '/opt/kafka/config/server.properties' do
