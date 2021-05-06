@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix missing newlines in env file and log4j.properties
+- Fix serverspec tests
+- Fix dokken verifier path
 - resolved cookstyle error: test/integration/default/serverspec/default_spec.rb:1:1 convention: `Style/Encoding`
 - resolved cookstyle error: test/integration/helpers/serverspec/Gemfile:1:1 convention: `Style/Encoding`
 - resolved cookstyle error: test/integration/helpers/serverspec/spec_helper.rb:1:1 convention: `Style/Encoding`
