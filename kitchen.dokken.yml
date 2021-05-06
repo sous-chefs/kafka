@@ -13,6 +13,10 @@ provisioner:
   product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
   install_strategy: once
 
+verifier:
+  root_path: '/opt/verifier'
+  sudo: false
+
 platforms:
   - name: centos-7
     driver:
