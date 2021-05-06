@@ -20,7 +20,7 @@ describe 'service for systemd init style' do
   end
 
   before do
-    shell_out! 'systemctl reset-failed kafka.service'
+    run_command 'systemctl reset-failed kafka.service'
   end
 
   describe service('kafka'), pending: centos? && systemd? do
@@ -47,20 +47,20 @@ describe 'service for systemd init style' do
       end
 
       it 'sets configured `ulimit` values' do
-        pid = shell_out!(pid_command_string).stdout.strip
+        pid = run_command(pid_command_string).stdout.strip
         limits = file("/proc/#{pid}/limits").content
         expect(limits).to match(/Max open files\s+128000\s+128000\s+files/i)
       end
 
       it 'runs as the configured user' do
-        pid = shell_out!(pid_command_string).stdout.strip
-        user = shell_out!(format('ps -p %s -o user --no-header', pid)).stdout.strip
+        pid = run_command(pid_command_string).stdout.strip
+        user = run_command(format('ps -p %s -o user --no-header', pid)).stdout.strip
         expect(user).to eq('kafka')
       end
 
       it 'runs as the configured group' do
-        pid = shell_out!(pid_command_string).stdout.strip
-        group = shell_out!(format('ps -p %s -o group --no-header', pid)).stdout.strip
+        pid = run_command(pid_command_string).stdout.strip
+        group = run_command(format('ps -p %s -o group --no-header', pid)).stdout.strip
         expect(group).to eq('kafka')
       end
 
@@ -86,9 +86,9 @@ describe 'service for systemd init style' do
       end
 
       it 'does not start a new process' do
-        first_pid = shell_out!(pid_command_string).stdout.strip
+        first_pid = run_command(pid_command_string).stdout.strip
         start_kafka
-        new_pid = shell_out!(pid_command_string).stdout.strip
+        new_pid = run_command(pid_command_string).stdout.strip
         expect(first_pid).to eq(new_pid)
       end
     end
