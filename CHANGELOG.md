@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Standardise files with files in sous-chefs/repo-management
+
 ## 3.1.1 - *2021-06-01*
 
 - resolved cookstyle error: test/integration/default/serverspec/default_spec.rb:1:1 convention: `Style/Encoding`
