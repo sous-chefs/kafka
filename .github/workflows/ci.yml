@@ -40,22 +40,22 @@ jobs:
     strategy:
       matrix:
         os:
-          - 'centos-7'
-          - 'debian-9'
-          - 'ubuntu-1604'
-          - 'ubuntu-1804'
+          - "centos-7"
+          - "debian-9"
+          - "ubuntu-1604"
+          - "ubuntu-1804"
         suite:
-          - 'default'
-          - 'systemd'
+          - "default"
+          - "systemd"
       fail-fast: false
 
     steps:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Install Chef
-        uses: actionshub/chef-install@main
+        uses: actionshub/chef-install@2.0.4
       - name: Dokken
-        uses: actionshub/test-kitchen@main
+        uses: actionshub/test-kitchen@2.1.0
         env:
           CHEF_LICENSE: accept-no-persist
           KITCHEN_LOCAL_YAML: kitchen.dokken.yml
