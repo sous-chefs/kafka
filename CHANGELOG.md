@@ -58,8 +58,6 @@ Standardise files with files in sous-chefs/repo-management
 
 ## 3.1.0
 
-### Added
-
 - Dokken tests
 - Migrated to Github Actions
 
