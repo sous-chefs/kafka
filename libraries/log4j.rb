@@ -3,6 +3,8 @@
 # Libraries:: log4j
 #
 
+require 'English'
+
 module Kafka
   module Log4J
     def render_appender(name, options)

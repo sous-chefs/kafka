@@ -6,6 +6,10 @@ driver:
 transport: { name: dokken }
 provisioner: { name: dokken }
 
+verifier:
+  root_path: '/opt/verifier'
+  sudo: false
+
 platforms:
   - name: almalinux-8
     driver:

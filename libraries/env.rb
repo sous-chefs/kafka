@@ -3,6 +3,8 @@
 # Libraries:: env
 #
 
+require 'English'
+
 module Kafka
   class Env
     def initialize(attributes)

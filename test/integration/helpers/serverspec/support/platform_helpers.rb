@@ -19,6 +19,10 @@ module PlatformHelpers
     family == 'fedora' || family == 'redhat7'
   end
 
+  def run_command(cmd)
+    Specinfra.backend.run_command(cmd)
+  end
+
   private
 
   def family

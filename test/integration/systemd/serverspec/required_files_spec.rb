@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'required files for systemd init style' do
   describe 'environment file' do
     let :env_file do
-      file(debian? ? '/etc/default/kafka' : '/etc/sysconfig/kafka')
+      file(debian? || ubuntu? ? '/etc/default/kafka' : '/etc/sysconfig/kafka')
     end
 
     it 'exists' do
@@ -20,6 +20,10 @@ describe 'required files for systemd init style' do
 
     it 'has 644 permissions' do
       expect(env_file).to be_mode 644
+    end
+
+    it 'is properly formatted with newlines' do
+      expect(env_file.content).to match(%r{SCALA_VERSION=.*\nKAFKA_OPTS=.*\nJMX_PORT=.*})
     end
   end
 
