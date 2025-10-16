@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [3.1.25](https://github.com/sous-chefs/kafka/compare/3.1.24...v3.1.25) (2025-10-16)
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#238](https://github.com/sous-chefs/kafka/issues/238)) ([5f78034](https://github.com/sous-chefs/kafka/commit/5f780340f29a07fefb6bab47fe1a6d0b09eb3f13))
+
 ## 3.1.24 - *2025-09-04*
 
 Standardise files with files in sous-chefs/repo-management
