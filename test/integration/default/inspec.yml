@@ -1,0 +1,7 @@
+---
+name: default
+title: Default Suite Tests
+maintainer: Sous Chefs
+license: Apache-2.0
+summary: Integration tests for kafka_broker
+version: 1.0.0

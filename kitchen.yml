@@ -3,67 +3,44 @@ driver:
   name: vagrant
   box_check_update: false
   customize:
-    memory: 512
+    memory: 2048
     cpus: 2
+
+transport:
+  max_wait_until_ready: 600
+  connection_retries: 10
+  connection_retry_sleep: 10
+
 provisioner:
-  name: 'chef_solo'
-  attributes:
-    java:
-      jdk_version: 8
-    kafka:
-      uid: 1234
-      gid: 5678
-      version: <%= ENV.fetch('KAFKA_VERSION', '1.1.1').inspect %>
-      scala_version: <%= ENV.fetch('SCALA_VERSION', '2.11').inspect %>
-      checksum: <%= ENV.fetch('KAFKA_CHECKSUM', '').inspect %>
-      md5_checksum: <%= ENV.fetch('KAFKA_MD5', '').inspect %>
-      sha512_checksum: <%= ENV.fetch('KAFKA_SHA512', '').inspect %>
-      heap_opts: '-Xmx256M -Xms256M'
-      ulimit_file: 128000
-      broker:
-        broker.id: 1
-        log.dirs: ['/mnt/kafka-logs-1', '/mnt/kafka-logs-2']
-        zookeeper.connect: ['localhost:2181']
-      log4j:
-        appenders:
-          zookeeperAppender:
-            type: 'org.apache.log4j.FileAppender'
-            file: '/var/log/kafka/zookeeper.log'
-            layout:
-              type: 'org.apache.log4j.PatternLayout'
-              conversion_pattern: '[%d] %p %m (%c)%n'
-        loggers:
-          org.apache.zookeeper:
-            level: 'INFO'
-            appender: 'zookeeperAppender'
-            additivity: false
+  name: chef_infra
+  product_name: chef
+  product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
+  channel: stable
+  install_strategy: once
+  chef_license: accept
+  deprecations_as_errors: true
+  enforce_idempotency: <%= ENV['ENFORCE_IDEMPOTENCY'] || true %>
+  multiple_converge: <%= ENV['MULTIPLE_CONVERGE'] || 2 %>
+
+verifier:
+  name: inspec
+  sudo: true
+
 platforms:
-  - name: centos-7
-  - name: debian-9
-    run_list:
-      - recipe[apt]
-  - name: ubuntu-16.04
-    run_list:
-      - recipe[apt]
-  - name: ubuntu-18.04
-    run_list:
-      - recipe[apt]
+  - name: debian-12
+  - name: rockylinux-9
+  - name: ubuntu-24.04
+
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
+
+x-verifiers:
+  default: &default_verifier
+    inspec_tests:
+      - path: test/integration/default
+
 suites:
   - name: default
-    run_list:
-      - recipe[kafka]
-    attributes:
-      kafka:
-        init_style: false
-  - name: systemd
-    run_list:
-      - recipe[java]
-      - recipe[kafka]
-    includes:
-      - centos-7
-      - debian-9
-      - ubuntu-16.04
-      - ubuntu-18.04
-    attributes:
-      kafka:
-        init_style: 'systemd'
+    run_list: *default_run_list
+    verifier: *default_verifier

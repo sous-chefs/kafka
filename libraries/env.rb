@@ -1,45 +1,33 @@
-#
-# Cookbook:: kafka
-# Libraries:: env
-#
+# frozen_string_literal: true
 
-module Kafka
+module KafkaCookbook
   class Env
+    ATTR_ENV_MAPPINGS = {
+      'scala_version' => 'SCALA_VERSION',
+      'generic_opts' => 'KAFKA_OPTS',
+      'jmx_port' => 'JMX_PORT',
+      'jvm_performance_opts' => 'KAFKA_JVM_PERFORMANCE_OPTS',
+      'gc_log_opts' => 'KAFKA_GC_LOG_OPTS',
+      'log4j_opts' => 'KAFKA_LOG4J_OPTS',
+      'heap_opts' => 'KAFKA_HEAP_OPTS',
+      'jmx_opts' => 'KAFKA_JMX_OPTS',
+    }.freeze
+
     def initialize(attributes)
       @attributes = attributes
     end
 
     def to_h
-      hash = {}
-      ATTR_ENV_MAPPINGS.each do |attr_name, env_name|
-        value = @attributes[attr_name]
-        env_name ||= format('KAFKA_%s', attr_name.upcase)
-        hash[env_name] = (value.respond_to?(:call) ? value.call : value).to_s
+      ATTR_ENV_MAPPINGS.each_with_object({}) do |(attribute_name, env_name), env_hash|
+        value = @attributes[attribute_name]
+        next if value.nil?
+
+        env_hash[env_name] = value.to_s
       end
-      hash['KAFKA_RUN'] = ::File.join(@attributes['install_dir'], 'bin', 'kafka-run-class.sh')
-      hash['KAFKA_ARGS'] = 'kafka.Kafka'
-      hash['KAFKA_CONFIG'] = ::File.join(@attributes['config_dir'], 'server.properties')
-      hash
     end
 
-    def to_file_content(export)
-      variables = to_h.map do |key, value|
-        variable = format('%s=%p', key, value.to_s)
-        variable = export ? format('export %s', variable) : variable
-        variable
-      end
-      variables.join($INPUT_RECORD_SEPARATOR)
+    def to_file_content
+      to_h.map { |key, value| %(#{key}="#{value}") }.join("\n")
     end
-
-    ATTR_ENV_MAPPINGS ||= {
-      'scala_version' => 'SCALA_VERSION',
-      'generic_opts' => 'KAFKA_OPTS',
-      'jmx_port' => 'JMX_PORT',
-      'jvm_performance_opts' => nil,
-      'gc_log_opts' => nil,
-      'log4j_opts' => nil,
-      'heap_opts' => nil,
-      'jmx_opts' => nil,
-    }.freeze
   end
 end

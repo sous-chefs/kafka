@@ -1,55 +1,48 @@
-#
-# Cookbook:: kafka
-# Libraries:: log4j
-#
+# frozen_string_literal: true
 
-module Kafka
+module KafkaCookbook
   module Log4J
     def render_appender(name, options)
-      prefix = format('log4j.appender.%s', name)
+      prefix = "log4j.appender.#{name}"
       content = []
+
       options.each do |key, value|
-        case key.to_sym
-        when :type
-          content.unshift(%(#{prefix}=#{value}))
-        when :layout
-          content += render_layout(prefix, value)
+        case key.to_s
+        when 'type'
+          content.unshift("#{prefix}=#{value}")
+        when 'layout'
+          content.concat(render_layout(prefix, value))
         else
-          content << %(#{prefix}.#{camelcase(key)}=#{value.respond_to?(:call) ? value.call : value})
+          content << "#{prefix}.#{camelcase(key)}=#{value}"
         end
       end
-      content.join($INPUT_RECORD_SEPARATOR) << newline
+
+      content.join("\n") << "\n"
     end
 
     def render_logger(name, options)
-      level_appender = [options['level'], options['appender']].compact.join(', ')
-      definition = format('log4j.logger.%s=%s', name, level_appender)
+      definition = "log4j.logger.#{name}=#{[options['level'], options['appender']].compact.join(', ')}"
       content = [definition]
-      unless (additivity = options['additivity']).nil?
-        content << %(log4j.additivity.#{name}=#{additivity})
-      end
-      content.join($INPUT_RECORD_SEPARATOR) << newline
+      content << "log4j.additivity.#{name}=#{options['additivity']}" unless options['additivity'].nil?
+      content.join("\n") << "\n"
     end
 
     private
 
     def render_layout(prefix, options)
-      layout_prefix = format('%s.layout', prefix)
-      options.each_with_object([]) do |(k, v), acc|
-        if k.to_sym == :type
-          acc.unshift(%(#{layout_prefix}=#{v}))
+      layout_prefix = "#{prefix}.layout"
+
+      options.each_with_object([]) do |(key, value), rendered|
+        if key.to_s == 'type'
+          rendered.unshift("#{layout_prefix}=#{value}")
         else
-          acc << %(#{layout_prefix}.#{camelcase(k)}=#{v})
+          rendered << "#{layout_prefix}.#{camelcase(key)}=#{value}"
         end
       end
     end
 
-    def camelcase(s)
-      s.split('_').reduce('') { |acc, elem| acc << elem.capitalize }
-    end
-
-    def newline
-      @newline ||= "\n".freeze
+    def camelcase(value)
+      value.to_s.split('_').map(&:capitalize).join
     end
   end
 end
