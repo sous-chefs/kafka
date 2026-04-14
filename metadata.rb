@@ -10,7 +10,7 @@ chef_version     '>= 15.3'
 source_url       'https://github.com/sous-chefs/kafka'
 issues_url       'https://github.com/sous-chefs/kafka/issues'
 
-depends 'java'
+depends 'java', '>= 14.0.1'
 
 supports 'debian', '>= 12.0'
 supports 'ubuntu', '>= 22.04'

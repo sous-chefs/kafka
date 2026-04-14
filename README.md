@@ -39,7 +39,7 @@ kafka_broker 'default' do
 end
 ```
 
-On Amazon Linux and EL 10-family platforms, managed Java currently supports Java 17 only. Set `manage_java false` if you need to supply a different JDK externally.
+On Amazon Linux and EL 10-family platforms, managed Java currently supports Java 17 only through Amazon Corretto. Other supported Linux platforms use Eclipse Temurin packages by default. Set `manage_java false` if you need to supply a different JDK externally.
 
 ### ZooKeeper mode example
 

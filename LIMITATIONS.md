@@ -36,9 +36,9 @@
 | Platform Family | Packages                                                  |
 |-----------------|-----------------------------------------------------------|
 | Amazon          | Amazon Corretto 17, tar, gzip                             |
-| Debian          | OpenJDK 17+/21+, tar, gzip                                |
-| Fedora          | OpenJDK 17+/21+, tar, gzip                                |
-| RHEL            | OpenJDK 17+/21+ or Amazon Corretto 17 on EL 10, tar, gzip |
+| Debian          | Eclipse Temurin 17+/21+, tar, gzip                        |
+| Fedora          | Eclipse Temurin 17+/21+, tar, gzip                        |
+| RHEL            | Eclipse Temurin 17+/21+ or Amazon Corretto 17 on EL 10, tar, gzip |
 
 - Apache Kafka source builds use the upstream Gradle wrapper (`./gradlew`); there is no official source build path in this cookbook.
 

@@ -32,7 +32,7 @@ describe 'kafka_broker' do
     end
 
     it { is_expected.to create_group('kafka') }
-    it { is_expected.to install_openjdk_install('17').with(install_type: 'package', default: true) }
+    it { is_expected.to install_temurin_package_install('17').with(default: true) }
     it { is_expected.to install_package(%w(tar gzip)) }
     it { is_expected.to create_user('kafka').with(home: '/var/empty/kafka', shell: '/sbin/nologin') }
     it { is_expected.to create_directory('/opt/kafka-3.9.1') }
@@ -89,7 +89,7 @@ describe 'kafka_broker' do
       end
     end
 
-    it { is_expected.to_not install_openjdk_install('17') }
+    it { is_expected.to_not install_temurin_package_install('17') }
     it { is_expected.to_not install_corretto_install('17') }
   end
 
@@ -101,7 +101,7 @@ describe 'kafka_broker' do
       end
     end
 
-    it { is_expected.to install_openjdk_install('21').with(install_type: 'package', default: true) }
+    it { is_expected.to install_temurin_package_install('21').with(default: true) }
   end
 
   context 'when deleting a broker installation' do

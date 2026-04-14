@@ -62,8 +62,7 @@ action :create do
         default true
       end
     else
-      openjdk_install new_resource.java_version do
-        install_type 'package'
+      temurin_package_install new_resource.java_version do
         default true
       end
     end
