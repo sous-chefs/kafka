@@ -38,6 +38,8 @@ Install, configure, and manage an Apache Kafka broker from the official Apache b
 | `automatic_start`      | true, false          | `false`                                   | Start the service during converge                           |
 | `automatic_restart`    | true, false          | `false`                                   | Restart the service when config files change                |
 | `kill_timeout`         | Integer, String      | `10`                                      | `TimeoutStopSec` value for the systemd unit                 |
+| `manage_java`          | true, false          | `true`                                    | Install and manage the Java runtime needed by Kafka         |
+| `java_version`         | String               | `'17'`                                    | LTS Java version to install when `manage_java` is true      |
 | `cluster_id`           | String, nil          | `nil`                                     | Required for KRaft storage formatting                       |
 | `broker`               | Hash                 | `{}`                                      | `server.properties` options keyed by Kafka config names     |
 | `log4j`                | Hash                 | `{}`                                      | Overrides merged into the default `log4j.properties` config |
@@ -49,6 +51,7 @@ Install, configure, and manage an Apache Kafka broker from the official Apache b
 ```ruby
 kafka_broker 'default' do
   automatic_start true
+  java_version '17'
   cluster_id 'MkU3OEVBNTcwNTJENDM2Qk'
   broker(
     'process.roles' => 'broker,controller',
@@ -73,6 +76,7 @@ end
 ```ruby
 kafka_broker 'default' do
   automatic_start true
+  manage_java false
   broker(
     'broker.id' => 1,
     'listeners' => 'PLAINTEXT://127.0.0.1:9092',
@@ -82,6 +86,9 @@ kafka_broker 'default' do
   )
 end
 ```
+
+When `manage_java` is left at its default, the resource installs Java automatically. It uses OpenJDK package installs on most platforms and Amazon Corretto on Amazon Linux and EL 10-family platforms where that path is more reliable.
+Managed Java on Amazon Linux and EL 10-family platforms currently supports Java 17 only; use `manage_java false` if you need to supply another JDK there.
 
 ### Remove a broker installation
 

@@ -2,16 +2,6 @@
 
 apt_update 'update' if platform_family?('debian')
 
-java_package = value_for_platform_family(
-  'amazon' => 'java-17-amazon-corretto-headless',
-  'debian' => 'default-jre-headless',
-  'rhel' => 'java-17-openjdk-headless',
-  'fedora' => 'java-17-openjdk-headless'
-)
-
-package java_package
-package %w(tar gzip)
-
 kafka_broker 'default' do
   automatic_start true
   uid 1234

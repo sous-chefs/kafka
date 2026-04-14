@@ -27,17 +27,18 @@
 - Apache Kafka upstream publishes generic binary tarballs instead of distro-specific packages.
 - The upstream broker build currently supports Scala 2.13 only.
 - Runtime compatibility depends on a supported Java runtime rather than distro packaging metadata.
+- Kafka 3.9 fully supports Java 17 and Java 21. This cookbook defaults to Java 17 because it is an LTS release that is portable across all currently supported platforms with the available Java cookbook installers; callers can override `java_version` when they need Java 21 on platforms where package-backed installs are available.
 
 ## Source/Compiled Installation
 
 ### Build Dependencies
 
-| Platform Family | Packages                            |
-|-----------------|-------------------------------------|
-| Amazon          | Amazon Corretto 17+, git, tar, gzip |
-| Debian          | OpenJDK 17+, git, tar, gzip         |
-| Fedora          | OpenJDK 17+, git, tar, gzip         |
-| RHEL            | OpenJDK 17+, git, tar, gzip         |
+| Platform Family | Packages                                                  |
+|-----------------|-----------------------------------------------------------|
+| Amazon          | Amazon Corretto 17, tar, gzip                             |
+| Debian          | OpenJDK 17+/21+, tar, gzip                                |
+| Fedora          | OpenJDK 17+/21+, tar, gzip                                |
+| RHEL            | OpenJDK 17+/21+ or Amazon Corretto 17 on EL 10, tar, gzip |
 
 - Apache Kafka source builds use the upstream Gradle wrapper (`./gradlew`); there is no official source build path in this cookbook.
 

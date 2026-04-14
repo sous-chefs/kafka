@@ -32,6 +32,8 @@ property :ulimit_file, [Integer, String, nil], default: nil
 property :automatic_start, [true, false], default: false
 property :automatic_restart, [true, false], default: false
 property :kill_timeout, [Integer, String], default: 10
+property :manage_java, [true, false], default: true
+property :java_version, String, default: '17'
 
 property :cluster_id, [String, nil], desired_state: false
 property :broker, Hash, default: {}
@@ -51,6 +53,23 @@ action :create do
     gid new_resource.gid unless new_resource.gid.nil?
     only_if { new_resource.manage_user }
   end
+
+  if new_resource.manage_java
+    if platform_family?('amazon') || (platform_family?('rhel') && node['platform_version'].to_i >= 10)
+      raise 'Managed Java on Amazon Linux and EL 10 currently supports java_version 17 only; set manage_java false to supply another JDK externally' unless new_resource.java_version == '17'
+
+      corretto_install new_resource.java_version do
+        default true
+      end
+    else
+      openjdk_install new_resource.java_version do
+        install_type 'package'
+        default true
+      end
+    end
+  end
+
+  package %w(tar gzip)
 
   user new_resource.user do
     uid new_resource.uid unless new_resource.uid.nil?

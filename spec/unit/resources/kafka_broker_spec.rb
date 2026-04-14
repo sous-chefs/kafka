@@ -32,6 +32,8 @@ describe 'kafka_broker' do
     end
 
     it { is_expected.to create_group('kafka') }
+    it { is_expected.to install_openjdk_install('17').with(install_type: 'package', default: true) }
+    it { is_expected.to install_package(%w(tar gzip)) }
     it { is_expected.to create_user('kafka').with(home: '/var/empty/kafka', shell: '/sbin/nologin') }
     it { is_expected.to create_directory('/opt/kafka-3.9.1') }
     it { is_expected.to create_directory('/var/log/kafka') }
@@ -65,6 +67,41 @@ describe 'kafka_broker' do
     it { is_expected.to start_systemd_unit('kafka.service') }
     it { is_expected.to render_file('/opt/kafka/config/server.properties').with_content(/process\.roles=broker,controller/) }
     it { is_expected.to render_file('/opt/kafka/config/server.properties').with_content(/controller\.quorum\.voters=1@127\.0\.0\.1:9093/) }
+  end
+
+  context 'on AlmaLinux 10' do
+    platform 'almalinux', '10'
+
+    recipe do
+      kafka_broker 'default' do
+        broker('log.dirs' => ['/var/lib/kafka/data'])
+      end
+    end
+
+    it { is_expected.to install_corretto_install('17').with(default: true) }
+  end
+
+  context 'when java management is disabled' do
+    recipe do
+      kafka_broker 'default' do
+        manage_java false
+        broker('log.dirs' => ['/var/lib/kafka/data'])
+      end
+    end
+
+    it { is_expected.to_not install_openjdk_install('17') }
+    it { is_expected.to_not install_corretto_install('17') }
+  end
+
+  context 'when a custom Java version is requested on Ubuntu' do
+    recipe do
+      kafka_broker 'default' do
+        java_version '21'
+        broker('log.dirs' => ['/var/lib/kafka/data'])
+      end
+    end
+
+    it { is_expected.to install_openjdk_install('21').with(install_type: 'package', default: true) }
   end
 
   context 'when deleting a broker installation' do

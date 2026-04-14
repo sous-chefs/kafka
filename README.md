@@ -5,11 +5,10 @@ Apache Kafka broker management through the `kafka_broker` custom resource.
 ## Requirements
 
 - Chef Infra Client `>= 15.3`
-- Java 17 or newer installed separately
 - Linux with `systemd`
 
 This cookbook installs Kafka from the official Apache binary tarball. It does
-not manage Java, ZooKeeper, or external coordination services.
+manage a Java runtime by default, and does not manage ZooKeeper or external coordination services.
 
 ## Resource
 
@@ -20,6 +19,7 @@ See [documentation/kafka_broker.md](documentation/kafka_broker.md) for the full 
 ```ruby
 kafka_broker 'default' do
   automatic_start true
+  java_version '17'
   cluster_id 'MkU3OEVBNTcwNTJENDM2Qk'
   broker(
     'process.roles' => 'broker,controller',
@@ -39,11 +39,14 @@ kafka_broker 'default' do
 end
 ```
 
+On Amazon Linux and EL 10-family platforms, managed Java currently supports Java 17 only. Set `manage_java false` if you need to supply a different JDK externally.
+
 ### ZooKeeper mode example
 
 ```ruby
 kafka_broker 'default' do
   automatic_start true
+  manage_java false
   broker(
     'broker.id' => 1,
     'listeners' => 'PLAINTEXT://127.0.0.1:9092',
