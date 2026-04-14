@@ -2,6 +2,8 @@
 
 title 'Default Suite Tests'
 
+env_file = os.redhat? || os.name == 'amazon' || os.name == 'fedora' ? '/etc/sysconfig/kafka' : '/etc/default/kafka'
+
 control 'kafka-install-01' do
   impact 1.0
   title 'Kafka user and group exist'
@@ -56,7 +58,7 @@ control 'kafka-config-01' do
     its('content') { should match(/log4j\.rootLogger=INFO, kafkaAppender/) }
   end
 
-  describe file('/etc/default/kafka') do
+  describe file(env_file) do
     it { should exist }
     its('content') { should match(/KAFKA_HEAP_OPTS="-Xms1G -Xmx1G"/) }
     its('content') { should match(/KAFKA_JMX_OPTS="-Dcom\.sun\.management\.jmxremote/) }

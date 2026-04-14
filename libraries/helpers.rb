@@ -64,8 +64,7 @@ module KafkaCookbook
       content = {
         'Unit' => {
           'Description' => 'Apache Kafka broker',
-          'Wants' => 'network-online.target',
-          'After' => 'network-online.target',
+          'After' => 'network.target',
         },
         'Service' => {
           'Type' => 'simple',
