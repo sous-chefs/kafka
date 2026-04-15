@@ -58,7 +58,11 @@ describe 'kafka_broker' do
 
     it do
       is_expected.to run_execute('format-kafka-storage-default').with(
-        command: '/opt/kafka/bin/kafka-storage.sh format --ignore-formatted --cluster-id MkU3OEVBNTcwNTJENDM2Qk --config /opt/kafka/config/server.properties'
+        command: '/opt/kafka/bin/kafka-storage.sh format --ignore-formatted --cluster-id MkU3OEVBNTcwNTJENDM2Qk --config /opt/kafka/config/server.properties',
+        environment: {
+          'JMX_PORT' => '',
+          'KAFKA_JMX_OPTS' => '',
+        }
       )
     end
 
@@ -71,6 +75,18 @@ describe 'kafka_broker' do
 
   context 'on AlmaLinux 10' do
     platform 'almalinux', '10'
+
+    recipe do
+      kafka_broker 'default' do
+        broker('log.dirs' => ['/var/lib/kafka/data'])
+      end
+    end
+
+    it { is_expected.to install_corretto_install('17').with(default: true) }
+  end
+
+  context 'on AlmaLinux 9' do
+    platform 'almalinux', '9'
 
     recipe do
       kafka_broker 'default' do

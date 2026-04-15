@@ -55,8 +55,8 @@ action :create do
   end
 
   if new_resource.manage_java
-    if platform_family?('amazon') || (platform_family?('rhel') && node['platform_version'].to_i >= 10)
-      raise 'Managed Java on Amazon Linux and EL 10 currently supports java_version 17 only; set manage_java false to supply another JDK externally' unless new_resource.java_version == '17'
+    if platform_family?('amazon', 'rhel')
+      raise 'Managed Java on Amazon Linux and supported RHEL-family platforms currently supports java_version 17 only; set manage_java false to supply another JDK externally' unless new_resource.java_version == '17'
 
       corretto_install new_resource.java_version do
         default true
@@ -154,6 +154,10 @@ action :create do
 
   execute "format-kafka-storage-#{new_resource.name}" do
     command "#{new_resource.install_dir}/bin/kafka-storage.sh format --ignore-formatted --cluster-id #{new_resource.cluster_id} --config #{::File.join(new_resource.config_dir, 'server.properties')}"
+    environment(
+      'JMX_PORT' => '',
+      'KAFKA_JMX_OPTS' => ''
+    )
     user new_resource.user
     group new_resource.group
     not_if { !kraft_mode?(new_resource) || ::File.exist?(::File.join(storage_dir(new_resource), 'meta.properties')) }

@@ -87,8 +87,8 @@ kafka_broker 'default' do
 end
 ```
 
-When `manage_java` is left at its default, the resource installs Java automatically. It uses Eclipse Temurin packages on most supported Linux platforms and Amazon Corretto on Amazon Linux and EL 10-family platforms where that path is more reliable.
-Managed Java on Amazon Linux and EL 10-family platforms currently supports Java 17 only; use `manage_java false` if you need to supply another JDK there.
+When `manage_java` is left at its default, the resource installs Java automatically. It uses Amazon Corretto on Amazon Linux and supported RHEL-family platforms, and Eclipse Temurin packages on Debian, Ubuntu, and Fedora where that path is reliable.
+Managed Java on Amazon Linux and supported RHEL-family platforms currently supports Java 17 only; use `manage_java false` if you need to supply another JDK there.
 
 ### Remove a broker installation
 

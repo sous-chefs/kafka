@@ -27,7 +27,7 @@
 - Apache Kafka upstream publishes generic binary tarballs instead of distro-specific packages.
 - The upstream broker build currently supports Scala 2.13 only.
 - Runtime compatibility depends on a supported Java runtime rather than distro packaging metadata.
-- Kafka 3.9 fully supports Java 17 and Java 21. This cookbook defaults to Java 17 because it is an LTS release that is portable across all currently supported platforms with the available Java cookbook installers; callers can override `java_version` when they need Java 21 on platforms where package-backed installs are available.
+- Kafka 3.9 fully supports Java 17 and Java 21. This cookbook defaults to Java 17 because it is the broadly portable LTS choice across the current support matrix. Managed Java currently uses Amazon Corretto on Amazon Linux and supported RHEL-family platforms, and Eclipse Temurin on Debian, Ubuntu, and Fedora. Callers can override `java_version` when they need Java 21 on platforms where package-backed installs are available.
 
 ## Source/Compiled Installation
 
@@ -36,7 +36,7 @@
 - Amazon: Amazon Corretto 17, `tar`, `gzip`
 - Debian: Eclipse Temurin 17+/21+, `tar`, `gzip`
 - Fedora: Eclipse Temurin 17+/21+, `tar`, `gzip`
-- RHEL: Eclipse Temurin 17+/21+ or Amazon Corretto 17 on EL 10, `tar`, `gzip`
+- RHEL: Amazon Corretto 17, `tar`, `gzip`
 
 - Apache Kafka source builds use the upstream Gradle wrapper (`./gradlew`); there is no official source build path in this cookbook.
 
@@ -45,4 +45,5 @@
 - The legacy cookbook defaulted to Kafka 1.1.1 and Scala 2.11, both of which are obsolete for a modern migration.
 - Apache Kafka no longer ships official init-system integration for SysV or Upstart, so this migration is systemd-only.
 - Kafka can run in ZooKeeper mode or KRaft mode, but a single-node default test suite is only practical in KRaft mode because this cookbook does not manage ZooKeeper.
+- `kafka-storage.sh format` is run with JMX disabled so Kafka's one-shot KRaft initialization does not trip over container cgroup/JMX bugs on Dokken-backed integration suites.
 - Platform support was revalidated against endoflife.date in April 2026. Ubuntu 20.04, Debian 11, Rocky Linux 8, AlmaLinux 8, and CentOS Stream 8 were intentionally excluded because they are no longer current support targets.
