@@ -5,6 +5,9 @@
 This cookbook installs Apache Kafka from the official Apache binary tarballs. It does not configure
 APT, DNF/YUM, or Zypper package repositories.
 
+The `kafka_install` resource installs the platform `tar` package because binary tarball extraction
+depends on it.
+
 ### Binary Downloads
 
 * Apache Kafka 4.2.0 is available from `https://downloads.apache.org/kafka/4.2.0/`.
