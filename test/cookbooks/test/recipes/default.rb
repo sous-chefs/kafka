@@ -3,8 +3,23 @@
 case node['platform_family']
 when 'debian'
   apt_update 'update apt cache'
-  package 'openjdk-17-jre-headless'
-when 'rhel', 'fedora', 'amazon'
+
+  java_package = if platform?('debian') && node['platform_version'].to_i >= 13
+                   'openjdk-21-jre-headless'
+                 else
+                   'openjdk-17-jre-headless'
+                 end
+  package java_package
+when 'rhel'
+  java_package = if node['platform_version'].to_i >= 10
+                   'java-21-openjdk-headless'
+                 else
+                   'java-17-openjdk-headless'
+                 end
+  package java_package
+when 'fedora'
+  package 'java-21-openjdk-headless'
+when 'amazon'
   package 'java-17-openjdk-headless'
 end
 

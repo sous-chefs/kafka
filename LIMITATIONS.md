@@ -30,13 +30,14 @@ Dokken support has not been confirmed.
 ## Architecture Limitations
 
 Apache Kafka binary tarballs are architecture-independent JVM artifacts. The supported architecture
-is therefore constrained by the platform's Java 17 runtime availability and the Kitchen/Dokken image
-used for testing.
+is therefore constrained by the platform's Java 17 or newer runtime availability and the
+Kitchen/Dokken image used for testing.
 
 ## Java Requirements
 
 Kafka 4.x removed Java 8 support for servers. The cookbook assumes Java 17 or newer is installed by
-the caller. The integration test cookbook installs Java 17 before converging `kafka_broker`.
+the caller. The integration test cookbook installs Java 17 where available, and Java 21 on newer
+platform images where Java 17 packages are unavailable.
 
 ## Source/Compiled Installation
 
