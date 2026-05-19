@@ -15,37 +15,37 @@ This release migrates the cookbook from recipes and node attributes to custom re
 
 ## Attribute Mapping
 
-| Old attribute | New property |
-|---------------|--------------|
-| `node['kafka']['version']` | `version` |
-| `node['kafka']['scala_version']` | `scala_version` |
-| `node['kafka']['base_url']` | `base_url` |
-| `node['kafka']['checksum']` | `checksum` |
-| `node['kafka']['md5_checksum']` | `md5_checksum` |
-| `node['kafka']['sha512_checksum']` | `sha512_checksum` |
-| `node['kafka']['install_dir']` | `install_dir` |
-| `node['kafka']['version_install_dir']` | `version_install_dir` |
-| `node['kafka']['build_dir']` | `build_dir` |
-| `node['kafka']['log_dir']` | `log_dir` |
-| `node['kafka']['config_dir']` | `config_dir` |
-| `node['kafka']['user']` | `user` |
-| `node['kafka']['group']` | `group` |
-| `node['kafka']['manage_user']` | `manage_user` |
-| `node['kafka']['uid']` | `uid` |
-| `node['kafka']['gid']` | `gid` |
-| `node['kafka']['heap_opts']` | `heap_opts` |
-| `node['kafka']['generic_opts']` | `generic_opts` |
-| `node['kafka']['gc_log_opts']` | `gc_log_opts` |
-| `node['kafka']['log4j_opts']` | `log4j_opts` |
-| `node['kafka']['jvm_performance_opts']` | `jvm_performance_opts` |
-| `node['kafka']['jmx_port']` | `jmx_port` |
-| `node['kafka']['jmx_opts']` | `jmx_opts` |
-| `node['kafka']['ulimit_file']` | `ulimit_file` |
-| `node['kafka']['automatic_start']` | `automatic_start` |
-| `node['kafka']['automatic_restart']` | `automatic_restart` |
-| `node['kafka']['kill_timeout']` | `kill_timeout` |
-| `node['kafka']['broker']` | `broker_config` |
-| `node['kafka']['log4j']` | `log4j_config` |
+| Old attribute                            | New property           |
+| ---------------------------------------- | ---------------------- |
+| `node['kafka']['version']`               | `version`              |
+| `node['kafka']['scala_version']`         | `scala_version`        |
+| `node['kafka']['base_url']`              | `base_url`             |
+| `node['kafka']['checksum']`              | `checksum`             |
+| `node['kafka']['md5_checksum']`          | `md5_checksum`         |
+| `node['kafka']['sha512_checksum']`       | `sha512_checksum`      |
+| `node['kafka']['install_dir']`           | `install_dir`          |
+| `node['kafka']['version_install_dir']`   | `version_install_dir`  |
+| `node['kafka']['build_dir']`             | `build_dir`            |
+| `node['kafka']['log_dir']`               | `log_dir`              |
+| `node['kafka']['config_dir']`            | `config_dir`           |
+| `node['kafka']['user']`                  | `user`                 |
+| `node['kafka']['group']`                 | `group`                |
+| `node['kafka']['manage_user']`           | `manage_user`          |
+| `node['kafka']['uid']`                   | `uid`                  |
+| `node['kafka']['gid']`                   | `gid`                  |
+| `node['kafka']['heap_opts']`             | `heap_opts`            |
+| `node['kafka']['generic_opts']`          | `generic_opts`         |
+| `node['kafka']['gc_log_opts']`           | `gc_log_opts`          |
+| `node['kafka']['log4j_opts']`            | `log4j_opts`           |
+| `node['kafka']['jvm_performance_opts']`  | `jvm_performance_opts` |
+| `node['kafka']['jmx_port']`              | `jmx_port`             |
+| `node['kafka']['jmx_opts']`              | `jmx_opts`             |
+| `node['kafka']['ulimit_file']`           | `ulimit_file`          |
+| `node['kafka']['automatic_start']`       | `automatic_start`      |
+| `node['kafka']['automatic_restart']`     | `automatic_restart`    |
+| `node['kafka']['kill_timeout']`          | `kill_timeout`         |
+| `node['kafka']['broker']`                | `broker_config`        |
+| `node['kafka']['log4j']`                 | `log4j_config`         |
 
 ## Before
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 name              'kafka'
-maintainer        'Sous-Chefs'
+maintainer        'Sous Chefs'
 maintainer_email  'help@sous-chefs.org'
 license           'Apache-2.0'
 description       'Provides custom resources for installing and configuring Apache Kafka brokers'
