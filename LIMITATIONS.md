@@ -36,8 +36,8 @@ Kitchen/Dokken image used for testing.
 ## Java Requirements
 
 Kafka 4.x removed Java 8 support for servers. The cookbook assumes Java 17 or newer is installed by
-the caller. The integration test cookbook installs Java 17 where available, and Java 21 on newer
-platform images where Java 17 packages are unavailable.
+the caller. The integration test cookbook installs a distro-provided Java 17 or newer runtime before
+converging `kafka_broker`.
 
 ## Source/Compiled Installation
 

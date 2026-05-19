@@ -18,9 +18,9 @@ when 'rhel'
                  end
   package java_package
 when 'fedora'
-  package 'java-21-openjdk-headless'
+  package 'java-25-openjdk-headless'
 when 'amazon'
-  package 'java-17-openjdk-headless'
+  package 'java-17-amazon-corretto-headless'
 end
 
 kafka_broker 'default' do

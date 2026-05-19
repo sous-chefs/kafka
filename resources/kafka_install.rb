@@ -10,6 +10,8 @@ action_class do
 end
 
 action :install do
+  package 'tar'
+
   directory new_resource.build_dir do
     owner new_resource.user
     group new_resource.group

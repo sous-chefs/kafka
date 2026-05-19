@@ -14,6 +14,7 @@ describe 'kafka_install' do
     let(:archive_path) { ::File.join(Chef::Config[:file_cache_path], 'kafka_2.13-4.2.0.tgz') }
     let(:build_dir) { ::File.join(Chef::Config[:file_cache_path], 'kafka-build') }
 
+    it { is_expected.to install_package('tar') }
     it { is_expected.to create_directory(build_dir) }
     it { is_expected.to create_remote_file(archive_path).with(source: 'https://downloads.apache.org/kafka/4.2.0/kafka_2.13-4.2.0.tgz') }
     it { is_expected.to create_directory('/opt/kafka-4.2.0') }

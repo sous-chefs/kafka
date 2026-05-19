@@ -6,7 +6,7 @@ Installs Apache Kafka from an official binary tarball.
 
 | Action     | Description                                                                                  |
 | ---------- | -------------------------------------------------------------------------------------------- |
-| `:install` | Downloads, validates, extracts, owns, and links Kafka.                                       |
+| `:install` | Installs `tar`, downloads, validates, extracts, owns, and links Kafka.                       |
 | `:delete`  | Removes the install symlink, version install directory, build directory, and cached archive. |
 
 ## Properties
