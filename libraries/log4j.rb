@@ -1,7 +1,4 @@
-#
-# Cookbook:: kafka
-# Libraries:: log4j
-#
+# frozen_string_literal: true
 
 module Kafka
   module Log4J
@@ -45,11 +42,11 @@ module Kafka
     end
 
     def camelcase(s)
-      s.split('_').reduce('') { |acc, elem| acc << elem.capitalize }
+      s.to_s.split('_').map(&:capitalize).join
     end
 
     def newline
-      @newline ||= "\n".freeze
+      @newline ||= "\n"
     end
   end
 end

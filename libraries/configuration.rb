@@ -1,7 +1,4 @@
-#
-# Cookbook:: kafka
-# Libraries:: configuration
-#
+# frozen_string_literal: true
 
 module Kafka
   module Configuration
