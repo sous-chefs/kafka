@@ -16,6 +16,9 @@ See [migration.md](migration.md) when upgrading from the legacy recipe API.
 * Java 17 or later installed by the caller
 * systemd
 
+Kafka is extracted from Apache binary tarballs. The `kafka_install` resource installs the platform
+`tar` package when it converges.
+
 See [LIMITATIONS.md](LIMITATIONS.md) for platform and Kafka version constraints.
 
 ## Resources
