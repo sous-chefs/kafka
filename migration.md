@@ -9,7 +9,7 @@ This release migrates the cookbook from recipes and node attributes to custom re
 * Node attributes under `node['kafka']` are replaced by properties on `kafka_broker`,
   `kafka_install`, `kafka_config`, and `kafka_service`.
 * sysv, upstart, and runit service support is removed. The cookbook manages systemd only.
-* The default Kafka version changes from `1.1.1` with Scala `2.11` to Kafka `4.2.0` with Scala
+* The default Kafka version changes from `1.1.1` with Scala `2.11` to Kafka `4.2.1` with Scala
   `2.13`.
 * ZooKeeper-oriented examples are replaced with KRaft-oriented examples.
 

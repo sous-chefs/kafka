@@ -13,7 +13,7 @@ Primary resource for installing, configuring, formatting, and running an Apache 
 
 | Property            | Type        | Default               | Description                                                     |
 | ------------------- | ----------- | --------------------- | --------------------------------------------------------------- |
-| `version`           | String      | `'4.2.0'`             | Kafka version to install.                                       |
+| `version`           | String      | `'4.2.1'`             | Kafka version to install.                                       |
 | `scala_version`     | String      | `'2.13'`              | Scala artifact version.                                         |
 | `broker_config`     | Hash        | `{}`                  | Kafka broker configuration rendered to `server.properties`.     |
 | `cluster_id`        | String, nil | `nil`                 | KRaft cluster ID used when formatting storage.                  |

@@ -24,11 +24,11 @@ control 'kafka-files-01' do
 
   describe file('/opt/kafka') do
     it { should be_symlink }
-    its('link_path') { should eq '/opt/kafka-4.2.0' }
+    its('link_path') { should eq '/opt/kafka-4.2.1' }
   end
 
   %w(
-    /opt/kafka-4.2.0
+    /opt/kafka-4.2.1
     /opt/kafka/config
     /var/log/kafka
     /var/lib/kafka/data
