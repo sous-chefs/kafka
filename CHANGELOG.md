@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [4.0.1](https://github.com/sous-chefs/kafka/compare/v4.0.0...v4.0.1) (2026-08-17)
+
+
+### Bug Fixes
+
+* migrate Kafka tests to Policyfile ([#255](https://github.com/sous-chefs/kafka/issues/255)) ([c8ed65c](https://github.com/sous-chefs/kafka/commit/c8ed65cd642d711ad806e69780cd6d27f203d5da))
+
 ## [4.0.0](https://github.com/sous-chefs/kafka/compare/v3.1.25...v4.0.0) (2026-05-19)
 
 
