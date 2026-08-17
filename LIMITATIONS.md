@@ -10,8 +10,8 @@ depends on it.
 
 ### Binary Downloads
 
-* Apache Kafka 4.2.0 is available from `https://downloads.apache.org/kafka/4.2.0/`.
-* The default artifact is `kafka_2.13-4.2.0.tgz`.
+* Apache Kafka 4.2.1 is available from `https://downloads.apache.org/kafka/4.2.1/`.
+* The default artifact is `kafka_2.13-4.2.1.tgz`.
 * Apache provides `asc`, `md5`, `sha1`, and `sha512` checksum files for the artifact.
 
 ## Platform Support

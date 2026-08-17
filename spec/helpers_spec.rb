@@ -33,10 +33,10 @@ describe Kafka::Helpers do
       :kill_timeout,
       :ulimit_file
     ).new(
-      '4.2.0',
+      '4.2.1',
       '2.13',
       'https://downloads.apache.org/kafka',
-      '/opt/kafka-4.2.0',
+      '/opt/kafka-4.2.1',
       '/opt/kafka',
       { 'log.dirs' => '/var/lib/kafka/a,/var/lib/kafka/b' },
       '/var/log/kafka',
@@ -57,8 +57,8 @@ describe Kafka::Helpers do
   end
 
   it 'builds archive names and URLs' do
-    expect(helper.kafka_archive_name(resource)).to eq('kafka_2.13-4.2.0.tgz')
-    expect(helper.kafka_download_url(resource)).to eq('https://downloads.apache.org/kafka/4.2.0/kafka_2.13-4.2.0.tgz')
+    expect(helper.kafka_archive_name(resource)).to eq('kafka_2.13-4.2.1.tgz')
+    expect(helper.kafka_download_url(resource)).to eq('https://downloads.apache.org/kafka/4.2.1/kafka_2.13-4.2.1.tgz')
   end
 
   it 'normalizes checksum strings' do

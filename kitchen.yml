@@ -3,11 +3,12 @@ provisioner:
   name: chef_infra
   chef_license: accept
   deprecations_as_errors: true
+  policyfile: Policyfile.rb
   attributes:
     kafka_test:
-      version: <%= ENV.fetch('KAFKA_VERSION', '4.2.0').inspect %>
+      version: <%= ENV.fetch('KAFKA_VERSION', '4.2.1').inspect %>
       scala_version: <%= ENV.fetch('SCALA_VERSION', '2.13').inspect %>
-      sha512_checksum: <%= ENV.fetch('KAFKA_SHA512', '16ce46e590ba915f01b720ea514445e49c88bf129cf4ceab88878b122d54ef24f0dedb88d0eb178957f58057a6c6a9adbea8b8059307585daea13129b85ba1d8').inspect %>
+      sha512_checksum: <%= ENV.fetch('KAFKA_SHA512', 'f643e31266268e920aa98ead9a061026c98dac2886932ad468565ba59bcb7fb4f98a4c4f62727367e1bd87515f3b016e6f6ccccad8b12bdef8b091b0fb577170').inspect %>
 
 verifier:
   name: inspec
@@ -29,10 +30,6 @@ platforms:
   - name: ubuntu-22.04
   - name: ubuntu-24.04
 
-x-run_lists:
-  default: &default_run_list
-    - recipe[test::default]
-
 x-verifiers:
   default: &default_verifier
     inspec_tests:
@@ -40,5 +37,6 @@ x-verifiers:
 
 suites:
   - name: default
-    run_list: *default_run_list
+    provisioner:
+      named_run_list: default
     verifier: *default_verifier
